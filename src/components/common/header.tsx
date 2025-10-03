@@ -1,17 +1,28 @@
+'use client'
+
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color"
 import font from "@/packages/design-system/src/font"
 import Image from "next/image";
+import { useRouter } from "next/navigation"
+import React, { act, useState } from "react";
+import Headernavigationbar from "./headernavigationbar";
+
 
 type variant = 'default' | "bookmark" | "close" | "register" | "report and close" | "report and bookmark" | "title" | "close and option" | "search"
-
 
 type HeaderProps = {
     types : variant
     text? : string
     placeholers? : string
+    
 }
+
+
 const Header = ({types , text , placeholers} : HeaderProps ) => {
+
+    const router = useRouter();
+    const [activeIdx, setActiveIdx] = useState(0);
 
     switch(types) {
         case 'default':
@@ -21,7 +32,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                     <HeaderItemBox>
 
                         <LeftItemBox>  
-                            <Image src="/svg/logo.svg" alt="logo" width={50} height={50} />
+                            <Image src="/svg/logo.svg" alt="logo" width={50} height={50} onClick={() => {router.replace("/")}} />
                         </LeftItemBox>
 
                         <RightItemBox>
@@ -31,6 +42,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                         </RightItemBox>
 
                     </HeaderItemBox>
+                    <Headernavigationbar type={'vote'} activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
 
                 </HeaderLayout>
             )
@@ -43,7 +55,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/Back.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/Back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
@@ -61,7 +73,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/Back.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/Back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
@@ -99,7 +111,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
@@ -119,7 +131,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
@@ -139,7 +151,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <CenterItemBox>
@@ -158,7 +170,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
@@ -178,7 +190,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back2.svg" alt="back" width={22} height={22} />
+                        <Image src="/svg/back2.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <CenterItemBox>
@@ -261,8 +273,9 @@ const HeaderLayout = styled.div`
     width: 100%;
     max-width: 600px;
     position: fixed;
+    flex-direction: column;
     top: 0;
-    height: 64px;
+    height: 80px;
     background-color: ${color.white};
     display: flex;
     justify-content: center;
