@@ -7,7 +7,7 @@ import color from "@/packages/design-system/src/color"
 const vote = () =>{
     return (
         <VoteLayout>
-            <Header types={'default'}/>
+            <Header types={'search'} placeholers="원하는 투표를 검색해주세요"/>
         </VoteLayout>
     )   
 

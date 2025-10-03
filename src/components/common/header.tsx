@@ -4,8 +4,8 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color"
 import font from "@/packages/design-system/src/font"
 import Image from "next/image";
-import { useRouter } from "next/navigation"
-import React, { act, useState } from "react";
+import { useRouter , usePathname } from "next/navigation"
+import React, { useState } from "react";
 import Headernavigationbar from "./headernavigationbar";
 
 
@@ -15,13 +15,15 @@ type HeaderProps = {
     types : variant
     text? : string
     placeholers? : string
+    onSubmit? : () => void
     
 }
 
 
-const Header = ({types , text , placeholers} : HeaderProps ) => {
+const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
 
     const router = useRouter();
+    const path = usePathname();
     const [activeIdx, setActiveIdx] = useState(0);
 
     switch(types) {
@@ -37,7 +39,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
 
                         <RightItemBox>
                             <Image src="/svg/bell.svg" alt="bell" width={25} height={25} />
-                            <Image src="/svg/search.svg" alt="search" width={25} height={25} />
+                            <Image src="/svg/search.svg" alt="search" width={25} height={25} onClick={() => {router.push(`${path}/search`)}} />
                             <Image src="/svg/user.svg" alt="user" width={25} height={25} />
                         </RightItemBox>
 
@@ -96,7 +98,7 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <RegisterButton>등록</RegisterButton>
+                        <Button onClick={() => {onSubmit}}>등록</Button>
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -197,6 +199,10 @@ const Header = ({types , text , placeholers} : HeaderProps ) => {
                         <SearchInput placeholder={placeholers} />
                     </CenterItemBox>
 
+                    <RightItemBox>  
+                        <Button onClick={() => {onSubmit}}>검색</Button>
+                    </RightItemBox>
+
                 </HeaderItemBox>
 
             </HeaderLayout>
@@ -228,7 +234,7 @@ const Title = styled.p`
     color: ${color.black};
 `
 
-const RegisterButton = styled.button`
+const Button = styled.button`
     ${font.D3};
     color: ${color.primary};
     background-color: #FFD8A2;
@@ -255,10 +261,7 @@ const CenterItemBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    width: 480px;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 70%;
 `;
 
 const HeaderItemBox = styled.div`
