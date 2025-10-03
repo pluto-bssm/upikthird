@@ -1,6 +1,7 @@
 'use client'
 
 import Header from "@/components/common/header"
+import NavigationBar from "@/components/common/navigationbar"
 import styled from "@emotion/styled"
 import color from "@/packages/design-system/src/color"
 
@@ -8,6 +9,7 @@ const vote = () =>{
     return (
         <VoteLayout>
             <Header types={'default'}/>
+            <NavigationBar />
         </VoteLayout>
     )   
 
