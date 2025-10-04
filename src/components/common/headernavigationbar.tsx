@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import Image from "next/image";
 import React from "react";
+import { Divider , Navoption } from "@/../public/svg/svg";
 
 type Variant = "vote" | "guide";
 
@@ -32,14 +32,9 @@ const HeaderNavigationBar = ({type , activeIdx = 0, setActiveIdx, onOptionClick 
               {nav}
             </SortMenuText>
             {idx < navItems.length - 1 && (
-              <Divider>
-                <Image
-                  src="/svg/Divider.svg"
-                  alt="Divider"
-                  width={2}
-                  height={20}
-                />
-              </Divider>
+              <DividerLayout>
+                <Divider width="2" height="10" />
+              </DividerLayout>
             )}
           </React.Fragment>
         ))}
@@ -47,7 +42,7 @@ const HeaderNavigationBar = ({type , activeIdx = 0, setActiveIdx, onOptionClick 
 
       {type === "vote" && (
         <OptionButton onClick={onOptionClick}>
-          <Image src="/svg/Navoption.svg" alt="옵션" width={20} height={20} />
+          <Navoption width="20" height="20" />
         </OptionButton>
       )}
     </HeaderNavigationLayout>
@@ -80,7 +75,7 @@ const SortMenuText = styled.p<{ active?: boolean }>`
   transition: all 0.3s ease;
 `;
 
-const Divider = styled.div`
+const DividerLayout = styled.div`
   display: flex;
   align-items: center;
 `;

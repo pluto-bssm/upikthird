@@ -2,7 +2,7 @@
 
 import styled from "@emotion/styled"
 import color from "@/packages/design-system/src/color"
-import Image from "next/image"
+import {Home , Vote, Guide, Dashboard} from "@/../public/svg/svg"
 import { useRouter } from "next/navigation"
 
 const NavigationBar = () =>{
@@ -12,10 +12,10 @@ const NavigationBar = () =>{
     return (
         <NavigationBarLayout>
             <NavigationBarItem>
-                <Image src='/svg/Home.svg' alt="" width={40} height={40} onClick={() => { router.push("/main") }} />
-                <Image src='/svg/Vote.svg'  alt="" width={40} height={40} onClick={() => { router.push("/vote") }} />
-                <Image src='/svg/Guide.svg' alt="" width={40} height={40} onClick={() => { router.push("/guide") }} />
-                <Image src='/svg/Dashboard.svg' alt="" width={40} height={40} onClick={() => { router.push("/dashboard") }} />    
+                <Home width="40" height="40" onClick={() => { router.push("/main") }} />
+                <Vote width="40" height="40"  onClick={() => { router.push("/vote") }} />
+                <Guide width="40" height="40"  onClick={() => { router.push("/guide") }} />
+                <Dashboard width="40" height="40"  onClick={() => { router.push("/dashboard") }} />    
             </NavigationBarItem>
         </NavigationBarLayout>
     )   

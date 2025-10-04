@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter , usePathname } from "next/navigation"
 import React, { useState } from "react";
 import Headernavigationbar from "./headernavigationbar";
+import {Logo, Bell, Search, User , Back , Back2 , Bookmark , Close , Report , Options , } from "@/../public/svg/svg";
 
 
 type variant = 'default' | "bookmark" | "close" | "register" | "report and close" | "report and bookmark" | "title" | "close and option" | "search"
@@ -34,13 +35,13 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                     <HeaderItemBox>
 
                         <LeftItemBox>  
-                            <Image src="/svg/logo.svg" alt="logo" width={50} height={50} onClick={() => {router.replace("/")}} />
+                            <Logo width="50" height="50" onClick={() => {router.replace("/")}}/>
                         </LeftItemBox>
 
                         <RightItemBox>
-                            <Image src="/svg/bell.svg" alt="bell" width={25} height={25} />
-                            <Image src="/svg/search.svg" alt="search" width={25} height={25} onClick={() => {router.push(`${path}/search`)}} />
-                            <Image src="/svg/user.svg" alt="user" width={25} height={25} />
+                            <Bell width="25" height="25" />
+                            <Search width="25" height="25" onClick={() => {router.push(`${path}/search`)}} />
+                            <User   width="25" height="25" />
                         </RightItemBox>
 
                     </HeaderItemBox>
@@ -57,11 +58,11 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/Back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Image src="/svg/bookmark.svg" alt="bookmark" width={25} height={25} />
+                        <Bookmark width="25" height="25" />
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -75,11 +76,11 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/Back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Image src="/svg/close.svg" alt="close" width={25} height={25} />
+                        <Close width="25" height="25"/>
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -94,7 +95,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/close.svg" alt="close" width={25} height={25} />
+                        <Close width="25" height="25"/>
                     </LeftItemBox>
 
                     <RightItemBox>
@@ -113,12 +114,12 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Image src="/svg/report.svg" alt="report" width={25} height={25} />
-                        <Image src="/svg/close.svg" alt="close" width={25} height={25} />
+                        <Report width="25" height="25" />
+                        <Close width="25" height="25"/>
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -133,12 +134,12 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Image src="/svg/report.svg" alt="report" width={25} height={25} />
-                        <Image src="/svg/bookmark.svg" alt="bookmark" width={25} height={25} />
+                        <Report width="25" height="25" />
+                         <Bookmark width="25" height="25" />
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -153,7 +154,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <CenterItemBox>
@@ -172,12 +173,12 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Image src="/svg/close.svg" alt="close" width={25} height={25} />
-                        <Image src="/svg/Options.svg" alt="option" width={25} height={25} />
+                        <Close width="25" height="25"/>
+                        <Options width="25" height="25" />
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -192,7 +193,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Image src="/svg/back2.svg" alt="back" width={22} height={22} onClick={() => {router.back()}} />
+                        <Back2 width="22" height="22" onClick={() => {router.back()}} />
                     </LeftItemBox>
 
                     <CenterItemBox>

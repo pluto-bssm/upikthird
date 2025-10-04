@@ -1,0 +1,33 @@
+import * as React from "react";
+
+type LoadingProps = {
+  width: string;
+  height: string;
+  onClick?: () => void;
+};
+
+const Loading = ({ width, height, onClick }: LoadingProps) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 80 81"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    onClick={onClick}
+  >
+  <g clipPath="url(#paint0_angular_1241_1110_clip_path)">
+      <g transform="matrix(0 0.039746 -0.039746 0 39.9999 40.4999)">
+        <foreignObject x="-1020" y="-1020" width="2040" height="2040">
+          <div style={{ background: 'conic-gradient(from 90deg,rgba(255, 159, 28, 1) 0deg,rgba(255, 159, 28, 1) 63.243deg,rgba(255, 255, 255, 0) 360deg)', height: '100%', width: '100%', opacity: 1 }} />
+        </foreignObject>
+      </g>
+    </g>
+  <path d="M79.746 40.4999C79.746 62.4511 61.9511 80.246 39.9999 80.246C18.0488 80.246 0.253906 62.4511 0.253906 40.4999C0.253906 18.5488 18.0488 0.753906 39.9999 0.753906C61.9511 0.753906 79.746 18.5488 79.746 40.4999ZM12.139 40.4999C12.139 55.8871 24.6128 68.3609 39.9999 68.3609C55.3871 68.3609 67.8609 55.8871 67.8609 40.4999C67.8609 25.1128 55.3871 12.639 39.9999 12.639C24.6128 12.639 12.139 25.1128 12.139 40.4999Z" />
+    <circle cx="40.3975" cy="74.2842" r="5.96191" fill="#FF9F1C"/>
+    <defs>
+      <clipPath id="paint0_angular_1241_1110_clip_path"><path d="M79.746 40.4999C79.746 62.4511 61.9511 80.246 39.9999 80.246C18.0488 80.246 0.253906 62.4511 0.253906 40.4999C0.253906 18.5488 18.0488 0.753906 39.9999 0.753906C61.9511 0.753906 79.746 18.5488 79.746 40.4999ZM12.139 40.4999C12.139 55.8871 24.6128 68.3609 39.9999 68.3609C55.3871 68.3609 67.8609 55.8871 67.8609 40.4999C67.8609 25.1128 55.3871 12.639 39.9999 12.639C24.6128 12.639 12.139 25.1128 12.139 40.4999Z"/></clipPath>
+    </defs>
+  </svg>
+);
+
+export default Loading;
