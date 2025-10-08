@@ -37,13 +37,14 @@ const vote = () =>{
         <VoteLayout>
             <Header types={'default'}/>
             <VoteContent>
-                {VoteData.map((vote, index) => (
+                {VoteData.map((vote, id) => (
                     <VoteBlock 
-                        key={index}
+                        key={id}
                         category={vote.category}
                         title={vote.title}
                         viewCount={vote.viewCount}
                         finishDate={vote.finishDate}
+                        onClick={() => router.push(`/vote/desvote/${id}`)}
                     />
                 ))}
             </VoteContent>

@@ -9,12 +9,13 @@ type VoteBlockProps = {
     title : string;
     viewCount : number;
     finishDate : string;
+    onClick?: () => void;
 }
 
-const VoteBlock = ({category,title,viewCount,finishDate} : VoteBlockProps) => {
+const VoteBlock = ({category,title,viewCount,finishDate,onClick} : VoteBlockProps) => {
     
   return (
-    <VoteBlockLayout>
+    <VoteBlockLayout onClick={onClick}>
         <VoteBlockImage category="domitory"/>
         <VoteContentLayout>
             <Title>{title}</Title>
