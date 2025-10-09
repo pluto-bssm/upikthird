@@ -6,6 +6,18 @@ import color from "@/packages/design-system/src/color"
 import font from "@/packages/design-system/src/font"
 import { useParams } from "next/navigation"
 import Button from "@/packages/ui/src/button/Button"
+import Ballot from "@/components/vote/ballot"
+
+const BallotData = [
+    {
+        content : "내용1",
+        letter : "A"
+    },
+    {
+        content : "내용2",
+        letter : "B"
+    }
+]
 
 const DesVote = () =>{
     const params = useParams();
@@ -19,6 +31,12 @@ const DesVote = () =>{
                     <Title>제목</Title>
                     <SubTitle>서브제목</SubTitle>
                 </VoteInfo>
+
+                <VoteContent>
+                    {BallotData.map((ballot, index) => (
+                        <Ballot key={index} content={ballot.content} letter={ballot.letter}/>
+                    ))}
+                </VoteContent>
 
                 <Button text="투표 완료하기" onCkick={() => console.log("click")}/>
                 
@@ -41,6 +59,15 @@ const DesVoteLayout = styled.div`
     flex-direction: column;
     align-items: center;
 `
+
+const VoteContent = styled.div`
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap : 10px;
+`
+
 
 const MenuText = styled.p`
     ${font.D3};

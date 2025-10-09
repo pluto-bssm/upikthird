@@ -2,10 +2,14 @@ import color from "@/packages/design-system/src/color";
 import styled from "@emotion/styled";
 import VotemakeButton from "../../../public/svg/VotemakeButton";
 
-const VoteMakeButton = () => {
+type VoteMakeButtonProps = {
+    onClick: () => void;
+}
+
+const VoteMakeButton = ({onClick} : VoteMakeButtonProps) => {
 
     return (
-        <VoteMakeButtonLayout>
+        <VoteMakeButtonLayout onClick={onClick}>
             <VotemakeButton width="20px" height="20px"/>
         </VoteMakeButtonLayout>
     )

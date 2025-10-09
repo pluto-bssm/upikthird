@@ -19,8 +19,8 @@ const Button = ({text, onCkick} : ButtonProps) => {
 export default Button;
 
 const ButtonLayout = styled.div`
-    max-width : 400px;
-    width: 100%;
+    max-width : 600px;
+    width: 90%;
     height: 56px;
     background-color: ${color.primary};
     border-radius: 36px;

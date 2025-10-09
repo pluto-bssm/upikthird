@@ -44,13 +44,13 @@ const vote = () =>{
                         title={vote.title}
                         viewCount={vote.viewCount}
                         finishDate={vote.finishDate}
-                        onClick={() => router.push(`/vote/desvote/${id}`)}
+                        onClick={() => router.push(`/vote/${id}`)}
                     />
                 ))}
             </VoteContent>
 
-            <VoteMakeButtonLayout onClick={() => router.push('/makevote')}>
-                <VoteMakeButton />
+            <VoteMakeButtonLayout>
+                <VoteMakeButton  onClick={() => router.push('/makevote')}/>
             </VoteMakeButtonLayout>
 
             <NavigationBar />
@@ -81,5 +81,8 @@ const VoteMakeButtonLayout = styled.div`
     position: fixed;
     z-index: 10;
     bottom: 80px;
-    margin-left: 500px;
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    justify-content: flex-end;
 `
