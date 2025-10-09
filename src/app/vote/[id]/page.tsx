@@ -19,6 +19,21 @@ const BallotData = [
         content : "내용2",
         letter : "B",
         id : "2"
+    },
+    {
+        content : "내용3",
+        letter : "C",
+        id : "3"
+    },
+    {
+        content : "내용4",
+        letter : "D",
+        id : "4"
+    },
+    {
+        content : "내용5",
+        letter : "E",
+        id : "5"
     }
 ]
 
@@ -103,5 +118,5 @@ const VoteBlock = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 100px;
     `
