@@ -1,19 +1,22 @@
 import color from "@/packages/design-system/src/color";
 import styled from "@emotion/styled";
 import font from "@/packages/design-system/src/font";
+import {Check } from '@/../public/svg/svg'
 
 type BallotProps = {
   content: string;
   letter: string;
+  isSelected?: boolean;
+  onClick: () => void;
 };
 
-const Ballot = ({content,letter} : BallotProps) => {
+const Ballot = ({content,letter,isSelected,onClick} : BallotProps) => {
   return (
-      <BallotLayout>
+      <BallotLayout onClick={onClick} isSelected={isSelected}>
         <BallotInfo>
 
-            <LatterBox>
-                <Letter>{letter}</Letter>
+            <LatterBox isSelected={isSelected}>
+                <Letter>{isSelected && <Check width="20px" height="20px"/>}{!isSelected &&  letter}</Letter>
             </LatterBox>
 
         <Label>{content}</Label>
@@ -26,14 +29,15 @@ const Ballot = ({content,letter} : BallotProps) => {
 export default Ballot;
 
 
-const BallotLayout = styled.div`
+const BallotLayout = styled.div<{isSelected?: boolean}>`
   width: 100%;
   height: 7vh;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border : 1px solid ${color.gray100};
+  border: 1px solid ${props => props.isSelected ? color.primary : color.gray100};
+  background-color: ${props => props.isSelected ? '#FFDEB2' : color.white};
 `;
 
 const BallotInfo = styled.div`
@@ -50,11 +54,11 @@ const Letter = styled.p`
   ${font.D3};
 `;
 
-const LatterBox = styled.div`
+const LatterBox = styled.div<{isSelected?: boolean}>`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: ${color.gray100};
+  background-color: ${props => props.isSelected ? color.primary : color.gray100};
   display: flex;
   justify-content: center;
   align-items: center;

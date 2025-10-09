@@ -7,20 +7,24 @@ import font from "@/packages/design-system/src/font"
 import { useParams } from "next/navigation"
 import Button from "@/packages/ui/src/button/Button"
 import Ballot from "@/components/vote/ballot"
+import { useState } from "react"
 
 const BallotData = [
     {
         content : "내용1",
-        letter : "A"
+        letter : "A",
+        id : "1"
     },
     {
         content : "내용2",
-        letter : "B"
+        letter : "B",
+        id : "2"
     }
 ]
 
 const DesVote = () =>{
     const params = useParams();
+      const [selectedOption, setSelectedOption] = useState<string | null>(null);
     return (
         <DesVoteLayout>
             <Header types={'report and close'}/>
@@ -34,7 +38,8 @@ const DesVote = () =>{
 
                 <VoteContent>
                     {BallotData.map((ballot, index) => (
-                        <Ballot key={index} content={ballot.content} letter={ballot.letter}/>
+                        <Ballot key={index} content={ballot.content} letter={ballot.letter} isSelected={selectedOption === ballot.id}
+                        onClick={() =>setSelectedOption((prev) =>prev === ballot.id ? null : ballot.id)}/>
                     ))}
                 </VoteContent>
 
