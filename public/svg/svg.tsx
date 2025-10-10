@@ -36,6 +36,8 @@ import Views from './Views';
 import VoteMain from './VoteMain';
 import VotemakeButton from './VotemakeButton';
 import Vote from './Vote';
+import Exclamation from './Exclamation';
+import Question from './Question';
 
 export {
   Back,
@@ -75,5 +77,7 @@ export {
   Vote,
   Logo,
   Bookmark,
-  Close
+  Close,
+  Question,
+  Exclamation
 };
