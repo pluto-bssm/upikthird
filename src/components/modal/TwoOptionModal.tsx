@@ -8,10 +8,13 @@ type ModalProps = {
     title : string,
     info : string,
     passfunction : () => void,
+
+    isOpen : boolean,
+    setIsOpen : (isOpen : boolean) => void;
 }
 
 
-const TwoOptionModal = ({title,info,passfunction} : ModalProps) => {
+const TwoOptionModal = ({title,info,passfunction,isOpen,setIsOpen} : ModalProps) => {
     return(
         <Overlay>
         <TwoOptionModalLayout>
@@ -21,7 +24,7 @@ const TwoOptionModal = ({title,info,passfunction} : ModalProps) => {
             </TwoOptionInfo>
 
             <OptionBox>
-                <CancelOption>취소</CancelOption>
+                <CancelOption onClick={() => {setIsOpen(!isOpen)}}>취소</CancelOption>
                 <PasslOption onClick={passfunction}>확인</PasslOption>
             </OptionBox>
             

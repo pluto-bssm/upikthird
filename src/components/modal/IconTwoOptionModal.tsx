@@ -9,11 +9,11 @@ import { Question, Exclamation } from '../../../public/svg/svg';
 type IconTwoOptionModalProps = {
   icon: 'question' | 'exclamation';
   title: string;
-  subtitle?: string;
+  subtitle: string;
   primaryButtonText: string;
   secondaryButtonText: string;
-  onPrimaryClick?: () => void;
-  onSecondaryClick?: () => void;
+  onPrimaryClick: () => void;
+  onSecondaryClick: () => void;
 
 };
 

@@ -6,12 +6,12 @@ import color from '@/packages/design-system/src/color';
 import font from '@/packages/design-system/src/font';
 
 type AccentModalProps = {
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
   leftText: string;
   accentText: string;
   rightText: string;
   subText?: string;
-  onClick?: () => void;
+  onClick: () => void;
 
 };
 
