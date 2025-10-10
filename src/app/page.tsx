@@ -1,12 +1,11 @@
 'use client'
 
-import TwoOptionModal from "@/components/modal/TwoOptionModal";
+
 import styled from "@emotion/styled";
 export default function HomePage() {
 
     return (
       <MainLayout>
-        
       </MainLayout>
     );
 }
