@@ -15,7 +15,6 @@ type IconTwoOptionModalProps = {
   onPrimaryClick?: () => void;
   onSecondaryClick?: () => void;
 
-  setIsOpen : () => void;
 };
 
 const IconTwoOptionModal = ({
@@ -26,10 +25,9 @@ const IconTwoOptionModal = ({
   secondaryButtonText,
   onPrimaryClick,
   onSecondaryClick,
-  setIsOpen
 }: IconTwoOptionModalProps) => {
   return (
-    <Overlay onClick={setIsOpen}>
+    <Overlay>
       <IconTwoOptionModalLayout>
         <IconBox>
           {icon === 'question' ? (

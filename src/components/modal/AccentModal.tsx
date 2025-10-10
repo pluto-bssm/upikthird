@@ -13,7 +13,6 @@ type AccentModalProps = {
   subText?: string;
   onClick?: () => void;
 
-  setIsOpen : () => void;
 };
 
 const AccentModal = ({
@@ -22,11 +21,10 @@ const AccentModal = ({
   accentText,
   rightText,
   subText,
-  onClick,
-  setIsOpen
+  onClick
 }: AccentModalProps) => {
   return (
-    <Overlay onClick={setIsOpen}>
+    <Overlay>
       <AccentModalLayout>
         {icon && <IconBox>{icon}</IconBox>}
 

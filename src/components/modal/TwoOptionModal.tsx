@@ -8,14 +8,12 @@ type ModalProps = {
     title : string,
     info : string,
     passfunction : () => void,
-
-    setIsOpen : () => void;
 }
 
 
-const TwoOptionModal = ({title,info,passfunction,setIsOpen} : ModalProps) => {
+const TwoOptionModal = ({title,info,passfunction} : ModalProps) => {
     return(
-        <Overlay onClick={setIsOpen}>
+        <Overlay>
         <TwoOptionModalLayout>
             <TwoOptionInfo>
                 <Title>{title}</Title>
