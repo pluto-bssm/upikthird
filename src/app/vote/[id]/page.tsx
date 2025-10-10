@@ -4,7 +4,7 @@ import Header from "@/components/common/header"
 import styled from "@emotion/styled"
 import color from "@/packages/design-system/src/color"
 import font from "@/packages/design-system/src/font"
-import { useParams } from "next/navigation"
+import { usePathname , useRouter } from "next/navigation"
 import Button from "@/packages/ui/src/button/Button"
 import Ballot from "@/components/vote/ballot"
 import { useState } from "react"
@@ -38,7 +38,8 @@ const BallotData = [
 ]
 
 const DesVote = () =>{
-    const params = useParams();
+      const router = useRouter();
+      const path = usePathname();
       const [selectedOption, setSelectedOption] = useState<string | null>(null);
     return (
         <DesVoteLayout>
@@ -47,8 +48,8 @@ const DesVote = () =>{
             <VoteBlock>
                 <VoteInfo>
                     <MenuText>투표하기</MenuText>
-                    <Title>제목</Title>
-                    <SubTitle>서브제목</SubTitle>
+                    <Title>투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문</Title>
+                    <SubTitle>부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요</SubTitle>
                 </VoteInfo>
 
                 <VoteContent>
@@ -58,7 +59,7 @@ const DesVote = () =>{
                     ))}
                 </VoteContent>
 
-                <Button text="투표 완료하기" onCkick={() => console.log("click")}/>
+                <Button text="투표 완료하기" onCkick={() => router.push(`${path}/tailvote`)}/>
                 
             </VoteBlock>
             
@@ -119,4 +120,5 @@ const VoteBlock = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 100px;
+    margin-top : 100px;
     `

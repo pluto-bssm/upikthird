@@ -1,25 +1,22 @@
 import { create } from "zustand";
 
 type State = {
-  title: string;
-  ballots: string[];
-  category: string;
-  setTitle: (t: string) => void;
-  setBallots: (b: string[]) => void;
-  setCategory: (c: string) => void;
+  VoteId : string,
+  optionId : string
+  setVoteId : (v : string) => void;
+  setoptionId : (o : string) => void;
   resetVoteData: () => void;
 };
 
 export const useVoteStore = create<State>((set) => ({
-  title: "",
-  ballots: ["", ""],
-  category: "학교생활",
-  setTitle: (title) => set({ title }),
-  setBallots: (ballots) => set({ ballots }),
-  setCategory: (category) => set({ category }),
+  VoteId : "",
+  optionId : "",
+  
+  setVoteId : (VoteId) => set({VoteId}),
+  setoptionId : (optionId) => set({optionId}),
+
   resetVoteData: () => set({
-    title: "",
-    ballots: ["", ""],
-    category: "학교생활"
+    VoteId : "",
+    optionId : "",
   }),
 }));
