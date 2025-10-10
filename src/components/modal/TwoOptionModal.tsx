@@ -7,13 +7,15 @@ import font from "@/packages/design-system/src/font"
 type ModalProps = {
     title : string,
     info : string,
-    passfunction : () => void;
+    passfunction : () => void,
+
+    setIsOpen : () => void;
 }
 
 
-const TwoOptionModal = ({title,info,passfunction} : ModalProps) => {
+const TwoOptionModal = ({title,info,passfunction,setIsOpen} : ModalProps) => {
     return(
-        <Overlay>
+        <Overlay onClick={setIsOpen}>
         <TwoOptionModalLayout>
             <TwoOptionInfo>
                 <Title>{title}</Title>
