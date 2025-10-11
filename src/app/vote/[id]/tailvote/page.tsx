@@ -5,11 +5,17 @@ import styled from "@emotion/styled"
 import color from "@/packages/design-system/src/color"
 import font from "@/packages/design-system/src/font"
 import Button from "@/packages/ui/src/button/Button"
+import { useRouter,usePathname } from "next/navigation"
 
 const TailVote = () => {
+
+    const router = useRouter();
+    const path = usePathname();
+    const newPath = path.replace("tailvote", "");
+
     return (
         <TailVoteLayout>
-            <Header types={'report and close'} />
+            <Header types={'report and close'} onSubmit={() => {router.push(`${newPath}/report`)}} />
 
             <TailVoteBlock>
                 <TailInfo>

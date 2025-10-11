@@ -17,7 +17,6 @@ type HeaderProps = {
     text? : string
     placeholers? : string
     onSubmit? : () => void
-    
 }
 
 
@@ -31,9 +30,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
         case 'default':
             return (
                 <HeaderLayout>
-
                     <HeaderItemBox>
-
                         <LeftItemBox>  
                             <Logo width="50" height="50" onClick={() => {router.replace("/")}}/>
                         </LeftItemBox>
@@ -43,176 +40,145 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                             <Search width="25" height="25" onClick={() => {router.push(`${path}/search`)}} />
                             <User   width="25" height="25" />
                         </RightItemBox>
-
                     </HeaderItemBox>
-                    <Headernavigationbar type={'vote'} activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
 
+                    <Headernavigationbar type={'vote'} activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
                 </HeaderLayout>
             )
-    
-    
-    case 'bookmark':
-        return (
-            <HeaderLayout>
 
-                <HeaderItemBox>
+        case 'bookmark':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
+                        <RightItemBox>
+                            <Bookmark width="25" height="25" />
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-                    <RightItemBox>
-                        <Bookmark width="25" height="25" />
-                    </RightItemBox>
+        case 'close':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-                </HeaderItemBox>
+                        <RightItemBox>
+                            <Close width="25" height="25"/>
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-            </HeaderLayout>
-        )
-    case 'close':
-        return (
-            <HeaderLayout>
+        case 'register':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Close width="25" height="25"/>
+                        </LeftItemBox>
 
-                <HeaderItemBox>
+                        <RightItemBox>
+                            <Button onClick={onSubmit}>등록</Button>
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
+        case 'report and close':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-                    <RightItemBox>
-                        <Close width="25" height="25"/>
-                    </RightItemBox>
+                        <RightItemBox>
+                            <Report width="25" height="25" onClick={onSubmit} />
+                            <Close width="25" height="25"/>
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-                </HeaderItemBox>
+        case 'report and bookmark':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-            </HeaderLayout>
-        )
+                        <RightItemBox>
+                            <Report width="25" height="25" />
+                            <Bookmark width="25" height="25" />
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-    case 'register':
-        return (
-            <HeaderLayout>
+        case 'title':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-                <HeaderItemBox>
+                        <CenterItemBox type={types}>
+                            <Title>{text}</Title>
+                        </CenterItemBox>
 
-                    <LeftItemBox>  
-                        <Close width="25" height="25"/>
-                    </LeftItemBox>
+                        <RightItemBox />
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-                    <RightItemBox>
-                        <Button onClick={() => {onSubmit}}>등록</Button>
-                    </RightItemBox>
+        case 'close and option':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-                </HeaderItemBox>
+                        <RightItemBox>
+                            <Close width="25" height="25"/>
+                            <Options width="25" height="25" />
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
 
-            </HeaderLayout>
-        )
+        case 'search':
+            return (
+                <HeaderLayout>
+                    <HeaderItemBox>
+                        <LeftItemBox>  
+                            <Back2 width="22" height="22" onClick={() => {router.back()}} />
+                        </LeftItemBox>
 
-    case 'report and close':
-        return (
-            <HeaderLayout>
+                        <CenterItemBox type={types}>
+                            <SearchInput placeholder={placeholers} />
+                        </CenterItemBox>
 
-                <HeaderItemBox>
-
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
-
-                    <RightItemBox>
-                        <Report width="25" height="25" />
-                        <Close width="25" height="25"/>
-                    </RightItemBox>
-
-                </HeaderItemBox>
-
-            </HeaderLayout>
-        )
-
-    case 'report and bookmark':
-        return (
-            <HeaderLayout>
-
-                <HeaderItemBox>
-
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
-
-                    <RightItemBox>
-                        <Report width="25" height="25" />
-                         <Bookmark width="25" height="25" />
-                    </RightItemBox>
-
-                </HeaderItemBox>
-
-            </HeaderLayout>
-        )
-
-    case 'title':
-        return (
-            <HeaderLayout>
-
-                <HeaderItemBox>
-
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
-
-                    <CenterItemBox>
-                        <Title>{text}</Title>
-                    </CenterItemBox>
-
-                </HeaderItemBox>
-
-            </HeaderLayout>
-        )
-
-    case 'close and option':
-        return (
-            <HeaderLayout>
-
-                <HeaderItemBox>
-
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
-
-                    <RightItemBox>
-                        <Close width="25" height="25"/>
-                        <Options width="25" height="25" />
-                    </RightItemBox>
-
-                </HeaderItemBox>
-
-            </HeaderLayout>
-        )
-
-    case 'search':
-        return (
-            <HeaderLayout>
-
-                <HeaderItemBox>
-
-                    <LeftItemBox>  
-                        <Back2 width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
-
-                    <CenterItemBox>
-                        <SearchInput placeholder={placeholers} />
-                    </CenterItemBox>
-
-                    <RightItemBox>  
-                        <Button onClick={() => {onSubmit}}>검색</Button>
-                    </RightItemBox>
-
-                </HeaderItemBox>
-
-            </HeaderLayout>
-        )
+                        <RightItemBox>  
+                            <Button onClick={onSubmit}>검색</Button>
+                        </RightItemBox>
+                    </HeaderItemBox>
+                </HeaderLayout>
+            )
     }
-
 }
 
 export default Header;
+
 
 const SearchInput = styled.input`
     width: 100%;
@@ -228,7 +194,7 @@ const SearchInput = styled.input`
         ${font.H1};
         color: ${color.gray500};
     }
-    `
+`
 
 const Title = styled.p`
     ${font.D3};
@@ -244,34 +210,44 @@ const Button = styled.button`
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    `
-
+`
 
 const LeftItemBox = styled.div`
     display: flex;
     align-items: center;
     gap: 15px;
-    `
+`
 
 const RightItemBox = styled.div`
     display: flex;
     align-items: center;
     gap: 15px;
-    `
-const CenterItemBox = styled.div`
+`
+
+const CenterItemBox = styled.div<{ type?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 15px;
     width: 70%;
-`;
+
+    ${({ type }) =>
+        type === 'title' &&
+        `
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+    `}
+`
 
 const HeaderItemBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 90%;
-    `
-    
+    position: relative;
+`
 
 const HeaderLayout = styled.div`
     width: 100%;

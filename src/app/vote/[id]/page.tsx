@@ -54,7 +54,7 @@ const DesVote = () =>{
 
                 <VoteContent>
                     {BallotData.map((ballot, index) => (
-                        <Ballot key={index} content={ballot.content} letter={ballot.letter} isSelected={selectedOption === ballot.id}
+                        <Ballot key={index} content={ballot.content} letter={ballot.letter} isSelected={selectedOption === ballot.id}  type="vote"
                         onClick={() =>setSelectedOption((prev) =>prev === ballot.id ? null : ballot.id)}/>
                     ))}
                 </VoteContent>

@@ -5,20 +5,20 @@ import {Check } from '@/../public/svg/svg'
 
 type BallotProps = {
   content: string;
-  letter: string;
+  letter?: string;
   isSelected?: boolean;
   onClick: () => void;
+  type : "report" | "vote"
 };
 
-const Ballot = ({content,letter,isSelected,onClick} : BallotProps) => {
+const Ballot = ({content,letter,isSelected,onClick,type} : BallotProps) => {
   return (
       <BallotLayout onClick={onClick} isSelected={isSelected}>
-        <BallotInfo>
-
+        <BallotInfo type={type}>
+            {letter && 
             <LatterBox isSelected={isSelected}>
                 <Letter>{isSelected && <Check width="20px" height="20px"/>}{!isSelected &&  letter}</Letter>
-            </LatterBox>
-
+            </LatterBox>}
         <Label>{content}</Label>
         </BallotInfo>
       </BallotLayout>
@@ -40,12 +40,12 @@ const BallotLayout = styled.div<{isSelected?: boolean}>`
   background-color: ${props => props.isSelected ? '#FFDEB2' : color.white};
 `;
 
-const BallotInfo = styled.div`
+const BallotInfo = styled.div<{type?: string}>`
     width: 90%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: ${props => props.type == "vote" ? "start" : "center"};
     gap : 12px;
 `
 
