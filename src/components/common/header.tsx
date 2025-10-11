@@ -128,7 +128,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderLayout>
                     <HeaderItemBox>
                         <LeftItemBox>  
-                            <Back width="22" height="22" onClick={() => {router.back()}} />
+                            <Back width="22" height="22" onClick={onSubmit} />
                         </LeftItemBox>
 
                         <CenterItemBox type={types}>

@@ -7,6 +7,10 @@ import font from "@/packages/design-system/src/font"
 import Ballot from "@/components/vote/ballot"
 import { useState, useEffect } from "react"
 import SelectButton from "@/packages/ui/src/button/SelectButton"
+import TwoOptionModal from "@/components/modal/TwoOptionModal"
+import AccentModal from "@/components/modal/AccentModal"
+import { useRouter } from "next/navigation"
+import {Completevote} from "../../../../../public/svg/svg"
 
 const ReportReason = [
     { id: "1", reason: "유해한 내용을 포함하고 있어요" },
@@ -19,7 +23,9 @@ const Report = () => {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [detail, setDetail] = useState<string>(""); 
     const [isActive, setIsActive] = useState(false);
-
+    const router = useRouter();
+    const [isOpen,setIsOpen] = useState(false);
+    const [isOpen_1,setIsOpen_1] = useState(false);
 
     useEffect(() => {
         if (selectedOption && detail.trim().length > 0) {
@@ -31,12 +37,12 @@ const Report = () => {
 
     const handleSubmit = () => {
         if (!isActive) return;
-        alert(`신고 접수 완료!\n사유: ${selectedOption}\n내용: ${detail}`);
+        setIsOpen_1(true);
     };
 
     return (
         <ReportLayout>
-            <Header types="title" text="신고하기" />
+            <Header types="title" text="신고하기" onSubmit={() => {setIsOpen(true)}} />
 
             <ReportBlock>
                 <ReportInfoBox>
@@ -86,6 +92,10 @@ const Report = () => {
                     onCkick={handleSubmit}
                 />
             </ReportBlock>
+
+            {isOpen &&  <TwoOptionModal title="신고를 취소하시겠어요?" info="지금까지 작성한 내용은 저장되지 않습니다." isOpen={isOpen} setIsOpen={setIsOpen} passfunction={() => {router.back()}}/>}
+            {isOpen_1 && <AccentModal icon={<Completevote width="30" height="30"/>} leftText="신고가" accentText="성공적" rightText="으로 접수됐어요" subText="지속적으로 정상적인 투표를 신고하는 경우
+제재의 대상이 될 수 있어요" onClick={() => {router.push("/")}}/> }
         </ReportLayout>
     );
 };
