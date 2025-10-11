@@ -16,7 +16,7 @@ const VoteBlock = ({category,title,viewCount,finishDate,onClick} : VoteBlockProp
     
   return (
     <VoteBlockLayout onClick={onClick}>
-        <VoteBlockImage category="domitory"/>
+        <VoteBlockImage category="humor"/>
         <VoteContentLayout>
             <Title>{title}</Title>
             <VoteInfoBox>

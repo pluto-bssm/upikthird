@@ -43,7 +43,7 @@ const DesVote = () =>{
       const [selectedOption, setSelectedOption] = useState<string | null>(null);
     return (
         <DesVoteLayout>
-            <Header types={'report and close'}/>
+            <Header types={'report and close'} onSubmit={() => {router.push(`${path}/report`)}} />
 
             <VoteBlock>
                 <VoteInfo>

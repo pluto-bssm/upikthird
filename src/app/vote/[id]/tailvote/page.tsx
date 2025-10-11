@@ -6,12 +6,16 @@ import color from "@/packages/design-system/src/color"
 import font from "@/packages/design-system/src/font"
 import Button from "@/packages/ui/src/button/Button"
 import { useRouter,usePathname } from "next/navigation"
+import { useState } from "react"
+import AccentModal from "@/components/modal/AccentModal"
+import { Completevote } from "../../../../../public/svg/svg"
 
 const TailVote = () => {
 
     const router = useRouter();
     const path = usePathname();
     const newPath = path.replace("tailvote", "");
+    const [isOpen,setIsOpen] = useState(false);
 
     return (
         <TailVoteLayout>
@@ -30,8 +34,10 @@ const TailVote = () => {
                     />
                 </TextAreaContainer>
 
-                <Button text="투표 완료하기" onCkick={() => console.log("")} />
+                <Button text="투표 완료하기" onCkick={() => setIsOpen(true)} />
             </TailVoteBlock>
+
+            {isOpen && <AccentModal icon={<Completevote width="30" height="30"/>} leftText="투표를" accentText="완료" rightText="했어요!" subText="마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요" onClick={() => {router.push("/")}}/> }
         </TailVoteLayout>
     )
 }
