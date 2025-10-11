@@ -20,7 +20,7 @@ import Domitorys from './Domitorys';
 import Eye from './Eye';
 import Guide from './Guide';
 import Home from './Home';
-import loading from './loading';
+import Loading from './Loadingimage';
 import Navoption from './Navoption';
 import Nexts from './Nexts';
 import Options from './Options';
@@ -36,6 +36,8 @@ import Views from './Views';
 import VoteMain from './VoteMain';
 import VotemakeButton from './VotemakeButton';
 import Vote from './Vote';
+import Exclamation from './Exclamation';
+import Question from './Question';
 
 export {
   Back,
@@ -57,7 +59,7 @@ export {
   Eye,
   Guide,
   Home,
-  loading,
+  Loading,
   Navoption,
   Nexts,
   Options,
@@ -75,5 +77,7 @@ export {
   Vote,
   Logo,
   Bookmark,
-  Close
+  Close,
+  Question,
+  Exclamation
 };

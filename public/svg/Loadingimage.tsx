@@ -1,20 +1,8 @@
-import * as React from "react";
+import type { SVGProps } from 'react';
+import React from 'react';
 
-type LoadingProps = {
-  width: string;
-  height: string;
-  onClick?: () => void;
-};
-
-const Loading = ({ width, height, onClick }: LoadingProps) => (
-  <svg
-    width={width}
-    height={height}
-    viewBox="0 0 80 81"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    onClick={onClick}
-  >
+const Loadingimage = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 80 81" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clipPath="url(#paint0_angular_1241_1110_clip_path)">
       <g transform="matrix(0 0.039746 -0.039746 0 39.9999 40.4999)">
         <foreignObject x="-1020" y="-1020" width="2040" height="2040">
@@ -30,4 +18,4 @@ const Loading = ({ width, height, onClick }: LoadingProps) => (
   </svg>
 );
 
-export default Loading;
+export default Loadingimage;

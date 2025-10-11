@@ -1,22 +1,8 @@
+import type { SVGProps } from 'react';
+import React from 'react';
 
-import { on } from "events";
-import * as React from "react";
-
-type LikeProps = {
-  width: string;
-  height: string;
-  onClick?: () => void;
-};
-
-const Logo = ({ width, height, onClick }: LikeProps) => (
-  <svg
-    width={width}
-    height={height}
-    viewBox="0 0 58 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    onClick={onClick}
-  >
+const Logo = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 58 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M45.8042 19.6916H42.7888C42.4449 19.6916 42.2597 19.4538 42.3126 19.1101L45.3545 0.47577C45.4074 0.132159 45.5926 0 45.91 0H48.9519C49.2958 0 49.481 0.237884 49.4281 0.581497L47.841 10.2026L52.9196 5.4978C53.1048 5.31278 53.29 5.23348 53.5545 5.23348H57.5486C58.0248 5.23348 58.157 5.57709 57.7867 5.89428L52.1261 10.8634L55.9086 19.0837C56.0674 19.4538 55.9086 19.6916 55.5119 19.6916H52.0732C51.7822 19.6916 51.5442 19.5595 51.4384 19.2952L48.9255 13.5595L47.021 15.2511L46.3862 19.2159C46.3332 19.5595 46.1216 19.6916 45.8042 19.6916Z"
       fill="#011627"
