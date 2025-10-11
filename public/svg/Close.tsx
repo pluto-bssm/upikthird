@@ -1,7 +1,8 @@
-type IconProps = { width: string; height: string; onClick?: () => void };
+import type { SVGProps } from 'react';
+import React from 'react';
 
-const Close = ({ width, height, onClick }: IconProps) => (
-<svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick}>
+const Close = (props: SVGProps<SVGSVGElement>) => (
+	<svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <mask id="mask0_376_5443" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
 <rect width="24" height="24" fill="#D9D9D9"/>
 </mask>
