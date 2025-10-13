@@ -1,88 +1,108 @@
-'use client'
+"use client";
 
-import Header from "@/components/common/header";
+import React from "react";
 import styled from "@emotion/styled";
+import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import Chart from '@/components/guide/Chart'
+import VoteBarChart, { VoteBar } from "@/components/guide/VoteBarChart";
 
 const mockData = [
   {
-    title: "뭐가 더 재밌니",
+    id: 1,
+    title: "뭐가 재밌는지",
     date: "2025-01-01",
-    category: "학교생활",
-    content: "그런데, 지금 그 아가씨가 바로 내 눈앞에 와 있는 것입니다. 그리고, 우리 둘 이는 아무 말 없이 나란히 앉아 있었습니다. "
+    category : "학교생활",
+    content : "그런데, 지금 그 이야기까지 바로 난 날짱에 있는 것입니다. 그리고, 우리 둘 이는 아무 말 없이 내려앉고 있었습니다.",
   },
-]
-const MoreGuide = () => {
+];
+
+const MoreGuidePage = () => {
   return (
-    <GuidePageLayout>
-        <Header types="bookmark" />
-    
-      <MainLayout>
-      <TitleColumn>
-        
-        <TitleTexts>
-          <Title>{mockData[0].title}</Title>
-          <DateText>{mockData[0].date}</DateText>
-        </TitleTexts>
-      </TitleColumn>
-        <Chart />
-      </MainLayout>
-      
-    </GuidePageLayout>
+    <Root>
+      <Header types="bookmark" />
+
+      <Content>
+        <Thumbnail>🏫</Thumbnail>
+        <GuideTitle>
+          {mockData[0].title}
+        </GuideTitle>
+        <Date>{mockData[0].date}</Date>
+
+        <CardWrap>
+          <ResultButton>투표 결과 확인하기</ResultButton>
+          <VoteBarChart/>
+        </CardWrap>
+
+        <Paragraph>
+          {mockData[0].content}
+        </Paragraph>
+      </Content>
+    </Root>
   );
-}
+};
 
-export default MoreGuide;
+export default MoreGuidePage;
 
-const GuidePageLayout = styled.div`
-display :flex;
-flex-direction : column;
-align-items : center;
-max-width : 600px;
-width : 100%;
-background-color : ${color.white};
-padding-bottom: 72px;
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: ${color.white};
 `;
 
-const MainLayout = styled.div`
-display :flex;
-flex-direction : column;
-align-items : center;
-max-width : 600px;
-width : 100%;
-margin-top:13%;
-margin-bottom: 10px;
-background-color : ${color.white};
-`;  
-
-const TitleColumn = styled.div`
-display: flex;
-flex-direction: column;
-align-items: start;
-gap: 20px;
-width: 100%;
+const Content = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 90%;
+  margin-top: 96px;
 `;
 
-const Thumb = styled.img`
-width: 33px;
-height: 33px;
+const Thumbnail = styled.div`
+  font-size: 20px;
 `;
 
-const TitleTexts = styled.div`
-display: flex;
-flex-direction: column;
-gap: 20px;
+const GuideTitle = styled.h1`
+  margin: 0;
+  color: ${color.black};
+  font-family: ${font.D1};
+  line-height: 28px;
 `;
 
-const Title = styled.h1`
-margin: 0;
-color: ${color.black};
-font-family: ${font.D1};
+const Date = styled.div`
+  color: ${color.gray500};
+  font-family: ${font.caption};
 `;
 
-const DateText = styled.span`
-color: ${color.gray500};
-font-family: ${font.caption};
+const CardWrap = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const ResultButton = styled.button`
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  border: none;
+  width: 148px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 30px;
+  background: ${color.black};
+  color: ${color.white};
+  font-family: ${font.D3};
+  z-index: 10;
+  cursor: pointer;
+`;
+
+const Paragraph = styled.p`
+  margin: 0;
+  color: ${color.gray700};
+  font-family: ${font.content};
+  line-height: 20px;
 `;

@@ -7,30 +7,35 @@ import { Bookmark } from '../../../public/svg/svg';
 
 const mockData = [
   {
+    id: 1,
     thumbnail: "🏫",
     title: "가이드 1",
     category: "학교생활",
     like: 16,
   },
   {
+    id: 2,
     thumbnail: "🏫",
     title: "가이드 1",
     category: "학교생활",
     like: 16,
   },
   {
+    id: 3,
     thumbnail: "🏫",
     title: "가이드 1",
     category: "학교생활",
     like: 16,
   },
   {
+    id: 4,
     thumbnail: "🏫",
     title: "가이드 1",
     category: "학교생활",
     like: 16,
   },
   {
+    id: 5,
     thumbnail: "🏫",
     title: "가이드 1",
     category: "학교생활",

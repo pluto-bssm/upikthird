@@ -4,8 +4,8 @@ import Header from "@/components/common/header";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import Revote from "@/components/guide/Revote";
-import DetailBox from "@/components/guide/DetailBox";
+import Revote from "@/components/guide/revote/Revote";
+import DetailBox from "@/components/guide/revote/DetailBox";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import RevoteSend from "@/components/button/RevoteSend";
@@ -172,8 +172,8 @@ transform: translateX(-50%);
 width: 600px;
 max-width: 100%;
 height: 80px;
-z-index: 2001; /* above header */
-pointer-events: none; /* only child should capture clicks */
+z-index: 2001; 
+pointer-events: none;
 `;
 
 const BackHitArea = styled.div`
