@@ -5,12 +5,15 @@ import color from "@/packages/design-system/src/color";
 type ButtonProps = {
     onCkick: () => void;
     text : string;
+    icon?: React.ReactNode;
+
 }
 
 
-const Button = ({text, onCkick} : ButtonProps) => {
+const Button = ({text, onCkick,icon} : ButtonProps) => {
   return (
     <ButtonLayout onClick={onCkick}>
+        {icon && <ButtonIcon>{icon}</ButtonIcon>}
         <ButtonText>{text}</ButtonText>
     </ButtonLayout>
   );
@@ -27,9 +30,19 @@ const ButtonLayout = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    gap : 8px;
 `
 
 const ButtonText = styled.p`
     ${font.D2};
     color: ${color.white};
+`
+
+const ButtonIcon = styled.div`
+    object-fit: fill;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 `

@@ -70,7 +70,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                         </LeftItemBox>
 
                         <RightItemBox>
-                            <Close width="25" height="25"/>
+                            <Close width="25" height="25" onClick={onSubmit} />
                         </RightItemBox>
                     </HeaderItemBox>
                 </HeaderLayout>

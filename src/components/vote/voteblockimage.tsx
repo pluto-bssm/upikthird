@@ -11,7 +11,7 @@ const VoteBlockImage = ({category}: Props) => {
         case 'school':
             return (
                 <VoteBlockImageLayout>
-                    <School width="100" height="100"/>
+                    <School width="100%" height="100%"/>
                 </VoteBlockImageLayout>
             );
         
