@@ -34,9 +34,9 @@ const MoreGuidePage = () => {
           <VoteBarChart/>
         </CardWrap>
 
-        <Paragraph>
+        <ContentText>
           {mockData[0].content}
-        </Paragraph>
+        </ContentText>
       </Content>
     </Root>
   );
@@ -100,7 +100,7 @@ const ResultButton = styled.button`
   cursor: pointer;
 `;
 
-const Paragraph = styled.p`
+const ContentText = styled.p`
   margin: 0;
   color: ${color.gray700};
   font-family: ${font.content};
