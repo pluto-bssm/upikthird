@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
@@ -9,59 +10,79 @@ const mockData = [
   {
     id: 1,
     thumbnail: "🏫",
-    title: "가이드 1",
+    title: "뭐가 재밌는지",
     category: "학교생활",
     like: 16,
   },
   {
     id: 2,
     thumbnail: "🏫",
-    title: "가이드 1",
+    title: "가이드2",
     category: "학교생활",
     like: 16,
   },
   {
     id: 3,
     thumbnail: "🏫",
-    title: "가이드 1",
+    title: "가이드 3",
     category: "학교생활",
     like: 16,
   },
   {
     id: 4,
     thumbnail: "🏫",
-    title: "가이드 1",
+    title: "가이드 4",
     category: "학교생활",
     like: 16,
   },
   {
     id: 5,
     thumbnail: "🏫",
-    title: "가이드 1",
+    title: "가이드 5",
     category: "학교생활",
     like: 16,
   }
 ]
 
-const GuideComponent = () => {
+interface GuideComponentProps {
+  searchQuery?: string;
+}
+
+const GuideComponent = ({ searchQuery = "" }: GuideComponentProps) => {
+  const router = useRouter();
+
+  const handleGuideClick = (guideId: number) => {
+    router.push(`/moreGuide/${guideId}`);
+  };
+
+  const filteredGuides = mockData.filter(guide => 
+    guide.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <GuideBox>
       <Section>
         <SectionBody gap={"16px"}>
-          {mockData.map((guide, index) => (
-            <GuideCard key={index}>
-              <Thumnail>{guide.thumbnail}</Thumnail>
-              <GuideText>
-                <GuideTitle>{guide.title}</GuideTitle>
-                <OtherInfo>
-                  <GuideTag>{guide.category}</GuideTag>
-                  <Bookmark width="12px" height="12px" />
-                  <MarkCount>{guide.like || 0}</MarkCount>
-                  <BookmarkIcon />
-                </OtherInfo>
-              </GuideText>
-            </GuideCard>
-          ))}
+          {filteredGuides.length > 0 ? (
+            filteredGuides.map((guide, index) => (
+              <GuideCard key={index} onClick={() => handleGuideClick(guide.id)}>
+                <Thumnail>{guide.thumbnail}</Thumnail>
+                <GuideText>
+                  <GuideTitle>{guide.title}</GuideTitle>
+                  <OtherInfo>
+                    <GuideTag>{guide.category}</GuideTag>
+                    <Bookmark width="12px" height="12px" />
+                    <MarkCount>{guide.like || 0}</MarkCount>
+                    <BookmarkIcon />
+                  </OtherInfo>
+                </GuideText>
+              </GuideCard>
+            ))
+          ) : (
+            <NoResultsMessage>
+              검색결과가 없어요
+            </NoResultsMessage>
+          )}
         </SectionBody>
       </Section>
     </GuideBox>
@@ -148,4 +169,14 @@ const MarkCount = styled.div`
   color: ${color.gray600};
   font-family:${font.caption};
   margin-left:-4px;
+`;
+
+const NoResultsMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: ${color.gray500};
+  font-family: ${font.D3};
+  font-size: 16px;
 `;
