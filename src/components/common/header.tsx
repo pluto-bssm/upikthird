@@ -150,7 +150,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
 
                         <RightItemBox>
                             <Close width="25" height="25"/>
-                            <Options width="25" height="25" />
+                            <Options width="25" height="25" onClick={onSubmit}/>
                         </RightItemBox>
                     </HeaderItemBox>
                 </HeaderLayout>

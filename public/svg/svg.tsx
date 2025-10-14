@@ -38,6 +38,7 @@ import VotemakeButton from './VotemakeButton';
 import Vote from './Vote';
 import Exclamation from './Exclamation';
 import Question from './Question';
+import GrayClose from './GrayClose';
 
 export {
   Back,
@@ -79,5 +80,6 @@ export {
   Bookmark,
   Close,
   Question,
-  Exclamation
+  Exclamation,
+  GrayClose
 };

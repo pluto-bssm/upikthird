@@ -31,7 +31,7 @@ export default Ballot;
 
 const BallotLayout = styled.div<{isSelected?: boolean}>`
   width: 100%;
-  height: 7vh;
+  padding : 12px 0px;
   border-radius: 16px;
   display: flex;
   align-items: center;
