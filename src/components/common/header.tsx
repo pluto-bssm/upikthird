@@ -10,7 +10,7 @@ import Headernavigationbar from "./headernavigationbar";
 import {Logo, Bell, Search, User , Back , Back2 , Bookmark , Close , Report , Options , } from "@/../public/svg/svg";
 
 
-type variant = 'default' | "bookmark" | "close" | "register" | "report and close" | "report and bookmark" | "title" | "close and option" | "search"
+type variant = 'default' | "bookmark" | "close" | "register" | "report and close" | "report and bookmark" | "title" | "close and option" | "search" | "default and no navi"
 
 type HeaderProps = {
     types : variant
@@ -207,6 +207,26 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 </HeaderItemBox>
 
             </HeaderLayout>
+        )
+
+    case 'default and no navi':
+        return (
+            <HeaderLayout>
+
+                    <HeaderItemBox>
+
+                        <LeftItemBox>  
+                            <Logo width="50" height="50" onClick={() => {router.replace("/")}}/>
+                        </LeftItemBox>
+
+                        <RightItemBox>
+                            <Bell width="25" height="25" />
+                            <Search width="25" height="25" onClick={() => {router.push(`${path}/search`)}} />
+                            <User   width="25" height="25" />
+                        </RightItemBox>
+
+                    </HeaderItemBox>
+                </HeaderLayout>
         )
     }
 
