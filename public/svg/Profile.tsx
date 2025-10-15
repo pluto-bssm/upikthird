@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react';
 import React from 'react';
 
-const IconProfile = (props:SVGProps<SVGSVGElement>)=> {
+const Profile = (props:SVGProps<SVGSVGElement>)=> {
     return (
         <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
             <path
@@ -11,4 +11,4 @@ const IconProfile = (props:SVGProps<SVGSVGElement>)=> {
         )
 }
 
-export default IconProfile;
+export default Profile;
