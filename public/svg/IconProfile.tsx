@@ -4,8 +4,7 @@ import React from "react";
 const IconProfile = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
-      width="46"
-      height="46"
+      {...props}
       viewBox="0 0 46 46"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

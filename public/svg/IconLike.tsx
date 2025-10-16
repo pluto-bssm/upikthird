@@ -5,7 +5,7 @@ import color from "@/packages/design-system/src/color";
 
 type LikeIconProps = SVGProps<SVGSVGElement>;
 
-const LikeIcon = (props: LikeIconProps) => (
+const IconLike = (props: LikeIconProps) => (
   <svg
     {...props}
     viewBox="0 0 12 12"
@@ -19,4 +19,4 @@ const LikeIcon = (props: LikeIconProps) => (
   </svg>
 );
 
-export { LikeIcon };
+export default IconLike ;
