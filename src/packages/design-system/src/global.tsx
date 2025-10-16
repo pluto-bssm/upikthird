@@ -1,8 +1,9 @@
-import { Global, css } from '@emotion/react'
-import color from './color'
+import { Global, css } from "@emotion/react";
+import color from "./color";
 
 const GlobalStyle = () => (
-    <Global styles={css`
+  <Global
+    styles={css`
       @import url('https:
 
       * {
@@ -63,7 +64,7 @@ const GlobalStyle = () => (
         -ms-overflow-style: none;
       }
     `}
-/>
-)
+  />
+);
 
-export default GlobalStyle
+export default GlobalStyle;

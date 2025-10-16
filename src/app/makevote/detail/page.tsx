@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
@@ -6,40 +6,53 @@ import font from "@/packages/design-system/src/font";
 import Header from "@/components/common/header";
 import Ballot from "@/components/votemake/ballot";
 import { useVoteStore } from "@/store/useMakeVoteStore";
-import {Plus} from "../../../../public/svg/svg";
+import { Plus } from "../../../../public/svg/svg";
 import Button from "@/packages/ui/src/button/Button";
-import { useRouter , usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
+import TwoOptionModal from "@/components/modal/TwoOptionModal";
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
-
 const Detail = () => {
-    const { ballots, setBallots, title, setTitle } = useVoteStore();
-    const maxPossibleBallots = Latterlist.length;
-    const router = useRouter();
-    const path = usePathname();
+  const { ballots, setBallots, title, setTitle } = useVoteStore();
+  const maxPossibleBallots = Latterlist.length;
+  const router = useRouter();
+  const path = usePathname();
 
-    const handleRemoveBallot = (idx: number) => {
+  const handleRemoveBallot = (idx: number) => {
     if (ballots.length > 2) {
       setBallots(ballots.filter((_, i) => i !== idx));
     }
   };
 
- 
   const handleAddBallot = () => {
     if (ballots.length < Latterlist.length) {
       setBallots([...ballots, ""]);
     }
   };
+  const [IsOpen_1, setIsOpen_1] = useState(false);
 
   return (
     <DetailLayout>
-      <Header types="close and option" onSubmit={() => {router.push(`${path}/option`)}}/>
+      <Header
+        types="close and option"
+        onSubmit={() => {
+          router.push(`${path}/option`);
+        }}
+        onSecondSubmit={() => {
+          setIsOpen_1(true);
+        }}
+      />
 
       <DetailSection>
         <DetailInformation>
           <SubTitle>투표제작하기</SubTitle>
-          <Title placeholder="질문을 작성해주세요" value={title} onChange={(e) => setTitle(e.target.value)}/>
+          <Title
+            placeholder="질문을 작성해주세요"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </DetailInformation>
 
         <BallotList>
@@ -63,10 +76,22 @@ const Detail = () => {
             <Plus width={24} height={24} />
           </AddBallotButton>
         )}
-
       </DetailSection>
 
-      <Button icon={<Plus width={24} height={24} />} onCkick={() => {}} text="투표 제작하기" />
+      <Button
+        icon={<Plus width={24} height={24} />}
+        onCkick={() => {}}
+        text="투표 제작하기"
+      />
+      {IsOpen_1 && (
+        <TwoOptionModal
+          title="투표 제작을 취소하시겠어요?"
+          info="지금까지 작성한 내용은 저장되지 않습니다."
+          passfunction={() => {}}
+          isOpen={IsOpen_1}
+          setIsOpen={setIsOpen_1}
+        />
+      )}
     </DetailLayout>
   );
 };
@@ -82,11 +107,11 @@ const DetailLayout = styled.div`
   min-height: 100vh;
   flex-direction: column;
   align-items: center;
-  gap : 10vh;
+  gap: 10vh;
 `;
 
 const DetailSection = styled.div`
-  margin-top : 100px;
+  margin-top: 100px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -121,7 +146,6 @@ const SubTitle = styled.div`
   ${font.H1};
 `;
 
-
 const BallotList = styled.div`
   width: 90%;
   display: flex;
@@ -137,7 +161,7 @@ const AddBallotButton = styled.div`
   background-color: ${color.primary};
   transition: all 0.2s ease;
   aspect-ratio: 1;
-  display : flex;
+  display: flex;
 
   &:active {
     transform: translateY(1px);

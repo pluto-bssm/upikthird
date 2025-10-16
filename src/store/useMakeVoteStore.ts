@@ -17,9 +17,10 @@ export const useVoteStore = create<State>((set) => ({
   setTitle: (title) => set({ title }),
   setBallots: (ballots) => set({ ballots }),
   setCategory: (category) => set({ category }),
-  resetVoteData: () => set({
-    title: "",
-    ballots: ["", ""],
-    category: "학교생활"
-  }),
+  resetVoteData: () =>
+    set({
+      title: "",
+      ballots: ["", ""],
+      category: "학교생활",
+    }),
 }));

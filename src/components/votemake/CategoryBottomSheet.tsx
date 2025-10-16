@@ -71,7 +71,6 @@ const Overlay = styled.div`
   }
 `;
 
-
 const BottomSheet = styled.div`
   width: 100%;
   max-width: 600px;
@@ -96,7 +95,6 @@ const BottomSheet = styled.div`
   }
 `;
 
-
 const SheetTitle = styled.h2`
   text-align: center;
   font-size: 18px;
@@ -115,13 +113,11 @@ const SheetTitle = styled.h2`
   }
 `;
 
-
 const CategoryList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
 `;
-
 
 const CategoryListItem = styled.li<{ selected?: boolean }>`
   font-size: 16px;
@@ -138,7 +134,6 @@ const CategoryListItem = styled.li<{ selected?: boolean }>`
     color: #ff9f1c;
   }
 `;
-
 
 const SelectIconWrapper = styled.div`
   display: flex;

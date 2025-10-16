@@ -10,7 +10,11 @@ type Props = {
   setIsOpen?: (isOpen: boolean) => void;
 };
 
-export default function CategoryChoseBox({ category, isOpen, setIsOpen }: Props) {
+export default function CategoryChoseBox({
+  category,
+  isOpen,
+  setIsOpen,
+}: Props) {
   return (
     <CategoryChooseLayout>
       <CategorySelectSection>
@@ -50,7 +54,6 @@ const CategoryChooseLayout = styled.div`
   align-items: center;
 `;
 
-
 const CategorySelectSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -62,12 +65,10 @@ const CategorySelectSection = styled.div`
   border-radius: 16px;
 `;
 
-
 const CategoryLabel = styled.p`
   ${font.D3};
-  color : ${color.gray600};
+  color: ${color.gray600};
 `;
-
 
 const CategorySelector = styled.div`
   display: flex;
@@ -81,20 +82,17 @@ const CategorySelector = styled.div`
   cursor: pointer;
 `;
 
-
 const SelectedCategory = styled.p`
   ${font.D3};
-  color : ${color.black};
+  color: ${color.black};
 `;
-
 
 const CategoryDescriptionArea = styled.div`
   width: 100%;
   text-align: center;
 `;
 
-
 const CategoryDescription = styled.p`
   ${font.caption};
-  color : ${color.gray400};
+  color: ${color.gray400};
 `;
