@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import type { SVGProps } from 'react';
-import color from '@/packages/design-system/src/color';
+import type { SVGProps } from "react";
+import color from "@/packages/design-system/src/color";
 
 type LikeIconProps = SVGProps<SVGSVGElement>;
 

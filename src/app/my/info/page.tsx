@@ -51,4 +51,3 @@ const AccountInfoContent = styled.div`
   min-height: calc(100vh - 80px);
   padding-bottom: 80px;
 `;
-

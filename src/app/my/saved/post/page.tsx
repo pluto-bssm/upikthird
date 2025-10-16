@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import Header from '@/components/common/header';
-import SavedPostList from '@/components/my/saved/post/SavedPostList';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import Header from "@/components/common/header";
+import SavedPostList from "@/components/my/saved/post/SavedPostList";
+import color from "@/packages/design-system/src/color";
 
 interface Post {
   id: string;
@@ -16,26 +16,26 @@ interface Post {
 
 const mockPosts: Post[] = [
   {
-    id: '1',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
+    id: "1",
+    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
+    author: "박땡땡",
+    date: "2025-08-31 21:31",
     likeCount: 16,
     commentCount: 4,
   },
   {
-    id: '2',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
+    id: "2",
+    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
+    author: "박땡땡",
+    date: "2025-08-31 21:31",
     likeCount: 16,
     commentCount: 4,
   },
   {
-    id: '3',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
+    id: "3",
+    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
+    author: "박땡땡",
+    date: "2025-08-31 21:31",
     likeCount: 16,
     commentCount: 4,
   },
@@ -43,17 +43,14 @@ const mockPosts: Post[] = [
 
 const SavedPostPage = () => {
   const handleCommentClick = (postId: string) => {
-    console.log('Comment clicked for post:', postId);
+    console.log("Comment clicked for post:", postId);
   };
 
   return (
     <StyledSavedPostPage>
       <Header types="close" text="좋아요한 질문" />
       <SavedPostContent>
-        <SavedPostList
-          posts={mockPosts}
-          onCommentClick={handleCommentClick}
-        />
+        <SavedPostList posts={mockPosts} onCommentClick={handleCommentClick} />
       </SavedPostContent>
     </StyledSavedPostPage>
   );

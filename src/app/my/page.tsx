@@ -13,7 +13,7 @@ const My = () => {
       <Header types={"close"} />
       <MyPageContent>
         <ProfileBox />
-        
+
         <StatsSection>
           <StatItem>
             저장한 가이드 <span style={{ color: color.primary }}>0</span>

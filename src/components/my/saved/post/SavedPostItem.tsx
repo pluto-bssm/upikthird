@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { LikeIcon } from '../../../../../public/svg/Like';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { LikeIcon } from "../../../../../public/svg/Like";
 
 interface SavedPostItemProps {
   title: string;
@@ -85,7 +85,7 @@ const MetaItem = styled.span`
   white-space: nowrap;
 
   &:not(:last-child)::after {
-    content: '';
+    content: "";
     width: 1px;
     height: 10px;
     background-color: ${color.gray700};
