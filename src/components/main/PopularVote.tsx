@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { Profile } from '../../../../public/svg/svg';
+import { Views } from "../../../public/svg/svg";
 
 const mockData = [
   {
@@ -10,7 +10,7 @@ const mockData = [
     title: "투표1",
     category: "학교생활",
     date: "2025-01-01",
-    like: 16,
+    views: 120,
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const mockData = [
     title: "투표2",
     category: "학교생활",
     date: "2025-01-02",
-    like: 16,
+    views: 280,
   },
   {
     id: 3,
@@ -26,27 +26,36 @@ const mockData = [
     title: "투표3",
     category: "학교생활",
     date: "2025-01-03",
-    like: 16,
+    views: 210,
   },
 ];
 
 export default function PopularVote() {
+  const topByViews = [...mockData]
+    .sort((a, b) => (b.views || 0) - (a.views || 0))
+    .slice(0, 3);
+
   return (
-    <CardContainer>
-      <EmojiIcon>{mockData[0].emoji}</EmojiIcon>
-      <ContentWrapper>
-        <Title>{mockData[0].title}</Title>
-        <MetaInfo>
-          <Category>{mockData[0].category}</Category>
-          <BookmarkInfo>
-            <BookmarkIcon>
-              <Profile />
-            </BookmarkIcon>
-            <BookmarkCount>{mockData[0].like}</BookmarkCount>
-          </BookmarkInfo>
-        </MetaInfo>
-      </ContentWrapper>
-    </CardContainer>
+    <>
+      {topByViews.map((vote) => (
+        <CardContainer key={vote.id}>
+          <EmojiIcon>{vote.emoji}</EmojiIcon>
+          <ContentWrapper>
+            <Title>{vote.title}</Title>
+            <MetaInfo>
+              <Category>{vote.category}</Category>
+              <BookmarkInfo>
+                <BookmarkIcon>
+                  <Views />
+                </BookmarkIcon>
+                <BookmarkCount>{vote.views}</BookmarkCount>
+              </BookmarkInfo>
+              <DeadLine>{vote.date}에 마감되는 투표</DeadLine>
+            </MetaInfo>
+          </ContentWrapper>
+        </CardContainer>
+      ))}
+    </>
   );
 }
 
@@ -56,19 +65,16 @@ const CardContainer = styled.div`
   align-items: flex-start;
   padding: 18px 20px;
   background-color: ${color.white};
-  border: 1px solid #f0f0f0;
+  border: 1px solid ${color.gray50};
   border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: ${color.gray300};
-  }
+  height: 67px;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 0 0 80%;
 `;
 
 const EmojiIcon = styled.div`
   font-size: 20px;
-  font-weight: 700;
   width: 28px;
   height: 28px;
   display: flex;
@@ -87,10 +93,7 @@ const ContentWrapper = styled.div`
 const Title = styled.p`
   margin: 0;
   color: ${color.black};
-  font-family: 'Pretendard';
-  font-weight: 600;
-  font-size: 15px;
-  line-height: normal;
+  font-family: ${font.D3};
 `;
 
 const MetaInfo = styled.div`
@@ -105,11 +108,8 @@ const Category = styled.div`
   justify-content: center;
   height: 10px;
   padding: 7px 0;
-  font-family: 'Pretendard';
-  font-weight: 400;
-  font-size: 10px;
-  line-height: normal;
-  color: ${color.gray700};
+  color: ${color.gray600};
+  font-family: ${font.caption};
 `;
 
 const BookmarkInfo = styled.div`
@@ -129,10 +129,17 @@ const BookmarkIcon = styled.div`
 
 const BookmarkCount = styled.p`
   margin: 0;
-  font-family: 'Pretendard';
-  font-weight: 400;
   font-size: 10px;
-  line-height: normal;
   color: ${color.gray700};
   white-space: pre;
+`;
+
+const DeadLine = styled.p`
+  margin: 0;
+  color: ${color.gray700};
+  font-family: ${font.caption};
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
 `;

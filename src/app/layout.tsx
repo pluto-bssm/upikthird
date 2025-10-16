@@ -14,12 +14,11 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="ko">
-
       <body style={{ backgroundColor: "#fafafaff", margin: 0, padding: 0 }}>
         {children}
       </body>
     </html>
   );
-}
+};
 
 export default RootLayout;

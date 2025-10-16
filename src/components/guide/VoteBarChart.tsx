@@ -10,30 +10,30 @@ const mockData = [
     title: "투표 제목",
     participant: 200,
     bars: [
-  {
-    label: "선택지 1",
-    value: 20,
-    fill: '#FF3B3B',
+      {
+        label: "선택지 1",
+        value: 20,
+        fill: "#FF3B3B",
+      },
+      {
+        label: "선택지 2",
+        value: 60,
+        fill: "#FF9F1C",
+      },
+
+      {
+        label: "선택지 3",
+        value: 40,
+        fill: "#FFBE3C",
+      },
+
+      {
+        label: "선택지 4",
+        value: 30,
+        fill: "#58CCFF",
+      },
+    ],
   },
-  {
-    label: "선택지 2",
-    value: 60,
-    fill: '#FF9F1C',
-  },
-  
-  {
-    label: "선택지 3",
-    value: 40,
-    fill: '#FFBE3C'
-  },
-  
-  {
-    label: "선택지 4",
-    value: 30,
-    fill: '#58CCFF'
-  },
-  ]
-}
 ];
 
 export type VoteBar = {
@@ -81,7 +81,7 @@ const ChartCard = styled.section`
   border-radius: 8px;
   background: ${color.white};
   overflow: visible;
-  margin-top: 18px; 
+  margin-top: 18px;
 `;
 
 const CardBody = styled.div`
@@ -89,7 +89,7 @@ const CardBody = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0;
-  padding: 40px 16px 16px; 
+  padding: 40px 16px 16px;
 `;
 
 const VoteTitle = styled.div`
@@ -98,7 +98,7 @@ const VoteTitle = styled.div`
   text-align: center;
   margin: 0;
   width: 100%;
-`; 
+`;
 
 const Participant = styled.div`
   color: ${color.black};
@@ -128,7 +128,7 @@ const BarTrack = styled.div`
   width: 36px;
 `;
 
-const BarFill = styled.div<{value:number; fill:string}>`
+const BarFill = styled.div<{ value: number; fill: string }>`
   width: 100%;
   height: ${({ value }) => `${Math.max(0, Math.min(100, value))}%`};
   background: ${({ fill }) => fill};
