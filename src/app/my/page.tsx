@@ -9,7 +9,7 @@ import Nexts from "../../../public/svg/Nexts";
 
 const My = () => {
   return (
-    <MyLayout>
+    <LayoutMyPage>
       <Header types={"close"} />
       <MyContent>
         <ProfileBox />
@@ -68,15 +68,16 @@ const My = () => {
         </MenuItem>
         <MenuDivider />
       </MyContent>
-    </MyLayout>
+    </LayoutMyPage>
   );
 };
 
 export default My;
 
-const MyLayout = styled.div`
+const LayoutMyPage = styled.div`
   width: 100%;
   display: flex;
+  max-width: 600px;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -87,11 +88,10 @@ const MyLayout = styled.div`
 
 const MyContent = styled.div`
   width: 100%;
-  max-width: 390px;
   display: flex;
   flex-direction: column;
+  padding: 20px;
   gap: 20px;
-  padding-bottom: 40px;
 `;
 
 const StatsBox = styled.div`
@@ -121,9 +121,8 @@ const Divider = styled.div`
 
 const GrayDivider = styled.div`
   width: 100%;
-  height: 8px;
+  height: 4px;
   background-color: ${color.gray50};
-  margin: 0 -20px;
 `;
 
 const SectionLabel = styled.p`
@@ -138,9 +137,9 @@ const MenuItem = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  padding: 1px;
   cursor: pointer;
   transition: all 0.2s ease;
-
   &:hover {
     opacity: 0.7;
   }
