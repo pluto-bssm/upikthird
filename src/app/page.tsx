@@ -1,18 +1,13 @@
-'use client'
+"use client";
 
 import styled from "@emotion/styled";
 import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 export default function HomePage() {
-
-   
-    return (
-      <MainLayout>
-      </MainLayout>
-    );
+  return <MainLayout></MainLayout>;
 }
 
 const MainLayout = styled.div`
-  display : flex;
-  justify-content : center;
-  align-items : center;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
