@@ -9,72 +9,72 @@ import Nexts from "../../../public/svg/Nexts";
 
 const My = () => {
   return (
-    <LayoutMyPage>
+    <StyledMyPage>
       <Header types={"close"} />
-      <MyContent>
+      <MyPageContent>
         <ProfileBox />
         
-        <StatsBox>
+        <StatsSection>
           <StatItem>
             저장한 가이드 <span style={{ color: color.primary }}>0</span>
           </StatItem>
-          <Divider />
+          <StatDivider />
           <StatItem>
             좋아요한 질문 <span style={{ color: color.primary }}>0</span>
           </StatItem>
-        </StatsBox>
+        </StatsSection>
 
-        <GrayDivider />
+        <SectionDivider />
 
-        <SectionLabel>기록</SectionLabel>
+        <SectionHeader>기록</SectionHeader>
 
-        <MenuItem>
-          <MenuText>내가 만든 투표</MenuText>
+        <MenuListItem>
+          <MenuItemText>내가 만든 투표</MenuItemText>
           <Nexts width={16} height={16} />
-        </MenuItem>
-        <MenuDivider />
+        </MenuListItem>
+        <MenuItemDivider />
 
-        <MenuItem>
-          <MenuText>투표 응답 내역</MenuText>
+        <MenuListItem>
+          <MenuItemText>투표 응답 내역</MenuItemText>
           <Nexts width={16} height={16} />
-        </MenuItem>
-        <MenuDivider />
+        </MenuListItem>
+        <MenuItemDivider />
 
-        <MenuItem>
-          <MenuText>질문 게시판 글 작성 내역</MenuText>
+        <MenuListItem>
+          <MenuItemText>질문 게시판 글 작성 내역</MenuItemText>
           <Nexts width={16} height={16} />
-        </MenuItem>
-        <MenuDivider />
+        </MenuListItem>
+        <MenuItemDivider />
 
-        <SectionLabel>설정</SectionLabel>
+        <SectionHeader>설정</SectionHeader>
 
-        <MenuItem>
-          <MenuText>계정 정보</MenuText>
+        <MenuListItem>
+          <MenuItemText>계정 정보</MenuItemText>
           <Nexts width={16} height={16} />
-        </MenuItem>
-        <MenuDivider />
+        </MenuListItem>
+        <MenuItemDivider />
 
-        <SectionLabel>도움말 & 지원</SectionLabel>
+        <SectionHeader>도움말 & 지원</SectionHeader>
 
-        <MenuItem>
-          <MenuText>서비스 소개</MenuText>
+        <MenuListItem>
+          <MenuItemText>서비스 소개</MenuItemText>
           <Nexts width={16} height={16} />
-        </MenuItem>
-        <MenuDivider />
+        </MenuListItem>
+        <MenuItemDivider />
 
-        <MenuItem>
-          <MenuText>문의하기</MenuText>
+        <MenuListItem>
+          <MenuItemText>문의하기</MenuItemText>
           <Nexts width={16} height={16} />
-        </MenuItem>
-        <MenuDivider />
-      </MyContent>
-    </LayoutMyPage>
+        </MenuListItem>
+        <MenuItemDivider />
+      </MyPageContent>
+    </StyledMyPage>
   );
 };
 
 export default My;
 
-const LayoutMyPage = styled.div`
+const StyledMyPage = styled.div`
   width: 100%;
   display: flex;
   max-width: 600px;
@@ -86,15 +86,17 @@ const LayoutMyPage = styled.div`
   padding-top: 80px;
 `;
 
-const MyContent = styled.div`
+const MyPageContent = styled.div`
   width: 100%;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
   gap: 20px;
+  padding: 0 20px;
+  padding-bottom: 40px;
 `;
 
-const StatsBox = styled.div`
+const StatsSection = styled.div`
   display: flex;
   align-items: center;
   background-color: ${color.gray50};
@@ -113,46 +115,46 @@ const StatItem = styled.div`
   text-align: center;
 `;
 
-const Divider = styled.div`
+const StatDivider = styled.div`
   width: 1px;
   height: 38px;
   background-color: ${color.gray100};
 `;
 
-const GrayDivider = styled.div`
+const SectionDivider = styled.div`
   width: 100%;
   height: 4px;
   background-color: ${color.gray50};
 `;
 
-const SectionLabel = styled.p`
+const SectionHeader = styled.p`
   ${font.caption};
   color: ${color.gray400};
   margin: 0;
   padding: 0 0;
 `;
 
-const MenuItem = styled.div`
+const MenuListItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 1px;
   cursor: pointer;
   transition: all 0.2s ease;
+
   &:hover {
     opacity: 0.7;
   }
 `;
 
-const MenuText = styled.p`
+const MenuItemText = styled.p`
   ${font.H2};
   color: ${color.black};
   margin: 0;
   flex: 1;
 `;
 
-const MenuDivider = styled.div`
+const MenuItemDivider = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${color.gray50};

@@ -18,7 +18,7 @@ const ProfileBox = () => {
               <BadgeText>재학생</BadgeText>
             </StudentBadge>
           </ProfileHeader>
-          <ProfileEmail>fake_bsm_email@bssm.hs.kr</ProfileEmail>
+          <UserEmail>fake_bsm_email@bssm.hs.kr</UserEmail>
         </ProfileTextWrapper>
       </ProfileContent>
     </StyledProfileBox>
@@ -98,7 +98,7 @@ const BadgeText = styled.p`
   white-space: nowrap;
 `;
 
-const ProfileEmail = styled.p`
+const UserEmail = styled.p`
   ${font.caption};
   color: ${color.gray700};
   margin: 0;
