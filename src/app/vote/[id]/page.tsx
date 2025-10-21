@@ -110,7 +110,7 @@ const VoteContent = styled.div`
 `;
 
 const MenuText = styled.p`
-  ${font.D3};
+  ${font.H1};
   color: ${color.primary};
 `;
 

@@ -1,47 +1,46 @@
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import styled from "@emotion/styled";
-import VoteBlockImage from "./voteblockimage";
+import VoteBlockImage from "../vote/voteblockimage";
 import { Views } from "../../../public/svg/svg";
 
-type VoteBlockProps = {
+type GuideBlockProps = {
   category: string;
   title: string;
   viewCount: number;
-  finishDate: string;
   onClick?: () => void;
 };
 
-const VoteBlock = ({
+const GuideBlock = ({
   category,
   title,
   viewCount,
-  finishDate,
   onClick,
-}: VoteBlockProps) => {
+}: GuideBlockProps) => {
   return (
-    <VoteBlockLayout onClick={onClick}>
+    <GuideBlockLayout onClick={onClick}>
       <VoteBlockImage category={category} />
-      <VoteContentLayout>
+      <GuideContentLayout>
         <Title>{title}</Title>
-        <VoteInfoBox>
-          <VoteInfoUpperBox>
+
+        <GuideInfoBox>
+          <GuideInfoUpperBox>
             <Category>{category}</Category>
-            <VoteViewsBox>
+
+            <GuideViewsBox>
               <Views width="12" height="12" />
               <ViewCount>{viewCount}</ViewCount>
-            </VoteViewsBox>
-          </VoteInfoUpperBox>
-          <FinishDate>{finishDate}</FinishDate>
-        </VoteInfoBox>
-      </VoteContentLayout>
-    </VoteBlockLayout>
+            </GuideViewsBox>
+          </GuideInfoUpperBox>
+        </GuideInfoBox>
+      </GuideContentLayout>
+    </GuideBlockLayout>
   );
 };
 
-export default VoteBlock;
+export default GuideBlock;
 
-const VoteBlockLayout = styled.div`
+const GuideBlockLayout = styled.div`
   width: 100%;
   border: 1px solid ${color.gray50};
   border-radius: 12px;
@@ -51,31 +50,32 @@ const VoteBlockLayout = styled.div`
   gap: 4%;
   padding: 0px 10px 0px 10px;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
 
-const VoteContentLayout = styled.div`
+const GuideContentLayout = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 6px;
 `;
-const VoteInfoBox = styled.div`
+
+const GuideInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   flex-direction: row;
   width: 94%;
 `;
 
-const VoteInfoUpperBox = styled.div`
+const GuideInfoUpperBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const VoteViewsBox = styled.div`
+const GuideViewsBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,9 +94,4 @@ const Category = styled.p`
 const ViewCount = styled.p`
   ${font.caption};
   color: ${color.gray600};
-`;
-
-const FinishDate = styled.p`
-  ${font.caption};
-  color: ${color.gray500};
 `;

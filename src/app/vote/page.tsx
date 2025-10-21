@@ -10,19 +10,19 @@ import { useRouter } from "next/navigation";
 
 const VoteData = [
   {
-    category: "school",
+    category: "학교생활",
     title: "2024학년도 1학기 교내 폭력 실태 조사",
     viewCount: 1234,
     finishDate: "2024-07-15",
   },
   {
-    category: "domitory",
+    category: "기숙사",
     title: "2024학년도 1학기 기숙사 식단 만족도 조사",
     viewCount: 5678,
     finishDate: "2024-07-20",
   },
   {
-    category: "humor",
+    category: "유머",
     title: "2024학년도 1학기 교내 유머 게시판 인기글 투표",
     viewCount: 91011,
     finishDate: "2024-07-25",

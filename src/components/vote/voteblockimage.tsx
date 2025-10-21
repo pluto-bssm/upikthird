@@ -7,21 +7,21 @@ type Props = {
 
 const VoteBlockImage = ({ category }: Props) => {
   switch (category) {
-    case "school":
+    case "학교생활":
       return (
         <VoteBlockImageLayout>
           <School width="100%" height="100%" />
         </VoteBlockImageLayout>
       );
 
-    case "domitory":
+    case "기숙사":
       return (
         <VoteBlockImageLayout>
           <Domitorys width="100%" height="100%" />
         </VoteBlockImageLayout>
       );
 
-    case "humor":
+    case "유머":
       return (
         <VoteBlockImageLayout>
           <Humors width="100%" height="100%" />

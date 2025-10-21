@@ -6,11 +6,14 @@ import font from "@/packages/design-system/src/font";
 import Header from "@/components/common/header";
 import Ballot from "@/components/votemake/ballot";
 import { useVoteStore } from "@/store/useMakeVoteStore";
-import { Plus } from "../../../../public/svg/svg";
+import { Plus , Bad } from "../../../../public/svg/svg";
 import Button from "@/packages/ui/src/button/Button";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
+import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
+import LoadingModal from "@/components/modal/LoadingModal";
+import AccentModal from "@/components/modal/AccentModal";
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
@@ -32,6 +35,32 @@ const Detail = () => {
     }
   };
   const [IsOpen_1, setIsOpen_1] = useState(false);
+  const [IsOpen, setIsOpen] = useState(false);
+  const [IsOpen_2, setIsOpen_2] = useState(false);
+  const [IsOpen_3, setIsOpen_3] = useState(false);
+  const  [IsOpen_4, setIsOpen_4] = useState(false);
+  const [isok,setisok] = useState(false);
+
+  const handleVoteSubmit = () => {
+    setIsOpen(false)
+    setIsOpen_2(true)
+
+    setTimeout(() => {
+      setIsOpen_2(false)
+      if(isok == false){
+      setIsOpen_3(true)
+      setisok(true)
+      }
+      else{
+        setIsOpen_4(true);
+      }
+      setTimeout(()=>{
+        setIsOpen_4(false);
+        router.push(`${path}/likeguide`)
+      },2000)
+      }, 3000);
+    
+  }
 
   return (
     <DetailLayout>
@@ -80,7 +109,7 @@ const Detail = () => {
 
       <Button
         icon={<Plus width={24} height={24} />}
-        onCkick={() => {}}
+        onCkick={() => {setIsOpen(true)}}
         text="투표 제작하기"
       />
       {IsOpen_1 && (
@@ -90,6 +119,41 @@ const Detail = () => {
           passfunction={() => {}}
           isOpen={IsOpen_1}
           setIsOpen={setIsOpen_1}
+        />
+      )}
+      {IsOpen && (
+        <IconTwoOptionModal
+          icon="exclamation"
+          title="제출하시겠어요?"
+          subtitle="투표 질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 경우
+투표가 사전고지 없이 삭제되거나, 불이익을 받을 수 있습니다."
+          primaryButtonText="제출하기"
+          secondaryButtonText="투표 수정하기"
+          onPrimaryClick={handleVoteSubmit}
+          onSecondaryClick={() => {setIsOpen(false)}}
+        />
+      )}
+      {IsOpen_2 && (
+        <LoadingModal
+          title="욕설이 있는지 확인하고 있어요"
+          info="욕설이 포함된 투표는 제작될 수 없어요."
+        />
+      )}
+      {IsOpen_3 && (
+        <AccentModal
+          icon={<Bad />}
+          leftText="투표 내용을"
+          accentText="수정"
+          rightText="해주세요"
+          subText={`질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 투표는${"\n"}
+제작할 수 없어요. 내용을 수정해주세요.`}
+          onClick={() => {setIsOpen_3(false)}}
+        />
+      )}
+      {IsOpen_4 && (
+        <LoadingModal
+          title={`유사한 내용의 가이드가 있는지\n확인하고 있어요`}
+          info="유사한 내용의 가이드가 있다면, 기다리지 않아도 돼요"
         />
       )}
     </DetailLayout>
