@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { Bookmark } from '../../../public/svg/svg';
+import { Bookmark } from "../../../public/svg/svg";
 
 const mockData = [
   {
@@ -41,8 +41,8 @@ const mockData = [
     title: "가이드 5",
     category: "학교생활",
     like: 16,
-  }
-]
+  },
+];
 
 interface GuideComponentProps {
   searchQuery?: string;
@@ -55,8 +55,8 @@ const GuideComponent = ({ searchQuery = "" }: GuideComponentProps) => {
     router.push(`/moreGuide/${guideId}`);
   };
 
-  const filteredGuides = mockData.filter(guide => 
-    guide.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredGuides = mockData.filter((guide) =>
+    guide.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -79,9 +79,7 @@ const GuideComponent = ({ searchQuery = "" }: GuideComponentProps) => {
               </GuideCard>
             ))
           ) : (
-            <NoResultsMessage>
-              검색결과가 없어요
-            </NoResultsMessage>
+            <NoResultsMessage>검색결과가 없어요</NoResultsMessage>
           )}
         </SectionBody>
       </Section>
@@ -95,7 +93,7 @@ const GuideBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width : 100%;
+  width: 100%;
 `;
 
 const Section = styled.section`
@@ -107,7 +105,7 @@ const Section = styled.section`
 const SectionBody = styled.div<{ gap: string }>`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.gap};
+  gap: ${(props) => props.gap};
 `;
 
 const GuideCard = styled.div`
@@ -119,9 +117,9 @@ const GuideCard = styled.div`
   border-radius: 8px;
   background: ${color.white};
   padding: 0 16px;
-    box-shadow: 
-    -4px -4px 10px 0 rgba(0,0,0,0.03),
-     4px  4px 10px 0 rgba(0,0,0,0.03);
+  box-shadow:
+    -4px -4px 10px 0 rgba(0, 0, 0, 0.03),
+    4px 4px 10px 0 rgba(0, 0, 0, 0.03);
   cursor: pointer;
 `;
 
@@ -132,7 +130,7 @@ const Thumnail = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top:-12px;
+  margin-top: -12px;
 `;
 
 const GuideText = styled.div`
@@ -140,18 +138,18 @@ const GuideText = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  margin-left:16px;
+  margin-left: 16px;
 `;
 
 const GuideTitle = styled.div`
   color: ${color.black};
-  font-family:  ${font.D3};
+  font-family: ${font.D3};
 `;
 
 const OtherInfo = styled.div`
   display: flex;
   align-items: center;
-  gap:6px;
+  gap: 6px;
 `;
 
 const GuideTag = styled.div`
@@ -162,13 +160,13 @@ const GuideTag = styled.div`
 const BookmarkIcon = styled.span`
   background-color: ${color.gray500};
   display: inline-block;
-  margin-left:8px;
+  margin-left: 8px;
 `;
 
 const MarkCount = styled.div`
   color: ${color.gray600};
-  font-family:${font.caption};
-  margin-left:-4px;
+  font-family: ${font.caption};
+  margin-left: -4px;
 `;
 
 const NoResultsMessage = styled.div`

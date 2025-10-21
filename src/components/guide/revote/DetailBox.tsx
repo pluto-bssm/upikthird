@@ -10,15 +10,16 @@ interface DetailProps {
 }
 
 const DetailBox = ({ value, onChange }: DetailProps) => {
-
   return (
     <Section>
-            <GuideCard
-              as="textarea"
-              placeholder="상세 내용을 입력해 주세요 (최대 500자)"
-              value={value}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value)}
-            />
+      <GuideCard
+        as="textarea"
+        placeholder="상세 내용을 입력해 주세요 (최대 500자)"
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          onChange(e.target.value)
+        }
+      />
     </Section>
   );
 };
@@ -29,10 +30,10 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width : 100%;
+  width: 100%;
 `;
 
-const GuideCard = styled.textarea` 
+const GuideCard = styled.textarea`
   display: flex;
   align-items: center;
   gap: 14px;
@@ -41,9 +42,9 @@ const GuideCard = styled.textarea`
   border-radius: 16px;
   padding: 16px;
   background-color: ${color.white};
-  box-shadow: 
-    -4px -4px 10px 0 rgba(0,0,0,0.03),
-     4px  4px 10px 0 rgba(0,0,0,0.03);
+  box-shadow:
+    -4px -4px 10px 0 rgba(0, 0, 0, 0.03),
+    4px 4px 10px 0 rgba(0, 0, 0, 0.03);
   resize: none;
   outline: none;
   font-family: ${font.content};
@@ -54,6 +55,6 @@ const GuideCard = styled.textarea`
   }
   &:focus {
     border-color: ${color.gray200};
-    box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
   }
 `;
