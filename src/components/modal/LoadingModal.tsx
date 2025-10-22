@@ -84,7 +84,7 @@ const Title = styled.p`
   font-size: 20px;
   font-weight: 600;
   color: ${color.black};
-  text-align : center;
+  text-align: center;
   width: 80%;
 `;
 

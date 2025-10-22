@@ -7,28 +7,45 @@ import font from "@/packages/design-system/src/font";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import GuideBlock from "@/components/votemake/guideblock";
-import {Plus} from "../../../../../public/svg/svg";
+import { Plus } from "../../../../../public/svg/svg";
+import { useState } from "react";
+import TwoOptionModal from "@/components/modal/TwoOptionModal";
+import LoadingModal from "@/components/modal/LoadingModal";
+import AccentModal from "@/components/modal/AccentModal";
+import { Completevote } from "../../../../../public/svg/svg";
 
 const BallotData = [
-    {  category : "학교생활", title : "가이드 제목", viewCount : 16},
-    {  category : "학교생활", title : "가이드 제목", viewCount : 16},
-    {  category : "학교생활", title : "가이드 제목", viewCount : 16},
-    {  category : "학교생활", title : "가이드 제목", viewCount : 16}
+  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
+  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
+  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
+  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
 ];
 
 const LikeGuide = () => {
   const router = useRouter();
   const path = usePathname();
+  const [IsOpen, setIsOpen] = useState(false);
+  const [IsOpen_1, setIsOpen_1] = useState(false);
+  const [IsOpen_2, setIsOpen_2] = useState(false);
+
+  const HandleSubmit = () => {
+    setIsOpen_1(true);
+    setTimeout(() => {
+      setIsOpen_1(false);
+      setIsOpen_2(true);
+    }, 3000);
+  };
 
   return (
     <LikeGuideLayout>
-      <Header types="close" />
+      <Header types="close" onSubmit={() => setIsOpen(true)} />
 
       <LikeGuideSection>
         <LikeGuideInfoArea>
           <LikeGuideMainText>유사한 내용의 가이드가 있어요!</LikeGuideMainText>
           <LikeGuideTitle>
-            아래의 가이드에 원하는 내용이 있다면, 상단의 엑스 버튼을 선택해주세요!
+            아래의 가이드에 원하는 내용이 있다면, 상단의 엑스 버튼을
+            선택해주세요!
           </LikeGuideTitle>
           <LikeGuideSubText>
             가이드 제목을 클릭하면 내용 전부를 확인할 수 있어요.
@@ -47,17 +64,48 @@ const LikeGuide = () => {
         </LikeGuideListArea>
 
         <Button
-          icon = {<Plus width={20} height={20}/>}
+          icon={<Plus width={20} height={20} />}
           text="계속 진행하기"
-          onCkick={() => router.push(`${path}/tailvote`)}
+          onCkick={HandleSubmit}
         />
       </LikeGuideSection>
+
+      {IsOpen && (
+        <TwoOptionModal
+          title="투표 제작을 취소하시겠어요?"
+          info="지금까지 작성한 내용은 저장되지 않습니다."
+          passfunction={() => {
+            router.replace("/");
+          }}
+          setIsOpen={setIsOpen}
+          isOpen={IsOpen}
+        />
+      )}
+
+      {IsOpen_1 && (
+        <LoadingModal
+          title="투표를 제작하고 있어요."
+          info="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요."
+        />
+      )}
+
+      {IsOpen_2 && (
+        <AccentModal
+          icon={<Completevote />}
+          leftText="투표 제작을"
+          rightText="했어요!"
+          accentText="완료"
+          onClick={() => {
+            router.push("/");
+          }}
+          subText="투표 제작 이후 투표 내용은 변경될 수 없어요."
+        />
+      )}
     </LikeGuideLayout>
   );
 };
 
 export default LikeGuide;
-
 
 const LikeGuideLayout = styled.div`
   width: 100%;
@@ -68,7 +116,7 @@ const LikeGuideLayout = styled.div`
   min-height: 100vh;
   flex-direction: column;
   align-items: center;
-  margin-top : -50px;
+  margin-top: -50px;
 `;
 
 const LikeGuideSection = styled.section`

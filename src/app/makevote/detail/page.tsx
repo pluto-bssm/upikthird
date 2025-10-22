@@ -6,7 +6,7 @@ import font from "@/packages/design-system/src/font";
 import Header from "@/components/common/header";
 import Ballot from "@/components/votemake/ballot";
 import { useVoteStore } from "@/store/useMakeVoteStore";
-import { Plus , Bad } from "../../../../public/svg/svg";
+import { Plus, Bad } from "../../../../public/svg/svg";
 import Button from "@/packages/ui/src/button/Button";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
@@ -38,29 +38,27 @@ const Detail = () => {
   const [IsOpen, setIsOpen] = useState(false);
   const [IsOpen_2, setIsOpen_2] = useState(false);
   const [IsOpen_3, setIsOpen_3] = useState(false);
-  const  [IsOpen_4, setIsOpen_4] = useState(false);
-  const [isok,setisok] = useState(false);
+  const [IsOpen_4, setIsOpen_4] = useState(false);
+  const [isok, setisok] = useState(false);
 
   const handleVoteSubmit = () => {
-    setIsOpen(false)
-    setIsOpen_2(true)
+    setIsOpen(false);
+    setIsOpen_2(true);
 
     setTimeout(() => {
-      setIsOpen_2(false)
-      if(isok == false){
-      setIsOpen_3(true)
-      setisok(true)
-      }
-      else{
+      setIsOpen_2(false);
+      if (isok == false) {
+        setIsOpen_3(true);
+        setisok(true);
+      } else {
         setIsOpen_4(true);
+        setTimeout(() => {
+          setIsOpen_4(false);
+          router.push(`${path}/likeguide`);
+        }, 2000);
       }
-      setTimeout(()=>{
-        setIsOpen_4(false);
-        router.push(`${path}/likeguide`)
-      },2000)
-      }, 3000);
-    
-  }
+    }, 3000);
+  };
 
   return (
     <DetailLayout>
@@ -109,7 +107,9 @@ const Detail = () => {
 
       <Button
         icon={<Plus width={24} height={24} />}
-        onCkick={() => {setIsOpen(true)}}
+        onCkick={() => {
+          setIsOpen(true);
+        }}
         text="투표 제작하기"
       />
       {IsOpen_1 && (
@@ -130,7 +130,9 @@ const Detail = () => {
           primaryButtonText="제출하기"
           secondaryButtonText="투표 수정하기"
           onPrimaryClick={handleVoteSubmit}
-          onSecondaryClick={() => {setIsOpen(false)}}
+          onSecondaryClick={() => {
+            setIsOpen(false);
+          }}
         />
       )}
       {IsOpen_2 && (
@@ -147,7 +149,9 @@ const Detail = () => {
           rightText="해주세요"
           subText={`질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 투표는${"\n"}
 제작할 수 없어요. 내용을 수정해주세요.`}
-          onClick={() => {setIsOpen_3(false)}}
+          onClick={() => {
+            setIsOpen_3(false);
+          }}
         />
       )}
       {IsOpen_4 && (
