@@ -14,8 +14,7 @@ const InquiryPage = () => {
   };
 
   const handleSubmit = (data: InquiryFormType) => {
-    console.log('Form submitted:', data);
-    // TODO: 실제 API 호출 구현
+    // TODO
   };
 
   return (
