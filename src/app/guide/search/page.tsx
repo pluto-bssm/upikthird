@@ -5,37 +5,53 @@ import Header from "@/components/common/header";
 import GuideComponent from "@/components/guide/GuideComponent";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
 
 const guide = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
+  const [resultCount, setResultCount] = useState(0);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+    setHasSearched(true);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    if (value.trim() === "") {
+      setHasSearched(false);
+    }
   };
 
   return (
     <GuideLayout>
-      <Header
-        types={"search"}
-        placeholers="원하는 가이드를 검색해주세요"
-        onSubmit={() => {}}
+      <Header 
+        types={"search"} 
+        placeholers="원하는 가이드를 검색하기"
+        onSearchChange={handleSearchChange}
+        onSubmit={() => handleSearch(searchQuery)}
       />
-      <SearchContainer>
-        <SearchInput
-          placeholder="원하는 가이드를 검색해주세요"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              handleSearch(searchQuery);
-            }
-          }}
-        />
-        <SearchButton onClick={() => handleSearch(searchQuery)}>
-          검색
-        </SearchButton>
-      </SearchContainer>
-      <GuideComponent searchQuery={searchQuery} />
+      
+      <SearchContent>
+        {!hasSearched || searchQuery.trim() === "" ? (
+          <EmptyState>
+            <EmptyStateText>검색어를 입력해주세요</EmptyStateText>
+          </EmptyState>
+        ) : (
+          <>
+            <ResultHeader>
+              <ResultCount>결과 <span style={{ color: color.primary }}>{resultCount}</span></ResultCount>
+            </ResultHeader>
+            <GuideContainer>
+              <GuideComponent 
+                searchQuery={searchQuery} 
+                onResultCountChange={setResultCount}
+              />
+            </GuideContainer>
+          </>
+        )}
+      </SearchContent>
     </GuideLayout>
   );
 };
@@ -50,49 +66,53 @@ const GuideLayout = styled.div`
   justify-content: center;
   background-color: ${color.white};
   min-height: 100vh;
-  padding-top: 80px;
 `;
 
-const SearchContainer = styled.div`
+const SearchContent = styled.div`
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 auto;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+`;
+
+const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+`;
+
+const EmptyStateText = styled.div`
+  color: ${color.black};
+  font-family: ${font.D3};
+  font-size: 16px;
+  text-align: center;
+`;
+
+const ResultHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  padding: 16px 0;
+  margin-top: 40px;
+  position: sticky;
+  top: 0;
   background-color: ${color.white};
+  z-index: 10;
 `;
 
-const SearchInput = styled.input`
+const ResultCount = styled.div`
+  color: ${color.gray600};
+  font-family: ${font.caption};
+  font-size: 14px;
+`;
+
+const GuideContainer = styled.div`
   flex: 1;
-  height: 40px;
-  border: 1px solid ${color.gray200};
-  border-radius: 8px;
-  background-color: ${color.gray50};
-  padding: 0 16px;
-  font-size: 14px;
-  color: ${color.black};
-  outline: none;
-
-  &::placeholder {
-    color: ${color.gray500};
-  }
-
-  &:focus {
-    border-color: ${color.primary};
-  }
-`;
-
-const SearchButton = styled.button`
-  height: 40px;
-  padding: 0 20px;
-  background-color: ${color.primary};
-  color: ${color.white};
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #ffb84d;
-  }
+  overflow-y: auto;
+  padding-bottom: 20px;
 `;

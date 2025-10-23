@@ -37,12 +37,15 @@ type HeaderProps = {
   text?: string;
   placeholers?: string;
   onSubmit?: () => void;
+  onSearchChange?: (value: string) => void;
+  searchValue?: string;
 };
 
-const Header = ({ types, text, placeholers, onSubmit }: HeaderProps) => {
+const Header = ({ types, text, placeholers, onSubmit, onSearchChange, searchValue }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
   const [activeIdx, setActiveIdx] = useState(0);
+  const [searchInput, setSearchInput] = useState(searchValue || "");
 
   switch (types) {
     case "default":
@@ -243,13 +246,25 @@ const Header = ({ types, text, placeholers, onSubmit }: HeaderProps) => {
             </LeftItemBox>
 
             <CenterItemBox>
-              <SearchInput placeholder={placeholers} />
+              <SearchInput 
+                placeholder={placeholers}
+                value={searchInput}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                  onSearchChange?.(e.target.value);
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    onSubmit?.();
+                  }
+                }}
+              />
             </CenterItemBox>
 
             <RightItemBox>
               <Button
                 onClick={() => {
-                  onSubmit;
+                  onSubmit?.();
                 }}
               >
                 검색
