@@ -1,24 +1,15 @@
-"use client";
+'use client';
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Headernavigationbar from "./headernavigationbar";
 import {
-  Logo,
-  Bell,
-  Search,
-  User,
-  Back,
-  Back2,
-  Bookmark,
-  Close,
-  Report,
-  Options,
-} from "@/../public/svg/svg";
+  Logo, Bell, Search, User, Back, Back2, Bookmark,
+  Close, Report, Options,
+} from "@/../public/svg";
 
 type variant =
   | "default"
@@ -29,13 +20,15 @@ type variant =
   | "report and bookmark"
   | "title"
   | "close and option"
-  | "search";
+  | "search"
+  | "question";
 
 type HeaderProps = {
   types: variant;
   text?: string;
   placeholers?: string;
   onSubmit?: () => void;
+  onClose?: () => void;
   onSecondSubmit?: () => void;
 };
 
@@ -44,6 +37,7 @@ const Header = ({
   text,
   placeholers,
   onSubmit,
+  onClose,
   onSecondSubmit,
 }: HeaderProps) => {
   const router = useRouter();
@@ -56,33 +50,31 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Logo
-                width="50"
-                height="50"
-                onClick={() => {
-                  router.replace("/");
-                }}
-              />
+              <Logo width="50" height="50" onClick={() => router.replace("/")} />
             </LeftItemBox>
-
             <RightItemBox>
               <Bell width="25" height="25" />
-              <Search
-                width="25"
-                height="25"
-                onClick={() => {
-                  router.push(`${path}/search`);
-                }}
-              />
+              <Search width="25" height="25" onClick={() => router.push(`${path}/search`)} />
               <User width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
+          <Headernavigationbar type="vote" activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
+        </HeaderLayout>
+      );
 
-          <Headernavigationbar
-            type={"vote"}
-            activeIdx={activeIdx}
-            setActiveIdx={setActiveIdx}
-          />
+    case "question":
+      return (
+        <HeaderLayout>
+          <HeaderItemBox>
+            <LeftItemBox>
+              <Logo width="50" height="50" onClick={() => router.replace("/")} />
+            </LeftItemBox>
+            <RightItemBox>
+              <Bell width="25" height="25" />
+              <Search width="25" height="25" onClick={() => router.push(`${path}/search`)} />
+              <User width="25" height="25" />
+            </RightItemBox>
+          </HeaderItemBox>
         </HeaderLayout>
       );
 
@@ -91,15 +83,8 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
+              <Back width="22" height="22" onClick={() => router.back()} />
             </LeftItemBox>
-
             <RightItemBox>
               <Bookmark width="25" height="25" />
             </RightItemBox>
@@ -111,18 +96,11 @@ const Header = ({
       return (
         <HeaderLayout>
           <HeaderItemBox>
-            <LeftItemBox>
-              <Back
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
-            </LeftItemBox>
-
+            <CenterItemBox>
+              <Title>{text}</Title>
+            </CenterItemBox>
             <RightItemBox>
-              <Close width="25" height="25" onClick={onSubmit} />
+              <Close width="25" height="25" onClick={onClose} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -133,9 +111,8 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Close width="25" height="25" />
+              <Close width="25" height="25" onClick={() => router.back()} />
             </LeftItemBox>
-
             <RightItemBox>
               <Button onClick={onSubmit}>등록</Button>
             </RightItemBox>
@@ -148,18 +125,11 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
+              <Back width="22" height="22" onClick={() => router.back()} />
             </LeftItemBox>
-
             <RightItemBox>
-              <Report width="25" height="25" onClick={onSubmit} />
-              <Close width="25" height="25" />
+              <Report width="25" height="25" onClick={() => router.push(`${path}/report`)} />
+              <Close width="25" height="25" onClick={onClose} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -170,18 +140,11 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
+              <Back width="22" height="22" onClick={() => router.back()} />
             </LeftItemBox>
-
             <RightItemBox>
               <Report width="25" height="25" />
-              <Bookmark width="25" height="25" />
+              <Bookmark width="25" height="25" onClick={onClose} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -192,14 +155,11 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back width="22" height="22" onClick={onSubmit} />
+              <Back width="22" height="22" onClick={onSubmit ?? (() => router.back())} />
             </LeftItemBox>
-
-            <CenterItemBox type={types}>
+            <CenterItemBox>
               <Title>{text}</Title>
             </CenterItemBox>
-
-            <RightItemBox />
           </HeaderItemBox>
         </HeaderLayout>
       );
@@ -209,15 +169,8 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
+              <Back width="22" height="22" onClick={() => router.back()} />
             </LeftItemBox>
-
             <RightItemBox>
               <Close width="25" height="25" onClick={onSecondSubmit} />
               <Options width="25" height="25" onClick={onSubmit} />
@@ -231,19 +184,11 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back2
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
+              <Back2 width="22" height="22" onClick={() => router.back()} />
             </LeftItemBox>
-
-            <CenterItemBox type={types}>
+            <CenterItemBox>
               <SearchInput placeholder={placeholers} />
             </CenterItemBox>
-
             <RightItemBox>
               <Button onClick={onSubmit}>검색</Button>
             </RightItemBox>
@@ -254,6 +199,8 @@ const Header = ({
 };
 
 export default Header;
+
+/* ---------------- 스타일 ---------------- */
 
 const SearchInput = styled.input`
   width: 100%;
@@ -299,21 +246,14 @@ const RightItemBox = styled.div`
   gap: 15px;
 `;
 
-const CenterItemBox = styled.div<{ type?: string }>`
+const CenterItemBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  width: 70%;
-
-  ${({ type }) =>
-    type === "title" &&
-    `
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto;
-    `}
+  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const HeaderItemBox = styled.div`

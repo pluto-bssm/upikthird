@@ -25,7 +25,7 @@ import Navoption from './Navoption';
 import Nexts from './Nexts';
 import Options from './Options';
 import Plus from './Plus';
-import profile from './Profile';
+import Profile from './Profile';
 import Report from './Report';
 import RequestCheck from './RequestCheck';
 import Search from './Search';
@@ -38,7 +38,7 @@ import VotemakeButton from './VotemakeButton';
 import Vote from './Vote';
 import Exclamation from './Exclamation';
 import Question from './Question';
-import GrayClose from './GrayClose';
+import { CheckComplete } from './CheckComplete';
 
 export {
   Back,
@@ -81,5 +81,5 @@ export {
   Close,
   Question,
   Exclamation,
-  GrayClose
+  CheckComplete
 };
