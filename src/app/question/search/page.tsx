@@ -3,8 +3,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import color from '@/packages/design-system/src/color';
-
-const backIcon = 'http://localhost:3845/assets/0fb8bde919bf1233cb3effd003ac715335142676.svg';
+import { BackArrow } from '../../../../public/svg/svg';
 
 const SearchPage = () => {
   const [searchInput, setSearchInput] = React.useState('');
@@ -13,7 +12,7 @@ const SearchPage = () => {
     <StyledSearchPage>
       <SearchHeader>
         <BackButton onClick={() => window.history.back()}>
-          <img src={backIcon} alt="back" width="24" height="24" />
+          <BackArrow width="24" height="24" color={color.black} />
         </BackButton>
         <SearchInputWrapper>
           <SearchInput

@@ -38,7 +38,6 @@ export const UserPostItem = ({ post, onClick }: UserPostItemProps) => {
           <CommentLabel>댓글</CommentLabel>
         </CommentCountBox>
       </PostItemButton>
-      <PostDivider />
     </PostItemWrapper>
   );
 };
@@ -54,10 +53,11 @@ const PostItemButton = styled.button`
   align-items: flex-start;
   padding: 20px;
   background-color: ${color.white};
-  border: 1px solid ${color.gray300};
-  border-bottom: none;
+  border: none;
+  border-bottom: 1px solid ${color.gray300};
   cursor: pointer;
   transition: background-color 0.2s;
+  width: 100%;
 
   &:hover {
     background-color: ${color.gray50};
@@ -161,9 +161,4 @@ const CommentLabel = styled.p`
   margin: 0;
   padding: 0;
   line-height: 1.2;
-`;
-
-const PostDivider = styled.div`
-  height: 1px;
-  background-color: ${color.gray300};
 `;

@@ -1,6 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import { SavedGuideList } from '@/components/my/saved/guide/SavedGuideList';
 import color from '@/packages/design-system/src/color';
@@ -80,14 +81,20 @@ const mockGuides: Guide[] = [
 ];
 
 const SavedGuidePage = () => {
+  const router = useRouter();
+
   const handleGuideClick = (guideId: string) => {
     console.log('Guide clicked:', guideId);
     // TODO: Implement guide navigation
   };
 
+  const handleClose = () => {
+    router.back();
+  };
+
   return (
     <StyledSavedGuidePage>
-      <Header types="close" text="" />
+      <Header types="close" text="저장한 가이드" onClose={handleClose} />
       <SavedGuidePageContent>
         <SavedGuideList guides={mockGuides} onGuideClick={handleGuideClick} />
       </SavedGuidePageContent>

@@ -1,6 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import color from '@/packages/design-system/src/color';
 
@@ -25,9 +26,15 @@ const mockVoteResponse: VoteResponse = {
 };
 
 const VoteResponsePage = () => {
+  const router = useRouter();
+
+  const handleClose = () => {
+    router.back();
+  };
+
   return (
     <StyledVoteResponsePage>
-      <Header types="close" text="투표 응답 내역" />
+      <Header types="close" text="투표 응답 내역" onClose={handleClose} />
       <VoteResponseContent>
         <VoteSection>
           <SectionTitle>투표하기</SectionTitle>

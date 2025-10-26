@@ -4,7 +4,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
-import Footer from '@/components/common/footer';
+import NavigationBar from '@/components/common/navigationbar';
 import color from '@/packages/design-system/src/color';
 import { CheckComplete } from '@/../public/svg/svg';
 
@@ -139,7 +139,7 @@ const ReportPage = () => {
         </>
       )}
 
-      <Footer />
+      <NavigationBar />
     </StyledPage>
   );
 };

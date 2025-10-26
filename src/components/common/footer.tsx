@@ -3,11 +3,7 @@
 import styled from '@emotion/styled';
 import { useRouter, usePathname } from 'next/navigation';
 import color from '@/packages/design-system/src/color';
-
-const homeIcon = 'http://localhost:3845/assets/e7b88aa4ac4b416ec86c4ea71c3a1bb442b68bdd.svg';
-const voteIcon = 'http://localhost:3845/assets/aa3c3db24af2a127ae8b91c785279f056201d7c1.svg';
-const guideIcon = 'http://localhost:3845/assets/59ea10440f2023777c00417d535e4eb8c0464c48.svg';
-const dashboardIcon = 'http://localhost:3845/assets/f17744c41d0ed4aaaf22adae6861befd7ef81599.svg';
+import { HomeIcon, VoteIcon, GuideIcon, DashboardIcon } from '../../../public/svg/svg';
 
 const Footer = () => {
   const router = useRouter();
@@ -19,25 +15,25 @@ const Footer = () => {
     <StyledFooter>
       <FooterItem onClick={() => router.push('/')} isActive={isActive('/')}>
         <IconWrapper>
-          <img src={homeIcon} alt="home" width="24" height="24" />
+          <HomeIcon width="24" height="24" />
         </IconWrapper>
         <Label>메인</Label>
       </FooterItem>
       <FooterItem onClick={() => router.push('/vote')} isActive={isActive('vote')}>
         <IconWrapper>
-          <img src={voteIcon} alt="vote" width="24" height="24" />
+          <VoteIcon width="24" height="24" />
         </IconWrapper>
         <Label>투표</Label>
       </FooterItem>
       <FooterItem onClick={() => router.push('/guide')} isActive={isActive('guide')}>
         <IconWrapper>
-          <img src={guideIcon} alt="guide" width="24" height="24" />
+          <GuideIcon width="24" height="24" />
         </IconWrapper>
         <Label>가이드</Label>
       </FooterItem>
       <FooterItem onClick={() => router.push('/question')} isActive={isActive('question')}>
         <IconWrapper>
-          <img src={dashboardIcon} alt="question" width="24" height="24" />
+          <DashboardIcon width="24" height="24" />
         </IconWrapper>
         <Label>질문게시판</Label>
       </FooterItem>

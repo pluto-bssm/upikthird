@@ -1,6 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import { SavedPostList } from '@/components/my/saved/post/SavedPostList';
 import color from '@/packages/design-system/src/color';
@@ -42,14 +43,20 @@ const mockPosts: Post[] = [
 ];
 
 const SavedPostPage = () => {
+  const router = useRouter();
+
   const handleCommentClick = (postId: string) => {
     console.log('Comment clicked for post:', postId);
     // TODO: Implement comment navigation
   };
 
+  const handleClose = () => {
+    router.back();
+  };
+
   return (
     <StyledSavedPostPage>
-      <Header types="close" text="좋아요한 질문" />
+      <Header types="close" text="좋아요한 질문" onClose={handleClose} />
       <SavedPostContent>
         <SavedPostList
           posts={mockPosts}

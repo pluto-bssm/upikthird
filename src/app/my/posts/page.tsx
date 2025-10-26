@@ -1,6 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import { PostListByUser } from '@/components/my/posts/PostListByUser';
 import color from '@/packages/design-system/src/color';
@@ -42,14 +43,20 @@ const mockPosts: UserPost[] = [
 ];
 
 const UserPostsPage = () => {
+  const router = useRouter();
+
   const handlePostClick = (postId: string) => {
     console.log('Post clicked:', postId);
     // TODO: Implement post navigation
   };
 
+  const handleClose = () => {
+    router.back();
+  };
+
   return (
     <StyledUserPostsPage>
-      <Header types="close" text="" />
+      <Header types="close" text="" onClose={handleClose} />
       <UserPostsPageContent>
         <PostListByUser posts={mockPosts} onPostClick={handlePostClick} />
       </UserPostsPageContent>

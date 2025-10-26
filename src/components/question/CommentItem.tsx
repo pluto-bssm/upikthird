@@ -32,7 +32,7 @@ const StyledCommentItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 20px;
+  padding: 4px;
   border-bottom: 1px solid ${color.gray100};
 `;
 

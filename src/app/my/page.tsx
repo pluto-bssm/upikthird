@@ -111,7 +111,7 @@ const TabBarWrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 2px;
 `;
 
 const MenuSectionWrapper = styled.div`

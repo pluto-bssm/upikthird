@@ -4,12 +4,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
-import Footer from '@/components/common/footer';
+import NavigationBar from '@/components/common/navigationbar';
 import color from '@/packages/design-system/src/color';
 import { validateQuestionCreate } from '@/schemas/question';
-
-const validationErrorIcon = 'http://localhost:3845/assets/5e33eeb97854eee5669ede7e0a4ffa87c778a7f1.svg';
-const successIcon = 'http://localhost:3845/assets/189b34beb1c2433b3dd3024e03ce9c39fb69c97e.svg';
+import { ValidationErrorIcon, CheckComplete } from '../../../../public/svg/svg';
 
 const QuestionCreatePage = () => {
   const router = useRouter();
@@ -81,7 +79,7 @@ const QuestionCreatePage = () => {
           <ModalContainer>
             <ModalContent>
               <ModalIconContainer>
-                <ModalIcon src={validationErrorIcon} alt="validation error" width="83" height="83" />
+                <ValidationErrorIcon width="83" height="83" />
               </ModalIconContainer>
               <ModalTitle>
                 {validationError.includes('제목') ? (
@@ -111,7 +109,7 @@ const QuestionCreatePage = () => {
           <ModalContainer>
             <ModalContent>
               <ModalIconContainer>
-                <ModalIcon src={successIcon} alt="success" width="83" height="83" />
+                <CheckComplete width="83" height="83" />
               </ModalIconContainer>
               <ModalTitle>
                 질문 작성을 <HighlightText>완료</HighlightText>했어요!
@@ -125,7 +123,7 @@ const QuestionCreatePage = () => {
         </>
       )}
 
-      <Footer />
+      <NavigationBar />
     </StyledPage>
   );
 };
@@ -277,11 +275,7 @@ const ModalIconContainer = styled.div`
   justify-content: center;
   width: 83px;
   height: 83px;
-`;
-
-const ModalIcon = styled.img`
-  width: 83px;
-  height: 83px;
+  color: ${color.primary};
 `;
 
 const ModalTitle = styled.h2`

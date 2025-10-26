@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled';
 import color from '@/packages/design-system/src/color';
+import { ProfileIcon } from '../../../public/svg/svg';
 
 interface ProfileBoxProps {
   profileImage?: string;
@@ -14,7 +15,9 @@ const ProfileBox = ({ profileImage, name, status, email }: ProfileBoxProps) => {
   return (
     <ProfileBoxWrapper>
       <ProfileBoxContent>
-        <ProfileImage src={profileImage || 'https://via.placeholder.com/54'} alt="profile" />
+        <ProfileIconWrapper>
+          <ProfileIcon width="54" height="54" />
+        </ProfileIconWrapper>
         <ProfileInfoBox>
           <NameWithStatusRow>
             <ProfileName>{name}</ProfileName>
@@ -48,6 +51,15 @@ const ProfileBoxContent = styled.div`
   align-items: flex-start;
   padding: 0 20px;
   padding-top: 10px;
+`;
+
+const ProfileIconWrapper = styled.div`
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ProfileImage = styled.img`

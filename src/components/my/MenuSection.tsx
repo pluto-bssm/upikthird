@@ -61,7 +61,7 @@ const MenuCategoryGroup = styled.div<{ isLast?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0;
-  border-bottom: ${props => props.isLast ? 'none' : `8px solid ${color.gray50}`};
+  border-bottom: ${props => props.isLast ? 'none' : `2px solid ${color.gray50}`};
 `;
 
 const MenuCategoryLabel = styled.p`
@@ -115,7 +115,6 @@ const MenuItemLabel = styled.p`
 `;
 
 const MenuItemDivider = styled.div`
-  height: 1px;
   background-color: ${color.gray100};
   width: 100%;
 `;

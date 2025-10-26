@@ -288,7 +288,10 @@ const CenterItemBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70%;
+    flex: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 `;
 
 const HeaderItemBox = styled.div`
@@ -296,6 +299,7 @@ const HeaderItemBox = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 90%;
+    position: relative;
     `
     
 
