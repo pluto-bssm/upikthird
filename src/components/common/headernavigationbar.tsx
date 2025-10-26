@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import React from "react";
-import { Divider , Navoption } from "@/../public/svg/svg";
+import { Divider , Navoption } from "@/../public/svg";
 
 type Variant = "vote" | "guide";
 

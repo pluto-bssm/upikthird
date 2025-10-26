@@ -38,16 +38,7 @@ import VotemakeButton from './VotemakeButton';
 import Vote from './Vote';
 import Exclamation from './Exclamation';
 import Question from './Question';
-import CheckComplete from './CheckComplete';
-import UpikLogo from './UpikLogo';
-import { GoogleIcon } from './GoogleIcon';
-import BackArrow from './BackArrow';
-import HomeIcon from './HomeIcon';
-import VoteIcon from './VoteIcon';
-import GuideIcon from './GuideIcon';
-import DashboardIcon from './DashboardIcon';
-import ValidationErrorIcon from './ValidationErrorIcon';
-import ProfileIcon from './ProfileIcon';
+import { CheckComplete } from './CheckComplete';
 
 export {
   Back,
@@ -90,14 +81,5 @@ export {
   Close,
   Question,
   Exclamation,
-  CheckComplete,
-  UpikLogo,
-  GoogleIcon,
-  BackArrow,
-  HomeIcon,
-  VoteIcon,
-  GuideIcon,
-  DashboardIcon,
-  ValidationErrorIcon,
-  ProfileIcon
+  CheckComplete
 };

@@ -2,7 +2,7 @@
 
 import styled from "@emotion/styled"
 import color from "@/packages/design-system/src/color"
-import {Home , Vote, Guide, Dashboard} from "@/../public/svg/svg"
+import {Home , Vote, Guide, Dashboard} from "@/../public/svg"
 import { useRouter } from "next/navigation"
 
 const NavigationBar = () =>{
@@ -15,7 +15,7 @@ const NavigationBar = () =>{
                 <Home width="40" height="40" onClick={() => { router.push("/main") }} />
                 <Vote width="40" height="40"  onClick={() => { router.push("/vote") }} />
                 <Guide width="40" height="40"  onClick={() => { router.push("/guide") }} />
-                <Dashboard width="40" height="40"  onClick={() => { router.push("/dashboard") }} />    
+                <Dashboard width="40" height="40"  onClick={() => { router.push("/question") }} />    
             </NavigationBarItem>
         </NavigationBarLayout>
     )   
