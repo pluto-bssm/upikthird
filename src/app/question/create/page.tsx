@@ -1,0 +1,329 @@
+'use client';
+
+import React from 'react';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/navigation';
+import Header from '@/components/common/header';
+import Footer from '@/components/common/footer';
+import color from '@/packages/design-system/src/color';
+import { validateQuestionCreate } from '@/schemas/question';
+
+const validationErrorIcon = 'http://localhost:3845/assets/5e33eeb97854eee5669ede7e0a4ffa87c778a7f1.svg';
+const successIcon = 'http://localhost:3845/assets/189b34beb1c2433b3dd3024e03ce9c39fb69c97e.svg';
+
+const QuestionCreatePage = () => {
+  const router = useRouter();
+  const [title, setTitle] = React.useState('');
+  const [content, setContent] = React.useState('');
+  const [validationError, setValidationError] = React.useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+
+  const handleSubmit = () => {
+    console.log('handleSubmit called, title:', title, 'content:', content);
+    const result = validateQuestionCreate({ title, content });
+    console.log('validation result:', result);
+    
+    if (!result.success) {
+      // 첫 번째 에러 메시지만 표시
+      const firstError = result.error.issues[0];
+      console.log('validation error:', firstError.message);
+      setValidationError(firstError.message);
+      return;
+    }
+
+    console.log('질문 생성:', { title, content });
+    console.log('showSuccessModal 설정 전:', showSuccessModal);
+    setShowSuccessModal(true);
+    console.log('showSuccessModal 설정 후');
+  };
+
+  const handleClose = () => {
+    router.back();
+  };
+
+  const handleValidationClose = () => {
+    setValidationError(null);
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    router.back();
+  };
+
+  return (
+    <StyledPage>
+      <Header types="register" text="" onSubmit={handleSubmit} />
+      <Container>
+        <Divider />
+
+        <Section>
+          <TitleInput
+            placeholder="질문 제목을 입력하세요"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </Section>
+
+        <Divider />
+
+        <Section>
+          <ContentTextarea
+            placeholder="질문 내용을 입력하세요"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </Section>
+      </Container>
+
+      {validationError && (
+        <>
+          <ModalOverlay onClick={handleValidationClose} />
+          <ModalContainer>
+            <ModalContent>
+              <ModalIconContainer>
+                <ModalIcon src={validationErrorIcon} alt="validation error" width="83" height="83" />
+              </ModalIconContainer>
+              <ModalTitle>
+                {validationError.includes('제목') ? (
+                  <>
+                    <HighlightText>제목</HighlightText>을 작성하지 않았어요
+                  </>
+                ) : (
+                  <>
+                    <HighlightText>내용</HighlightText>을 작성하지 않았어요
+                  </>
+                )}
+              </ModalTitle>
+              <ModalSubtitle>
+                {validationError.includes('제목')
+                  ? '질문을 게시판에 작성할 때는 제목을 꼭 작성해야 해요'
+                  : '질문을 게시판에 작성할 때는 내용을 꼭 작성해야 해요'}
+              </ModalSubtitle>
+              <ModalButton onClick={handleValidationClose}>확인</ModalButton>
+            </ModalContent>
+          </ModalContainer>
+        </>
+      )}
+
+      {showSuccessModal && (
+        <>
+          <ModalOverlay onClick={handleSuccessClose} />
+          <ModalContainer>
+            <ModalContent>
+              <ModalIconContainer>
+                <ModalIcon src={successIcon} alt="success" width="83" height="83" />
+              </ModalIconContainer>
+              <ModalTitle>
+                질문 작성을 <HighlightText>완료</HighlightText>했어요!
+              </ModalTitle>
+              <ModalSubtitle>
+                마이페이지에서 지금까지 한 게시판 질문 내역을 확인할 수 있어요
+              </ModalSubtitle>
+              <ModalButton onClick={handleSuccessClose}>확인</ModalButton>
+            </ModalContent>
+          </ModalContainer>
+        </>
+      )}
+
+      <Footer />
+    </StyledPage>
+  );
+};
+
+export default QuestionCreatePage;
+
+const StyledPage = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: ${color.white};
+  min-height: 100vh;
+  padding-top: 72px;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+`;
+
+const SectionHeader = styled.h2`
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: ${color.black};
+  line-height: 1;
+  margin: 0;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid ${color.gray200};
+  border-radius: 12px;
+  background-color: ${color.white};
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  background-color: ${color.gray200};
+  width: 100%;
+`;
+
+const TitleLabel = styled.p`
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: ${color.gray300};
+  line-height: 1;
+  margin: 0;
+`;
+
+const TitleInput = styled.input`
+  border: none;
+  background: transparent;
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: ${color.black};
+  outline: none;
+  padding: 10px 0;
+  line-height: 1;
+  width: 100%;
+
+  &::placeholder {
+    color: ${color.gray300};
+  }
+`;
+
+const ContentLabel = styled.p`
+  font-family: Pretendard, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: ${color.gray300};
+  line-height: 24px;
+  margin: 0;
+`;
+
+const ContentTextarea = styled.textarea`
+  border: none;
+  background: transparent;
+  font-family: Pretendard, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: ${color.black};
+  outline: none;
+  resize: none;
+  min-height: 200px;
+  padding: 10px 0;
+  line-height: 24px;
+  width: 100%;
+
+  &::placeholder {
+    color: ${color.gray300};
+  }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
+
+const ModalContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${color.white};
+  border: 1px solid ${color.gray200};
+  border-radius: 24px;
+  padding: 52px 32px;
+  max-width: 320px;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+`;
+
+const ModalIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 83px;
+  height: 83px;
+`;
+
+const ModalIcon = styled.img`
+  width: 83px;
+  height: 83px;
+`;
+
+const ModalTitle = styled.h2`
+  font-family: Pretendard, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${color.black};
+  line-height: 1;
+  margin: 0;
+  text-align: center;
+`;
+
+const HighlightText = styled.span`
+  color: ${color.primary};
+`;
+
+const ModalSubtitle = styled.p`
+  font-family: Pretendard, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  color: ${color.gray600};
+  line-height: 1;
+  margin: 0;
+  text-align: center;
+`;
+
+const ModalButton = styled.button`
+  background-color: ${color.primary};
+  border: none;
+  border-radius: 16px;
+  padding: 13px 20px;
+  font-family: Pretendard, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: ${color.white};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;

@@ -7,21 +7,22 @@ import Image from "next/image";
 import { useRouter , usePathname } from "next/navigation"
 import React, { useState } from "react";
 import Headernavigationbar from "./headernavigationbar";
-import {Logo, Bell, Search, User , Back , Back2 , Bookmark , Close , Report , Options , } from "@/../public/svg/svg";
+import {Logo, Bell, Search, User , Back , Back2 , Bookmark , Close , Report , Options , } from "@/../public/svg";
 
 
-type variant = 'default' | "bookmark" | "close" | "register" | "report and close" | "report and bookmark" | "title" | "close and option" | "search"
+type variant = 'default' | "bookmark" | "close" | "register" | "report and close" | "report and bookmark" | "title" | "close and option" | "search" | "question"
 
 type HeaderProps = {
     types : variant
     text? : string
     placeholers? : string
     onSubmit? : () => void
+    onClose? : () => void
     
 }
 
 
-const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
+const Header = ({types , text , placeholers, onSubmit, onClose} : HeaderProps ) => {
 
     const router = useRouter();
     const path = usePathname();
@@ -49,6 +50,26 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
 
                 </HeaderLayout>
             )
+            case 'question':
+            return (
+                <HeaderLayout>
+
+                    <HeaderItemBox>
+
+                        <LeftItemBox>  
+                            <Logo width="50" height="50" onClick={() => {router.replace("/")}}/>
+                        </LeftItemBox>
+
+                        <RightItemBox>
+                            <Bell width="25" height="25" />
+                            <Search width="25" height="25" onClick={() => {router.push(`${path}/search`)}} />
+                            <User   width="25" height="25" />
+                        </RightItemBox>
+
+                    </HeaderItemBox>
+
+                </HeaderLayout>
+            )
     
     
     case 'bookmark':
@@ -69,24 +90,29 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
 
             </HeaderLayout>
         )
-    case 'close':
+    case 'close': {
+        const handleCloseClick = () => {
+            console.log('Header close case - onClose called:', onClose);
+            onClose?.();
+        };
         return (
             <HeaderLayout>
 
                 <HeaderItemBox>
 
-                    <LeftItemBox>  
-                        <Back width="22" height="22" onClick={() => {router.back()}} />
-                    </LeftItemBox>
+                    <CenterItemBox>
+                        <Title>{text}</Title>
+                    </CenterItemBox>
 
                     <RightItemBox>
-                        <Close width="25" height="25"/>
+                        <Close width="25" height="25" onClick={handleCloseClick}/>
                     </RightItemBox>
 
                 </HeaderItemBox>
 
             </HeaderLayout>
-        )
+        );
+    }
 
     case 'register':
         return (
@@ -95,11 +121,11 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                 <HeaderItemBox>
 
                     <LeftItemBox>  
-                        <Close width="25" height="25"/>
+                        <Close width="25" height="25" onClick={() => {router.back()}}/>
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Button onClick={() => {onSubmit}}>등록</Button>
+                        <Button onClick={onSubmit}>등록</Button>
                     </RightItemBox>
 
                 </HeaderItemBox>
@@ -118,7 +144,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
                     </LeftItemBox>
 
                     <RightItemBox>
-                        <Report width="25" height="25" />
+                        <Report width="25" height="25" onClick={() => {router.push(`${path}/report`)}} />
                         <Close width="25" height="25"/>
                     </RightItemBox>
 
@@ -139,7 +165,7 @@ const Header = ({types , text , placeholers, onSubmit} : HeaderProps ) => {
 
                     <RightItemBox>
                         <Report width="25" height="25" />
-                         <Bookmark width="25" height="25" />
+                         <Bookmark width="25" height="25" onClick={onClose}/>
                     </RightItemBox>
 
                 </HeaderItemBox>
