@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import font from '@/packages/design-system/src/font';
+import React from "react";
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
 
 type AccentModalProps = {
   icon: React.ReactNode;
@@ -12,7 +12,6 @@ type AccentModalProps = {
   rightText: string;
   subText?: string;
   onClick: () => void;
-
 };
 
 const AccentModal = ({
@@ -21,7 +20,7 @@ const AccentModal = ({
   accentText,
   rightText,
   subText,
-  onClick
+  onClick,
 }: AccentModalProps) => {
   return (
     <Overlay>
@@ -102,8 +101,8 @@ const Accent = styled.span`
 const SubTitle = styled.p`
   ${font.caption};
   color: ${color.gray500};
+  line-height: 0.7;
   white-space: pre-line;
-  line-height: 1.4;
 `;
 
 const ConfirmButton = styled.button`
@@ -119,6 +118,6 @@ const ConfirmButton = styled.button`
   margin-top: 16px;
 
   &:hover {
-    background-color: #E07600;
+    background-color: #e07600;
   }
 `;

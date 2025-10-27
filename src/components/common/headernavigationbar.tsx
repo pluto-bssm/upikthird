@@ -2,7 +2,9 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import React from "react";
-import { Divider , Navoption } from "@/../public/svg";
+
+import { Divider, Navoption } from "@/../public/svg/svg";
+
 
 type Variant = "vote" | "guide";
 
@@ -16,8 +18,12 @@ type HeaderNavigationProps = {
 const VoteNavs = ["전체", "학교생활", "기숙사", "유머"];
 const GuideNavs = ["전체", "인기"];
 
-const HeaderNavigationBar = ({type , activeIdx = 0, setActiveIdx, onOptionClick }: HeaderNavigationProps) => {
-    
+const HeaderNavigationBar = ({
+  type,
+  activeIdx = 0,
+  setActiveIdx,
+  onOptionClick,
+}: HeaderNavigationProps) => {
   const navItems = type === "vote" ? VoteNavs : GuideNavs;
 
   return (
@@ -50,7 +56,6 @@ const HeaderNavigationBar = ({type , activeIdx = 0, setActiveIdx, onOptionClick 
 };
 
 export default HeaderNavigationBar;
-
 
 const HeaderNavigationLayout = styled.div`
   width: 90%;

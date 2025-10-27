@@ -25,7 +25,7 @@ import Navoption from './Navoption';
 import Nexts from './Nexts';
 import Options from './Options';
 import Plus from './Plus';
-import Profile from './Profile';
+import IconProfile from './Profile';
 import Report from './Report';
 import RequestCheck from './RequestCheck';
 import Search from './Search';
@@ -38,16 +38,7 @@ import VotemakeButton from './VotemakeButton';
 import Vote from './Vote';
 import Exclamation from './Exclamation';
 import Question from './Question';
-import CheckComplete from './CheckComplete';
-import UpikLogo from './UpikLogo';
-import { GoogleIcon } from './GoogleIcon';
-import BackArrow from './BackArrow';
-import HomeIcon from './HomeIcon';
-import VoteIcon from './VoteIcon';
-import GuideIcon from './GuideIcon';
-import DashboardIcon from './DashboardIcon';
-import ValidationErrorIcon from './ValidationErrorIcon';
-import ProfileIcon from './ProfileIcon';
+import GrayClose from './GrayClose';
 
 export {
   Back,
@@ -74,7 +65,7 @@ export {
   Nexts,
   Options,
   Plus,
-  Profile,
+  IconProfile,
   Report,
   RequestCheck,
   Search,
@@ -90,14 +81,5 @@ export {
   Close,
   Question,
   Exclamation,
-  CheckComplete,
-  UpikLogo,
-  GoogleIcon,
-  BackArrow,
-  HomeIcon,
-  VoteIcon,
-  GuideIcon,
-  DashboardIcon,
-  ValidationErrorIcon,
-  ProfileIcon
+  GrayClose
 };
