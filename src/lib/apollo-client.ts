@@ -44,7 +44,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'https://realupik-659794985248.asia-northeast3.run.app/graphql',
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'https://upik-659794985248.asia-northeast3.run.app/graphql',
   credentials: 'include'
 });
 

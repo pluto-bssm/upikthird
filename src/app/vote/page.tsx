@@ -7,6 +7,7 @@ import color from "@/packages/design-system/src/color";
 import VoteBlock from "@/components/vote/voteblock";
 import VoteMakeButton from "@/components/vote/votemakebutton";
 import { useRouter } from "next/navigation";
+import { useVotes } from "@/hooks/useVote";
 
 const VoteData = [
   {
@@ -31,19 +32,21 @@ const VoteData = [
 
 const vote = () => {
   const router = useRouter();
+  const { votes, loading, error, refetch } = useVotes();
+
 
   return (
     <VoteLayout>
       <Header types={"default"} />
       <VoteContent>
-        {VoteData.map((vote, id) => (
+        {votes.map((vote, id) => (
           <VoteBlock
             key={id}
             category={vote.category}
             title={vote.title}
-            viewCount={vote.viewCount}
-            finishDate={vote.finishDate}
-            onClick={() => router.push(`/vote/${id}`)}
+            viewCount={vote.totalResponses}
+            finishDate={vote.finishedAt}
+            onClick={() => router.push(`/vote/${vote.id}`)}
           />
         ))}
       </VoteContent>

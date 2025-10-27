@@ -7,40 +7,21 @@ import font from "@/packages/design-system/src/font";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import Ballot from "@/components/vote/ballot";
-import { useState } from "react";
+import { useState, use } from "react";
+import { useVoteById, useVoteResponse } from "@/hooks/useVote";
 
-const BallotData = [
-  {
-    content: "내용1",
-    letter: "A",
-    id: "1",
-  },
-  {
-    content: "내용2",
-    letter: "B",
-    id: "2",
-  },
-  {
-    content: "내용3",
-    letter: "C",
-    id: "3",
-  },
-  {
-    content: "내용4",
-    letter: "D",
-    id: "4",
-  },
-  {
-    content: "내용5",
-    letter: "E",
-    id: "5",
-  },
-];
 
-const DesVote = () => {
+const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
   const path = usePathname();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const { id } = use(params);
+  const { vote, loading, error } = useVoteById(id);
+  const { createResponse, loading: responseLoading } = useVoteResponse();
+  
+  const labels = ['A','B','C','D','E'];
+
   return (
     <DesVoteLayout>
       <Header
@@ -54,8 +35,7 @@ const DesVote = () => {
         <VoteInfo>
           <MenuText>투표하기</MenuText>
           <Title>
-            투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표
-            질문
+            {vote?.title}
           </Title>
           <SubTitle>
             부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요
@@ -63,11 +43,11 @@ const DesVote = () => {
         </VoteInfo>
 
         <VoteContent>
-          {BallotData.map((ballot, index) => (
+          {vote?.options?.map((ballot, index) => (
             <Ballot
               key={index}
               content={ballot.content}
-              letter={ballot.letter}
+              letter= {labels[index] ?? ''}
               isSelected={selectedOption === ballot.id}
               type="vote"
               onClick={() =>
