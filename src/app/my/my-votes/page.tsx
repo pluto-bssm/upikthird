@@ -1,97 +1,49 @@
 'use client';
 
 import styled from '@emotion/styled';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import { MyVotesList } from '@/components/my/votes/MyVotesList';
 import color from '@/packages/design-system/src/color';
-
-interface Vote {
-  id: string;
-  title: string;
-  category: '학교생활' | '기숙사' | '유머';
-  categoryEmoji: string;
-  participantCount: number;
-  status: 'urgent' | 'completed' | 'ongoing';
-  statusText: string;
-}
-
-const mockVotes: Vote[] = [
-  {
-    id: '1',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'urgent',
-    statusText: '2025-08-31에 마감되는 투표',
-  },
-  {
-    id: '2',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'urgent',
-    statusText: '2025-08-31에 마감되는 투표',
-  },
-  {
-    id: '3',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'completed',
-    statusText: '가이드 제작이 완료된 투표',
-  },
-  {
-    id: '4',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'urgent',
-    statusText: '2025-08-31에 마감되는 투표',
-  },
-  {
-    id: '5',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'ongoing',
-    statusText: '가이드가 제작 중인 투표',
-  },
-  {
-    id: '6',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'urgent',
-    statusText: '2025-08-31에 마감되는 투표',
-  },
-  {
-    id: '7',
-    title: '투표 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    participantCount: 16,
-    status: 'completed',
-    statusText: '가이드 제작이 완료된 투표',
-  },
-];
+import { useMyVotes } from '@/hooks/useVotes';
 
 const MyVotesPage = () => {
+  const router = useRouter();
+  const { myVotes, loading, error } = useMyVotes();
+
+  const handleClose = () => {
+    router.back();
+  };
+
   const handleVoteClick = (voteId: string) => {
-    console.log('Vote clicked:', voteId);
     // TODO: Implement vote navigation
   };
 
+  if (loading) {
+    return (
+      <StyledMyVotesPage>
+        <Header types="close" text="내가 만든 투표" onClose={handleClose} />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledMyVotesPage>
+    );
+  }
+
+  if (error) {
+    return (
+      <StyledMyVotesPage>
+        <Header types="close" text="내가 만든 투표" onClose={handleClose} />
+        <ErrorText>투표 목록을 불러올 수 없습니다.</ErrorText>
+      </StyledMyVotesPage>
+    );
+  }
+
+  const displayVotes = myVotes;
+
   return (
     <StyledMyVotesPage>
-      <Header types="close" text="내가 만든 투표" />
+      <Header types="close" text="내가 만든 투표" onClose={handleClose} />
       <MyVotesPageContent>
-        <MyVotesList votes={mockVotes} onVoteClick={handleVoteClick} />
+        <MyVotesList votes={displayVotes} onVoteClick={handleVoteClick} />
       </MyVotesPageContent>
     </StyledMyVotesPage>
   );
@@ -109,4 +61,20 @@ const StyledMyVotesPage = styled.div`
 const MyVotesPageContent = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: #E71D36;
+  padding: 40px 20px;
+  margin: 0;
 `;

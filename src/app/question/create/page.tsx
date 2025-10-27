@@ -8,6 +8,7 @@ import NavigationBar from '@/components/common/navigationbar';
 import color from '@/packages/design-system/src/color';
 import { validateQuestionCreate } from '@/schemas/question';
 import { ValidationErrorIcon, CheckComplete } from '../../../../public/svg/svg';
+import * as boardApi from '@/services/board/api';
 
 const QuestionCreatePage = () => {
   const router = useRouter();
@@ -15,24 +16,31 @@ const QuestionCreatePage = () => {
   const [content, setContent] = React.useState('');
   const [validationError, setValidationError] = React.useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
 
-  const handleSubmit = () => {
-    console.log('handleSubmit called, title:', title, 'content:', content);
+  const handleSubmit = async () => {
     const result = validateQuestionCreate({ title, content });
-    console.log('validation result:', result);
     
     if (!result.success) {
-      // 첫 번째 에러 메시지만 표시
       const firstError = result.error.issues[0];
-      console.log('validation error:', firstError.message);
       setValidationError(firstError.message);
       return;
     }
 
-    console.log('질문 생성:', { title, content });
-    console.log('showSuccessModal 설정 전:', showSuccessModal);
-    setShowSuccessModal(true);
-    console.log('showSuccessModal 설정 후');
+    try {
+      setSubmitting(true);
+      await boardApi.createQuestion({
+        title,
+        content,
+        category: 'GENERAL' // 기본 카테고리
+      });
+      setShowSuccessModal(true);
+    } catch (error) {
+      console.error('질문 생성 실패:', error);
+      setValidationError('질문 생성에 실패했습니다.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {

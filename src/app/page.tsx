@@ -1,10 +1,21 @@
 'use client'
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styled from "@emotion/styled";
-import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
-export default function HomePage() {
+import { Storage } from '@/apis/storage/storage';
+import { TOKEN } from '@/constants/common/constant';
 
-   
+export default function HomePage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Storage.getItem(TOKEN.ACCESS);
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
+
     return (
       <MainLayout>
       </MainLayout>

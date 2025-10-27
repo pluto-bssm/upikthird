@@ -2,14 +2,24 @@
 
 import styled from '@emotion/styled';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import color from '@/packages/design-system/src/color';
 import Header from '@/components/common/header';
 import ProfileBox from '@/components/my/ProfileBox';
 import TabBar from '@/components/my/TabBar';
 import MenuSection, { type MenuItem } from '@/components/my/MenuSection';
+import { Storage } from '@/apis/storage/storage';
+import { TOKEN } from '@/constants/common/constant';
 
 const MyPage = () => {
   const router = useRouter();
+
+  React.useEffect(() => {
+    const token = Storage.getItem(TOKEN.ACCESS);
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
 
   const menuItems: MenuItem[] = [
     {

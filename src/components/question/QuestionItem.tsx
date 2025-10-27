@@ -3,31 +3,41 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import color from '@/packages/design-system/src/color';
-
-interface Question {
-  id: string;
-  title: string;
-  author: string;
-  date: string;
-  category: '학교생활' | '기숙사' | '유머';
-  categoryEmoji: string;
-  likeCount: number;
-  commentCount: number;
-}
+import type { Board } from '@/types/graphql';
 
 interface QuestionItemProps {
-  question: Question;
+  question: Board;
 }
 
 export const QuestionItem = ({ question }: QuestionItemProps) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', {
+      year: '2-digit',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  };
+
+  const getCategoryEmoji = (category?: string) => {
+    switch (category) {
+      case '학교생활':
+        return '🏫';
+      case '기숙사':
+        return '🏠';
+      case '유머':
+        return '😂';
+    }
+  };
+
   return (
     <StyledLink href={`/question/${question.id}`}>
       <StyledQuestionItem>
         <QuestionContent>
           <QuestionTitle>{question.title}</QuestionTitle>
           <QuestionMeta>
-            <MetaItem>{question.author}</MetaItem>
-            <MetaItem>{question.date}</MetaItem>
+            <MetaItem>{question.author.name}</MetaItem>
+            <MetaItem>{formatDate(question.createdAt)}</MetaItem>
             <MetaItem>| {question.commentCount}</MetaItem>
           </QuestionMeta>
         </QuestionContent>
@@ -53,8 +63,6 @@ const StyledQuestionItem = styled.div`
   padding: 20px;
   border-bottom: 1px solid ${color.gray300};
   background-color: ${color.white};
-  box-shadow: -4px -4px 10px 0px rgba(0, 0, 0, 0.03),
-    4px 4px 10px 0px rgba(0, 0, 0, 0.03);
 `;
 
 const QuestionContent = styled.div`

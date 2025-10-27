@@ -1,11 +1,24 @@
 'use client'
 
+import React from 'react';
+import { useRouter } from 'next/navigation';
 import Header from "@/components/common/header"
 import NavigationBar from "@/components/common/navigationbar"
 import styled from "@emotion/styled"
 import color from "@/packages/design-system/src/color"
+import { Storage } from '@/apis/storage/storage';
+import { TOKEN } from '@/constants/common/constant';
 
-const vote = () =>{
+const VotePage = () =>{
+    const router = useRouter();
+
+    React.useEffect(() => {
+      const token = Storage.getItem(TOKEN.ACCESS);
+      if (!token) {
+        router.push('/login');
+      }
+    }, [router]);
+
     return (
         <VoteLayout>
             <Header types={'default'}/>
@@ -15,7 +28,7 @@ const vote = () =>{
 
 }
 
-export default vote;
+export default VotePage;
 
 const VoteLayout = styled.div`
     width: 100%;

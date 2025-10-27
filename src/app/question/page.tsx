@@ -5,31 +5,20 @@ import styled from '@emotion/styled';
 import Header from '@/components/common/header';
 import { QuestionList } from '@/components/question/QuestionList';
 import color from '@/packages/design-system/src/color';
-
-interface Question {
-  id: string;
-  title: string;
-  author: string;
-  date: string;
-  category: '학교생활' | '기숙사' | '유머';
-  categoryEmoji: string;
-  likeCount: number;
-  commentCount: number;
-}
-
-const mockQuestions: Question[] = Array.from({ length: 20 }, (_, i) => ({
-  id: String(i + 1),
-  title: '질문 제목 예시 ' + (i + 1),
-  author: '작성자' + (i % 3 + 1),
-  date: '2025-08-31 21:31',
-  category: (['학교생활', '기숙사', '유머'] as const)[i % 3],
-  categoryEmoji: ['🏫', '⛺️', '😁'][i % 3],
-  likeCount: (i + 1) * 5,
-  commentCount: (i + 1) * 2,
-}));
+import { useQuestions } from '@/hooks/useBoard';
 
 const QuestionPage = () => {
   const [activeTab, setActiveTab] = React.useState<'all' | 'popular'>('all');
+  const { questions, loading, error } = useQuestions({ page: 0, size: 10 });
+
+  if (error) {
+    return (
+      <StyledQuestionPage>
+        <Header types="question" text="질문 게시판" />
+        <ErrorText>질문 목록을 불러올 수 없습니다.</ErrorText>
+      </StyledQuestionPage>
+    );
+  }
 
   return (
     <StyledQuestionPage>
@@ -50,9 +39,11 @@ const QuestionPage = () => {
         </Tab>
       </TabContainer>
       <QuestionPageContent>
-        <QuestionList
-          questions={mockQuestions}
-        />
+        {loading ? (
+          <LoadingText>로딩 중...</LoadingText>
+        ) : (
+          <QuestionList questions={questions} />
+        )}
       </QuestionPageContent>
     </StyledQuestionPage>
   );
@@ -113,4 +104,20 @@ const Divider = styled.div`
   width: 0;
   height: 10px;
   border-left: 1px solid ${color.black};
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: #E71D36;
+  padding: 40px 20px;
+  margin: 0;
 `;

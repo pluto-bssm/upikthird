@@ -4,17 +4,51 @@ import styled from '@emotion/styled';
 import color from '@/packages/design-system/src/color';
 import Header from '@/components/common/header';
 import AccountInfoBox from '@/components/my/info/AccountInfoBox';
+import { useCurrentUser } from '@/hooks/useAccount';
 
 const AccountInfoPage = () => {
+  const { user, loading, error } = useCurrentUser();
+
+  if (loading) {
+    return (
+      <StyledAccountInfoPage>
+        <Header types="close" text="" />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledAccountInfoPage>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <StyledAccountInfoPage>
+        <Header types="close" text="" />
+        <ErrorText>계정 정보를 불러올 수 없습니다.</ErrorText>
+      </StyledAccountInfoPage>
+    );
+  }
+
+  const getQualification = (role: string) => {
+    switch (role) {
+      case 'STUDENT':
+        return '재학생';
+      case 'GRADUATED':
+        return '졸업생';
+      case 'STAFF':
+        return '직원';
+      default:
+        return role;
+    }
+  };
+
   return (
     <StyledAccountInfoPage>
       <Header types="close" text="" />
       <AccountInfoPageContent>
         <AccountInfoBox
-          name="박가은"
-          studentId="2108"
-          qualification="재학생"
-          email="fake_bsm_email@bssm.hs.kr"
+          name={user.name}
+          studentId={user.studentId}
+          qualification={getQualification(user.role)}
+          email={user.email}
         />
         <LogoutSection>
           <LogoutText>로그아웃 | 탈퇴하기</LogoutText>
@@ -51,4 +85,20 @@ const LogoutText = styled.p`
   padding: 0;
   text-align: center;
   line-height: 1.2;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
 `;

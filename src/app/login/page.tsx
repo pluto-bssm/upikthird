@@ -11,9 +11,8 @@ const LoginPage = () => {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    // TODO: Google OAuth login
-    console.log('Google login clicked');
-    router.push('/');
+    // Google OAuth login
+    window.location.href = 'https://upik-659794985248.asia-northeast3.run.app/login/oauth2/code/google';
   };
 
   return (

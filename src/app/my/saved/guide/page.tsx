@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import { SavedGuideList } from '@/components/my/saved/guide/SavedGuideList';
 import color from '@/packages/design-system/src/color';
+import { useSavedGuides } from '@/hooks/useSaved';
 
 interface Guide {
   id: string;
@@ -14,89 +15,62 @@ interface Guide {
   likeCount: number;
 }
 
-const mockGuides: Guide[] = [
-  {
-    id: '1',
-    title: '가이드 제목',
-    category: '기숙사',
-    categoryEmoji: '⛺️',
-    likeCount: 16,
-  },
-  {
-    id: '2',
-    title: '가이드 제목',
-    category: '유머',
-    categoryEmoji: '😁',
-    likeCount: 16,
-  },
-  {
-    id: '3',
-    title: '가이드 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    likeCount: 16,
-  },
-  {
-    id: '4',
-    title: '가이드 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    likeCount: 16,
-  },
-  {
-    id: '5',
-    title: '가이드 제목',
-    category: '기숙사',
-    categoryEmoji: '⛺️',
-    likeCount: 16,
-  },
-  {
-    id: '6',
-    title: '가이드 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    likeCount: 16,
-  },
-  {
-    id: '7',
-    title: '가이드 제목',
-    category: '유머',
-    categoryEmoji: '😁',
-    likeCount: 16,
-  },
-  {
-    id: '8',
-    title: '가이드 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    likeCount: 16,
-  },
-  {
-    id: '9',
-    title: '가이드 제목',
-    category: '학교생활',
-    categoryEmoji: '🏫',
-    likeCount: 16,
-  },
-];
+const getCategoryEmoji = (category: string) => {
+  switch (category) {
+    case '학교생활':
+      return '🏫';
+    case '기숙사':
+      return '⛺️';
+    case '유머':
+      return '😁';
+    default:
+      return '✨';
+  }
+};
 
 const SavedGuidePage = () => {
   const router = useRouter();
+  const { guides: boardGuides, loading, error } = useSavedGuides(0, 20);
+
+  const guides: Guide[] = boardGuides.map(board => ({
+    id: board.id,
+    title: board.title,
+    category: (board.category || '학교생활') as '학교생활' | '기숙사' | '유머',
+    categoryEmoji: getCategoryEmoji(board.category || '학교생활'),
+    likeCount: board.likes,
+  }));
 
   const handleGuideClick = (guideId: string) => {
-    console.log('Guide clicked:', guideId);
-    // TODO: Implement guide navigation
+    router.push(`/guide/${guideId}`);
   };
 
   const handleClose = () => {
     router.back();
   };
 
+  if (loading) {
+    return (
+      <StyledSavedGuidePage>
+        <Header types="close" text="저장한 가이드" onClose={handleClose} />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledSavedGuidePage>
+    );
+  }
+
+  if (error) {
+    return (
+      <StyledSavedGuidePage>
+        <Header types="close" text="저장한 가이드" onClose={handleClose} />
+        <ErrorText>가이드를 불러올 수 없습니다.</ErrorText>
+      </StyledSavedGuidePage>
+    );
+  }
+
   return (
     <StyledSavedGuidePage>
       <Header types="close" text="저장한 가이드" onClose={handleClose} />
       <SavedGuidePageContent>
-        <SavedGuideList guides={mockGuides} onGuideClick={handleGuideClick} />
+        <SavedGuideList guides={guides} onGuideClick={handleGuideClick} />
       </SavedGuidePageContent>
     </StyledSavedGuidePage>
   );
@@ -114,4 +88,20 @@ const StyledSavedGuidePage = styled.div`
 const SavedGuidePageContent = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
 `;

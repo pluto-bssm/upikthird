@@ -2,11 +2,12 @@
 
 import React from 'react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Header from '@/components/common/header';
 import NavigationBar from '@/components/common/navigationbar';
 import color from '@/packages/design-system/src/color';
 import { CheckComplete } from '@/../public/svg/svg';
+import * as boardApi from '@/services/board/api';
 
 type ReportReason = 
   | '유해한 내용을 포함하고 있어요'
@@ -25,16 +26,27 @@ const reportReasons: ReportReason[] = [
 
 const ReportPage = () => {
   const router = useRouter();
+  const params = useParams();
+  const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
   const [selectedReason, setSelectedReason] = React.useState<ReportReason | null>(null);
   const [detailText, setDetailText] = React.useState('');
   const [showCancelModal, setShowCancelModal] = React.useState(false);
   const [showCompleteModal, setShowCompleteModal] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
 
-  const handleSubmit = () => {
-    if (selectedReason && detailText.trim()) {
-      console.log('신고 제출:', { reason: selectedReason, detail: detailText });
-      // TODO: API 호출
+  const handleSubmit = async () => {
+    if (!selectedReason || !detailText.trim()) return;
+
+    try {
+      setSubmitting(true);
+      await boardApi.reportBoard(boardId as string, selectedReason, detailText);
       setShowCompleteModal(true);
+    } catch (error) {
+      console.error('신고 제출 실패:', error);
+      alert('신고 제출에 실패했습니다.');
+    } finally {
+      setSubmitting(false);
     }
   };
 

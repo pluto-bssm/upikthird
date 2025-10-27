@@ -1,101 +1,103 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import styled from '@emotion/styled';
 import Header from '@/components/common/header';
 import NavigationBar from '@/components/common/navigationbar';
 import color from '@/packages/design-system/src/color';
-
-interface Comment {
-  id: string;
-  author: string;
-  date: string;
-  content: string;
-  isReply?: boolean;
-}
-
-const mockComments: Comment[] = [
-  {
-    id: '1',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    content: '댓글댓글댓글댓글댓글댓글댓글댓글',
-  },
-  {
-    id: '2',
-    author: '김땡땡',
-    date: '2025-08-31 21:31',
-    content: '댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글',
-  },
-  {
-    id: '3',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    content: '댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글 댓글',
-    isReply: true,
-  },
-];
+import { useQuestionDetail, useQuestionComments } from '@/hooks/useBoard';
+import * as boardApi from '@/services/board/api';
 
 const QuestionDetailPage = () => {
   const router = useRouter();
-  const [comment, setComment] = React.useState('');
+  const params = useParams();
+  const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
-  const handleReportClick = (commentId: string) => {
-    router.push(`/question/${commentId}/comment-report`);
+  const { question, loading: questionLoading } = useQuestionDetail(boardId as string);
+  const { comments, loading: commentsLoading } = useQuestionComments(boardId as string, { page: 0, size: 10 });
+
+  const [comment, setComment] = React.useState('');
+  const [submitting, setSubmitting] = React.useState(false);
+
+  const handleReportClick = () => {
+    router.push(`/question/${boardId}/report`);
+  };
+
+  const handleCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!comment.trim()) return;
+
+    try {
+      setSubmitting(true);
+      await boardApi.createComment({
+        boardId: boardId as string,
+        content: comment,
+      });
+      setComment('');
+    } catch (error) {
+      console.error('Failed to submit comment:', error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <StyledPage>
-      <Header types="report and close" text="" />
+      <Header types="report and close" text="" onClose={handleReportClick} />
       <Container>
-        <Section>
-          <Title>질문 게시판 질문</Title>
-          <MetaInfo>
-            <MetaItem>박땡땡</MetaItem>
-            <MetaItem>2025-08-31 21:31</MetaItem>
-            <BookmarkBox>
-              <BookmarkText>16</BookmarkText>
-            </BookmarkBox>
-          </MetaInfo>
-        </Section>
+        {questionLoading ? (
+          <LoadingSection>로딩 중...</LoadingSection>
+        ) : question ? (
+          <>
+            <Section>
+              <Title>{question.title}</Title>
+              <MetaInfo>
+                <MetaItem>{question.author.name}</MetaItem>
+                <MetaItem>{new Date(question.createdAt).toLocaleString('ko-KR')}</MetaItem>
+                <BookmarkBox>
+                  <BookmarkText>{question.likes}</BookmarkText>
+                </BookmarkBox>
+              </MetaInfo>
+            </Section>
 
-        <Divider />
+            <Divider />
 
-        <ContentSection>
-          <Content>
-            게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용
-            게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용
-            게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용
-            게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용
-            게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용 게시글 내용
-          </Content>
-        </ContentSection>
+            <ContentSection>
+              <Content>{question.content}</Content>
+            </ContentSection>
+          </>
+        ) : (
+          <ErrorSection>질문을 찾을 수 없습니다.</ErrorSection>
+        )}
 
         <Divider />
 
         <CommentsSection>
-          <CommentCount>댓글 2</CommentCount>
-          {mockComments.map((comment, index) => (
-            <CommentItemWrapper key={comment.id} isReply={comment.isReply}>
-              <CommentBox>
-                <CommentHeader>
-                  <AuthorName>{comment.author}</AuthorName>
-                </CommentHeader>
-                <CommentContent>{comment.content}</CommentContent>
-                <CommentFooter>
-                  <FooterItem>{comment.date}</FooterItem>
-                  <FooterReportItem onClick={() => handleReportClick(comment.id)}>신고하기</FooterReportItem>
-                  <FooterItem>답글쓰기</FooterItem>
-                  {index === mockComments.length - 1 && (
-                    <SubmitButtonContainer>
-                      <SubmitButton>등록</SubmitButton>
-                    </SubmitButtonContainer>
-                  )}
-                </CommentFooter>
-              </CommentBox>
-            </CommentItemWrapper>
-          ))}
+          <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
+          {commentsLoading ? (
+            <LoadingText>댓글 로딩 중...</LoadingText>
+          ) : comments?.content && comments.content.length > 0 ? (
+            comments.content.map((comment) => (
+              <CommentItemWrapper key={comment.id} isReply={false}>
+                <CommentBox>
+                  <CommentHeader>
+                    <AuthorName>{comment.author.name}</AuthorName>
+                  </CommentHeader>
+                  <CommentContent>{comment.content}</CommentContent>
+                  <CommentFooter>
+                    <FooterItem>{new Date(comment.createdAt).toLocaleString('ko-KR')}</FooterItem>
+                    <FooterReportItem onClick={() => router.push(`/question/${boardId}/comment-report`)}>
+                      신고하기
+                    </FooterReportItem>
+                    <FooterItem>답글쓰기</FooterItem>
+                  </CommentFooter>
+                </CommentBox>
+              </CommentItemWrapper>
+            ))
+          ) : (
+            <NoCommentText>댓글이 없습니다.</NoCommentText>
+          )}
 
           <CommentInputBox>
             <CommentInputField
@@ -103,6 +105,9 @@ const QuestionDetailPage = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
+            <CommentSubmitButton onClick={handleCommentSubmit} disabled={submitting}>
+              등록
+            </CommentSubmitButton>
           </CommentInputBox>
         </CommentsSection>
       </Container>
@@ -553,8 +558,57 @@ const ModalConfirmButton = styled.button`
   color: ${color.white};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   transition: all 0.2s ease;
+`;
 
-  &:hover:not(:disabled) {
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 20px;
+  margin: 0;
+`;
+
+const NoCommentText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const CommentSubmitButton = styled.button`
+  background-color: ${props => props.disabled ? color.gray200 : color.primary};
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: ${color.white};
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  transition: all 0.2s ease;
+
+  &:hover {
     opacity: 0.9;
   }
+`;
+
+const LoadingSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  color: ${color.gray600};
+`;
+
+const ErrorSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: Pretendard, sans-serif;
+  font-size: 14px;
+  color: ${color.gray600};
 `;
