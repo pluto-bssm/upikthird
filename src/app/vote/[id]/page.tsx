@@ -19,8 +19,32 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const { vote, loading, error } = useVoteById(id);
   const { createResponse, loading: responseLoading } = useVoteResponse();
-  
+
   const labels = ['A','B','C','D','E'];
+
+  const handleVoteSubmit = async () => {
+    if (!selectedOption) {
+      alert("선택지를 선택해주세요.");
+      return;
+    }
+    if (!vote) {
+      return;
+    }
+    
+    try {
+      console.log(vote.id,selectedOption)
+      await createResponse({
+        voteId: vote.id,
+        optionId: selectedOption,
+      });
+      
+      router.push(`${path}/tailvote`);
+    } catch (err) {
+      console.error(err);
+      alert("투표 참여 중 오류가 발생했습니다.");
+    }
+  };
+
 
   return (
     <DesVoteLayout>
@@ -61,7 +85,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
 
         <Button
           text="투표 완료하기"
-          onCkick={() => router.push(`${path}/tailvote`)}
+          onCkick={() => handleVoteSubmit()}
         />
       </VoteBlock>
     </DesVoteLayout>
