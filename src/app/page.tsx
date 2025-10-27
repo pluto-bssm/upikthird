@@ -1,13 +1,14 @@
-"use client";
+'use client'
 
-import styled from "@emotion/styled";
-import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
-export default function HomePage() {
-  return <MainLayout></MainLayout>;
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
+export default function Home() {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push('/login')
+  }, [router])
+
+  return null
 }
-
-const MainLayout = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Providers from "./providers";
 
 import "./globals.css";
 
@@ -14,9 +15,11 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="ko">
+      <Providers>
       <body style={{ backgroundColor: "#FAFAFA", margin: 0, padding: 0 }}>
         {children}
       </body>
+      </Providers>
     </html>
   );
 };

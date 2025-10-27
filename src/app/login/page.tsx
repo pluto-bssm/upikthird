@@ -11,9 +11,8 @@ const LoginPage = () => {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    // TODO: Google OAuth login
     console.log('Google login clicked');
-    router.push('/');
+    router.push('/vote');
   };
 
   return (
