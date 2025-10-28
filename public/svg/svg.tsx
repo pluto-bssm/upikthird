@@ -26,7 +26,7 @@ import Navoption from './Navoption';
 import Nexts from './Nexts';
 import Options from './Options';
 import Plus from './Plus';
-import IconProfile from './Profile';
+import IconProfile from './ProfileIcon';
 import Report from './Report';
 import RequestCheck from './RequestCheck';
 import Search from './Search';
