@@ -3,13 +3,22 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Headernavigationbar from "./headernavigationbar";
 import {
-  Logo, Bell, Search, User, Back, Back2, Bookmark,
-  Close, Report, Options,
-} from "@/../public/svg";
+  Logo,
+  Bell,
+  Search,
+  User,
+  Back,
+  Back2,
+  Bookmark,
+  Close,
+  Report,
+  Options,
+} from "@/../public/svg/svg";
 
 type variant =
   | "default"
@@ -21,7 +30,8 @@ type variant =
   | "title"
   | "close and option"
   | "search"
-  | "question";
+  | "question"
+  | "default and no navi";
 
 type HeaderProps = {
   types: variant;
@@ -30,6 +40,8 @@ type HeaderProps = {
   onSubmit?: () => void;
   onClose?: () => void;
   onSecondSubmit?: () => void;
+  onSearchChange?: (value: string) => void;
+  searchValue?: string;
 };
 
 const Header = ({
@@ -39,10 +51,13 @@ const Header = ({
   onSubmit,
   onClose,
   onSecondSubmit,
+  onSearchChange,
+  searchValue,
 }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
   const [activeIdx, setActiveIdx] = useState(0);
+  const [searchInput, setSearchInput] = useState(searchValue || "");
 
   switch (types) {
     case "default":
@@ -179,18 +194,76 @@ const Header = ({
         </HeaderLayout>
       );
 
-    case "search":
+    case "report and bookmark":
       return (
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back2 width="22" height="22" onClick={() => router.back()} />
+              <Back
+                width="22"
+                height="22"
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </LeftItemBox>
-            <CenterItemBox>
-              <SearchInput placeholder={placeholers} />
-            </CenterItemBox>
+
             <RightItemBox>
-              <Button onClick={onSubmit}>검색</Button>
+              <Report width="25" height="25" />
+              <Bookmark width="25" height="25" />
+            </RightItemBox>
+          </HeaderItemBox>
+        </HeaderLayout>
+      );
+
+      case "search":
+        return (
+          <HeaderLayout>
+            <HeaderItemBox>
+              <LeftItemBox>
+                <Back2 width="22" height="22" onClick={() => router.back()} />
+              </LeftItemBox>
+              <CenterItemBox>
+                <SearchInput 
+                  placeholder={placeholers} 
+                  value={searchInput}
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+                    onSearchChange?.(e.target.value);
+                  }}
+                />
+              </CenterItemBox>
+              <RightItemBox>
+                <Button onClick={onSubmit}>검색</Button>
+              </RightItemBox>
+            </HeaderItemBox>
+          </HeaderLayout>
+        );
+
+    case "default and no navi":
+      return (
+        <HeaderLayout>
+          <HeaderItemBox>
+            <LeftItemBox>
+              <Logo
+                width="50"
+                height="50"
+                onClick={() => {
+                  router.replace("/");
+                }}
+              />
+            </LeftItemBox>
+
+            <RightItemBox>
+              <Bell width="25" height="25" />
+              <Search
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`${path}/search`);
+                }}
+              />
+              <User width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -199,8 +272,6 @@ const Header = ({
 };
 
 export default Header;
-
-/* ---------------- 스타일 ---------------- */
 
 const SearchInput = styled.input`
   width: 100%;
@@ -254,6 +325,7 @@ const CenterItemBox = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  width: 70%;
 `;
 
 const HeaderItemBox = styled.div`
