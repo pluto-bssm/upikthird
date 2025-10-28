@@ -7,7 +7,7 @@ const refreshToken = async () => {
   try {
     const { data } = await upik.patch('/auth', null, {
       headers: {
-        'Refresh-Token': `${Cookie.getItem('refresh-token')}`,
+        'Refresh-Token': `${Cookie.getItem('refreshToken')}`,
       },
     });
     Storage.setItem(TOKEN.ACCESS, data.data.accessToken);

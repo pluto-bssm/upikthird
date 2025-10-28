@@ -1,27 +1,9 @@
-/**
- * GraphQL Types and Interfaces
- * Aligned with the Upik GraphQL API schema
- */
-
-// ============================================================================
-// User Related Types
-// ============================================================================
-
 export interface User {
   id: string;
   name: string;
   email: string;
-  studentId: string;
   role: string;
-  status: string;
-  avatar?: string;
-  createdAt: string;
 }
-
-// ============================================================================
-// Vote Related Types
-// ============================================================================
-
 export interface OptionWithStats {
   id: string;
   text: string;
@@ -54,10 +36,6 @@ export interface MyVote {
 export interface GetMyVotesResponse {
   data: MyVote[];
 }
-
-// ============================================================================
-// Board (Question) Related Types
-// ============================================================================
 
 export interface CommentUser {
   id: string;
@@ -173,10 +151,6 @@ export interface VoteResponsePayload {
   voteId: string;
   optionId: string;
 }
-
-// ============================================================================
-// Pagination Types
-// ============================================================================
 
 export interface PaginationParams {
   page: number;

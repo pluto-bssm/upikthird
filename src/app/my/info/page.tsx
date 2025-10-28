@@ -29,6 +29,12 @@ const AccountInfoPage = () => {
 
   const getQualification = (role: string) => {
     switch (role) {
+      case 'ROLE_BSM':
+        return '재학생';
+      case 'ROLE_GRADUATED':
+        return '졸업생';
+      case 'ROLE_STAFF':
+        return '직원';
       case 'STUDENT':
         return '재학생';
       case 'GRADUATED':
@@ -40,13 +46,18 @@ const AccountInfoPage = () => {
     }
   };
 
+  const getStudentId = (email: string) => {
+    const match = email.match(/^(\d+)\./);
+    return match ? match[1] : 'N/A';
+  };
+
   return (
     <StyledAccountInfoPage>
       <Header types="close" text="" />
       <AccountInfoPageContent>
         <AccountInfoBox
           name={user.name}
-          studentId={user.studentId}
+          studentId={getStudentId(user.email)}
           qualification={getQualification(user.role)}
           email={user.email}
         />

@@ -11,8 +11,10 @@ const LoginPage = () => {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    // Google OAuth login
-    window.location.href = 'https://upik-659794985248.asia-northeast3.run.app/login/oauth2/code/google';
+    const redirectUri = `${window.location.origin}/oauth/callback`;
+    const authUrl = new URL('https://upik-659794985248.asia-northeast3.run.app/oauth2/authorization/google');
+    authUrl.searchParams.append('redirect_uri', redirectUri);
+    window.location.href = authUrl.toString();
   };
 
   return (

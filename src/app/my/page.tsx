@@ -2,24 +2,16 @@
 
 import styled from '@emotion/styled';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import color from '@/packages/design-system/src/color';
 import Header from '@/components/common/header';
 import ProfileBox from '@/components/my/ProfileBox';
 import TabBar from '@/components/my/TabBar';
 import MenuSection, { type MenuItem } from '@/components/my/MenuSection';
-import { Storage } from '@/apis/storage/storage';
-import { TOKEN } from '@/constants/common/constant';
+import { useCurrentUser } from '@/hooks/useAccount';
 
 const MyPage = () => {
   const router = useRouter();
-
-  React.useEffect(() => {
-    const token = Storage.getItem(TOKEN.ACCESS);
-    if (!token) {
-      router.push('/login');
-    }
-  }, [router]);
+  const { user, loading, error } = useCurrentUser();
 
   const menuItems: MenuItem[] = [
     {
@@ -68,9 +60,36 @@ const MyPage = () => {
     if (tab === 'saved') {
       router.push('/my/saved/guide');
     } else {
-      router.push('/my/saved/post');
+      router.push('/my/likes');
     }
   };
+
+  const getQualification = (role: string) => {
+    switch (role) {
+      case 'ROLE_BSM':
+        return '재학생';
+      default:
+        return '외부인';
+    }
+  };
+
+  if (loading) {
+    return (
+      <StyledMyPage>
+        <Header types="close" text="" />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledMyPage>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <StyledMyPage>
+        <Header types="close" text="" />
+        <ErrorText>사용자 정보를 불러올 수 없습니다.</ErrorText>
+      </StyledMyPage>
+    );
+  }
 
   return (
     <StyledMyPage>
@@ -78,9 +97,9 @@ const MyPage = () => {
       <MyPageContent>
         <ProfileBox
           profileImage="https://via.placeholder.com/54"
-          name="박땡땡"
-          status="재학생"
-          email="fake_bssm_email@bssm.hs.kr"
+          name={user.name}
+          status={getQualification(user.role)}
+          email={user.email}
         />
 
         <TabBarWrapper>
@@ -131,4 +150,20 @@ const MenuSectionWrapper = styled.div`
   width: 100%;
   padding-top: 20px;
   padding-bottom: 40px;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
 `;

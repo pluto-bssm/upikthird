@@ -1,6 +1,6 @@
 import { Cookies } from 'react-cookie';
 
-type CookieKey = 'refresh-token';
+type CookieKey = 'refreshToken';
 
 const cookies = new Cookies();
 

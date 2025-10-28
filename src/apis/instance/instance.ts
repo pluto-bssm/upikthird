@@ -18,9 +18,14 @@ upik.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = Storage.getItem(TOKEN.ACCESS);
     console.log('🔑 Request token:', token ? '✅ Found' : '❌ Not found');
+    console.log('📍 Request URL:', config.url);
+    console.log('🔐 Token value:', token ? token.substring(0, 20) + '...' : 'null');
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('✅ Authorization header set');
+    } else {
+      console.log('⚠️ No token - Authorization header NOT set');
     }
     return config;
   },

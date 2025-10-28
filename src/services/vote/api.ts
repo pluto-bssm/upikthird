@@ -2,6 +2,8 @@ import { upik } from '@/apis';
 import type { VotePayload, CreateVoteResponseInput } from '@/types/graphql';
 import { GET_MY_VOTES, GET_VOTE_BY_ID, GET_ALL_VOTES } from './queries';
 import { CREATE_VOTE_RESPONSE } from './mutations';
+import { Storage } from '@/apis/storage/storage';
+import { TOKEN } from '@/constants/common/constant';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/graphql';
 
@@ -10,19 +12,29 @@ interface GraphQLRequest {
   variables?: Record<string, unknown>;
 }
 export async function getMyVotes(): Promise<VotePayload[]> {
+  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(API_URL, {
     query: GET_MY_VOTES,
-  } as GraphQLRequest);
+  } as GraphQLRequest, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const votes = response.data?.data?.vote?.getMyVotes || [];
   return votes;
 }
 
 export async function getVoteById(id: string): Promise<VotePayload> {
+  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(API_URL, {
     query: GET_VOTE_BY_ID,
     variables: { id },
-  } as GraphQLRequest);
+  } as GraphQLRequest, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const vote = response.data?.data?.vote?.getVoteById;
   if (!vote) {

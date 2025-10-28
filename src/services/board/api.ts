@@ -23,6 +23,8 @@ import {
   REPORT_BOARD,
   REPORT_COMMENT,
 } from './mutations';
+import { Storage } from '@/apis/storage/storage';
+import { TOKEN } from '@/constants/common/constant';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/graphql';
 
@@ -32,10 +34,15 @@ interface GraphQLRequest {
 }
 
 export async function getQuestionList(pagination: PaginationParams): Promise<PageResponse<Board>> {
+  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(API_URL, {
     query: GET_QUESTION_LIST,
     variables: { ...pagination },
-  } as GraphQLRequest);
+  } as GraphQLRequest, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const data = response.data?.data?.board?.getQuestionList;
   if (!data) {
