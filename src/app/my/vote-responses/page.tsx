@@ -4,79 +4,180 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
 import color from '@/packages/design-system/src/color';
+import font from '@/packages/design-system/src/font';
+import { useMyVoteResponses } from '@/hooks/useVoteResponses';
 
-interface VoteResponse {
+interface DisplayVote {
   id: string;
-  question: string;
-  selectedOption: string;
-  tailQuestion?: string;
-  tailAnswer?: string;
-  responseDate: string;
-  responseTime: string;
+  title: string;
+  category: string;
+  status: string;
+  finishedAt: string | null;
 }
 
-const mockVoteResponse: VoteResponse = {
-  id: '1',
-  question: '투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문',
-  selectedOption: '선지선지선지선지4',
-  tailQuestion: '해당 선지를 고른 이유는 무엇인가요?',
-  tailAnswer: '네!!!!!! 꼬리 질문에 무조건 응답할거에요!!!!!!!!!!!!!!',
-  responseDate: '2025-07-19',
-  responseTime: '12:34',
-};
-
-const VoteResponsePage = () => {
+const VoteResponsesListPage = () => {
   const router = useRouter();
+  const { responses, loading, error } = useMyVoteResponses();
 
   const handleClose = () => {
     router.back();
   };
 
+  const handleVoteClick = (voteId: string) => {
+    router.push(`/my/vote-responses/${voteId}`);
+  };
+
+  if (loading) {
+    return (
+      <StyledPage>
+        <Header types="close" text="투표 응답 내역" onClose={handleClose} />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledPage>
+    );
+  }
+
+  if (error) {
+    return (
+      <StyledPage>
+        <Header types="close" text="투표 응답 내역" onClose={handleClose} />
+        <ErrorText>투표 응답을 불러올 수 없습니다.</ErrorText>
+      </StyledPage>
+    );
+  }
+
+  const displayVotes: DisplayVote[] = responses.map((vote) => ({
+    id: vote.id,
+    title: vote.title,
+    category: vote.category,
+    status: vote.status,
+    finishedAt: vote.finishedAt || '',
+  }));
+
   return (
-    <StyledVoteResponsePage>
+    <StyledPage>
       <Header types="close" text="투표 응답 내역" onClose={handleClose} />
-      <VoteResponseContent>
-        <VoteSection>
-          <SectionTitle>투표하기</SectionTitle>
-          <VoteQuestion>{mockVoteResponse.question}</VoteQuestion>
-          
-          <SelectedOptionBox>
-            <OptionLabel>선택한 선지</OptionLabel>
-            <OptionText>{mockVoteResponse.selectedOption}</OptionText>
-          </SelectedOptionBox>
-        </VoteSection>
-
-        <Divider />
-
-        {mockVoteResponse.tailQuestion && (
-          <TailQuestionSection>
-            <TailQuestionTitle>꼬리질문 응답하기</TailQuestionTitle>
-            <TailQuestion>{mockVoteResponse.tailQuestion}</TailQuestion>
-            
-            <TailAnswerBox>
-              <AnswerText>{mockVoteResponse.tailAnswer}</AnswerText>
-            </TailAnswerBox>
-          </TailQuestionSection>
-        )}
-
-        <SeparatorBox />
-
-        <ResponseInfoSection>
-          <InfoGroup>
-            <InfoLabel>응답일자</InfoLabel>
-            <InfoValue>{mockVoteResponse.responseDate}</InfoValue>
-          </InfoGroup>
-          <InfoGroup>
-            <InfoLabel>응답시간</InfoLabel>
-            <InfoValue>{mockVoteResponse.responseTime}</InfoValue>
-          </InfoGroup>
-        </ResponseInfoSection>
-      </VoteResponseContent>
-    </StyledVoteResponsePage>
+      <Content>
+        <VotesList>
+          {displayVotes.length === 0 ? (
+            <EmptyText>응답한 투표가 없습니다.</EmptyText>
+          ) : (
+            displayVotes.map((vote) => (
+              <VoteItem key={vote.id} onClick={() => handleVoteClick(vote.id)}>
+                <VoteCategory>{vote.category}</VoteCategory>
+                <VoteTitle>{vote.title}</VoteTitle>
+                <VoteInfo>
+                  <InfoTag status={vote.status}>
+                    {vote.status === 'OPEN' ? '진행중' : '마감됨'}
+                  </InfoTag>
+                  <InfoDate>{vote.finishedAt}</InfoDate>
+                </VoteInfo>
+              </VoteItem>
+            ))
+          )}
+        </VotesList>
+      </Content>
+    </StyledPage>
   );
 };
 
-export default VoteResponsePage;
+export default VoteResponsesListPage;
+
+const StyledPage = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 80px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+`;
+
+const VotesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const VoteItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid ${color.gray100};
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${color.gray50};
+    border-color: ${color.primary};
+  }
+`;
+
+const VoteCategory = styled.span`
+  ${font.H3};
+  color: ${color.primary};
+`;
+
+const VoteTitle = styled.p`
+  ${font.D1};
+  color: ${color.black};
+  margin: 0;
+  padding: 0;
+  word-break: break-word;
+  line-height: 1.4;
+`;
+
+const VoteInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+`;
+
+interface InfoTagProps {
+  status: string;
+}
+
+const InfoTag = styled.span<InfoTagProps>`
+  ${font.caption};
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: ${(props) => (props.status === 'OPEN' ? 'rgba(255, 159, 28, 0.1)' : color.gray100)};
+  color: ${(props) => (props.status === 'OPEN' ? color.primary : color.gray600)};
+`;
+
+const InfoDate = styled.span`
+  ${font.caption};
+  color: ${color.gray600};
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: #E71D36;
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const EmptyText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
 
 const StyledVoteResponsePage = styled.div`
   width: 100%;

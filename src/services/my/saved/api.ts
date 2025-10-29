@@ -4,7 +4,7 @@ import { GET_SAVED_GUIDES, GET_SAVED_POSTS } from './queries';
 import { Storage } from '@/apis/storage/storage';
 import { TOKEN } from '@/constants/common/constant';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/graphql';
+const API_URL = 'https://upik-659794985248.asia-northeast3.run.app/graphql';
 
 interface GraphQLRequest {
   query: string;

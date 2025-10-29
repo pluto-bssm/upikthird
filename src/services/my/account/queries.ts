@@ -1,1 +1,1 @@
-export const GET_CURRENT_USER = `query GetCurrentUser { iam { getCurrentUser { id name email role } } }`;
+export const GET_MY_USER = `query MyQuery { iam { getCurrentUser { email id name role username } } }`;
