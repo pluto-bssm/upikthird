@@ -14,7 +14,8 @@ import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
-
+import { useSearchSimilarGuides } from "@/hooks/useGuides";
+import { useCheckBadWord } from "@/hooks/useVote";
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
@@ -24,6 +25,15 @@ const Detail = () => {
   const router = useRouter();
   const path = usePathname();
 
+  const [IsOpen_1, setIsOpen_1] = useState(false);
+  const [IsOpen, setIsOpen] = useState(false);
+  const [IsOpen_2, setIsOpen_2] = useState(false);
+  const [IsOpen_3, setIsOpen_3] = useState(false);
+  const [IsOpen_4, setIsOpen_4] = useState(false);
+
+  const { data, loading: searchLoading } = useSearchSimilarGuides(title);
+  
+  const { checkBadWord: badWordData, loading: badWordLoading, error, refetch } = useCheckBadWord("");
 
   const handleRemoveBallot = (idx: number) => {
     if (ballots.length > 2) {
@@ -36,31 +46,55 @@ const Detail = () => {
       setBallots([...ballots, ""]);
     }
   };
-  const [IsOpen_1, setIsOpen_1] = useState(false);
-  const [IsOpen, setIsOpen] = useState(false);
-  const [IsOpen_2, setIsOpen_2] = useState(false);
-  const [IsOpen_3, setIsOpen_3] = useState(false);
-  const [IsOpen_4, setIsOpen_4] = useState(false);
-  const [isok, setisok] = useState(false);
 
-  const handleVoteSubmit = () => {
+  const handleVoteSubmit = async () => {
     setIsOpen(false);
     setIsOpen_2(true);
-
-    setTimeout(() => {
+    
+    try {
+      const currentTextToCheck = `${title} ${ballots.join(' ')}`;
+      
+      const result = await refetch({ text: currentTextToCheck });
+      
       setIsOpen_2(false);
-      if (isok == false) {
+      
+      const badWordResult = result.data?.checkBadWord;
+      
+      
+
+      if (badWordResult?.containsBadWord === true) {
         setIsOpen_3(true);
-        setisok(true);
-      } else {
-        setIsOpen_4(true);
+        return;
+      }
+
+      setIsOpen_4(true);
+      
+      if (data?.keywordGuide.searchSimilarByTitle.length! > 0) {
+        console.log(data?.keywordGuide.searchSimilarByTitle);
         setTimeout(() => {
           setIsOpen_4(false);
           router.push(`${path}/likeguide`);
         }, 2000);
+      } else {
+        setTimeout(() => {
+          setIsOpen_4(false);
+          
+        }, 2000);
       }
-    }, 3000);
+      
+    } catch (error) {
+      console.error('투표 제출 중 오류 발생:', error);
+      setIsOpen_2(false);
+    }
   };
+
+  const CheckVote = () => {
+    if((title.trim() === "") || ballots.some((b) => b.trim() === "")){
+      alert("질문과 선지를 모두 작성해주세요.");
+      return;
+    }
+    setIsOpen(true);
+  }
 
   return (
     <DetailLayout>
@@ -110,10 +144,12 @@ const Detail = () => {
       <Button
         icon={<Plus width={24} height={24} />}
         onCkick={() => {
-          setIsOpen(true);
+          CheckVote();
         }}
         text="투표 제작하기"
       />
+      
+      {/* 모달들 */}
       {IsOpen_1 && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
@@ -168,6 +204,7 @@ const Detail = () => {
 
 export default Detail;
 
+// 스타일 컴포넌트들은 동일...
 const DetailLayout = styled.div`
   width: 100%;
   max-width: 600px;

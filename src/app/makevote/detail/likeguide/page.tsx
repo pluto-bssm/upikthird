@@ -13,13 +13,13 @@ import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../public/svg/svg";
+import { useSearchSimilarGuides } from "@/hooks/useGuides";
+import { useVoteStore } from "@/store/useMakeVoteStore";
 
-const BallotData = [
-  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
-  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
-  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
-  { category: "학교생활", title: "가이드 제목", viewCount: 16 },
-];
+
+
+
+
 
 const LikeGuide = () => {
   const router = useRouter();
@@ -27,6 +27,10 @@ const LikeGuide = () => {
   const [IsOpen, setIsOpen] = useState(false);
   const [IsOpen_1, setIsOpen_1] = useState(false);
   const [IsOpen_2, setIsOpen_2] = useState(false);
+
+  const { title } = useVoteStore();
+
+  const { data, loading: searchLoading } = useSearchSimilarGuides(title);
 
   const HandleSubmit = () => {
     setIsOpen_1(true);
@@ -53,12 +57,12 @@ const LikeGuide = () => {
         </LikeGuideInfoArea>
 
         <LikeGuideListArea>
-          {BallotData.map((ballot, index) => (
+          {data?.keywordGuide.searchSimilarByTitle.map((ballot, index) => (
             <GuideBlock
               key={index}
               title={ballot.title}
               category={ballot.category}
-              viewCount={ballot.viewCount}
+              viewCount={ballot.likeCount}
             />
           ))}
         </LikeGuideListArea>

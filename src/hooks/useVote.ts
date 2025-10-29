@@ -1,8 +1,85 @@
 "use client";
 
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_VOTES, GET_VOTE_BY_ID, CREATE_VOTE, CREATE_VOTE_RESPONSE, AIOPTION_CREATE, TODAY_VOTE } from '@/graphql/queries';
+import { GET_VOTES, GET_VOTE_BY_ID, CREATE_VOTE, CREATE_VOTE_RESPONSE, AIOPTION_CREATE, TODAY_VOTE,CREATE_TAIL_VOTE,GET_CHECK_BADWORD } from '@/graphql/queries';
 import { Vote, CreateVoteInput, CreateVoteResponseInput } from '@/types/api';
+
+
+interface CheckBadWordData {
+  checkBadWord: {
+    checkedText: string;
+    containsBadWord: boolean;
+    message: string;
+  };
+}
+
+interface CheckBadWordVars {
+  text: string;
+}
+
+export function useCheckBadWord(text: string) {
+  const { data, loading, error, refetch } = useQuery<CheckBadWordData, CheckBadWordVars>(
+    GET_CHECK_BADWORD,
+    {
+      variables: { text },
+      fetchPolicy: 'network-only'
+    }
+  );
+
+  return {
+    checkBadWord: data,
+    loading,
+    error,
+    refetch
+  };
+}
+
+
+interface CreateTailVoteData {
+  tail: {
+    createTail: {
+      id: string;
+      question: string;
+      voteId: string;
+    }
+  }
+}
+
+interface CreateTailVoteVars {
+  question: string;
+  voteId: string;
+}
+
+export function useCreateTailVote() {
+  const [createTailVoteMutation, { loading, error }] = useMutation<
+    CreateTailVoteData,
+    CreateTailVoteVars
+  >(CREATE_TAIL_VOTE);
+
+  const createTailVote = async (question: string, voteId: string) => {
+    try {
+      console.log('꼬리 투표 생성:', { question, voteId });
+      
+      const result = await createTailVoteMutation({
+        variables: { question, voteId },
+      });
+
+      console.log('꼬리 투표 생성 결과:', result.data);
+      
+      return result.data?.tail?.createTail;
+    } catch (err) {
+      console.error('꼬리 투표 생성 실패:', err);
+      throw err;
+    }
+  };
+
+  return {
+    createTailVote,
+    loading,
+    error
+  };
+}
+
 
 
 interface OptionGeneratorData {

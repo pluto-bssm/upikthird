@@ -9,12 +9,37 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../public/svg/svg";
+import { useCreateTailVote } from "@/hooks/useVote";
 
 const TailVote = () => {
   const router = useRouter();
   const path = usePathname();
   const newPath = path.replace("tailvote", "");
   const [isOpen, setIsOpen] = useState(false);
+  const [content, setContent] = useState("");
+
+  const { createTailVote, loading, error } = useCreateTailVote();
+
+  const HandleTailVoteMake = async () => {
+    try {
+      // voteId 추출 수정 - 배열이 아닌 문자열로
+      const voteId = newPath.split("/").filter(Boolean).pop() || ""; // 마지막 세그먼트 추출
+      
+      if (!content.trim()) {
+        alert("응답을 작성해주세요!");
+        return;
+      }
+
+      const result = await createTailVote(content, voteId); // 매개변수 순서 수정
+      
+      if (result) {
+        setIsOpen(true); // 성공 시에만 모달 열기
+      }
+    } catch (err) {
+      console.error("꼬리 투표 생성 실패:", err);
+      alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <TailVoteLayout>
@@ -33,10 +58,17 @@ const TailVote = () => {
         </TailInfo>
 
         <TextAreaContainer>
-          <TextArea placeholder="응답을 작성해주세요! 꼬리 질문 응답은 더 질 높은 가이드를 제작하는데 도움이 됩니다." />
+          <TextArea 
+            placeholder="응답을 작성해주세요! 꼬리 질문 응답은 더 질 높은 가이드를 제작하는데 도움이 됩니다." 
+            onChange={(e) => setContent(e.target.value)}
+            value={content} // controlled component로 만들기
+          />
         </TextAreaContainer>
 
-        <Button text="투표 완료하기" onCkick={() => setIsOpen(true)} />
+        <Button 
+          text={loading ? "투표 중..." : "투표 완료하기"} 
+          onCkick={HandleTailVoteMake}
+        />
       </TailVoteBlock>
 
       {isOpen && (
@@ -56,6 +88,9 @@ const TailVote = () => {
 };
 
 export default TailVote;
+
+// 스타일 컴포넌트들은 그대로 유지...
+
 
 const TailVoteLayout = styled.div`
   width: 100%;

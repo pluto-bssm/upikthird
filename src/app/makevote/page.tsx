@@ -23,9 +23,6 @@ const MakeVote = () => {
   const path = usePathname();
 
 
-
-
-
   function CanCelMakeVote() {
     resetVoteData();
     router.back();

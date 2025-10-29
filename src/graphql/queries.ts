@@ -19,7 +19,7 @@ export const GET_CURRENT_USER = gql`
 export const GET_VOTES = gql`
   query GetVotes {
     vote {
-      getAllVotes(includeExpired: false) {
+      getAllVotes(includeExpired: false,includeHasVoted: true) {
         id
         title
         hasVoted
@@ -37,6 +37,15 @@ export const GET_VOTES = gql`
     }
   }
 `;
+
+export const GET_CHECK_BADWORD  = gql`
+query MyQuery ($text: String!) {
+  checkBadWord(text: $text) {
+    checkedText
+    containsBadWord
+    message
+  }
+}`
 
 export const GET_ALL_VOTES = gql`
   query GetAllVotes {
@@ -103,27 +112,39 @@ export const GET_VOTE_BY_ID = gql`
   }
 `;
 
-export const CREATE_VOTE = gql`
-  mutation CreateVote($input: CreateVoteInput!) {
-    vote {
-      createVote(input: $input) {
-        id
-        title
-        category
-        status
-        totalResponses
-        finishedAt
-        hasVoted
-        options {
+export const CREATE_TAIL_VOTE = gql`
+mutation MyMutation($question: String!, $voteId: ID!) {
+  tail {
+    createTail(question: $question, voteId: $voteId) {
+      id
+      question
+      voteId
+    }
+  }
+}`
+;
+
+  export const CREATE_VOTE = gql`
+    mutation CreateVote($input: CreateVoteInput!) {
+      vote {
+        createVote(input: $input) {
           id
-          content
-          responseCount
-          percentage
+          title
+          category
+          status
+          totalResponses
+          finishedAt
+          hasVoted
+          options {
+            id
+            content
+            responseCount
+            percentage
+          }
         }
       }
     }
-  }
-`;
+  `;
 
 export const VOTE_ON_OPTION = gql`
   mutation VoteOnOption($voteId: ID!, $optionId: ID!) {
