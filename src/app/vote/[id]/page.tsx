@@ -42,6 +42,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
     } catch (err) {
       console.error(err);
       alert("투표 참여 중 오류가 발생했습니다.");
+
     }
   };
 

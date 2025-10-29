@@ -47,7 +47,7 @@ const TailVote = () => {
           rightText="했어요!"
           subText="마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요"
           onClick={() => {
-            router.push("/");
+            router.push("/vote");
           }}
         />
       )}

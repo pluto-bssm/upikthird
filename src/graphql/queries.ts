@@ -19,7 +19,7 @@ export const GET_CURRENT_USER = gql`
 export const GET_VOTES = gql`
   query GetVotes {
     vote {
-      getAllVotes {
+      getAllVotes(includeExpired: false) {
         id
         title
         hasVoted

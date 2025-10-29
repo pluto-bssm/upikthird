@@ -15,6 +15,7 @@ import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 
+
 const Latterlist = ["A", "B", "C", "D", "E"];
 
 const Detail = () => {
@@ -22,6 +23,7 @@ const Detail = () => {
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
+
 
   const handleRemoveBallot = (idx: number) => {
     if (ballots.length > 2) {

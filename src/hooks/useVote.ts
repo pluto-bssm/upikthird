@@ -117,30 +117,31 @@ interface VoteResponseData {
   }
 }
 
+
+
 export function useVoteResponse() {
-  const [createResponseMutation, { loading, error }] = useMutation<VoteResponseData, { input: CreateVoteResponseInput }>(CREATE_VOTE_RESPONSE);
-  
+  const [createResponseMutation, { loading, error }] = useMutation<
+    VoteResponseData,
+    { input: CreateVoteResponseInput }
+  >(CREATE_VOTE_RESPONSE);
+
   const createResponse = async (input: CreateVoteResponseInput) => {
-    try {
-      const result = await createResponseMutation({
-        variables: { input },
-        refetchQueries: [
-          { 
-            query: GET_VOTE_BY_ID, 
-            variables: { id: input.voteId } 
-          }
-        ]
-      });
-      return result.data?.voteResponse?.createVoteResponse;
-    } catch (err) {
-      throw err;
-    }
-  };
+    console.log('투표 제출:', input);
+
+    const result = await createResponseMutation({
+      variables: { input },
+    });
+
+    console.log('서버 응답:', result.data);
+
   
+    return result.data?.voteResponse?.createVoteResponse;
+  };
+
   return {
     createResponse,
     loading,
-    error
+    error,
   };
 }
 

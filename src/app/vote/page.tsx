@@ -76,6 +76,7 @@ const VoteContent = styled.div`
   margin-top: 100px;
   height: 100vh;
   background-color: ${color.white};
+  margin-bottom: 200px;
 `;
 
 const VoteMakeButtonLayout = styled.div`
