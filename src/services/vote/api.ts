@@ -5,7 +5,6 @@ import { CREATE_VOTE_RESPONSE } from "./mutations";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ;
 
 interface GraphQLRequest {
   query: string;
@@ -14,7 +13,7 @@ interface GraphQLRequest {
 export async function getMyVotes(): Promise<VotePayload[]> {
   const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    API_URL,
+    "",
     {
       query: GET_MY_VOTES,
     } as GraphQLRequest,
@@ -32,7 +31,7 @@ export async function getMyVotes(): Promise<VotePayload[]> {
 export async function getVoteById(id: string): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    API_URL,
+    "",
     {
       query: GET_VOTE_BY_ID,
       variables: { id },
@@ -52,7 +51,7 @@ export async function getVoteById(id: string): Promise<VotePayload> {
 }
 
 export async function getAllVotes(): Promise<VotePayload[]> {
-  const response = await upik.post(API_URL, {
+  const response = await upik.post("", {
     query: GET_ALL_VOTES,
   } as GraphQLRequest);
 
@@ -63,7 +62,7 @@ export async function getAllVotes(): Promise<VotePayload[]> {
 export async function createVoteResponse(
   input: CreateVoteResponseInput,
 ): Promise<boolean> {
-  const response = await upik.post(API_URL, {
+  const response = await upik.post("", {
     query: CREATE_VOTE_RESPONSE,
     variables: { input },
   } as GraphQLRequest);

@@ -30,7 +30,7 @@ type variant =
   | "title"
   | "close and option"
   | "search"
-  | "question";
+  | "question"
   | "default and no navi";
 
 type HeaderProps = {

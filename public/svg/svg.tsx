@@ -25,7 +25,6 @@ import Navoption from "./Navoption";
 import Nexts from "./Nexts";
 import Options from "./Options";
 import Plus from "./Plus";
-import Profile from "./Profile";
 import Report from "./Report";
 import RequestCheck from "./RequestCheck";
 import Search from "./Search";
@@ -36,8 +35,6 @@ import Views from "./Views";
 import VoteMain from "./VoteMain";
 import VotemakeButton from "./VotemakeButton";
 import Vote from "./Vote";
-import Exclamation from "./Exclamation";
-import Question from "./Question";
 import CheckComplete from "./CheckComplete";
 import UpikLogo from "./UpikLogo";
 import { GoogleIcon } from "./GoogleIcon";
@@ -77,7 +74,6 @@ export {
   Nexts,
   Options,
   Plus,
-  IconProfile,
   Report,
   RequestCheck,
   Search,
