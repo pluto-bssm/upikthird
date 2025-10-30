@@ -15,9 +15,8 @@ import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../public/svg/svg";
 import { useSearchSimilarGuides } from "@/hooks/useGuides";
 import { useVoteStore } from "@/store/useMakeVoteStore";
-
-
-
+import { useCreateVote } from "@/hooks/useVote";
+import { CreateVoteInput } from "@/types/api";
 
 
 
@@ -28,16 +27,25 @@ const LikeGuide = () => {
   const [IsOpen_1, setIsOpen_1] = useState(false);
   const [IsOpen_2, setIsOpen_2] = useState(false);
 
-  const { title } = useVoteStore();
+  const { title , ballots, category } = useVoteStore();
+  const { createVote, loading, error } = useCreateVote();
 
   const { data, loading: searchLoading } = useSearchSimilarGuides(title);
+  
+  
 
   const HandleSubmit = () => {
-    setIsOpen_1(true);
-    setTimeout(() => {
-      setIsOpen_1(false);
-      setIsOpen_2(true);
-    }, 3000);
+      setIsOpen_1(true);
+      const voteInput: CreateVoteInput = {
+            title: title.trim(),
+            category: category,
+            options: ballots 
+        };  
+      const result =  createVote(voteInput);
+      if(result != null ){
+        setIsOpen_1(false);
+        setIsOpen_2(true);
+      }
   };
 
   return (
