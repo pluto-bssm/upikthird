@@ -6,44 +6,23 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Bookmark } from '../../../public/svg/svg';
 import Image from "next/image";
+import { upik } from "@/apis";
+import { GET_ALL_GUIDES } from "@/graphql/queries";
 
-const mockData = [
-  {
-    id: 1,
-    thumbnail: "🏫",
-    title: "뭐가 재밌는지",
-    category: "학교생활",
-    like: 16,
-  },
-  {
-    id: 2,
-    thumbnail: "🏫",
-    title: "가이드2",
-    category: "학교생활",
-    like: 16,
-  },
-  {
-    id: 3,
-    thumbnail: "🏫",
-    title: "가이드 3",
-    category: "기숙사생활",
-    like: 16,
-  },
-  {
-    id: 4,
-    thumbnail: "🏫",
-    title: "가이드 4",
-    category: "학교생활",
-    like: 16,
-  },
-  {
-    id: 5,
-    thumbnail: "🏫",
-    title: "가이드 5",
-    category: "유머",
-    like: 16,
-  }
-]
+interface GraphQLRequest {
+  query: string;
+  variables?: Record<string, unknown>;
+}
+
+interface GuideItem {
+  id: string | number;
+  title: string;
+  category: string;
+  content?: string;
+  like?: number;
+  createdAt?: string;
+  voteId?: string | null;
+}
 
 const getThumbnailImage = (category: string) => {
   switch (category) {
@@ -65,16 +44,47 @@ interface GuideComponentProps {
 
 const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponentProps) => {
   const router = useRouter();
+  const [guides, setGuides] = React.useState<GuideItem[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const handleGuideClick = (guideId: number) => {
+  const handleGuideClick = (guideId: string | number) => {
     router.push(`/moreGuide/${guideId}`);
   };
 
-  const filteredGuides = mockData.filter(guide => 
-    guide.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const fetchGuides = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await upik.post("", {
+        query: GET_ALL_GUIDES,
+        variables: { page: 0, size: 50, sortBy: "createdAt,desc" },
+      } as GraphQLRequest);
+
+      const content: GuideItem[] =
+        response?.data?.data?.getAllGuides?.content ?? [];
+
+      setGuides(content);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "가이드를 불러오지 못했어요";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    fetchGuides();
+  }, [fetchGuides]);
+
+  const filteredGuides = React.useMemo(
+    () =>
+      guides.filter((guide) =>
+        (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    [guides, searchQuery],
   );
 
-  // 결과 개수를 부모 컴포넌트로 전달
   React.useEffect(() => {
     onResultCountChange?.(filteredGuides.length);
   }, [filteredGuides.length, onResultCountChange]);
@@ -83,7 +93,11 @@ const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponen
     <GuideBox>
       <Section>
         <SectionBody gap={"16px"}>
-          {filteredGuides.length > 0 ? (
+          {loading && <LoadingMessage>불러오는 중...</LoadingMessage>}
+          {!loading && error && (
+            <NoResultsMessage>{error}</NoResultsMessage>
+          )}
+          {!loading && !error && filteredGuides.length > 0 ? (
             filteredGuides.map((guide, index) => (
               <GuideCard key={index} onClick={() => handleGuideClick(guide.id)}>
                 <Thumnail>
@@ -105,7 +119,8 @@ const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponen
                 </GuideText>
               </GuideCard>
             ))
-          ) : (
+          ) : null}
+          {!loading && !error && filteredGuides.length === 0 && (
             <NoResultsMessage>
               검색결과가 없어요
             </NoResultsMessage>
@@ -211,4 +226,13 @@ const NoResultsMessage = styled.div`
   color: ${color.gray500};
   font-family: ${font.D3};
   font-size: 16px;
+`;
+
+const LoadingMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  color: ${color.gray600};
+  font-family: ${font.caption};
 `;
