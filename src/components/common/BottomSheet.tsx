@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Select } from "../../../public/svg/svg";
-
+import { useVoteStore } from "@/store/useMakeVoteStore";
 type SelectorItem = {
   value: string;
   label: string;
@@ -11,12 +11,13 @@ type SelectorItem = {
 type Props = {
   title: string;
   selectedValue: string;
-  setSelectedValue: (value: string) => void;
+  setSelectedValue: (value: number) => void;
   items: SelectorItem[];
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
   showArrowIcon?: boolean;
   arrowIconSrc?: string;
+  setSelect?: (value: string) => void;
 };
 
 export default function BottomSheetSelector({
@@ -26,6 +27,7 @@ export default function BottomSheetSelector({
   items,
   isOpen,
   setIsOpen,
+  setSelect,
   showArrowIcon = true,
 }: Props) {
   const [isVisible, setIsVisible] = useState(false);
@@ -67,7 +69,7 @@ export default function BottomSheetSelector({
             <ItemContainer key={item.value}>
               <ItemRow
                 selected={item.value === selectedValue}
-                onClick={() => setSelectedValue(item.value)}
+                onClick={() => setSelectedValue(parseInt(item.value))}
               >
                 <ItemText selected={item.value === selectedValue}>
                   {item.label}

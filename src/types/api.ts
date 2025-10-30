@@ -133,6 +133,9 @@ export interface CreateVoteInput {
   title: string;
   category: string;
   options: string[];
+  closureType: string, 
+  customDays: number, 
+  participantThreshold: number
 }
 
 export interface CreateVoteResponseInput {

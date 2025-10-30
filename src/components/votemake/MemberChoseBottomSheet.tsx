@@ -5,6 +5,7 @@ import color from "@/packages/design-system/src/color";
 import { useRouter } from "next/navigation";
 import IconTwoOptionModal from "../modal/IconTwoOptionModal";
 import BottomSheetSelector from "../common/BottomSheet";
+import { useVoteStore } from "@/store/useMakeVoteStore";
 
 type Props = {
   isOpen?: boolean;
@@ -25,16 +26,18 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  const { setClosureType , setCustomDays , setParticipantThreshold } = useVoteStore();
+
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-      // 다음 프레임에서 애니메이션 시작
+
       requestAnimationFrame(() => {
         setIsAnimating(true);
       });
     } else {
       setIsAnimating(false);
-      // 애니메이션 완료 후 컴포넌트 제거
+
       const timer = setTimeout(() => {
         setIsVisible(false);
       }, 350);
@@ -90,12 +93,15 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
     switch (index) {
       case 1:
+        setClosureType("customDays");
         setTimeout(() => setIsTimeOpen(true), 300);
         break;
       case 2:
+        setClosureType("participantThreshold");
         setTimeout(() => setIsMemberOpen(true), 300);
         break;
       default:
+        setClosureType("default");
         break;
     }
   };
@@ -178,7 +184,8 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
       <BottomSheetSelector
         title="시간 선택하기"
         selectedValue={selectedTime}
-        setSelectedValue={setSelectedTime}
+        setSelectedValue={setCustomDays}
+        setSelect={setSelectedTime}
         items={timeOptions}
         isOpen={isTimeOpen}
         setIsOpen={setIsTimeOpen}
@@ -187,7 +194,8 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
       <BottomSheetSelector
         title="인원수 선택하기"
         selectedValue={selectedMembers}
-        setSelectedValue={setSelectedMembers}
+        setSelectedValue={setParticipantThreshold}
+        setSelect={setSelectedMembers}
         items={memberOptions}
         isOpen={isMemberOpen}
         setIsOpen={setIsMemberOpen}

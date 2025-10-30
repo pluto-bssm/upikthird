@@ -27,7 +27,7 @@ const LikeGuide = () => {
   const [IsOpen_1, setIsOpen_1] = useState(false);
   const [IsOpen_2, setIsOpen_2] = useState(false);
 
-  const { title , ballots, category, resetVoteData } = useVoteStore();
+  const { title , ballots, category, resetVoteData , closureType, customDays,participantThreshold } = useVoteStore();
   const { createVote } = useCreateVote();
 
   const { data } = useSearchSimilarGuides(title);
@@ -39,8 +39,12 @@ const LikeGuide = () => {
       const voteInput: CreateVoteInput = {
             title: title.trim(),
             category: category,
-            options: ballots 
-        };  
+            options: ballots,
+            closureType: closureType,
+            customDays: customDays,
+            participantThreshold: participantThreshold,
+        }; 
+      console.log(voteInput); 
       const result =  createVote(voteInput);
       if(result != null ){
         setIsOpen_1(false);

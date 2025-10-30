@@ -23,7 +23,7 @@ import { useCreateVote } from "@/hooks/useVote";
 const Latterlist = ["A", "B", "C", "D", "E"];
 
 const Detail = () => {
-  const { ballots, setBallots, title, setTitle ,resetVoteData,category} = useVoteStore();
+  const { ballots, setBallots, title, setTitle ,resetVoteData,category,closureType,customDays,participantThreshold} = useVoteStore();
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
@@ -81,16 +81,18 @@ const Detail = () => {
       
       if (data?.keywordGuide.searchSimilarByTitle.length! > 0) {
         console.log(data?.keywordGuide.searchSimilarByTitle);
-        setTimeout(() => {
           setIsOpen_4(false);
           router.push(`${path}/likeguide`);
-        }, 2000);
       } else {
           const voteInput: CreateVoteInput = {
               title: title.trim(),
               category: category,
-              options: ballots 
+              options: ballots,
+              closureType: closureType,
+              customDays: customDays,
+              participantThreshold: participantThreshold
           };  
+        console.log(voteInput); 
         const result =  createVote(voteInput);
         if(result != null ){
         }
