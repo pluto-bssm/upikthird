@@ -28,9 +28,9 @@ const LikeGuide = () => {
   const [IsOpen_2, setIsOpen_2] = useState(false);
 
   const { title , ballots, category } = useVoteStore();
-  const { createVote, loading, error } = useCreateVote();
+  const { createVote } = useCreateVote();
 
-  const { data, loading: searchLoading } = useSearchSimilarGuides(title);
+  const { data } = useSearchSimilarGuides(title);
   
   
 
@@ -87,7 +87,7 @@ const LikeGuide = () => {
           title="투표 제작을 취소하시겠어요?"
           info="지금까지 작성한 내용은 저장되지 않습니다."
           passfunction={() => {
-            router.replace("/");
+            router.replace("/vote");
           }}
           setIsOpen={setIsOpen}
           isOpen={IsOpen}
@@ -137,7 +137,8 @@ const LikeGuideSection = styled.section`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin-top: 100px;
+  margin-top: 150px;
+  margin-bottom: 30px;
 `;
 
 const LikeGuideInfoArea = styled.div`

@@ -30,6 +30,8 @@ type HeaderProps = {
   onSubmit?: () => void;
   onClose?: () => void;
   onSecondSubmit?: () => void;
+  searchitem? : string;
+  onSearchChange?: (value: string) => void;
 };
 
 const Header = ({
@@ -39,6 +41,8 @@ const Header = ({
   onSubmit,
   onClose,
   onSecondSubmit,
+  searchitem,
+  onSearchChange
 }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
@@ -187,7 +191,7 @@ const Header = ({
               <Back2 width="22" height="22" onClick={() => router.back()} />
             </LeftItemBox>
             <CenterItemBox>
-              <SearchInput placeholder={placeholers} />
+              <SearchInput placeholder={placeholers} value={searchitem} onChange={(e) => onSearchChange?.(e.target.value)}/>
             </CenterItemBox>
             <RightItemBox>
               <Button onClick={onSubmit}>검색</Button>
@@ -254,6 +258,7 @@ const CenterItemBox = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  width: 60%;
 `;
 
 const HeaderItemBox = styled.div`

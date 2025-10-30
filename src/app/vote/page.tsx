@@ -13,8 +13,15 @@ const vote = () => {
   const router = useRouter();
   const { votes, loading, error, refetch } = useVotes();
 
-  console.log(votes);
+  if(loading){
+    return (
+      <LoadingLayout>
+          <div>Loading...</div>
+      </LoadingLayout>
+    );
 
+  }
+  else{
   return (
     <VoteLayout>
       <Header types={"default"} />
@@ -38,6 +45,7 @@ const vote = () => {
       <NavigationBar />
     </VoteLayout>
   );
+  }
 };
 
 export default vote;
@@ -67,4 +75,14 @@ const VoteMakeButtonLayout = styled.div`
   max-width: 500px;
   display: flex;
   justify-content: flex-end;
+`;
+
+const LoadingLayout = styled.div`
+  width: 100%;
+  max-width: 600px;
+  background-color: ${color.white};
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

@@ -32,7 +32,6 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
     }
     
     try {
-      console.log(vote.id,selectedOption)
       await createResponse({
         voteId: vote.id,
         optionId: selectedOption,

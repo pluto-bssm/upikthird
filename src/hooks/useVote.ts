@@ -58,17 +58,13 @@ export function useCreateTailVote() {
 
   const createTailVote = async (question: string, voteId: string) => {
     try {
-      console.log('꼬리 투표 생성:', { question, voteId });
+      
       
       const result = await createTailVoteMutation({
         variables: { question, voteId },
-      });
-
-      console.log('꼬리 투표 생성 결과:', result.data);
-      
+      }); 
       return result.data?.tail?.createTail;
     } catch (err) {
-      console.error('꼬리 투표 생성 실패:', err);
       throw err;
     }
   };
@@ -203,13 +199,12 @@ export function useVoteResponse() {
   >(CREATE_VOTE_RESPONSE);
 
   const createResponse = async (input: CreateVoteResponseInput) => {
-    console.log('투표 제출:', input);
 
     const result = await createResponseMutation({
       variables: { input },
     });
 
-    console.log('서버 응답:', result.data);
+ 
 
   
     return result.data?.voteResponse?.createVoteResponse;

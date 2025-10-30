@@ -22,18 +22,18 @@ const TailVote = () => {
 
   const HandleTailVoteMake = async () => {
     try {
-      // voteId 추출 수정 - 배열이 아닌 문자열로
-      const voteId = newPath.split("/").filter(Boolean).pop() || ""; // 마지막 세그먼트 추출
+
+      const voteId = newPath.split("/").filter(Boolean).pop() || ""; 
       
       if (!content.trim()) {
         alert("응답을 작성해주세요!");
         return;
       }
 
-      const result = await createTailVote(content, voteId); // 매개변수 순서 수정
+      const result = await createTailVote(content, voteId); 
       
       if (result) {
-        setIsOpen(true); // 성공 시에만 모달 열기
+        setIsOpen(true); 
       }
     } catch (err) {
       console.error("꼬리 투표 생성 실패:", err);

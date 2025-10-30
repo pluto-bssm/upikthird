@@ -242,7 +242,7 @@ const Title = styled.input`
   outline: none;
   background-color: ${color.white};
   border: none;
-
+  width: 100%;
   ::placeholder {
     color: ${color.gray300};
   }
