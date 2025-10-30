@@ -84,6 +84,8 @@ const Title = styled.p`
   font-size: 20px;
   font-weight: 600;
   color: ${color.black};
+  text-align: center;
+  width: 80%;
 `;
 
 const Description = styled.p`
@@ -91,5 +93,5 @@ const Description = styled.p`
   color: ${color.gray600};
   text-align: center;
   line-height: 1.5;
-  width: 80%;
+  width: 100%;
 `;

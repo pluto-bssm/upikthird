@@ -18,7 +18,7 @@ import {
   Close,
   Report,
   Options,
-} from "@/../public/svg";
+} from "@/../public/svg/svg";
 
 type variant =
   | "default"
@@ -31,6 +31,7 @@ type variant =
   | "close and option"
   | "search"
   | "question";
+  | "default and no navi";
 
 type HeaderProps = {
   types: variant;
@@ -38,6 +39,9 @@ type HeaderProps = {
   placeholers?: string;
   onSubmit?: () => void;
   onClose?: () => void;
+  onSecondSubmit?: () => void;
+  onSearchChange?: (value: string) => void;
+  searchValue?: string;
 };
 
 const Header = ({
@@ -46,10 +50,14 @@ const Header = ({
   placeholers,
   onSubmit,
   onClose,
+  onSecondSubmit,
+  onSearchChange,
+  searchValue,
 }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
   const [activeIdx, setActiveIdx] = useState(0);
+  const [searchInput, setSearchInput] = useState(searchValue || "");
 
   switch (types) {
     case "default":
@@ -150,7 +158,6 @@ const Header = ({
             <CenterItemBox>
               <Title>{text}</Title>
             </CenterItemBox>
-
             <RightItemBox>
               <Close width="25" height="25" onClick={handleCloseClick} />
             </RightItemBox>
@@ -172,7 +179,6 @@ const Header = ({
                 }}
               />
             </LeftItemBox>
-
             <RightItemBox>
               <Button onClick={onSubmit}>등록</Button>
             </RightItemBox>
@@ -221,7 +227,6 @@ const Header = ({
                 }}
               />
             </LeftItemBox>
-
             <RightItemBox>
               <Report width="25" height="25" />
               <Bookmark width="25" height="25" onClick={onClose} />
@@ -243,7 +248,6 @@ const Header = ({
                 }}
               />
             </LeftItemBox>
-
             <CenterItemBox>
               <Title>{text}</Title>
             </CenterItemBox>
@@ -252,6 +256,21 @@ const Header = ({
       );
 
     case "close and option":
+      return (
+        <HeaderLayout>
+          <HeaderItemBox>
+            <LeftItemBox>
+              <Back width="22" height="22" onClick={() => router.back()} />
+            </LeftItemBox>
+            <RightItemBox>
+              <Close width="25" height="25" onClick={onSecondSubmit} />
+              <Options width="25" height="25" onClick={onSubmit} />
+            </RightItemBox>
+          </HeaderItemBox>
+        </HeaderLayout>
+      );
+
+    case "report and bookmark":
       return (
         <HeaderLayout>
           <HeaderItemBox>
@@ -273,7 +292,31 @@ const Header = ({
         </HeaderLayout>
       );
 
-    case "search":
+      case "search":
+        return (
+          <HeaderLayout>
+            <HeaderItemBox>
+              <LeftItemBox>
+                <Back2 width="22" height="22" onClick={() => router.back()} />
+              </LeftItemBox>
+              <CenterItemBox>
+                <SearchInput 
+                  placeholder={placeholers} 
+                  value={searchInput}
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+                    onSearchChange?.(e.target.value);
+                  }}
+                />
+              </CenterItemBox>
+              <RightItemBox>
+                <Button onClick={onSubmit}>검색</Button>
+              </RightItemBox>
+            </HeaderItemBox>
+          </HeaderLayout>
+        );
+
+    case "default and no navi":
       return (
         <HeaderLayout>
           <HeaderItemBox>
@@ -286,7 +329,6 @@ const Header = ({
                 }}
               />
             </LeftItemBox>
-
             <CenterItemBox>
               <SearchInput placeholder={placeholers} />
             </CenterItemBox>
@@ -359,6 +401,7 @@ const CenterItemBox = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  width: 70%;
 `;
 
 const HeaderItemBox = styled.div`

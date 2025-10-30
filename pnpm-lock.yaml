@@ -7,9 +7,6 @@ settings:
 importers:
   .:
     dependencies:
-      "@emailjs/browser":
-        specifier: ^4.4.1
-        version: 4.4.1
       "@emotion/react":
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.13)(react@19.1.0)
@@ -100,7 +97,6 @@ packages:
         integrity: sha512-3lSpxGgvnmZznmBkCRnVREPUFJv2wrv9iAoFDvADJc0ypmdOxdUtcLeBgBJ6zE0PMeTKnxeQzyk0xTBq4Ep7zw==,
       }
     engines: { node: ">=6.9.0" }
-
   "@babel/generator@7.28.5":
     resolution:
       {
@@ -230,7 +226,6 @@ packages:
         integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==,
       }
     engines: { node: ">=6.9.0" }
-
   "@babel/helper-validator-identifier@7.28.5":
     resolution:
       {
@@ -258,7 +253,6 @@ packages:
         integrity: sha512-HFN59MmQXGHVyYadKLVumYsA9dBFun/ldYxipEjzA4196jpLZd8UjEEBLkbEkvfYreDqJhZxYAWFPtrfhNpj4w==,
       }
     engines: { node: ">=6.9.0" }
-
   "@babel/parser@7.28.4":
     resolution:
       {
@@ -266,7 +260,6 @@ packages:
       }
     engines: { node: ">=6.0.0" }
     hasBin: true
-
   "@babel/parser@7.28.5":
     resolution:
       {
@@ -1375,7 +1368,6 @@ packages:
       {
         integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==,
       }
-
   "@jridgewell/remapping@2.3.5":
     resolution:
       {
@@ -1530,7 +1522,6 @@ packages:
       {
         integrity: sha512-5EwMtOqvJMMa3HbmxLlF74e+3/HhwBTMcvt3nqVJgGCozO6hzIPOBlwm8mGVNR9SN2IJpxSnlxczyDjcn7qIyw==,
       }
-
   "@svgr/babel-plugin-add-jsx-attribute@8.0.0":
     resolution:
       {
@@ -1685,7 +1676,6 @@ packages:
       }
     peerDependencies:
       react: ^18 || ^19
-
   "@trysound/sax@0.2.0":
     resolution:
       {
@@ -1704,7 +1694,6 @@ packages:
       {
         integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==,
       }
-
   "@types/hoist-non-react-statics@3.3.7":
     resolution:
       {
@@ -2247,7 +2236,6 @@ packages:
         integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==,
       }
     engines: { node: ">=10" }
-
   caniuse-lite@1.0.30001745:
     resolution:
       {
@@ -2330,7 +2318,6 @@ packages:
       {
         integrity: sha512-p9hObIIEENxSV8xIu+V68JjSeARg6UVMG5mR+JEUguG3sI6MsiS1njz2jHmyJDvA+8jX/sytkBHup6kxhM9law==,
       }
-
   cosmiconfig@7.1.0:
     resolution:
       {
@@ -2525,7 +2512,6 @@ packages:
       {
         integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==,
       }
-
   dunder-proto@1.0.1:
     resolution:
       {
@@ -5571,7 +5557,6 @@ snapshots:
       react: 19.1.0
 
   "@trysound/sax@0.2.0": {}
-
   "@tybys/wasm-util@0.10.1":
     dependencies:
       tslib: 2.8.1

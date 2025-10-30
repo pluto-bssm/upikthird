@@ -1,7 +1,8 @@
+
 import type { SVGProps } from "react";
 import React from "react";
 
-const Profile = (props: SVGProps<SVGSVGElement>) => {
+const IconProfile = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       viewBox="0 0 54 54"
