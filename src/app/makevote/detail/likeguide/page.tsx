@@ -27,7 +27,7 @@ const LikeGuide = () => {
   const [IsOpen_1, setIsOpen_1] = useState(false);
   const [IsOpen_2, setIsOpen_2] = useState(false);
 
-  const { title , ballots, category } = useVoteStore();
+  const { title , ballots, category, resetVoteData } = useVoteStore();
   const { createVote } = useCreateVote();
 
   const { data } = useSearchSimilarGuides(title);
@@ -46,11 +46,13 @@ const LikeGuide = () => {
         setIsOpen_1(false);
         setIsOpen_2(true);
       }
+      resetVoteData();
+
   };
 
   return (
     <LikeGuideLayout>
-      <Header types="close" onSubmit={() => setIsOpen(true)} />
+      <Header types="close" onClose={() => {setIsOpen(true);resetVoteData()}} />
 
       <LikeGuideSection>
         <LikeGuideInfoArea>
@@ -108,7 +110,7 @@ const LikeGuide = () => {
           rightText="했어요!"
           accentText="완료"
           onClick={() => {
-            router.push("/");
+            router.push("/vote");
           }}
           subText="투표 제작 이후 투표 내용은 변경될 수 없어요."
         />

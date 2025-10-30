@@ -32,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
   
   // 하드코딩된 토큰 (개발용)
   if (!token) {
-    token = "eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiZ29vZ2xlXzEwNTAwNzE3NTc1NzM1ODk1MTE4NCIsInJvbGUiOiJST0xFX0JTTSIsImlhdCI6MTc2MTYyODQ3MiwiZXhwIjoxODUxNjI4NDcyfQ.UQk9HPHM9djBaMrMpA9ef2QbuV-Pso1Uy1QgR8yZ1PI";
+    token = "eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiZ29vZ2xlXzEwNjk1OTk4NTEwNjMxMTA4NzM2NyIsInJvbGUiOiJST0xFX05PQlNNIiwiaWF0IjoxNzU4MTEwODIwLCJleHAiOjE3NTgxMTE3MjB9.Wmy4cjtr5KCXQ5EHvGkxs3zwuvmTMY_6yBSU-IPZpzA";
   }
   
   return {

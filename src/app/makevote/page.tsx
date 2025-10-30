@@ -30,7 +30,7 @@ const MakeVote = () => {
 
   return (
     <MakeVoteLayout>
-      <Header types="close" onSubmit={() => setIsOepn_1(true)} />
+      <Header types="close" onClose={() => setIsOepn_1(true)} />
 
       <MakeVoteSection>
         <MakeVoteInfomation>

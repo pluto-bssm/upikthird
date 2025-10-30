@@ -32,6 +32,8 @@ type HeaderProps = {
   onSecondSubmit?: () => void;
   searchitem? : string;
   onSearchChange?: (value: string) => void;
+  activeIdx?: number;
+  setActiveIdx?: (idx: number) => void;
 };
 
 const Header = ({
@@ -42,11 +44,13 @@ const Header = ({
   onClose,
   onSecondSubmit,
   searchitem,
-  onSearchChange
+  onSearchChange,
+  setActiveIdx,
+  activeIdx
 }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
-  const [activeIdx, setActiveIdx] = useState(0);
+
 
   switch (types) {
     case "default":
@@ -62,7 +66,7 @@ const Header = ({
               <User width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
-          <Headernavigationbar type="vote" activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
+          <Headernavigationbar type="vote" activeIdx={activeIdx} setActiveIdx={setActiveIdx} onOptionClick={onSubmit} />
         </HeaderLayout>
       );
 

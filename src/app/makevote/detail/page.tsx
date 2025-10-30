@@ -16,14 +16,18 @@ import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useSearchSimilarGuides } from "@/hooks/useGuides";
 import { useCheckBadWord } from "@/hooks/useVote";
+import { CreateVoteInput } from "@/types/api";
+import { useCreateVote } from "@/hooks/useVote";
+
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
 const Detail = () => {
-  const { ballots, setBallots, title, setTitle } = useVoteStore();
+  const { ballots, setBallots, title, setTitle ,resetVoteData,category} = useVoteStore();
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
+  const { createVote } = useCreateVote();
 
   const [IsOpen_1, setIsOpen_1] = useState(false);
   const [IsOpen, setIsOpen] = useState(false);
@@ -34,6 +38,11 @@ const Detail = () => {
   const { data, loading: searchLoading } = useSearchSimilarGuides(title);
   
   const { checkBadWord: badWordData, loading: badWordLoading, error, refetch } = useCheckBadWord("");
+  
+  function CanCelMakeVote() {
+    resetVoteData();
+    router.replace("/vote");
+  }
 
   const handleRemoveBallot = (idx: number) => {
     if (ballots.length > 2) {
@@ -68,6 +77,7 @@ const Detail = () => {
       }
 
       setIsOpen_4(true);
+      console.log(data);
       
       if (data?.keywordGuide.searchSimilarByTitle.length! > 0) {
         console.log(data?.keywordGuide.searchSimilarByTitle);
@@ -76,10 +86,15 @@ const Detail = () => {
           router.push(`${path}/likeguide`);
         }, 2000);
       } else {
-        setTimeout(() => {
-          setIsOpen_4(false);
-          
-        }, 2000);
+          const voteInput: CreateVoteInput = {
+              title: title.trim(),
+              category: category,
+              options: ballots 
+          };  
+        const result =  createVote(voteInput);
+        if(result != null ){
+        }
+        resetVoteData();
       }
       
     } catch (error) {
@@ -149,12 +164,12 @@ const Detail = () => {
         text="투표 제작하기"
       />
       
-      {/* 모달들 */}
+
       {IsOpen_1 && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
           info="지금까지 작성한 내용은 저장되지 않습니다."
-          passfunction={() => {}}
+          passfunction={CanCelMakeVote}
           isOpen={IsOpen_1}
           setIsOpen={setIsOpen_1}
         />
@@ -204,7 +219,6 @@ const Detail = () => {
 
 export default Detail;
 
-// 스타일 컴포넌트들은 동일...
 const DetailLayout = styled.div`
   width: 100%;
   max-width: 600px;

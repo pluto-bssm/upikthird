@@ -61,7 +61,7 @@ const TailVote = () => {
           <TextArea 
             placeholder="응답을 작성해주세요! 꼬리 질문 응답은 더 질 높은 가이드를 제작하는데 도움이 됩니다." 
             onChange={(e) => setContent(e.target.value)}
-            value={content} // controlled component로 만들기
+            value={content} 
           />
         </TextAreaContainer>
 
@@ -89,7 +89,6 @@ const TailVote = () => {
 
 export default TailVote;
 
-// 스타일 컴포넌트들은 그대로 유지...
 
 
 const TailVoteLayout = styled.div`
@@ -108,8 +107,9 @@ const TailVoteBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 100px;
+  gap: 40px;
   margin-top: 100px;
+  margin-bottom: 100px;
 `;
 
 const TailInfo = styled.div`
@@ -140,6 +140,7 @@ const TextAreaContainer = styled.div`
   width: 90%;
   display: flex;
   justify-content: center;
+  margin-bottom: 60px;
 `;
 
 const TextArea = styled.textarea`
@@ -150,7 +151,7 @@ const TextArea = styled.textarea`
   padding: 16px;
   ${font.H3};
   background-color: ${color.white};
-  color: ${color.gray300};
+  color: ${color.black};
   resize: none;
   outline: none;
 

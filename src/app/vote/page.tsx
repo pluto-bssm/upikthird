@@ -8,10 +8,38 @@ import VoteBlock from "@/components/vote/voteblock";
 import VoteMakeButton from "@/components/vote/votemakebutton";
 import { useRouter } from "next/navigation";
 import { useVotes } from "@/hooks/useVote";
+import { useState } from "react";
+import VoteSort from "@/components/vote/VoteSort";
 
 const vote = () => {
   const router = useRouter();
   const { votes, loading, error, refetch } = useVotes();
+  const categories = ['전체', '학교생활', '기숙사', '유머'];
+  const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  let filteredVotes =
+    activeIdx === 0
+      ? votes
+      : votes.filter((vote) => vote.category === categories[activeIdx]);
+
+  filteredVotes = [...filteredVotes].sort((a, b) => {
+    switch (sortStandard) {
+      case "투표 제작일 기준":
+        const dateA = new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
+        const dateB = new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
+        return dateB - dateA;
+      case "투표 종료일 기준":
+        return new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime();
+      case "투표 참여율 기준":
+        const participationA = a.totalResponses / (a.options?.reduce((sum, o) => sum + (o.responseCount || 0), 0) || 1);
+        const participationB = b.totalResponses / (b.options?.reduce((sum, o) => sum + (o.responseCount || 0), 0) || 1);
+        return participationB - participationA;
+      default:
+        return 0;
+    }
+  });
 
   if(loading){
     return (
@@ -19,23 +47,28 @@ const vote = () => {
           <div>Loading...</div>
       </LoadingLayout>
     );
+    
 
   }
   else{
   return (
     <VoteLayout>
-      <Header types={"default"} />
+      <Header types={"default"} activeIdx={activeIdx} setActiveIdx={setActiveIdx} onSubmit={() => setIsModalOpen(true)}/>
       <VoteContent>
-        {votes.map((vote, id) => (
+        {filteredVotes.length == 0 ? (
+          <IsNotFound>진행중인 투표가 없습니다.</IsNotFound>
+        ) :(
+          filteredVotes.map((vote) => (
           <VoteBlock
-            key={id}
+            key={vote.id}
             category={vote.category}
             title={vote.title}
             viewCount={vote.totalResponses}
             finishDate={vote.finishedAt}
             onClick={() => router.push(`/vote/${vote.id}`)}
           />
-        ))}
+        ))
+      )}
       </VoteContent>
 
       <VoteMakeButtonLayout>
@@ -43,6 +76,14 @@ const vote = () => {
       </VoteMakeButtonLayout>
 
       <NavigationBar />
+
+
+      <VoteSort
+        sortstandard={sortStandard}
+        setsortstandard={setSortStandard}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      />
     </VoteLayout>
   );
   }
@@ -62,9 +103,9 @@ const VoteLayout = styled.div`
 const VoteContent = styled.div`
   width: 90%;
   margin-top: 100px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${color.white};
-  margin-bottom: 200px;
+  margin-bottom: 100px;
 `;
 
 const VoteMakeButtonLayout = styled.div`
@@ -85,4 +126,13 @@ const LoadingLayout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const IsNotFound = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  color: ${color.gray300};
 `;

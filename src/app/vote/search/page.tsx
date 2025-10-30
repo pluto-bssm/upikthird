@@ -17,6 +17,7 @@ const Search = () => {
   const filteredVotes = searchQuery.trim() === "" 
     ? votes 
     : votes.filter(vote => vote.title.includes(searchQuery));
+    
 
   const handleSearchChange = (value: string) => {
     setSearchitem(value);
@@ -37,7 +38,10 @@ const Search = () => {
         onSubmit={handleSearchSubmit} 
       />
       <VoteContent>
-        {filteredVotes.map((vote) => (
+        {filteredVotes.length == 0 ? (
+          <IsNotFound>검색 결과가 없습니다.</IsNotFound>
+        ) :(
+          filteredVotes.map((vote) => (
           <VoteBlock
             key={vote.id}
             category={vote.category}
@@ -46,7 +50,8 @@ const Search = () => {
             finishDate={vote.finishedAt}
             onClick={() => router.push(`/vote/${vote.id}`)}
           />
-        ))}
+        ))
+      )}
       </VoteContent>
     </VoteLayout>
   );
@@ -69,4 +74,13 @@ const VoteContent = styled.div`
   height: 100vh;
   background-color: ${color.white};
   margin-bottom: 200px;
+`;
+
+const IsNotFound = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  color: ${color.gray300};
 `;
