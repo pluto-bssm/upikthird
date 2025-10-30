@@ -15,19 +15,27 @@ import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useSearchSimilarGuides } from "@/hooks/useGuides";
-import { useCheckBadWord } from "@/hooks/useVote";
-import { CreateVoteInput } from "@/types/api";
-import { useCreateVote } from "@/hooks/useVote";
-
+import { useCheckBadWord } from "@/hooks/useVotes";
+import { useCreateVote } from "@/hooks/useVotes";
+import { VoteClosureType } from "@/types/api";
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
 const Detail = () => {
-  const { ballots, setBallots, title, setTitle ,resetVoteData,category,closureType,customDays,participantThreshold} = useVoteStore();
+  const {
+    ballots,
+    setBallots,
+    title,
+    setTitle,
+    resetVoteData,
+    category,
+    closureType,
+    customDays,
+    participantThreshold,
+  } = useVoteStore();
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
-  const { createVote } = useCreateVote();
 
   const [IsOpen_1, setIsOpen_1] = useState(false);
   const [IsOpen, setIsOpen] = useState(false);
@@ -35,10 +43,16 @@ const Detail = () => {
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
 
-  const { data, loading: searchLoading } = useSearchSimilarGuides(title);
-  
-  const { checkBadWord: badWordData, loading: badWordLoading, error, refetch } = useCheckBadWord("");
-  
+  const { 
+    guides: similarGuides, 
+    loading: searchLoading, 
+    searchSimilarGuides 
+  } = useSearchSimilarGuides(title, { autoFetch: false });
+
+  const { checkBadWord, loading: badWordLoading, result: badWordResult } = useCheckBadWord();
+
+  const { createVote, loading: createLoading, error: createError } = useCreateVote();
+
   function CanCelMakeVote() {
     resetVoteData();
     router.replace("/vote");
@@ -57,69 +71,65 @@ const Detail = () => {
   };
 
   const handleVoteSubmit = async () => {
-  setIsOpen(false);
-  setIsOpen_2(true);
-  
-  try {
-    const currentTextToCheck = `${title} ${ballots.join(' ')}`;
-    const result = await refetch({ text: currentTextToCheck });
-    
-    setIsOpen_2(false);
-    
-    const badWordResult = result.data?.checkBadWord;
-    
+    setIsOpen(false);
+    setIsOpen_2(true);
 
-    if (badWordResult?.containsBadWord === true) {
-      setIsOpen_3(true);
-      return;
-    }
+    try {
+      const currentTextToCheck = `${title} ${ballots.join(" ")}`;
+      const badWordCheckResult = await checkBadWord(currentTextToCheck);
 
-    setIsOpen_4(true);
+      setIsOpen_2(false);
 
-    
+      if (badWordCheckResult?.containsBadWord === true) {
+        setIsOpen_3(true);
+        return;
+      }
 
-    if (data?.keywordGuide.searchSimilarByTitle.length! > 0) {
-      setIsOpen_4(false);
-      router.push(`${path}/likeguide`);
-    } else {
-      
-      const voteInput: CreateVoteInput = {
+      setIsOpen_4(true);
+
+      await searchSimilarGuides(title);
+
+      if (similarGuides && similarGuides.length > 0) {
+        setIsOpen_4(false);
+        router.push(`${path}/likeguide`);
+        return;
+      }
+
+      const voteInput = {
         title: title.trim(),
         category: category,
         options: ballots,
         closureType: closureType,
-        customDays: customDays,
-        participantThreshold: participantThreshold
+        ...(closureType === VoteClosureType.CUSTOM_DAYS && customDays && { customDays }),
+        ...(closureType === VoteClosureType.PARTICIPANT_COUNT && participantThreshold && { participantThreshold }),
       };
-      
-      console.log('투표 생성 Input:', voteInput);
-      
-      const createResult = await createVote(voteInput);
-      
-      setIsOpen_4(false);
-      
-      if (createResult) {
-        console.log('투표 생성 성공:', createResult);
-        resetVoteData();
-        router.push('/vote');
-      }
-    }
-    
-  } catch (error) {
-    console.error('투표 제출 중 오류 발생:', error);
-    setIsOpen_2(false);
-    setIsOpen_4(false);
-  }
-};
 
+      console.log("투표 생성 Input:", voteInput);
+
+      const createResult = await createVote(voteInput);
+
+      setIsOpen_4(false);
+
+      if (createResult) {
+        console.log("투표 생성 성공:", createResult);
+        resetVoteData();
+        router.push("/vote");
+      }
+    } catch (error) {
+      console.error("투표 제출 중 오류 발생:", error);
+      setIsOpen_2(false);
+      setIsOpen_4(false);
+      alert("투표 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
 
   const CheckVote = () => {
-    if((title.trim() === "") || ballots.some((b) => b.trim() === "")){
+    if (title.trim() === "" || ballots.some((b) => b.trim() === "")) {
       alert("질문과 선지를 모두 작성해주세요.");
       return;
     }
     setIsOpen(true);
-  }
+  };
 
   return (
     <DetailLayout>
@@ -173,7 +183,6 @@ const Detail = () => {
         }}
         text="투표 제작하기"
       />
-      
 
       {IsOpen_1 && (
         <TwoOptionModal

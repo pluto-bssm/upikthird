@@ -9,7 +9,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../public/svg/svg";
-import { useCreateTailVote } from "@/hooks/useVote";
+import { useCreateTailVote } from "@/hooks/useVotes";
+
 
 const TailVote = () => {
   const router = useRouter();

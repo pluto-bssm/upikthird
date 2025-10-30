@@ -12,7 +12,7 @@ import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useVoteStore } from "@/store/useMakeVoteStore";
-import { useAiOptionCreate } from "@/hooks/useVote";
+import { useGenerateAiOptions } from "@/hooks/useVotes";
 
 const Options = () => {
   const router = useRouter();
@@ -22,30 +22,31 @@ const Options = () => {
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
   const [aiUsageCount, setAiUsageCount] = useState(0);
-  const [shouldFetchAi, setShouldFetchAi] = useState(false);
   const { ballots, title, setBallots } = useVoteStore();
 
+  const { generateAiOptions, loading, options, error } = useGenerateAiOptions();
 
-  const { options, loading } = useAiOptionCreate(
-    shouldFetchAi ? ballots.length : 0,
-    shouldFetchAi ? title : ""
-  );
-
-  useEffect(() => {
-    if (shouldFetchAi && !loading && options.length > 0) {
-      setBallots(options);
-      setIsOpen_2(false);
-      setIsOpen_3(true);
-      setShouldFetchAi(false);
-    }
-  }, [loading, options, shouldFetchAi, setBallots]);
-
-  function MakeAiBallot() {
+  // AI 옵션 생성 함수
+  async function MakeAiBallot() {
     if (aiUsageCount < 3) {
       setAiUsageCount(aiUsageCount + 1);
       setIsOpen_1(false);
       setIsOpen_2(true);
-      setShouldFetchAi(true);
+
+      try {
+        // AI 옵션 생성 호출
+        const result = await generateAiOptions(ballots.length || 4, title);
+        
+        if (result && result.options.length > 0) {
+          setBallots(result.options);
+          setIsOpen_2(false);
+          setIsOpen_3(true);
+        }
+      } catch (err) {
+        console.error("AI 옵션 생성 실패:", err);
+        setIsOpen_2(false);
+        // 에러 처리 모달을 추가할 수 있습니다
+      }
     } else {
       setIsOpen_1(false);
       setIsOpen_4(true);

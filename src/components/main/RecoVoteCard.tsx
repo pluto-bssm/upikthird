@@ -1,33 +1,78 @@
+"use client";
+import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Nexts } from "../../../public/svg/svg";
+import { upik } from "@/apis";
+import { TODAY_VOTE } from "@/graphql/queries";
+import { useRouter } from "next/navigation";
 
-const mockData = [
-  {
-    title: "이중에 뭐가 더 싫어?",
-    emoji: "🏫",
-    category: "학교생활",
-    option1: "최병준쌤과 헬스 3시간",
-    option2: "규봉쌤과 수학풀이 5시간",
-  },
-];
+interface GraphQLRequest {
+  query: string;
+  variables?: Record<string, unknown>;
+}
 
 export default function RecoVoteCard() {
+  const router = useRouter();
+  const [vote, setVote] = React.useState<{
+    id: string;
+    title: string;
+    category?: string;
+    options: { id: string; content: string }[];
+  } | null>(null);
+
+  React.useEffect(() => {
+    const fetchTodayVote = async () => {
+      try {
+        const response = await upik.post("", { query: TODAY_VOTE } as GraphQLRequest);
+        const data = response?.data?.data?.vote?.getLeastPopularOpenVote;
+        if (data) {
+          setVote({
+            id: data.id,
+            title: data.title,
+            category: data.category,
+            options: Array.isArray(data.options)
+              ? data.options.map((o: any) => ({ id: o.id, content: o.content }))
+              : [],
+          });
+        }
+      } catch (e) {
+      }
+    };
+    fetchTodayVote();
+  }, []);
+
+  const displayedOptions = React.useMemo(() => {
+    const options = vote?.options ?? [];
+    if (options.length <= 2) return options;
+    const indices = new Set<number>();
+    while (indices.size < 2) {
+      indices.add(Math.floor(Math.random() * options.length));
+    }
+    return Array.from(indices).map((i) => options[i]);
+  }, [vote]);
+
+  const handleGoToVote = () => {
+    if (vote?.id) {
+      router.push(`/vote/${vote.id}`);
+    }
+  };
+
   return (
     <RecoVoteContainer>
       <FeaturedVoteContent>
         <VoteHeader>
           <VoteLabel>오늘의 추천 투표</VoteLabel>
-          <VoteTitle>{mockData[0].title}</VoteTitle>
+          <VoteTitle>{vote?.title ?? "오늘의 투표를 불러오는 중"}</VoteTitle>
         </VoteHeader>
         <VoteOptions>
-          <VoteOption>{mockData[0].option1}</VoteOption>
+          <VoteOption>{displayedOptions[0]?.content ?? "옵션 1"}</VoteOption>
           <VoteVS>VS</VoteVS>
-          <VoteOption>{mockData[0].option2}</VoteOption>
+          <VoteOption>{displayedOptions[1]?.content ?? "옵션 2"}</VoteOption>
         </VoteOptions>
       </FeaturedVoteContent>
-      <VoteLink>
+      <VoteLink onClick={handleGoToVote}>
         투표하러 가기
         <Arrow>
           <Nexts />

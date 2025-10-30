@@ -7,20 +7,24 @@ export interface User {
 }
 export interface OptionWithStats {
   id: string;
-  text: string;
+  content: string;
   votes: number;
   percentage: number;
 }
 
+import { VoteClosureType } from "./api";
 export interface VotePayload {
   id: string;
   title: string;
   category: string;
   status: string; // "OPEN" | "CLOSED"
   totalResponses: number;
-  finishedAt: string | null;
+  finishedAt: number;
   options: OptionWithStats[];
   hasVoted: boolean;
+  closureType?:VoteClosureType;
+  customDays?: number; // 🔥 optional
+  participantThreshold?: number; // 🔥 optional
 }
 
 export interface MyVote {

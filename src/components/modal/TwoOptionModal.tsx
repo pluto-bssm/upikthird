@@ -88,6 +88,7 @@ const Title = styled.p`
 const Infomation = styled.p`
   ${font.D3};
   color: ${color.gray600};
+  padding-top: 4px;
 `;
 
 const OptionBox = styled.div`

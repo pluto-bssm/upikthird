@@ -8,8 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import Ballot from "@/components/vote/ballot";
 import { useState, use } from "react";
-import { useVoteById, useVoteResponse } from "@/hooks/useVote";
-
+import { useVote, useCreateVoteResponse } from "@/hooks/useVotes";
 
 const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
@@ -17,34 +16,70 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { id } = use(params);
-  const { vote, loading, error } = useVoteById(id);
-  const { createResponse, loading: responseLoading } = useVoteResponse();
+  
+  // 투표 상세 조회 훅 - useVote는 vote 객체를 직접 반환
+  const { vote, loading, error, refetch } = useVote(id);
+  
+  // 투표 응답 훅 - createVoteResponse 사용
+  const { 
+    createVoteResponse, 
+    loading: responseLoading, 
+    error: responseError 
+  } = useCreateVoteResponse();
 
-  const labels = ['A','B','C','D','E'];
+  const labels = ['A', 'B', 'C', 'D', 'E'];
 
   const handleVoteSubmit = async () => {
     if (!selectedOption) {
       alert("선택지를 선택해주세요.");
       return;
     }
+    
     if (!vote) {
+      alert("투표 정보를 불러올 수 없습니다.");
       return;
     }
     
     try {
-      await createResponse({
-        voteId: vote.id,
-        optionId: selectedOption,
-      });
+      console.log(id, selectedOption);
+      // createVoteResponse는 voteId와 optionId를 별도 파라미터로 받음
+      const result = await createVoteResponse(id, selectedOption);
       
-      router.push(`${path}/tailvote`);
+      if (result) {
+        console.log("투표 응답 성공");
+        router.push(`${path}/tailvote`);
+      }
     } catch (err) {
-      console.error(err);
+      console.error("투표 참여 중 오류:", err);
       alert("투표 참여 중 오류가 발생했습니다.");
-
     }
   };
 
+  // 로딩 상태
+  if (loading) {
+    return (
+      <DesVoteLayout>
+        <Header types={"report and close"} />
+        <VoteBlock>
+          <Title>투표를 불러오는 중...</Title>
+        </VoteBlock>
+      </DesVoteLayout>
+    );
+  }
+
+  // 에러 상태
+  if (error || !vote) {
+    return (
+      <DesVoteLayout>
+        <Header types={"report and close"} />
+        <VoteBlock>
+          <Title>투표를 불러올 수 없습니다.</Title>
+          <SubTitle>{error || "투표 정보가 없습니다."}</SubTitle>
+          <Button text="돌아가기" onCkick={() => router.back()} />
+        </VoteBlock>
+      </DesVoteLayout>
+    );
+  }
 
   return (
     <DesVoteLayout>
@@ -58,25 +93,23 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
       <VoteBlock>
         <VoteInfo>
           <MenuText>투표하기</MenuText>
-          <Title>
-            {vote?.title}
-          </Title>
+          <Title>{vote.title}</Title>
           <SubTitle>
             부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요
           </SubTitle>
         </VoteInfo>
 
         <VoteContent>
-          {vote?.options?.map((ballot, index) => (
+          {vote.options?.map((ballot, index) => (
             <Ballot
-              key={index}
+              key={ballot.id}
               content={ballot.content}
-              letter= {labels[index] ?? ''}
+              letter={labels[index] ?? ''}
               isSelected={selectedOption === ballot.id}
               type="vote"
               onClick={() =>
                 setSelectedOption((prev) =>
-                  prev === ballot.id ? null : ballot.id,
+                  prev === ballot.id ? null : ballot.id
                 )
               }
             />
@@ -84,8 +117,8 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
         </VoteContent>
 
         <Button
-          text="투표 완료하기"
-          onCkick={() => handleVoteSubmit()}
+          text={responseLoading ? "투표 중..." : "투표 완료하기"}
+          onCkick={handleVoteSubmit}
         />
       </VoteBlock>
     </DesVoteLayout>

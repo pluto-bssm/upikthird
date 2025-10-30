@@ -4,59 +4,133 @@ import Header from "@/components/common/header";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import GuideBlock from "@/components/votemake/guideblock";
-import { Plus } from "../../../../../public/svg/svg";
+import { Plus, Completevote } from "../../../../../public/svg/svg";
 import { useState } from "react";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
-import { Completevote } from "../../../../../public/svg/svg";
 import { useSearchSimilarGuides } from "@/hooks/useGuides";
 import { useVoteStore } from "@/store/useMakeVoteStore";
-import { useCreateVote } from "@/hooks/useVote";
-import { CreateVoteInput } from "@/types/api";
-
-
+import { useCreateVote } from "@/hooks/useVotes";
+import type { SimilarGuide } from "@/services/guide/api";
 
 const LikeGuide = () => {
   const router = useRouter();
-  const path = usePathname();
-  const [IsOpen, setIsOpen] = useState(false);
-  const [IsOpen_1, setIsOpen_1] = useState(false);
-  const [IsOpen_2, setIsOpen_2] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoadingOpen, setIsLoadingOpen] = useState(false);
+  const [isCompleteOpen, setIsCompleteOpen] = useState(false);
 
-  const { title , ballots, category, resetVoteData , closureType, customDays,participantThreshold } = useVoteStore();
-  const { createVote } = useCreateVote();
-
-  const { data } = useSearchSimilarGuides(title);
+  const { 
+    title, 
+    ballots, 
+    category, 
+    resetVoteData, 
+    closureType, 
+    customDays, 
+    participantThreshold 
+  } = useVoteStore();
   
+  const { createVote, loading, error } = useCreateVote();
   
+  // 훅 사용법 수정: data가 아니라 guides 사용
+  const { 
+    guides: similarGuides, 
+    loading: guidesLoading, 
+    error: guidesError 
+  } = useSearchSimilarGuides(title);
 
-  const HandleSubmit = () => {
-      setIsOpen_1(true);
-      const voteInput: CreateVoteInput = {
-            title: title.trim(),
-            category: category,
-            options: ballots,
-            closureType: closureType,
-            customDays: customDays,
-            participantThreshold: participantThreshold,
-        }; 
-      console.log(voteInput); 
-      const result =  createVote(voteInput);
-      if(result != null ){
-        setIsOpen_1(false);
-        setIsOpen_2(true);
-      }
+  const handleSubmit = async () => {
+  try {
+    setIsLoadingOpen(true);
+
+    // 기본 input
+    const voteInput: any = {
+      title: title.trim(),
+      category: category,
+      options: ballots,
+      closureType: closureType,
+    };
+
+    // closureType에 따라 조건부로 추가
+    if (closureType === "CUSTOM_DAYS" && customDays) {
+      voteInput.customDays = customDays;
+    } else if (closureType === "PARTICIPANT_COUNT" && participantThreshold) {
+      voteInput.participantThreshold = participantThreshold;
+    }
+
+    console.log("Creating vote with input:", voteInput);
+    console.log("=== 투표 생성 디버깅 ===");
+console.log("closureType:", closureType);
+console.log("customDays:", customDays);
+console.log("participantThreshold:", participantThreshold);
+console.log("voteInput:", voteInput);
+
+
+    const result = await createVote(voteInput);
+
+    setIsLoadingOpen(false);
+
+    if (result) {
+      setIsCompleteOpen(true);
       resetVoteData();
+    } else {
+      alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
+    }
+  } catch (err) {
+    setIsLoadingOpen(false);
+    console.error("Vote creation error:", err);
+    alert("투표 생성 중 오류가 발생했습니다.");
+  }
+};
 
+
+  const handleClose = () => {
+    setIsOpen(true);
   };
+
+  const handleCancelConfirm = () => {
+    resetVoteData();
+    router.replace("/vote");
+  };
+
+  const handleCompleteConfirm = () => {
+    setIsCompleteOpen(false);
+    router.push("/vote");
+  };
+
+  // 가이드 로딩 상태
+  if (guidesLoading) {
+    return (
+      <LikeGuideLayout>
+        <Header types="close" onClose={handleClose} />
+        <LoadingContainer>
+          <LoadingText>유사한 가이드를 찾고 있어요...</LoadingText>
+        </LoadingContainer>
+      </LikeGuideLayout>
+    );
+  }
+
+  // 가이드 에러 상태
+  if (guidesError) {
+    return (
+      <LikeGuideLayout>
+        <Header types="close" onClose={handleClose} />
+        <ErrorContainer>
+          <ErrorText>가이드를 불러오는 중 오류가 발생했습니다.</ErrorText>
+          <RetryButton onClick={() => window.location.reload()}>
+            다시 시도
+          </RetryButton>
+        </ErrorContainer>
+      </LikeGuideLayout>
+    );
+  }
 
   return (
     <LikeGuideLayout>
-      <Header types="close" onClose={() => {setIsOpen(true);resetVoteData()}} />
+      <Header types="close" onClose={handleClose} />
 
       <LikeGuideSection>
         <LikeGuideInfoArea>
@@ -71,51 +145,54 @@ const LikeGuide = () => {
         </LikeGuideInfoArea>
 
         <LikeGuideListArea>
-          {data?.keywordGuide.searchSimilarByTitle.map((ballot, index) => (
-            <GuideBlock
-              key={index}
-              title={ballot.title}
-              category={ballot.category}
-              viewCount={ballot.likeCount}
-            />
-          ))}
+          {similarGuides.length > 0 ? (
+            similarGuides.map((guide: SimilarGuide, index: number) => ( // 타입 명시
+              <GuideBlock
+                key={guide?.id || index}
+                title={guide?.title}
+                category={guide?.category}
+                viewCount={guide?.likeCount}
+              />
+            ))
+          ) : (
+            <NoGuideText>유사한 가이드가 없습니다.</NoGuideText>
+          )}
         </LikeGuideListArea>
 
         <Button
           icon={<Plus width={20} height={20} />}
           text="계속 진행하기"
-          onCkick={HandleSubmit}
+          onCkick={handleSubmit}
         />
       </LikeGuideSection>
 
-      {IsOpen && (
+      {/* 취소 확인 모달 */}
+      {isOpen && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
           info="지금까지 작성한 내용은 저장되지 않습니다."
-          passfunction={() => {
-            router.replace("/vote");
-          }}
+          passfunction={handleCancelConfirm}
           setIsOpen={setIsOpen}
-          isOpen={IsOpen}
+          isOpen={isOpen}
         />
       )}
 
-      {IsOpen_1 && (
+      {/* 로딩 모달 */}
+      {isLoadingOpen && (
         <LoadingModal
           title="투표를 제작하고 있어요."
           info="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요."
         />
       )}
 
-      {IsOpen_2 && (
+      {/* 완료 모달 */}
+      {isCompleteOpen && (
         <AccentModal
           icon={<Completevote />}
           leftText="투표 제작을"
           rightText="했어요!"
           accentText="완료"
-          onClick={() => {
-            router.push("/vote");
-          }}
+          onClick={handleCompleteConfirm}
           subText="투표 제작 이후 투표 내용은 변경될 수 없어요."
         />
       )}
@@ -134,7 +211,6 @@ const LikeGuideLayout = styled.div`
   min-height: 100vh;
   flex-direction: column;
   align-items: center;
-  margin-top: -50px;
 `;
 
 const LikeGuideSection = styled.section`
@@ -143,12 +219,13 @@ const LikeGuideSection = styled.section`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin-top: 150px;
+  margin-top: 100px;
   margin-bottom: 30px;
+  padding: 0 20px;
 `;
 
 const LikeGuideInfoArea = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -171,9 +248,59 @@ const LikeGuideSubText = styled.p`
 `;
 
 const LikeGuideListArea = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 10px;
+  min-height: 200px;
+`;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+`;
+
+const LoadingText = styled.p`
+  ${font.H1};
+  color: ${color.gray400};
+`;
+
+const ErrorContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  gap: 20px;
+`;
+
+const ErrorText = styled.p`
+  ${font.H1};
+  color: ${color.gray400};
+`;
+
+const RetryButton = styled.button`
+  ${font.D3};
+  color: ${color.white};
+  background-color: ${color.primary};
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
+const NoGuideText = styled.p`
+  ${font.H2};
+  color: ${color.gray400};
+  text-align: center;
+  padding: 40px 0;
 `;

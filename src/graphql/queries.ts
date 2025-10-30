@@ -1,7 +1,5 @@
-import { gql } from '@apollo/client';
-
 /* ===================== 사용자 관련 ===================== */
-export const GET_CURRENT_USER = gql`
+export const GET_CURRENT_USER = `
   query GetCurrentUser {
     iam {
       getCurrentUser {
@@ -16,7 +14,7 @@ export const GET_CURRENT_USER = gql`
 `;
 
 /* ===================== 투표 관련 ===================== */
-export const GET_VOTES = gql`
+export const GET_VOTES = `
   query GetVotes {
     vote {
       getAllVotes(includeExpired: false,includeHasVoted: true) {
@@ -33,13 +31,12 @@ export const GET_VOTES = gql`
           responseCount
           percentage
         }
-          
       }
     }
   }
 `;
 
-export const GET_CHECK_BADWORD  = gql`
+export const GET_CHECK_BADWORD  = `
 query MyQuery ($text: String!) {
   checkBadWord(text: $text) {
     checkedText
@@ -48,7 +45,7 @@ query MyQuery ($text: String!) {
   }
 }`
 
-export const GET_ALL_VOTES = gql`
+export const GET_ALL_VOTES = `
   query GetAllVotes {
     vote {
       getAllVotes {
@@ -70,7 +67,7 @@ export const GET_ALL_VOTES = gql`
   }
 `;
 
-export const GET_MY_VOTES = gql`
+export const GET_MY_VOTES = `
   query GetMyVotes {
     vote {
       getMyVotes {
@@ -91,7 +88,7 @@ export const GET_MY_VOTES = gql`
   }
 `;
 
-export const GET_VOTE_BY_ID = gql`
+export const GET_VOTE_BY_ID = `
   query GetVoteById($id: ID!) {
     vote {
       getVoteById(id: $id) {
@@ -113,7 +110,7 @@ export const GET_VOTE_BY_ID = gql`
   }
 `;
 
-export const CREATE_TAIL_VOTE = gql`
+export const CREATE_TAIL_VOTE = `
 mutation MyMutation($question: String!, $voteId: ID!) {
   tail {
     createTail(question: $question, voteId: $voteId) {
@@ -125,7 +122,7 @@ mutation MyMutation($question: String!, $voteId: ID!) {
 }`
 ;
 
-  export const CREATE_VOTE = gql`
+  export const CREATE_VOTE = `
     mutation CreateVote($input: CreateVoteInput!) {
       vote {
         createVote(input: $input) {
@@ -142,13 +139,13 @@ mutation MyMutation($question: String!, $voteId: ID!) {
             responseCount
             percentage
           }
-          participantThreshold
+            participantThreshold
         }
       }
     }
   `;
 
-export const VOTE_ON_OPTION = gql`
+export const VOTE_ON_OPTION = `
   mutation VoteOnOption($voteId: ID!, $optionId: ID!) {
     vote {
       voteOnOption(voteId: $voteId, optionId: $optionId)
@@ -156,7 +153,7 @@ export const VOTE_ON_OPTION = gql`
   }
 `;
 
-export const CREATE_VOTE_RESPONSE = gql`
+export const CREATE_VOTE_RESPONSE = `
   mutation CreateVoteResponse($input: CreateVoteResponseInput!) {
     voteResponse {
       createVoteResponse(input: $input) {
@@ -172,7 +169,7 @@ export const CREATE_VOTE_RESPONSE = gql`
   }
 `;
 
-export const AIOPTION_CREATE = gql`
+export const AIOPTION_CREATE = `
   query GenerateOptions($count: Int!, $title: String!) {
     optionGenerator {
       generateOptions(count: $count, title: $title) {
@@ -184,7 +181,7 @@ export const AIOPTION_CREATE = gql`
 `;
 
 /* ===================== 가이드 관련 ===================== */
-export const GET_GUIDES = gql`
+export const GET_GUIDES = `
   query GetGuides {
     guide {
       getAllGuides {
@@ -199,7 +196,7 @@ export const GET_GUIDES = gql`
   }
 `;
 
-export const GET_GUIDES_BY_CATEGORY = gql`
+export const GET_GUIDES_BY_CATEGORY = `
   query GetGuidesByCategory($category: String!) {
     guide {
       getGuidesByCategory(category: $category) {
@@ -214,7 +211,7 @@ export const GET_GUIDES_BY_CATEGORY = gql`
   }
 `;
 
-export const GET_GUIDE_BY_ID = gql`
+export const GET_GUIDE_BY_ID = `
   query GetGuideById($id: ID!) {
     guideById(id: $id) {
       id
@@ -230,7 +227,7 @@ export const GET_GUIDE_BY_ID = gql`
   }
 `;
 
-export const SEARCH_SIMILAR_GUIDES = gql`
+export const SEARCH_SIMILAR_GUIDES = `
   query SearchSimilarGuides($title: String!) {
     keywordGuide {
       searchSimilarByTitle(title: $title) {
@@ -253,7 +250,7 @@ export const SEARCH_SIMILAR_GUIDES = gql`
 `;
 
 /* ===================== 질문/게시판 관련 ===================== */
-export const GET_QUESTIONS = gql`
+export const GET_QUESTIONS = `
   query GetQuestions($page: Int!, $size: Int!) {
     board {
       getQuestionList(page: $page, size: $size) {
@@ -273,7 +270,7 @@ export const GET_QUESTIONS = gql`
   }
 `;
 
-export const GET_QUESTION_BY_ID = gql`
+export const GET_QUESTION_BY_ID = `
   query GetQuestionById($id: ID!) {
     board {
       getQuestionDetail(boardId: $id) {
@@ -290,7 +287,7 @@ export const GET_QUESTION_BY_ID = gql`
   }
 `;
 
-export const CREATE_INQUIRY = gql`
+export const CREATE_INQUIRY = `
   mutation CreateInquiry($input: CreateBoardInput!) {
     board {
       createQuestion(input: $input) {
@@ -303,7 +300,7 @@ export const CREATE_INQUIRY = gql`
   }
 `;
 
-export const CREATE_QUESTION = gql`
+export const CREATE_QUESTION = `
   mutation CreateQuestion($title: String!, $content: String!) {
     board {
       createQuestion(input: {title: $title, content: $content}) {
@@ -314,7 +311,7 @@ export const CREATE_QUESTION = gql`
   }
 `;
 
-export const REPORT_BOARD = gql`
+export const REPORT_BOARD = `
   mutation ReportBoard($boardId: ID!, $detail: String!, $reason: String!) {
     board {
       reportBoard(boardId: $boardId, detail: $detail, reason: $reason)
@@ -322,7 +319,7 @@ export const REPORT_BOARD = gql`
   }
 `;
 
-export const REPORT_QUESTION = gql`
+export const REPORT_QUESTION = `
   mutation ReportQuestion($questionId: ID!, $reason: String!) {
     report {
       reportQuestion(questionId: $questionId, reason: $reason) {
@@ -332,7 +329,7 @@ export const REPORT_QUESTION = gql`
     }
   }
 `;
-export const GET_SAVED_GUIDES = gql`
+export const GET_SAVED_GUIDES = `
   query GetSavedGuides {
     bookmark {
       getBookmarkedGuides {
@@ -347,7 +344,7 @@ export const GET_SAVED_GUIDES = gql`
   }
 `;
 
-export const GET_SAVED_QUESTIONS = gql`
+export const GET_SAVED_QUESTIONS = `
   query GetSavedQuestions {
     bookmark {
       getBookmarks {
@@ -360,7 +357,7 @@ export const GET_SAVED_QUESTIONS = gql`
   }
 `;
 /* ===================== 댓글 관련 ===================== */
-export const GET_COMMENTS = gql`
+export const GET_COMMENTS = `
   query GetComments($boardId: ID!, $page: Int!, $size: Int!) {
     board {
       getComments(boardId: $boardId, page: $page, size: $size) {
@@ -385,7 +382,7 @@ export const GET_COMMENTS = gql`
   }
 `;
 
-export const CREATE_COMMENT = gql`
+export const CREATE_COMMENT = `
   mutation CreateComment($input: CreateCommentInput!) {
     board {
       createComment(input: $input) {
@@ -398,7 +395,7 @@ export const CREATE_COMMENT = gql`
   }
 `;
 
-export const REPORT_COMMENT = gql`
+export const REPORT_COMMENT = `
   mutation ReportComment($commentId: ID!, $detail: String!, $reason: String!) {
     board {
       reportComment(commentId: $commentId, detail: $detail, reason: $reason)
@@ -408,7 +405,7 @@ export const REPORT_COMMENT = gql`
 
 /* ===================== 북마크 관련 ===================== */
 
-export const GET_BOOKMARKS = gql`
+export const GET_BOOKMARKS = `
   query GetBookmarks {
     bookmark {
       getBookmarks {
@@ -421,7 +418,7 @@ export const GET_BOOKMARKS = gql`
   }
 `;
 
-export const TOGGLE_BOOKMARK = gql`
+export const TOGGLE_BOOKMARK = `
   mutation ToggleBookmark($guideId: ID!) {
     bookmark {
       toggleBookmark(guideId: $guideId)
@@ -429,7 +426,7 @@ export const TOGGLE_BOOKMARK = gql`
   }
 `;
 
-export const GET_BOOKMARKED_GUIDES = gql`
+export const GET_BOOKMARKED_GUIDES = `
   query GetBookmarkedGuides {
     bookmark {
       getBookmarkedGuides {
@@ -443,7 +440,7 @@ export const GET_BOOKMARKED_GUIDES = gql`
 `;
 
 //모든 가읻드
-export const GET_ALL_GUIDES = gql`
+export const GET_ALL_GUIDES = `
 query GetAllGuides($page: Int, $size: Int, $sortBy: String) {
   getAllGuides(page: $page, size: $size, sortBy: $sortBy) {
     content {
@@ -464,7 +461,7 @@ query GetAllGuides($page: Int, $size: Int, $sortBy: String) {
 }
 `;
 
-export const GUIDE_BY_ID = gql`
+export const GUIDE_BY_ID = `
 query GuideById($id: ID!) {
   guideById(id: $id) {
     category
@@ -481,7 +478,7 @@ query GuideById($id: ID!) {
 `;
 
 //재투표 뮤테이션
-export const REVOTE_MUTATION = gql`
+export const REVOTE_MUTATION = `
 mutation RevoteMutation($input: CreateRevoteRequestInput!) {
   revote {
     createRevoteRequest(input: $input) {
@@ -497,7 +494,7 @@ mutation RevoteMutation($input: CreateRevoteRequestInput!) {
 `;
 
 //오늘의 투표
-export const TODAY_VOTE = gql`
+export const TODAY_VOTE = `
 query TodayVote {
   vote {
     getLeastPopularOpenVote {
@@ -519,3 +516,74 @@ query TodayVote {
 }
 `;
 
+//가장 인기없는 투표 쿼리(메인)
+export const GET_LEAST_POPULAR_OPEN_VOTE = `
+query GetLeastPopularOpenVote {
+  vote {
+    getLeastPopularOpenVote(includeExpired: false, includeHasVoted: false) {
+      category
+      finishedAt
+      hasVoted
+      id
+      options {
+        content
+        id
+        percentage
+        responseCount
+      }
+      status
+      title
+      totalResponses
+    }
+  }
+}
+`;
+
+//가장 인기많은 투표 쿼리(메인)
+export const GET_MOST_POPULAR_OPEN_VOTE = `
+query GetMostPopularOpenVote {
+  vote {
+    getMostPopularOpenVote(includeExpired: false, includeHasVoted: false) {
+      category
+      finishedAt
+      hasVoted
+      id
+      options {
+        content
+        id
+        percentage
+        responseCount
+      }
+      status
+      title
+      totalResponses
+    }
+  }
+}
+`;
+
+//재투표 요청 뮤테이션
+export const ACCEPT_GUIDE_REPORT = `
+mutation AcceptGuideReport($guideId: ID!, $userId: ID!) {
+  revote {
+    acceptGuideReport(guideId: $guideId, userId: $userId) {
+      message
+      newQuestionId
+      success
+    }
+  }
+}
+`;
+
+//재투표 요청 뮤테이션
+export const OPTION_GENERATOR = `
+mutation OptionGenerator($guideId: ID!, $reason: String!, $reporterName: String!) {
+  optionGenerator {
+    reportGuide(guideId: $guideId, reason: $reason, reporterName: $reporterName) {
+      message
+      reportId
+      success
+    }
+  }
+}
+`;

@@ -1,206 +1,226 @@
 "use client";
 
-import { useQuery } from "@apollo/client/react";
-import { useMutation } from "@apollo/client/react";
-import {
-  GET_GUIDES,
-  GET_GUIDE_BY_ID,
-  GET_BOOKMARKED_GUIDES,
-  TOGGLE_BOOKMARK,
-  GET_GUIDES_BY_CATEGORY,
-  GET_ALL_GUIDES,
-  SEARCH_SIMILAR_GUIDES
-} from "@/graphql/queries";
-import type { Guide,SimilarGuide } from "@/types/api";
+import { useEffect, useState } from "react";
+import * as guideApi from "@/services/guide/api";
+import type { Guide, GuideDetail, SimilarGuide, PaginatedGuides } from "@/services/guide/api";
 
-/* ====================== Types ====================== */
-
-interface GuidesByCategoryData {
-  guide: {
-    getGuidesByCategory: Guide[];
-  };
+interface UseGuideOptions {
+  autoFetch?: boolean;
 }
 
-interface AllGuidesData {
-  guide: {
-    getAllGuides: Guide[];
-  };
-}
+/* ===================== 모든 가이드 ===================== */
+export function useGuides(options: UseGuideOptions = {}) {
+  const { autoFetch = true } = options;
+  const [guides, setGuides] = useState<Guide[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-interface AllGuidesPaginationData {
-  getAllGuides: {
-    content: Guide[];
-    hasNext: boolean;
-    pageNumber: number;
-    size: number;
-    totalElements: number;
-    totalPages: number;
-  };
-}
-
-
-interface SearchSimilarGuidesData {
-  keywordGuide: {
-    searchSimilarByTitle: SimilarGuide[];
-  };
-}
-
-  interface SearchSimilarGuidesVars {
-    title: string;
-  }
-
-export function useSearchSimilarGuides(title?: string) {
-  const { data, loading, error, refetch } = useQuery<SearchSimilarGuidesData, SearchSimilarGuidesVars>(
-    SEARCH_SIMILAR_GUIDES,
-    {
-      variables: { title: title || "" },
-      skip: !title, 
-      fetchPolicy: "network-only",
+  const fetchGuides = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await guideApi.getAllGuides();
+      setGuides(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch guides";
+      setError(message);
+    } finally {
+      setLoading(false);
     }
-
-    
-  );
-
-  return {
-    data,
-    loading,
-    error,
-    refetch,
   };
-}
 
-// 모든 가이드를 가져오는 훅 (페이지네이션 지원)
-export function useAllGuides(page: number = 0, size: number = 10, sortBy?: string) {
-  const { data, loading, error, refetch } = useQuery<AllGuidesPaginationData>(
-    GET_ALL_GUIDES,
-    {
-      variables: { page, size, sortBy },
-      fetchPolicy: 'network-only'
+  const refetch = async () => {
+    await fetchGuides();
+  };
+
+  useEffect(() => {
+    if (autoFetch) {
+      fetchGuides();
     }
-  );
-  
-
-  return {
-    guides: data?.getAllGuides?.content || [],
-    pagination: {
-      hasNext: data?.getAllGuides?.hasNext || false,
-      pageNumber: data?.getAllGuides?.pageNumber || 0,
-      size: data?.getAllGuides?.size || 10,
-      totalElements: data?.getAllGuides?.totalElements || 0,
-      totalPages: data?.getAllGuides?.totalPages || 0,
-    },
-    loading,
-    error,
-    refetch
-  };
-}
-
-interface GuideByIdData {
-  guide: {
-    getGuideById: Guide;
-  };
-}
-
-interface BookmarkedGuidesData {
-  bookmark: {
-    getBookmarkedGuides: Guide[];
-  };
-}
-
-interface ToggleBookmarkData {
-  bookmark: {
-    toggleBookmark: boolean;
-  };
-}
-
-/* ====================== Hooks ====================== */
-
-// 가이드 리스트 훅 (카테고리 유무에 따라 분기)
-export function useGuides(category?: string) {
-  const {
-    data: byCatData,
-    loading: byCatLoading,
-    error: byCatError,
-    refetch: refetchByCat,
-  } = useQuery<GuidesByCategoryData>(GET_GUIDES_BY_CATEGORY, {
-    variables: { category },
-    fetchPolicy: "network-only",
-    skip: !category, // 카테고리 없으면 스킵
-  });
-
-  const {
-    data: allData,
-    loading: allLoading,
-    error: allError,
-    refetch: refetchAll,
-  } = useQuery<AllGuidesData>(GET_GUIDES, {
-    fetchPolicy: "network-only",
-    skip: !!category, // 카테고리 있으면 전체 조회 스킵
-  });
-
-  const guides = category
-    ? byCatData?.guide?.getGuidesByCategory || []
-    : allData?.guide?.getAllGuides || [];
+  }, [autoFetch]);
 
   return {
     guides,
-    loading: byCatLoading || allLoading,
-    error: byCatError || allError,
-    refetch: category ? refetchByCat : refetchAll,
+    loading,
+    error,
+    fetchGuides,
+    refetch,
   };
 }
 
-// 가이드 단건 조회 훅
-export function useGuideById(id: string) {
-  const { data, loading, error, refetch } = useQuery<GuideByIdData>(
-    GET_GUIDE_BY_ID,
-    {
-      variables: { id },
-      fetchPolicy: "network-only",
+/* ===================== 카테고리별 가이드 ===================== */
+export function useGuidesByCategory(category: string, options: UseGuideOptions = {}) {
+  const { autoFetch = true } = options;
+  const [guides, setGuides] = useState<Guide[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchGuidesByCategory = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await guideApi.getGuidesByCategory(category);
+      setGuides(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch guides by category";
+      setError(message);
+    } finally {
+      setLoading(false);
     }
-  );
+  };
+
+  const refetch = async () => {
+    await fetchGuidesByCategory();
+  };
+
+  useEffect(() => {
+    if (autoFetch && category) {
+      fetchGuidesByCategory();
+    }
+  }, [category, autoFetch]);
 
   return {
-    guide: data?.guide?.getGuideById,
+    guides,
     loading,
     error,
+    fetchGuidesByCategory,
     refetch,
   };
 }
 
-// 북마크한 가이드 목록 훅
-export function useBookmarkedGuides() {
-  const { data, loading, error, refetch } =
-    useQuery<BookmarkedGuidesData>(GET_BOOKMARKED_GUIDES, {
-      fetchPolicy: "network-only",
-    });
+/* ===================== 단일 가이드 ===================== */
+export function useGuide(id: string, options: UseGuideOptions = {}) {
+  const { autoFetch = true } = options;
+  const [guide, setGuide] = useState<GuideDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchGuide = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await guideApi.getGuideById(id);
+      setGuide(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch guide";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refetch = async () => {
+    await fetchGuide();
+  };
+
+  useEffect(() => {
+    if (autoFetch && id) {
+      fetchGuide();
+    }
+  }, [id, autoFetch]);
 
   return {
-    guides: data?.bookmark?.getBookmarkedGuides || [],
+    guide,
     loading,
     error,
+    fetchGuide,
     refetch,
   };
 }
 
-// 북마크 토글 훅
-export function useToggleBookmark() {
-  const [toggleMutation, { loading, error }] = useMutation<
-    ToggleBookmarkData,
-    { guideId: string }
-  >(TOGGLE_BOOKMARK);
+/* ===================== 유사 가이드 검색 ===================== */
+export function useSearchSimilarGuides(title: string, options: UseGuideOptions = {}) {
+  const { autoFetch = true } = options;
+  const [guides, setGuides] = useState<SimilarGuide[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleBookmark = async (guideId: string) => {
-    const result = await toggleMutation({
-      variables: { guideId },
-      refetchQueries: [{ query: GET_BOOKMARKED_GUIDES }],
-    });
-    return result.data?.bookmark?.toggleBookmark;
+  const searchSimilarGuides = async (searchTitle?: string) => {
+    const titleToSearch = searchTitle || title;
+    
+    if (!titleToSearch || titleToSearch.trim() === "") {
+      setGuides([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await guideApi.searchSimilarGuides(titleToSearch);
+      setGuides(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to search similar guides";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const refetch = async () => {
+    await searchSimilarGuides();
+  };
+
+  useEffect(() => {
+    if (autoFetch && title && title.trim() !== "") {
+      searchSimilarGuides();
+    }
+  }, [title, autoFetch]);
+
   return {
-    toggleBookmark,
+    guides,
     loading,
     error,
+    searchSimilarGuides,
+    refetch,
+  };
+}
+
+/* ===================== 페이지네이션된 가이드 ===================== */
+export function usePaginatedGuides(
+  page: number = 0,
+  size: number = 10,
+  sortBy: string = "createdAt",
+  options: UseGuideOptions = {}
+) {
+  const { autoFetch = true } = options;
+  const [guides, setGuides] = useState<PaginatedGuides | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchPaginatedGuides = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await guideApi.getPaginatedGuides(page, size, sortBy);
+      setGuides(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch paginated guides";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refetch = async () => {
+    await fetchPaginatedGuides();
+  };
+
+  useEffect(() => {
+    if (autoFetch) {
+      fetchPaginatedGuides();
+    }
+  }, [page, size, sortBy, autoFetch]);
+
+  return {
+    guides,
+    loading,
+    error,
+    fetchPaginatedGuides,
+    refetch,
   };
 }

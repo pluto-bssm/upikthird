@@ -7,75 +7,94 @@ import color from "@/packages/design-system/src/color";
 import VoteBlock from "@/components/vote/voteblock";
 import VoteMakeButton from "@/components/vote/votemakebutton";
 import { useRouter } from "next/navigation";
-import { useVotes } from "@/hooks/useVote";
+import { useAllVotes } from "@/hooks/useVotes";
 import { useState } from "react";
 import VoteSort from "@/components/vote/VoteSort";
 
-const vote = () => {
+const Vote = () => {
   const router = useRouter();
-  const { votes, loading, error, refetch } = useVotes();
+  const { votes, loading, error, refetch } = useAllVotes();
   const categories = ['전체', '학교생활', '기숙사', '유머'];
   const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
   const [activeIdx, setActiveIdx] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // 로딩 상태
+  if (loading) {
+    return (
+      <LoadingLayout>
+        <div>Loading...</div>
+      </LoadingLayout>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <LoadingLayout>
+        <IsNotFound>투표를 불러오는 중 오류가 발생했습니다.</IsNotFound>
+      </LoadingLayout>
+    );
+  }
+
+  // 카테고리 필터링
   let filteredVotes =
     activeIdx === 0
       ? votes
       : votes.filter((vote) => vote.category === categories[activeIdx]);
 
+  // 정렬
   filteredVotes = [...filteredVotes].sort((a, b) => {
     switch (sortStandard) {
       case "투표 제작일 기준":
+        // finishedAt에서 7일을 뺀 날짜 (생성일 추정)
         const dateA = new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
         const dateB = new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
-        return dateB - dateA;
+        return dateB - dateA; // 최신순
+      
       case "투표 종료일 기준":
-        return new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime();
+        return new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime(); // 빨리 끝나는 순
+      
       case "투표 참여율 기준":
-        const participationA = a.totalResponses / (a.options?.reduce((sum, o) => sum + (o.responseCount || 0), 0) || 1);
-        const participationB = b.totalResponses / (b.options?.reduce((sum, o) => sum + (o.responseCount || 0), 0) || 1);
-        return participationB - participationA;
+        // totalResponses를 기준으로 정렬
+        return (b.totalResponses || 0) - (a.totalResponses || 0); // 참여 많은 순
+      
       default:
         return 0;
     }
   });
 
-  if(loading){
-    return (
-      <LoadingLayout>
-          <div>Loading...</div>
-      </LoadingLayout>
-    );
-    
-
-  }
-  else{
   return (
     <VoteLayout>
-      <Header types={"default"} activeIdx={activeIdx} setActiveIdx={setActiveIdx} onSubmit={() => setIsModalOpen(true)}/>
+      <Header 
+        types={"default"} 
+        activeIdx={activeIdx} 
+        setActiveIdx={setActiveIdx} 
+        onSubmit={() => setIsModalOpen(true)}
+      />
+      
       <VoteContent>
-        {filteredVotes.length == 0 ? (
+        {filteredVotes.length === 0 ? (
           <IsNotFound>진행중인 투표가 없습니다.</IsNotFound>
-        ) :(
+        ) : (
           filteredVotes.map((vote) => (
-          <VoteBlock
-            key={vote.id}
-            category={vote.category}
-            title={vote.title}
-            viewCount={vote.totalResponses}
-            finishDate={vote.finishedAt}
-            onClick={() => router.push(`/vote/${vote.id}`)}
-          />
-        ))
-      )}
+            <VoteBlock
+              key={vote.id}
+              category={vote.category}
+              title={vote.title}
+              viewCount={vote.totalResponses}
+              finishDate={vote.finishedAt}
+              onClick={() => router.push(`/vote/${vote.id}`)}
+            />
+          ))
+        )}
       </VoteContent>
 
       <VoteMakeButtonLayout>
         <VoteMakeButton onClick={() => router.push("/makevote")} />
       </VoteMakeButtonLayout>
+      
       <NavigationBar />
-
 
       <VoteSort
         sortstandard={sortStandard}
@@ -85,10 +104,9 @@ const vote = () => {
       />
     </VoteLayout>
   );
-  }
 };
 
-export default vote;
+export default Vote;
 
 const VoteLayout = styled.div`
   width: 100%;

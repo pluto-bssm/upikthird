@@ -5,14 +5,26 @@ import NavigationBar from "@/components/common/navigationbar";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import GuideComponent from "@/components/guide/GuideComponent";
+import React, { useState } from "react";
+import FilterComponent from "@/components/guide/FilterComponent";
 
 const guide = () => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [sortBy, setSortBy] = useState<"date" | "like">("date");
   return (
     <GuideLayout>
-      <Header types={"default"} />
+      <Header
+        types={"default"}
+        onOptionClick={() => setIsFilterOpen(true)}
+      />
 
       <Section>
-        <GuideComponent />
+        <FilterComponent 
+          isOpen={isFilterOpen} 
+          setIsOpen={setIsFilterOpen}
+          onChange={(next) => setSortBy(next)}
+        />
+        <GuideComponent sortBy={sortBy} />
       </Section>
 
       <NavigationBar />
@@ -38,4 +50,5 @@ const Section = styled.div`
   flex-direction: column;
   gap: 12px;
   padding-top: 100px;
+  margin-bottom: 80px;
 `;

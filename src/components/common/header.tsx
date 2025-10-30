@@ -42,6 +42,7 @@ type HeaderProps = {
   onSecondSubmit?: () => void;
   onSearchChange?: (value: string) => void;
   searchValue?: string;
+  onOptionClick?: () => void;
   activeIdx?: number;
   setActiveIdx?: (idx: number) => void;
 };
@@ -55,6 +56,7 @@ const Header = ({
   onSecondSubmit,
   onSearchChange,
   searchValue,
+  onOptionClick,
   activeIdx,
   setActiveIdx,
 }: HeaderProps) => {
@@ -93,7 +95,6 @@ const Header = ({
             type={"vote"}
             activeIdx={activeIdx}
             setActiveIdx={setActiveIdx}
-            onOptionClick={onSubmit}
           />
         </HeaderLayout>
       );
@@ -305,27 +306,25 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back2
-                width="22"
-                height="22"
+              <Logo
+                width="50"
+                height="50"
                 onClick={() => {
-                  router.back();
+                  router.replace("/");
                 }}
               />
             </LeftItemBox>
-            <CenterItemBox>
-              <SearchInput
-                placeholder={placeholers}
-                value={searchInput}
-                onChange={(e) => {
-                  setSearchInput(e.target.value);
-                  onSearchChange?.(e.target.value);
-                }}
-              />
-            </CenterItemBox>
 
             <RightItemBox>
-              <Button onClick={onSubmit}>검색</Button>
+              <Bell width="25" height="25" />
+              <Search
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`${path}/search`);
+                }}
+              />
+              <User width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>

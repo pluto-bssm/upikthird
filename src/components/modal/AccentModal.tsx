@@ -101,8 +101,8 @@ const Accent = styled.span`
 const SubTitle = styled.p`
   ${font.caption};
   color: ${color.gray500};
-  line-height: 0.7;
   white-space: pre-line;
+  line-height: 12px;
 `;
 
 const ConfirmButton = styled.button`

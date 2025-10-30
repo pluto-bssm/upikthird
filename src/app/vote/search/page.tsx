@@ -4,54 +4,93 @@ import Header from "@/components/common/header";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { useState } from "react";
-import { useVotes } from "@/hooks/useVote";
+import { useVotes } from "@/hooks/useVotes";
 import { useRouter } from "next/navigation";
 import VoteBlock from "@/components/vote/voteblock";
 
 const Search = () => {
-  const [searchitem, setSearchitem] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); 
-  const { votes, loading, error, refetch } = useVotes();
+  const { votes, loading, error } = useVotes();
   const router = useRouter();
 
+  // 검색 필터링 (대소문자 구분 없이)
   const filteredVotes = searchQuery.trim() === "" 
-    ? votes 
-    : votes.filter(vote => vote.title.includes(searchQuery));
-    
+    ? [] 
+    : votes.filter(vote => 
+        vote.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
   const handleSearchChange = (value: string) => {
-    setSearchitem(value);
+    setSearchValue(value);
   };
 
   const handleSearchSubmit = () => {
-
-    setSearchQuery(searchitem);
+    setSearchQuery(searchValue.trim());
   };
+
+  // 로딩 상태
+  if (loading) {
+    return (
+      <VoteLayout>
+        <Header 
+          types={"search"} 
+          placeholers="원하는 투표를 검색해주세요" 
+          searchValue={searchValue}
+          onSearchChange={handleSearchChange} 
+          onSubmit={handleSearchSubmit} 
+        />
+        <LoadingContainer>
+          <div>Loading...</div>
+        </LoadingContainer>
+      </VoteLayout>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <VoteLayout>
+        <Header 
+          types={"search"} 
+          placeholers="원하는 투표를 검색해주세요" 
+          searchValue={searchValue}
+          onSearchChange={handleSearchChange} 
+          onSubmit={handleSearchSubmit} 
+        />
+        <VoteContent>
+          <IsNotFound>투표를 불러오는 중 오류가 발생했습니다.</IsNotFound>
+        </VoteContent>
+      </VoteLayout>
+    );
+  }
 
   return (
     <VoteLayout>
       <Header 
         types={"search"} 
         placeholers="원하는 투표를 검색해주세요" 
-        searchitem={searchitem} 
+        searchValue={searchValue}
         onSearchChange={handleSearchChange} 
         onSubmit={handleSearchSubmit} 
       />
       <VoteContent>
-        {filteredVotes.length == 0 ? (
+        {searchQuery.trim() === "" ? (
+          <IsNotFound>검색어를 입력해주세요.</IsNotFound>
+        ) : filteredVotes.length === 0 ? (
           <IsNotFound>검색 결과가 없습니다.</IsNotFound>
-        ) :(
+        ) : (
           filteredVotes.map((vote) => (
-          <VoteBlock
-            key={vote.id}
-            category={vote.category}
-            title={vote.title}
-            viewCount={vote.totalResponses}
-            finishDate={vote.finishedAt}
-            onClick={() => router.push(`/vote/${vote.id}`)}
-          />
-        ))
-      )}
+            <VoteBlock
+              key={vote.id}
+              category={vote.category}
+              title={vote.title}
+              viewCount={vote.totalResponses}
+              finishDate={vote.finishedAt}
+              onClick={() => router.push(`/vote/${vote.id}`)}
+            />
+          ))
+        )}
       </VoteContent>
     </VoteLayout>
   );
@@ -71,9 +110,18 @@ const VoteLayout = styled.div`
 const VoteContent = styled.div`
   width: 90%;
   margin-top: 100px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${color.white};
-  margin-bottom: 200px;
+  margin-bottom: 100px;
+`;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  color: ${color.gray300};
 `;
 
 const IsNotFound = styled.div`
