@@ -321,26 +321,25 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back2
-                width="22"
-                height="22"
+              <Logo
+                width="50"
+                height="50"
                 onClick={() => {
-                  router.back();
+                  router.replace("/");
                 }}
               />
             </LeftItemBox>
-            <CenterItemBox>
-              <SearchInput placeholder={placeholers} />
-            </CenterItemBox>
 
             <RightItemBox>
-              <Button
+              <Bell width="25" height="25" />
+              <Search
+                width="25"
+                height="25"
                 onClick={() => {
-                  onSubmit;
+                  router.push(`${path}/search`);
                 }}
-              >
-                검색
-              </Button>
+              />
+              <User width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
