@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import IconTwoOptionModal from "../modal/IconTwoOptionModal";
 import BottomSheetSelector from "../common/BottomSheet";
 import { useVoteStore } from "@/store/useMakeVoteStore";
+import { VoteClosureType } from "@/types/api";
 
 type Props = {
   isOpen?: boolean;
@@ -93,15 +94,15 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
     switch (index) {
       case 1:
-        setClosureType("customDays");
+        setClosureType(VoteClosureType.CUSTOM_DAYS);
         setTimeout(() => setIsTimeOpen(true), 300);
         break;
       case 2:
-        setClosureType("participantThreshold");
+        setClosureType(VoteClosureType.PARTICIPANT_COUNT);
         setTimeout(() => setIsMemberOpen(true), 300);
         break;
       default:
-        setClosureType("default");
+        setClosureType(VoteClosureType.DEFAULT);
         break;
     }
   };

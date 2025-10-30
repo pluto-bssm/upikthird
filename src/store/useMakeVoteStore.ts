@@ -1,5 +1,5 @@
 import { create } from "zustand";
-
+import{ VoteClosureType }from "../types/api";
 type State = {
   title: string;
   ballots: string[];
@@ -8,10 +8,10 @@ type State = {
   setBallots: (b: string[]) => void;
   setCategory: (c: string) => void;
   resetVoteData: () => void;
-  closureType : string;
+  closureType : VoteClosureType;
   customDays : number;
   participantThreshold : number;
-  setClosureType : (c : string) => void;
+  setClosureType : (c : VoteClosureType) => void;
   setCustomDays : (d : number) => void;
   setParticipantThreshold : (p : number) => void;
 };
@@ -20,7 +20,7 @@ export const useVoteStore = create<State>((set) => ({
   title: "",
   ballots: ["", ""],
   category: "학교생활",
-  closureType : "default",
+  closureType : VoteClosureType.DEFAULT,
   customDays : 7, 
   participantThreshold : 0,
   setClosureType : (closureType) => set({ closureType }),
@@ -34,7 +34,7 @@ export const useVoteStore = create<State>((set) => ({
       title: "",
       ballots: ["", ""],
       category: "학교생활",
-      closureType : "default",
+      closureType : VoteClosureType.DEFAULT,
       customDays : 7,
       participantThreshold : 0,
     }),

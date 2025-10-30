@@ -38,7 +38,7 @@ import VotemakeButton from "./VotemakeButton";
 import Vote from "./Vote";
 import Exclamation from "./Exclamation";
 import Question from "./Question";
-import { CheckComplete } from "./CheckComplete";
+import  CheckComplete  from "./CheckComplete";
 
 export {
   Back,

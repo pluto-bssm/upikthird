@@ -33,6 +33,7 @@ export const GET_VOTES = gql`
           responseCount
           percentage
         }
+          
       }
     }
   }
@@ -141,6 +142,7 @@ mutation MyMutation($question: String!, $voteId: ID!) {
             responseCount
             percentage
           }
+          participantThreshold
         }
       }
     }

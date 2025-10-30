@@ -57,53 +57,61 @@ const Detail = () => {
   };
 
   const handleVoteSubmit = async () => {
-    setIsOpen(false);
-    setIsOpen_2(true);
+  setIsOpen(false);
+  setIsOpen_2(true);
+  
+  try {
+    const currentTextToCheck = `${title} ${ballots.join(' ')}`;
+    const result = await refetch({ text: currentTextToCheck });
     
-    try {
-      const currentTextToCheck = `${title} ${ballots.join(' ')}`;
-      
-      const result = await refetch({ text: currentTextToCheck });
-      
-      setIsOpen_2(false);
-      
-      const badWordResult = result.data?.checkBadWord;
-      
-      
+    setIsOpen_2(false);
+    
+    const badWordResult = result.data?.checkBadWord;
+    
 
-      if (badWordResult?.containsBadWord === true) {
-        setIsOpen_3(true);
-        return;
-      }
-
-      setIsOpen_4(true);
-      console.log(data);
-      
-      if (data?.keywordGuide.searchSimilarByTitle.length! > 0) {
-        console.log(data?.keywordGuide.searchSimilarByTitle);
-          setIsOpen_4(false);
-          router.push(`${path}/likeguide`);
-      } else {
-          const voteInput: CreateVoteInput = {
-              title: title.trim(),
-              category: category,
-              options: ballots,
-              closureType: closureType,
-              customDays: customDays,
-              participantThreshold: participantThreshold
-          };  
-        console.log(voteInput); 
-        const result =  createVote(voteInput);
-        if(result != null ){
-        }
-        resetVoteData();
-      }
-      
-    } catch (error) {
-      console.error('투표 제출 중 오류 발생:', error);
-      setIsOpen_2(false);
+    if (badWordResult?.containsBadWord === true) {
+      setIsOpen_3(true);
+      return;
     }
-  };
+
+    setIsOpen_4(true);
+
+    
+
+    if (data?.keywordGuide.searchSimilarByTitle.length! > 0) {
+      setIsOpen_4(false);
+      router.push(`${path}/likeguide`);
+    } else {
+      
+      const voteInput: CreateVoteInput = {
+        title: title.trim(),
+        category: category,
+        options: ballots,
+        closureType: closureType,
+        customDays: customDays,
+        participantThreshold: participantThreshold
+      };
+      
+      console.log('투표 생성 Input:', voteInput);
+      
+      const createResult = await createVote(voteInput);
+      
+      setIsOpen_4(false);
+      
+      if (createResult) {
+        console.log('투표 생성 성공:', createResult);
+        resetVoteData();
+        router.push('/vote');
+      }
+    }
+    
+  } catch (error) {
+    console.error('투표 제출 중 오류 발생:', error);
+    setIsOpen_2(false);
+    setIsOpen_4(false);
+  }
+};
+
 
   const CheckVote = () => {
     if((title.trim() === "") || ballots.some((b) => b.trim() === "")){

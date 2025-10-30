@@ -128,12 +128,17 @@ export interface AIQuota {
   lastResetDate: string;
   canUseNow: boolean;
 }
+export enum VoteClosureType {
+  DEFAULT = "DEFAULT",
+  CUSTOM_DAYS = "CUSTOM_DAYS",
+  PARTICIPANT_COUNT = "PARTICIPANT_COUNT",
+}
 
 export interface CreateVoteInput {
   title: string;
   category: string;
   options: string[];
-  closureType: string, 
+  closureType: VoteClosureType, 
   customDays: number, 
   participantThreshold: number
 }

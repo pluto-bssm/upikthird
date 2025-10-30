@@ -17,7 +17,7 @@ type Props = {
   setIsOpen?: (isOpen: boolean) => void;
   showArrowIcon?: boolean;
   arrowIconSrc?: string;
-  setSelect?: (value: string) => void;
+  setSelect: (value: string) => void;
 };
 
 export default function BottomSheetSelector({
@@ -69,7 +69,7 @@ export default function BottomSheetSelector({
             <ItemContainer key={item.value}>
               <ItemRow
                 selected={item.value === selectedValue}
-                onClick={() => {setSelectedValue(parseInt(item.value));}}
+                onClick={() => {setSelectedValue(parseInt(item.value));setSelect(item.value);}}
               >
                 <ItemText selected={item.value === selectedValue}>
                   {item.label}
