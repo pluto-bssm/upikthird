@@ -146,7 +146,7 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bookmark width="25" height="25" />
+              <Bookmark width="25" height="25" onClick={onClose} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
