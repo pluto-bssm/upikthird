@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import Header from '@/components/common/header';
-import AccountInfoBox from '@/components/my/info/AccountInfoBox';
-import { useCurrentUser } from '@/hooks/useAccount';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import Header from "@/components/common/header";
+import AccountInfoBox from "@/components/my/info/AccountInfoBox";
+import { useCurrentUser } from "@/hooks/useAccount";
 
 const AccountInfoPage = () => {
   const { user, loading, error } = useCurrentUser();
@@ -29,18 +29,18 @@ const AccountInfoPage = () => {
 
   const getQualification = (role: string) => {
     switch (role) {
-      case 'ROLE_BSM':
-        return '재학생';
-      case 'ROLE_GRADUATED':
-        return '졸업생';
-      case 'ROLE_STAFF':
-        return '직원';
-      case 'STUDENT':
-        return '재학생';
-      case 'GRADUATED':
-        return '졸업생';
-      case 'STAFF':
-        return '직원';
+      case "ROLE_BSM":
+        return "재학생";
+      case "ROLE_GRADUATED":
+        return "졸업생";
+      case "ROLE_STAFF":
+        return "직원";
+      case "STUDENT":
+        return "재학생";
+      case "GRADUATED":
+        return "졸업생";
+      case "STAFF":
+        return "직원";
       default:
         return role;
     }
@@ -48,12 +48,12 @@ const AccountInfoPage = () => {
 
   const getStudentId = (email: string) => {
     const match = email.match(/^(\d+)\./);
-    return match ? match[1] : 'N/A';
+    return match ? match[1] : "N/A";
   };
 
   return (
     <StyledAccountInfoPage>
-      <Header types="close" text="" />
+      <Header types="register" />
       <AccountInfoPageContent>
         <AccountInfoBox
           name={user.name}
@@ -61,9 +61,6 @@ const AccountInfoPage = () => {
           qualification={getQualification(user.role)}
           email={user.email}
         />
-        <LogoutSection>
-          <LogoutText>로그아웃 | 탈퇴하기</LogoutText>
-        </LogoutSection>
       </AccountInfoPageContent>
     </StyledAccountInfoPage>
   );

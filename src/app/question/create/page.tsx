@@ -1,26 +1,27 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import NavigationBar from '@/components/common/navigationbar';
-import color from '@/packages/design-system/src/color';
-import { validateQuestionCreate } from '@/schemas/question';
-import { ValidationErrorIcon, CheckComplete } from '../../../../public/svg/svg';
-import * as boardApi from '@/services/board/api';
+import React from "react";
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import NavigationBar from "@/components/common/navigationbar";
+import color from "@/packages/design-system/src/color";
+import { validateQuestionCreate } from "@/schemas/question";
+import { ValidationErrorIcon, CheckComplete } from "../../../../public/svg/svg";
+import { createQuestion } from "@/services/board/api";
 
 const QuestionCreatePage = () => {
   const router = useRouter();
-  const [title, setTitle] = React.useState('');
-  const [content, setContent] = React.useState('');
-  const [validationError, setValidationError] = React.useState<string | null>(null);
+  const [title, setTitle] = React.useState("");
+  const [content, setContent] = React.useState("");
+  const [validationError, setValidationError] = React.useState<string | null>(
+    null,
+  );
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
-  const [submitting, setSubmitting] = React.useState(false);
 
   const handleSubmit = async () => {
     const result = validateQuestionCreate({ title, content });
-    
+
     if (!result.success) {
       const firstError = result.error.issues[0];
       setValidationError(firstError.message);
@@ -28,18 +29,13 @@ const QuestionCreatePage = () => {
     }
 
     try {
-      setSubmitting(true);
-      await boardApi.createQuestion({
+      const newQuestion = await createQuestion({
         title,
         content,
-        category: 'GENERAL' // 기본 카테고리
       });
       setShowSuccessModal(true);
     } catch (error) {
-      console.error('질문 생성 실패:', error);
-      setValidationError('질문 생성에 실패했습니다.');
-    } finally {
-      setSubmitting(false);
+      setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -90,7 +86,7 @@ const QuestionCreatePage = () => {
                 <ValidationErrorIcon width="83" height="83" />
               </ModalIconContainer>
               <ModalTitle>
-                {validationError.includes('제목') ? (
+                {validationError.includes("제목") ? (
                   <>
                     <HighlightText>제목</HighlightText>을 작성하지 않았어요
                   </>
@@ -101,9 +97,9 @@ const QuestionCreatePage = () => {
                 )}
               </ModalTitle>
               <ModalSubtitle>
-                {validationError.includes('제목')
-                  ? '질문을 게시판에 작성할 때는 제목을 꼭 작성해야 해요'
-                  : '질문을 게시판에 작성할 때는 내용을 꼭 작성해야 해요'}
+                {validationError.includes("제목")
+                  ? "질문을 게시판에 작성할 때는 제목을 꼭 작성해야 해요"
+                  : "질문을 게시판에 작성할 때는 내용을 꼭 작성해야 해요"}
               </ModalSubtitle>
               <ModalButton onClick={handleValidationClose}>확인</ModalButton>
             </ModalContent>

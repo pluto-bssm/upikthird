@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import color from '@/packages/design-system/src/color';
-import { useLikedQuestions } from '@/hooks/useSaved';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import color from "@/packages/design-system/src/color";
+import { useLikedQuestions } from "@/hooks/useSaved";
 
 interface Question {
   id: string;
@@ -23,16 +23,20 @@ interface Question {
 
 const LikedQuestionsPage = () => {
   const router = useRouter();
-  const { questions: boardQuestions, loading, error } = useLikedQuestions(0, 20);
+  const {
+    questions: boardQuestions,
+    loading,
+    error,
+  } = useLikedQuestions(0, 20);
 
-  const questions: Question[] = boardQuestions.map(board => ({
+  const questions: Question[] = boardQuestions.map((board) => ({
     id: board.id,
     title: board.title,
     content: board.content,
-    category: board.category || '일반',
-    author: board.author || { id: '', name: 'Unknown' },
-    likes: board.likes,
-    comments: board.commentCount,
+    category: board.category || "일반",
+    author: board.author || { id: "", name: "Unknown" },
+    likes: board.likes ?? 0,
+    comments: board.commentCount ?? 0,
     responses: 0,
     createdAt: board.createdAt,
   }));
@@ -71,8 +75,11 @@ const LikedQuestionsPage = () => {
           <EmptyText>좋아요한 질문이 없습니다.</EmptyText>
         ) : (
           <QuestionList>
-            {questions.map(question => (
-              <QuestionItem key={question.id} onClick={() => handleQuestionClick(question.id)}>
+            {questions.map((question) => (
+              <QuestionItem
+                key={question.id}
+                onClick={() => handleQuestionClick(question.id)}
+              >
                 <QuestionHeader>
                   <QuestionTitle>{question.title}</QuestionTitle>
                   <QuestionCategory>{question.category}</QuestionCategory>
@@ -157,10 +164,8 @@ const QuestionContent = styled.p`
   font-size: 12px;
   color: ${color.gray600};
   margin: 8px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 const QuestionFooter = styled.div`

@@ -1,21 +1,23 @@
 export const GET_MY_POSTS = `
-  query MyQuery {
+  query MyQuery($page: Int!, $size: Int!) {
     board {
-      getMyPosts {
-        id
-        title
-        content
-        category
-        status
-        createdAt
-        updatedAt
-        views
-        likes
-        commentCount
-        author {
+      getMyQuestions(page: $page, size: $size) {
+        content {
+          bookmarkCount
+          commentCount
+          content
+          createdAt
           id
-          name
+          isBookmarked
+          updatedAt
+          title
+          userId
+          userName
+          userProfileImage
+          viewCount
         }
+        totalElements
+        totalPages
       }
     }
   }

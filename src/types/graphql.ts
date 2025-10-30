@@ -47,19 +47,25 @@ export interface CommentUser {
 export interface Comment {
   id: string;
   content: string;
-  author: CommentUser;
+  author?: CommentUser;
   createdAt: string;
-  updatedAt: string;
-  likes: number;
+  updatedAt?: string;
+  likes?: number;
   replies?: Comment[];
+  // For direct API response mapping
+  userId?: string;
+  userName?: string;
+  userProfileImage?: string;
+  boardId?: string;
+  parentId?: string;
 }
 
 export interface CommentPage {
   content: Comment[];
   totalPages: number;
   totalElements: number;
-  currentPage: number;
-  pageSize: number;
+  currentPage?: number;
+  pageSize?: number;
 }
 
 export interface BoardAuthor {
@@ -72,14 +78,21 @@ export interface Board {
   id: string;
   title: string;
   content: string;
-  author: BoardAuthor;
+  author?: BoardAuthor;
   category?: string;
-  status: string; // "OPEN" | "CLOSED"
+  status?: string; // "OPEN" | "CLOSED"
   createdAt: string;
-  updatedAt: string;
-  views: number;
-  likes: number;
-  commentCount: number;
+  updatedAt?: string;
+  views?: number;
+  viewCount?: number; // for question list
+  likes?: number;
+  like?: number; // for saved guides
+  commentCount?: number;
+  voteId?: string; // for saved guides
+  bookmarkCount?: number;
+  userId?: string; // for likes
+  userName?: string; // for likes
+  isBookmarked?: boolean; // for likes
 }
 
 export interface BoardDetail extends Board {
@@ -94,25 +107,20 @@ export interface BoardPage {
   pageSize: number;
 }
 
-// ============================================================================
-// Create/Update Input Types
-// ============================================================================
-
 export interface CreateQuestionInput {
   title: string;
   content: string;
-  category?: string;
 }
 
 export interface UpdateQuestionInput {
   title?: string;
   content?: string;
-  category?: string;
 }
 
 export interface CreateCommentInput {
   boardId: string;
   content: string;
+  parentId?: string;
 }
 
 export interface ReportInput {
@@ -130,10 +138,6 @@ export interface CreateVoteInput {
   options: string[];
   category?: string;
 }
-
-// ============================================================================
-// Response Types
-// ============================================================================
 
 export interface QuestionReportPayload {
   success: boolean;

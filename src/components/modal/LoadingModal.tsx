@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { Loading } from '../../../public/svg/svg';
+import React from "react";
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { Loading } from "../../../public/svg/svg";
 
 type LoadingProps = {
   title: string;
@@ -28,7 +28,6 @@ const LoadingModal = ({ title, info }: LoadingProps) => {
 };
 
 export default LoadingModal;
-
 
 const Overlay = styled.div`
   position: fixed;

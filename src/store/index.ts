@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { VotePayload, Board, Comment, CommentPage } from '@/types/graphql';
+import { create } from "zustand";
+import type { VotePayload, Board, Comment, CommentPage } from "@/types/graphql";
 
 interface VoteStore {
   myVotes: VotePayload[];
@@ -45,14 +45,18 @@ export const useBoardStore = create<BoardStore>((set) => ({
   setQuestions: (questions) => set({ questions }),
   setQuestionDetail: (question) => set({ questionDetail: question }),
   setComments: (comments) => set({ comments }),
-  addQuestion: (question) => set((state) => ({ questions: [question, ...state.questions] })),
+  addQuestion: (question) =>
+    set((state) => ({ questions: [question, ...state.questions] })),
   updateQuestion: (id, question) =>
     set((state) => ({
-      questions: state.questions.map((q) => (q.id === id ? { ...q, ...question } : q)),
+      questions: state.questions.map((q) =>
+        q.id === id ? { ...q, ...question } : q,
+      ),
     })),
   removeQuestion: (id) =>
     set((state) => ({
       questions: state.questions.filter((q) => q.id !== id),
     })),
-  clearBoardData: () => set({ questions: [], questionDetail: null, comments: null }),
+  clearBoardData: () =>
+    set({ questions: [], questionDetail: null, comments: null }),
 }));

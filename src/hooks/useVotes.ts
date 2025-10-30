@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useVoteStore } from '@/store';
-import * as voteApi from '@/services/vote/api';
-import type { VotePayload } from '@/types/graphql';
+import { useEffect, useState } from "react";
+import { useVoteStore } from "@/store";
+import * as voteApi from "@/services/vote/api";
+import type { VotePayload } from "@/types/graphql";
 
 interface UseVotesOptions {
   autoFetch?: boolean;
@@ -14,8 +14,14 @@ export function useMyVotes(options: UseVotesOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { myVotes, setMyVotes, addMyVote, updateMyVote, removeMyVote, clearMyVotes } =
-    useVoteStore();
+  const {
+    myVotes,
+    setMyVotes,
+    addMyVote,
+    updateMyVote,
+    removeMyVote,
+    clearMyVotes,
+  } = useVoteStore();
 
   const fetchMyVotes = async () => {
     try {
@@ -24,7 +30,8 @@ export function useMyVotes(options: UseVotesOptions = {}) {
       const votes = await voteApi.getMyVotes();
       setMyVotes(votes);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch votes';
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch votes";
       setError(message);
     } finally {
       setLoading(false);
@@ -39,7 +46,7 @@ export function useMyVotes(options: UseVotesOptions = {}) {
       // Refresh votes after voting
       await fetchMyVotes();
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to vote';
+      const message = err instanceof Error ? err.message : "Failed to vote";
       setError(message);
       throw err;
     } finally {
@@ -83,7 +90,8 @@ export function useVote(voteId: string) {
       const voteData = await voteApi.getVoteById(voteId);
       setVote(voteData);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch vote';
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch vote";
       setError(message);
     } finally {
       setLoading(false);
@@ -97,7 +105,7 @@ export function useVote(voteId: string) {
       await voteApi.createVoteResponse({ voteId, optionId });
       await fetchVote();
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to vote';
+      const message = err instanceof Error ? err.message : "Failed to vote";
       setError(message);
       throw err;
     } finally {

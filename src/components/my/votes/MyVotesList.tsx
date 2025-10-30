@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { VoteItem } from './VoteItem';
-import type { VotePayload } from '@/types/graphql';
+import styled from "@emotion/styled";
+import { VoteItem } from "./VoteItem";
+import type { VotePayload } from "@/types/graphql";
 
 interface MyVotesListProps {
   votes: VotePayload[];

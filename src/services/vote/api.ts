@@ -1,11 +1,11 @@
-import { upik } from '@/apis';
-import type { VotePayload, CreateVoteResponseInput } from '@/types/graphql';
-import { GET_MY_VOTES, GET_VOTE_BY_ID, GET_ALL_VOTES } from './queries';
-import { CREATE_VOTE_RESPONSE } from './mutations';
-import { Storage } from '@/apis/storage/storage';
-import { TOKEN } from '@/constants/common/constant';
+import { upik } from "@/apis";
+import type { VotePayload, CreateVoteResponseInput } from "@/types/graphql";
+import { GET_MY_VOTES, GET_VOTE_BY_ID, GET_ALL_VOTES } from "./queries";
+import { CREATE_VOTE_RESPONSE } from "./mutations";
+import { Storage } from "@/apis/storage/storage";
+import { TOKEN } from "@/constants/common/constant";
 
-const API_URL = 'https://upik-659794985248.asia-northeast3.run.app/graphql';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ;
 
 interface GraphQLRequest {
   query: string;
@@ -13,13 +13,17 @@ interface GraphQLRequest {
 }
 export async function getMyVotes(): Promise<VotePayload[]> {
   const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(API_URL, {
-    query: GET_MY_VOTES,
-  } as GraphQLRequest, {
-    headers: {
-      Authorization: `Bearer ${token}`,
+  const response = await upik.post(
+    API_URL,
+    {
+      query: GET_MY_VOTES,
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
   const votes = response.data?.data?.vote?.getMyVotes || [];
   return votes;
@@ -27,18 +31,22 @@ export async function getMyVotes(): Promise<VotePayload[]> {
 
 export async function getVoteById(id: string): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(API_URL, {
-    query: GET_VOTE_BY_ID,
-    variables: { id },
-  } as GraphQLRequest, {
-    headers: {
-      Authorization: `Bearer ${token}`,
+  const response = await upik.post(
+    API_URL,
+    {
+      query: GET_VOTE_BY_ID,
+      variables: { id },
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
   const vote = response.data?.data?.vote?.getVoteById;
   if (!vote) {
-    throw new Error('Vote not found');
+    throw new Error("Vote not found");
   }
   return vote;
 }
@@ -52,7 +60,9 @@ export async function getAllVotes(): Promise<VotePayload[]> {
   return votes;
 }
 
-export async function createVoteResponse(input: CreateVoteResponseInput): Promise<boolean> {
+export async function createVoteResponse(
+  input: CreateVoteResponseInput,
+): Promise<boolean> {
   const response = await upik.post(API_URL, {
     query: CREATE_VOTE_RESPONSE,
     variables: { input },
@@ -60,7 +70,7 @@ export async function createVoteResponse(input: CreateVoteResponseInput): Promis
 
   const result = response.data?.data?.voteResponse?.createVoteResponse;
   if (!result?.success) {
-    throw new Error(result?.message || 'Failed to create vote response');
+    throw new Error(result?.message || "Failed to create vote response");
   }
   return true;
 }

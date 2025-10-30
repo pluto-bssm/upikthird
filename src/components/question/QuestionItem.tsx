@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import type { Board } from '@/types/graphql';
+import Link from "next/link";
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import type { Board } from "@/types/graphql";
 
 interface QuestionItemProps {
   question: Board;
@@ -12,21 +12,21 @@ interface QuestionItemProps {
 export const QuestionItem = ({ question }: QuestionItemProps) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', {
-      year: '2-digit',
-      month: '2-digit',
-      day: '2-digit',
+    return date.toLocaleDateString("ko-KR", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
     });
   };
 
   const getCategoryEmoji = (category?: string) => {
     switch (category) {
-      case '학교생활':
-        return '🏫';
-      case '기숙사':
-        return '🏠';
-      case '유머':
-        return '😂';
+      case "학교생활":
+        return "🏫";
+      case "기숙사":
+        return "🏠";
+      case "유머":
+        return "😂";
     }
   };
 
@@ -36,7 +36,7 @@ export const QuestionItem = ({ question }: QuestionItemProps) => {
         <QuestionContent>
           <QuestionTitle>{question.title}</QuestionTitle>
           <QuestionMeta>
-            <MetaItem>{question.author.name}</MetaItem>
+            <MetaItem>{question.author?.name || "작성자 미상"}</MetaItem>
             <MetaItem>{formatDate(question.createdAt)}</MetaItem>
             <MetaItem>| {question.commentCount}</MetaItem>
           </QuestionMeta>
@@ -98,7 +98,7 @@ const MetaItem = styled.span`
   white-space: nowrap;
 
   &:not(:last-child)::after {
-    content: ' ';
+    content: " ";
   }
 `;
 

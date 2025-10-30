@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import { MyVotesList } from '@/components/my/votes/MyVotesList';
-import color from '@/packages/design-system/src/color';
-import { useMyVotes } from '@/hooks/useVotes';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import { MyVotesList } from "@/components/my/votes/MyVotesList";
+import color from "@/packages/design-system/src/color";
+import { useMyVotes } from "@/hooks/useVotes";
 
 const MyVotesPage = () => {
   const router = useRouter();
@@ -15,9 +15,7 @@ const MyVotesPage = () => {
     router.back();
   };
 
-  const handleVoteClick = (voteId: string) => {
-    // TODO: Implement vote navigation
-  };
+  const handleVoteClick = (voteId: string) => {};
 
   if (loading) {
     return (
@@ -74,7 +72,7 @@ const LoadingText = styled.p`
 const ErrorText = styled.p`
   text-align: center;
   font-size: 16px;
-  color: #E71D36;
+  color: #e71d36;
   padding: 40px 20px;
   margin: 0;
 `;

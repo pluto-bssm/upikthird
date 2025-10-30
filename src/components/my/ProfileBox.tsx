@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { ProfileIcon } from '../../../public/svg/svg';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { ProfileIcon } from "../../../public/svg/svg";
 
 interface ProfileBoxProps {
   profileImage?: string;

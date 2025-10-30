@@ -1,7 +1,3 @@
-/**
- * Vote GraphQL Mutations
- */
-
 export const CREATE_VOTE = `
   mutation CreateVote($input: CreateVoteInput!) {
     vote {

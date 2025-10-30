@@ -1,15 +1,22 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import Header from '@/components/common/header';
-import { QuestionList } from '@/components/question/QuestionList';
-import color from '@/packages/design-system/src/color';
-import { useQuestions } from '@/hooks/useBoard';
+import React from "react";
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import { QuestionList } from "@/components/question/QuestionList";
+import color from "@/packages/design-system/src/color";
+import { useQuestions } from "@/hooks/useBoard";
+import VotemakeButton from "@/../public/svg/VotemakeButton";
 
 const QuestionPage = () => {
-  const [activeTab, setActiveTab] = React.useState<'all' | 'popular'>('all');
+  const router = useRouter();
+  const [activeTab, setActiveTab] = React.useState<"all" | "popular">("all");
   const { questions, loading, error } = useQuestions({ page: 0, size: 10 });
+
+  const handleCreateQuestion = () => {
+    router.push("/question/create");
+  };
 
   if (error) {
     return (
@@ -24,16 +31,13 @@ const QuestionPage = () => {
     <StyledQuestionPage>
       <Header types="question" text="질문 게시판" />
       <TabContainer>
-        <Tab
-          isActive={activeTab === 'all'}
-          onClick={() => setActiveTab('all')}
-        >
+        <Tab isActive={activeTab === "all"} onClick={() => setActiveTab("all")}>
           전체
         </Tab>
         <Divider />
         <Tab
-          isActive={activeTab === 'popular'}
-          onClick={() => setActiveTab('popular')}
+          isActive={activeTab === "popular"}
+          onClick={() => setActiveTab("popular")}
         >
           인기
         </Tab>
@@ -45,6 +49,9 @@ const QuestionPage = () => {
           <QuestionList questions={questions} />
         )}
       </QuestionPageContent>
+      <FloatingButton onClick={handleCreateQuestion}>
+        <VotemakeButton width="24" height="24" />
+      </FloatingButton>
     </StyledQuestionPage>
   );
 };
@@ -86,8 +93,8 @@ interface TabProps {
 const Tab = styled.button<TabProps>`
   font-family: Pretendard, sans-serif;
   font-size: 15px;
-  font-weight: ${props => props.isActive ? 600 : 400};
-  color: ${props => props.isActive ? color.primary : color.black};
+  font-weight: ${(props) => (props.isActive ? 600 : 400)};
+  color: ${(props) => (props.isActive ? color.primary : color.black)};
   background: none;
   border: none;
   cursor: pointer;
@@ -117,7 +124,34 @@ const LoadingText = styled.p`
 const ErrorText = styled.p`
   text-align: center;
   font-size: 16px;
-  color: #E71D36;
+  color: #e71d36;
   padding: 40px 20px;
   margin: 0;
+`;
+
+const FloatingButton = styled.button`
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: ${color.primary};
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  z-index: 100;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 `;

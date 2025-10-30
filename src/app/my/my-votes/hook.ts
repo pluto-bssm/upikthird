@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getMyVotes, MyVote } from '@/services/my/my-votes/api';
+import { useState, useEffect } from "react";
+import { getMyVotes, MyVote } from "@/services/my/my-votes/api";
 
 export const useMyVotes = () => {
   const [votes, setVotes] = useState<MyVote[]>([]);
@@ -13,7 +13,7 @@ export const useMyVotes = () => {
       const data = await getMyVotes();
       setVotes(data);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      setError(err instanceof Error ? err : new Error("Unknown error"));
     } finally {
       setLoading(false);
     }

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
 
-type InquiryType = '오류' | '건의사항' | '신고' | '기타';
+type InquiryType = "오류" | "건의사항" | "신고" | "기타";
 
 interface InquiryTypeButtonsProps {
   selected?: InquiryType;
@@ -11,8 +11,12 @@ interface InquiryTypeButtonsProps {
   error?: string;
 }
 
-const InquiryTypeButtons = ({ selected, onSelect, error }: InquiryTypeButtonsProps) => {
-  const types: InquiryType[] = ['오류', '건의사항', '신고', '기타'];
+const InquiryTypeButtons = ({
+  selected,
+  onSelect,
+  error,
+}: InquiryTypeButtonsProps) => {
+  const types: InquiryType[] = ["오류", "건의사항", "신고", "기타"];
 
   return (
     <Container>
@@ -20,7 +24,7 @@ const InquiryTypeButtons = ({ selected, onSelect, error }: InquiryTypeButtonsPro
         문의 유형 <Required>*</Required>
       </Label>
       <ButtonGroup>
-        {types.map(type => (
+        {types.map((type) => (
           <TypeButton
             key={type}
             isSelected={selected === type}
@@ -64,10 +68,12 @@ const ButtonGroup = styled.div`
 
 const TypeButton = styled.button<{ isSelected: boolean }>`
   padding: 8px 20px;
-  border: 1px solid ${props => props.isSelected ? color.primary : color.gray100};
+  border: 1px solid
+    ${(props) => (props.isSelected ? color.primary : color.gray100)};
   border-radius: 100px;
-  background-color: ${props => props.isSelected ? color.primary : color.white};
-  color: ${props => props.isSelected ? color.white : color.gray600};
+  background-color: ${(props) =>
+    props.isSelected ? color.primary : color.white};
+  color: ${(props) => (props.isSelected ? color.white : color.gray600)};
   font-family: Pretendard, sans-serif;
   font-size: 15px;
   font-weight: 600;

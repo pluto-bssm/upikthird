@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useBoardStore } from '@/store';
-import * as boardApi from '@/services/board/api';
-import type { Board, CommentPage, PageResponse, PaginationParams } from '@/types/graphql';
+import { useEffect, useState } from "react";
+import { useBoardStore } from "@/store";
+import * as boardApi from "@/services/board/api";
+import type {
+  Board,
+  CommentPage,
+  PageResponse,
+  PaginationParams,
+} from "@/types/graphql";
 
-export function useQuestions(initialPagination: PaginationParams = { page: 0, size: 10 }) {
+export function useQuestions(
+  initialPagination: PaginationParams = { page: 0, size: 10 },
+) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState(initialPagination);
@@ -20,7 +27,8 @@ export function useQuestions(initialPagination: PaginationParams = { page: 0, si
       setQuestions(data.content);
       setPagination({ page: data.currentPage, size: data.pageSize });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch questions';
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch questions";
       setError(message);
     } finally {
       setLoading(false);
@@ -35,7 +43,15 @@ export function useQuestions(initialPagination: PaginationParams = { page: 0, si
     fetchQuestions();
   }, []);
 
-  return { questions, loading, error, pagination, setPagination, fetchQuestions, refetch };
+  return {
+    questions,
+    loading,
+    error,
+    pagination,
+    setPagination,
+    fetchQuestions,
+    refetch,
+  };
 }
 
 export function useQuestionDetail(boardId: string) {
@@ -51,7 +67,8 @@ export function useQuestionDetail(boardId: string) {
       const data = await boardApi.getQuestionDetail(boardId);
       setQuestionDetail(data);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch question detail';
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch question detail";
       setError(message);
     } finally {
       setLoading(false);
@@ -67,7 +84,10 @@ export function useQuestionDetail(boardId: string) {
   return { question: questionDetail, loading, error, refetch: fetchDetail };
 }
 
-export function useQuestionComments(boardId: string, initialPagination: PaginationParams = { page: 0, size: 10 }) {
+export function useQuestionComments(
+  boardId: string,
+  initialPagination: PaginationParams = { page: 0, size: 10 },
+) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState(initialPagination);
@@ -80,9 +100,10 @@ export function useQuestionComments(boardId: string, initialPagination: Paginati
       setError(null);
       const data = await boardApi.getComments(boardId, params);
       setComments(data);
-      setPagination({ page: data.currentPage, size: data.pageSize });
+      setPagination({ page: data.currentPage ?? 0, size: data.pageSize ?? 10 });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch comments';
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch comments";
       setError(message);
     } finally {
       setLoading(false);
@@ -99,12 +120,20 @@ export function useQuestionComments(boardId: string, initialPagination: Paginati
     }
   }, [boardId]);
 
-  return { comments, loading, error, pagination, setPagination, fetchComments, refetch };
+  return {
+    comments,
+    loading,
+    error,
+    pagination,
+    setPagination,
+    fetchComments,
+    refetch,
+  };
 }
 
 export function useSearchQuestions(
   keyword: string,
-  initialPagination: PaginationParams = { page: 0, size: 10 }
+  initialPagination: PaginationParams = { page: 0, size: 10 },
 ) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -112,7 +141,10 @@ export function useSearchQuestions(
 
   const { questions, setQuestions } = useBoardStore();
 
-  const searchQuestions = async (searchKeyword: string, params = pagination) => {
+  const searchQuestions = async (
+    searchKeyword: string,
+    params = pagination,
+  ) => {
     try {
       setLoading(true);
       setError(null);
@@ -120,7 +152,8 @@ export function useSearchQuestions(
       setQuestions(data.content);
       setPagination({ page: data.currentPage, size: data.pageSize });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to search questions';
+      const message =
+        err instanceof Error ? err.message : "Failed to search questions";
       setError(message);
     } finally {
       setLoading(false);
@@ -133,5 +166,12 @@ export function useSearchQuestions(
     }
   }, [keyword]);
 
-  return { questions, loading, error, pagination, setPagination, searchQuestions };
+  return {
+    questions,
+    loading,
+    error,
+    pagination,
+    setPagination,
+    searchQuestions,
+  };
 }

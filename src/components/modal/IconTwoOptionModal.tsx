@@ -1,20 +1,19 @@
-'use client'
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import font from '@/packages/design-system/src/font';
-import { Question, Exclamation } from '../../../public/svg/svg';
+import React from "react";
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
+import { Question, Exclamation } from "../../../public/svg/svg";
 
 type IconTwoOptionModalProps = {
-  icon: 'question' | 'exclamation';
+  icon: "question" | "exclamation";
   title: string;
   subtitle: string;
   primaryButtonText: string;
   secondaryButtonText: string;
   onPrimaryClick: () => void;
   onSecondaryClick: () => void;
-
 };
 
 const IconTwoOptionModal = ({
@@ -30,7 +29,7 @@ const IconTwoOptionModal = ({
     <Overlay>
       <IconTwoOptionModalLayout>
         <IconBox>
-          {icon === 'question' ? (
+          {icon === "question" ? (
             <Question width="80px" height="80px" />
           ) : (
             <Exclamation width="80px" height="80px" />

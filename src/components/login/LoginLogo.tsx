@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import Logo from '../../../public/svg/Logo';
+import styled from "@emotion/styled";
+import Logo from "../../../public/svg/Logo";
 
 const LoginLogo = () => {
   return (

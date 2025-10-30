@@ -1,1 +1,17 @@
-export const GET_LIKED_QUESTIONS = `query GetLikedQuestions($page: Int!, $size: Int!) { board { getLikedQuestions(page: $page, size: $size) { content { id title category content author { id name } likes commentCount responses createdAt } totalPages totalElements currentPage pageSize } } }`;
+export const GET_LIKED_QUESTIONS = `query MyQuery {
+  board {
+    getQuestionList(page: 0, size: 100) {
+      content {
+        id
+        createdAt
+        content
+        title
+        updatedAt
+        userId
+        userName
+        userProfileImage
+        isBookmarked
+      }
+    }
+  }
+}`;

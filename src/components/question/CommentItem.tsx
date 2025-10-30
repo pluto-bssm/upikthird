@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
 
 interface CommentItemProps {
   author: string;
@@ -32,7 +32,7 @@ const StyledCommentItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 4px;
+  padding: 5px;
   border-bottom: 1px solid ${color.gray100};
 `;
 
@@ -82,4 +82,3 @@ const SubmitButton = styled.button`
   cursor: pointer;
   padding: 0;
 `;
-

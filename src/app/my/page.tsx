@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import color from '@/packages/design-system/src/color';
-import Header from '@/components/common/header';
-import ProfileBox from '@/components/my/ProfileBox';
-import TabBar from '@/components/my/TabBar';
-import MenuSection, { type MenuItem } from '@/components/my/MenuSection';
-import { useCurrentUser } from '@/hooks/useAccount';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import color from "@/packages/design-system/src/color";
+import Header from "@/components/common/header";
+import ProfileBox from "@/components/my/ProfileBox";
+import TabBar from "@/components/my/TabBar";
+import MenuSection, { type MenuItem } from "@/components/my/MenuSection";
+import { useCurrentUser } from "@/hooks/useAccount";
 
 const MyPage = () => {
   const router = useRouter();
@@ -15,40 +15,43 @@ const MyPage = () => {
 
   const menuItems: MenuItem[] = [
     {
-      id: '1',
-      label: '내가 만든 투표',
-      category: '기록',
-      onClick: () => router.push('/my/my-votes'),
+      id: "1",
+      label: "내가 만든 투표",
+      category: "기록",
+      onClick: () => router.push("/my/my-votes"),
     },
     {
-      id: '2',
-      label: '투표 응답 내역',
-      category: '기록',
-      onClick: () => router.push('/my/vote-responses'),
+      id: "2",
+      label: "투표 응답 내역",
+      category: "기록",
+      onClick: () => router.push("/my/vote-responses"),
     },
     {
-      id: '3',
-      label: '질문 게시판 글 작성 내역',
-      category: '기록',
-      onClick: () => router.push('/my/posts'),
+      id: "3",
+      label: "질문 게시판 글 작성 내역",
+      category: "기록",
+      onClick: () => router.push("/my/posts"),
     },
     {
-      id: '4',
-      label: '계정 정보',
-      category: '설정',
-      onClick: () => router.push('/my/info'),
+      id: "4",
+      label: "계정 정보",
+      category: "설정",
+      onClick: () => router.push("/my/info"),
     },
     {
-      id: '5',
-      label: '서비스 소개',
-      category: '도움말 & 지원',
-      onClick: () => router.push('/info/about'),
+      id: "5",
+      label: "서비스 소개",
+      category: "도움말 & 지원",
+      onClick: () =>
+        router.push(
+          "https://quilt-honey-c52.notion.site/2733ccc9b3dc803fb8dcc0c581403bff",
+        ),
     },
     {
-      id: '6',
-      label: '문의하기',
-      category: '도움말 & 지원',
-      onClick: () => router.push('/my/inquiry'),
+      id: "6",
+      label: "문의하기",
+      category: "도움말 & 지원",
+      onClick: () => router.push("/my/inquiry"),
     },
   ];
 
@@ -56,20 +59,20 @@ const MyPage = () => {
     item.onClick?.();
   };
 
-  const handleTabChange = (tab: 'saved' | 'like') => {
-    if (tab === 'saved') {
-      router.push('/my/saved/guide');
+  const handleTabChange = (tab: "saved" | "like") => {
+    if (tab === "saved") {
+      router.push("/my/saved/guide");
     } else {
-      router.push('/my/likes');
+      router.push("/my/likes");
     }
   };
 
   const getQualification = (role: string) => {
     switch (role) {
-      case 'ROLE_BSM':
-        return '재학생';
+      case "ROLE_BSM":
+        return "재학생";
       default:
-        return '외부인';
+        return "외부인";
     }
   };
 

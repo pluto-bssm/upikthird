@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import { PostListByUser } from '@/components/my/posts/PostListByUser';
-import color from '@/packages/design-system/src/color';
-import { useMyPosts } from '@/hooks/useMyPosts';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import { PostListByUser } from "@/components/my/posts/PostListByUser";
+import color from "@/packages/design-system/src/color";
+import { useMyPosts } from "@/hooks/useMyPosts";
 
 interface UserPost {
   id: string;
@@ -21,8 +21,6 @@ const UserPostsPage = () => {
   const { posts, loading, error } = useMyPosts();
 
   const handlePostClick = (postId: string) => {
-    console.log('Post clicked:', postId);
-    // TODO: Implement post navigation
   };
 
   const handleClose = () => {
@@ -47,12 +45,11 @@ const UserPostsPage = () => {
     );
   }
 
-  // API 응답을 UI 포맷으로 변환
   const displayPosts: UserPost[] = posts.map((post) => ({
     id: post.id,
     title: post.title,
-    author: post.author?.name || '알 수 없음',
-    date: new Date(post.createdAt).toLocaleString('ko-KR'),
+    author: post.author?.name || "알 수 없음",
+    date: new Date(post.createdAt).toLocaleString("ko-KR"),
     bookmarkCount: post.likes || 0,
     commentCount: post.commentCount || 0,
   }));
@@ -92,7 +89,7 @@ const LoadingText = styled.p`
 const ErrorText = styled.p`
   text-align: center;
   font-size: 16px;
-  color: #E71D36;
+  color: #e71d36;
   padding: 40px 20px;
   margin: 0;
 `;

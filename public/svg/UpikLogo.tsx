@@ -1,5 +1,5 @@
-import type { SVGProps } from 'react';
-import React from 'react';
+import type { SVGProps } from "react";
+import React from "react";
 
 const UpikLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -17,7 +17,7 @@ const UpikLogo = (props: SVGProps<SVGSVGElement>) => (
       fontSize="64"
       fontWeight="900"
       fill="#011627"
-      style={{ fontStyle: 'italic' }}
+      style={{ fontStyle: "italic" }}
     >
       upik
     </text>

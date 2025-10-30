@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { ChevronRightIcon } from '../../../public/svg/ChevronRight';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { ChevronRightIcon } from "../../../public/svg/ChevronRight";
 
-export type MenuCategory = '기록' | '설정' | '도움말 & 지원';
+export type MenuCategory = "기록" | "설정" | "도움말 & 지원";
 export type MenuItem = {
   id: string;
   label: string;
@@ -18,32 +18,40 @@ interface MenuSectionProps {
 }
 
 const MenuSection = ({ items, onItemClick }: MenuSectionProps) => {
-  const groupedItems = items.reduce((acc, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = [];
-    }
-    acc[item.category].push(item);
-    return acc;
-  }, {} as Record<MenuCategory, MenuItem[]>);
+  const groupedItems = items.reduce(
+    (acc, item) => {
+      if (!acc[item.category]) {
+        acc[item.category] = [];
+      }
+      acc[item.category].push(item);
+      return acc;
+    },
+    {} as Record<MenuCategory, MenuItem[]>,
+  );
 
   return (
     <MenuSectionWrapper>
-      {Object.entries(groupedItems).map(([category, categoryItems], categoryIndex) => (
-        <MenuCategoryGroup key={category} isLast={categoryIndex === Object.entries(groupedItems).length - 1}>
-          <MenuCategoryLabel>{category}</MenuCategoryLabel>
-          <MenuListWrapper>
-            {categoryItems.map((item, index) => (
-              <div key={item.id}>
-                <MenuItemButton onClick={() => onItemClick?.(item)}>
-                  <MenuItemLabel>{item.label}</MenuItemLabel>
-                  <ChevronRightIcon />
-                </MenuItemButton>
-                {index < categoryItems.length - 1 && <MenuItemDivider />}
-              </div>
-            ))}
-          </MenuListWrapper>
-        </MenuCategoryGroup>
-      ))}
+      {Object.entries(groupedItems).map(
+        ([category, categoryItems], categoryIndex) => (
+          <MenuCategoryGroup
+            key={category}
+            isLast={categoryIndex === Object.entries(groupedItems).length - 1}
+          >
+            <MenuCategoryLabel>{category}</MenuCategoryLabel>
+            <MenuListWrapper>
+              {categoryItems.map((item, index) => (
+                <div key={item.id}>
+                  <MenuItemButton onClick={() => onItemClick?.(item)}>
+                    <MenuItemLabel>{item.label}</MenuItemLabel>
+                    <ChevronRightIcon />
+                  </MenuItemButton>
+                  {index < categoryItems.length - 1 && <MenuItemDivider />}
+                </div>
+              ))}
+            </MenuListWrapper>
+          </MenuCategoryGroup>
+        ),
+      )}
     </MenuSectionWrapper>
   );
 };
@@ -61,7 +69,8 @@ const MenuCategoryGroup = styled.div<{ isLast?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0;
-  border-bottom: ${props => props.isLast ? 'none' : `2px solid ${color.gray50}`};
+  border-bottom: ${(props) =>
+    props.isLast ? "none" : `2px solid ${color.gray50}`};
 `;
 
 const MenuCategoryLabel = styled.p`

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import color from '@/packages/design-system/src/color';
-import font from '@/packages/design-system/src/font';
-import { useMyVoteResponses } from '@/hooks/useVoteResponses';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
+import { useMyVoteResponses } from "@/hooks/useVoteResponses";
 
 interface DisplayVote {
   id: string;
@@ -50,7 +50,7 @@ const VoteResponsesListPage = () => {
     title: vote.title,
     category: vote.category,
     status: vote.status,
-    finishedAt: vote.finishedAt || '',
+    finishedAt: vote.finishedAt || "",
   }));
 
   return (
@@ -67,7 +67,7 @@ const VoteResponsesListPage = () => {
                 <VoteTitle>{vote.title}</VoteTitle>
                 <VoteInfo>
                   <InfoTag status={vote.status}>
-                    {vote.status === 'OPEN' ? '진행중' : '마감됨'}
+                    {vote.status === "OPEN" ? "진행중" : "마감됨"}
                   </InfoTag>
                   <InfoDate>{vote.finishedAt}</InfoDate>
                 </VoteInfo>
@@ -146,8 +146,10 @@ const InfoTag = styled.span<InfoTagProps>`
   ${font.caption};
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: ${(props) => (props.status === 'OPEN' ? 'rgba(255, 159, 28, 0.1)' : color.gray100)};
-  color: ${(props) => (props.status === 'OPEN' ? color.primary : color.gray600)};
+  background-color: ${(props) =>
+    props.status === "OPEN" ? "rgba(255, 159, 28, 0.1)" : color.gray100};
+  color: ${(props) =>
+    props.status === "OPEN" ? color.primary : color.gray600};
 `;
 
 const InfoDate = styled.span`
@@ -166,7 +168,7 @@ const LoadingText = styled.p`
 const ErrorText = styled.p`
   text-align: center;
   font-size: 16px;
-  color: #E71D36;
+  color: #e71d36;
   padding: 40px 20px;
   margin: 0;
 `;

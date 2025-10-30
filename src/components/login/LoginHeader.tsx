@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
 
 const LoginHeader = () => {
   return (
@@ -23,7 +23,9 @@ const StyledHeader = styled.div`
 `;
 
 const TaglineText = styled.p`
-  font-family: Sacheon Hanggong OTF, sans-serif;
+  font-family:
+    Sacheon Hanggong OTF,
+    sans-serif;
   font-size: 12px;
   font-weight: 400;
   color: ${color.black};

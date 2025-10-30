@@ -9,12 +9,6 @@ export const GET_MY_VOTES = `
         status
         title
         totalResponses
-        options {
-          content
-          id
-          percentage
-          responseCount
-        }
       }
     }
   }

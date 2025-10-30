@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import { SavedPostList } from '@/components/my/saved/post/SavedPostList';
-import color from '@/packages/design-system/src/color';
-import { useSavedPosts } from '@/hooks/useSaved';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import { SavedPostList } from "@/components/my/saved/post/SavedPostList";
+import color from "@/packages/design-system/src/color";
+import { useSavedPosts } from "@/hooks/useSaved";
 
 interface Post {
   id: string;
@@ -20,13 +20,13 @@ const SavedPostPage = () => {
   const router = useRouter();
   const { posts: boardPosts, loading, error } = useSavedPosts(0, 20);
 
-  const posts: Post[] = boardPosts.map(board => ({
+  const posts: Post[] = boardPosts.map((board) => ({
     id: board.id,
     title: board.title,
-    author: board.author.name,
-    date: new Date(board.createdAt).toLocaleString('ko-KR'),
-    likeCount: board.likes,
-    commentCount: board.commentCount,
+    author: board.author?.name || "작성자 미상",
+    date: new Date(board.createdAt).toLocaleString("ko-KR"),
+    likeCount: board.likes ?? 0,
+    commentCount: board.commentCount ?? 0,
   }));
 
   const handleCommentClick = (postId: string) => {
@@ -59,10 +59,7 @@ const SavedPostPage = () => {
     <StyledSavedPostPage>
       <Header types="close" text="좋아요한 질문" onClose={handleClose} />
       <SavedPostContent>
-        <SavedPostList
-          posts={posts}
-          onCommentClick={handleCommentClick}
-        />
+        <SavedPostList posts={posts} onCommentClick={handleCommentClick} />
       </SavedPostContent>
     </StyledSavedPostPage>
   );

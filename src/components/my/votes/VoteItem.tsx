@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import type { VotePayload } from '@/types/graphql';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import type { VotePayload } from "@/types/graphql";
 
 interface VoteItemProps {
   vote: VotePayload;
@@ -12,23 +12,23 @@ interface VoteItemProps {
 export const VoteItem = ({ vote, onClick }: VoteItemProps) => {
   const getCategoryEmoji = (category: string) => {
     switch (category) {
-      case '학교생활':
-        return '🏫';
-      case '기숙사':
-        return '🏠';
-      case '유머':
-        return '😂';
+      case "학교생활":
+        return "🏫";
+      case "기숙사":
+        return "🏠";
+      case "유머":
+        return "😂";
       default:
-        return '✨';
+        return "✨";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'OPEN':
-        return '진행중';
-      case 'CLOSED':
-        return '종료됨';
+      case "OPEN":
+        return "진행중";
+      case "CLOSED":
+        return "종료됨";
       default:
         return status;
     }
@@ -36,9 +36,9 @@ export const VoteItem = ({ vote, onClick }: VoteItemProps) => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'OPEN':
+      case "OPEN":
         return color.accent;
-      case 'CLOSED':
+      case "CLOSED":
         return color.gray500;
       default:
         return color.gray500;
@@ -59,7 +59,9 @@ export const VoteItem = ({ vote, onClick }: VoteItemProps) => {
             <ParticipantIcon>❤️</ParticipantIcon>
             <ParticipantCount>{vote.totalResponses}</ParticipantCount>
           </ParticipantInfo>
-          <StatusText status={vote.status}>{getStatusText(vote.status)}</StatusText>
+          <StatusText status={vote.status}>
+            {getStatusText(vote.status)}
+          </StatusText>
         </VoteMetaWrapper>
       </VoteContentWrapper>
     </VoteItemButton>
@@ -167,11 +169,11 @@ const StatusText = styled.p<StatusTextProps>`
   font-weight: 400;
   color: ${(props) => {
     switch (props.status) {
-      case 'urgent':
+      case "urgent":
         return color.accent;
-      case 'completed':
+      case "completed":
         return color.gray500;
-      case 'ongoing':
+      case "ongoing":
         return color.secondary;
       default:
         return color.gray500;
