@@ -3,61 +3,66 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import { useEffect, useState } from "react";
 import {
     Nexts,
     Logo as LogoIcon, ProfileIcon,
 } from "@/../public/svg/svg";
 import { useRouter } from "next/navigation";
+import ReportCard from "@/components/dashboard/ReportCard";
+import { upik } from "@/apis";
+import { API } from "@/constants/common/constant";
+import { GET_ALL_REPORTS } from "@/graphql/queries";
 
-const reportHistoryData = [
-  {
-    id: 1,
-    reason: "신고 사유",
-    reporter: "박땡땡",
-    target: "가이드",
-    timestamp: "2025-06-12 09:12",
-  },
-  {
-    id: 2,
-    reason: "신고 사유",
-    reporter: "박땡땡",
-    target: "가이드",
-    timestamp: "2025-06-12 09:12",
-  },
-  {
-    id: 3,
-    reason: "신고 사유",
-    reporter: "박땡땡",
-    target: "가이드",
-    timestamp: "2025-06-12 09:12",
-  },
-  {
-    id: 4,
-    reason: "신고 사유",
-    reporter: "박땡땡",
-    target: "가이드",
-    timestamp: "2025-06-12 09:12",
-  },
-  {
-    id: 5,
-    reason: "신고 사유",
-    reporter: "박땡땡",
-    target: "가이드",
-    timestamp: "2025-06-12 09:12",
-  },
-  {
-    id: 6,
-    reason: "신고 사유",
-    reporter: "박땡땡",
-    target: "가이드",
-    timestamp: "2025-06-12 09:12",
-  },
-];
+type ReportSummary = {
+  authorId: string;
+  authorName: string;
+  category: string;
+  content: string;
+  createdAt: string;
+  guideType?: string;
+  likeCount?: number;
+  reason: string;
+  revoteCount?: number;
+  targetCreatedAt?: string;
+  targetId: string;
+  targetTitle: string;
+  targetType: string;
+  userId?: string;
+};
 
 const dashboard = () => {
   const router = useRouter();
+  const [reports, setReports] = useState<ReportSummary[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleReportClick = (id: number) => {
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await upik.post(API.GRAPHQL_URL, {
+          query: GET_ALL_REPORTS,
+        });
+        const data = res.data?.data?.report?.getAllReports || [];
+        if (mounted) setReports(data);
+      } catch (e) {
+        if (mounted)
+          setError(
+            e instanceof Error ? e.message : "신고 내역을 불러오지 못했습니다.",
+          );
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const handleReportClick = (id: string) => {
     router.push(`/dashboard/${id}`);
   };
 
@@ -71,30 +76,31 @@ const dashboard = () => {
       </TopHeader>
 
       <MainContent>
-        <ReportCard>
-          <CardTitle>신고 내역 보기</CardTitle>
+        <ReportCard title="신고 내역 보기" variant="white" titleAlign="left" maxWidth={800} scrollable maxHeight={520}>
           <ReportList>
-            {reportHistoryData.map((report) => (
-              <ReportItem
-                key={report.id}
-                onClick={() => handleReportClick(report.id)}
-              >
-                <ReportContent>
-                  <ReportReason>{report.reason}</ReportReason>
-                  <ReportDetails>
-                    신고자: {report.reporter} &nbsp;&nbsp;신고자 대상:{" "}
-                    {report.target}
-                  </ReportDetails>
-                </ReportContent>
+            {loading && <ReportDetails>불러오는 중…</ReportDetails>}
+            {error && <ReportDetails>{error}</ReportDetails>}
+            {!loading && !error &&
+              reports.map((report, idx) => (
+                <ReportItem
+                  key={`${report.targetType}-${report.targetId}-${report.createdAt}-${idx}`}
+                  onClick={() => handleReportClick(String(report.targetId))}
+                >
+                  <ReportContent>
+                    <ReportReason>{report.reason}</ReportReason>
+                    <ReportDetails>
+                      신고자: {report.authorName} &nbsp;&nbsp;신고 대상: {report.targetType}
+                    </ReportDetails>
+                  </ReportContent>
 
-                <ReportMeta>
-                  <Timestamp>{report.timestamp}</Timestamp>
-                  <ArrowIcon>
-                    <Nexts width="24" height="24" />
-                  </ArrowIcon>
-                </ReportMeta>
-              </ReportItem>
-            ))}
+                  <ReportMeta>
+                    <Timestamp>{new Date(report.createdAt).toLocaleString("ko-KR")}</Timestamp>
+                    <ArrowIcon>
+                      <Nexts width="24" height="24" />
+                    </ArrowIcon>
+                  </ReportMeta>
+                </ReportItem>
+              ))}
           </ReportList>
         </ReportCard>
       </MainContent>
@@ -138,24 +144,7 @@ const MainContent = styled.div`
   background-color: #fafafaff;
 `;
 
-const ReportCard = styled.div`
-  width: 100%;
-  max-width: 800px;
-  background-color: ${color.white};
-  border-radius: 20px;
-  padding: 32px 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-`;
-
-const CardTitle = styled.h1`
-  font-family: ${font.D1};
-  color: ${color.black};
-  margin: 0 0 24px 0;
-  text-align: left;
-`;
+// ReportCard moved to component
 
 const ReportList = styled.div`
   width: 100%;
