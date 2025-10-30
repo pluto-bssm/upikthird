@@ -4,9 +4,7 @@ import React from "react";
 const Exclamation = (props: SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
-    width="84"
-    height="83"
-    viewBox="0 0 84 83"
+    viewBox="0 0 20 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >

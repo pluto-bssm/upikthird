@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import { SavedPostList } from '@/components/my/saved/post/SavedPostList';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import { SavedPostList } from "@/components/my/saved/post/SavedPostList";
+import color from "@/packages/design-system/src/color";
+import { useSavedPosts } from "@/hooks/useSaved";
 
 interface Post {
   id: string;
@@ -15,53 +16,50 @@ interface Post {
   commentCount: number;
 }
 
-const mockPosts: Post[] = [
-  {
-    id: '1',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    likeCount: 16,
-    commentCount: 4,
-  },
-  {
-    id: '2',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    likeCount: 16,
-    commentCount: 4,
-  },
-  {
-    id: '3',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    likeCount: 16,
-    commentCount: 4,
-  },
-];
-
 const SavedPostPage = () => {
   const router = useRouter();
+  const { posts: boardPosts, loading, error } = useSavedPosts(0, 20);
+
+  const posts: Post[] = boardPosts.map((board) => ({
+    id: board.id,
+    title: board.title,
+    author: board.author?.name || "작성자 미상",
+    date: new Date(board.createdAt).toLocaleString("ko-KR"),
+    likeCount: board.likes ?? 0,
+    commentCount: board.commentCount ?? 0,
+  }));
 
   const handleCommentClick = (postId: string) => {
-    console.log('Comment clicked for post:', postId);
-    // TODO: Implement comment navigation
+    router.push(`/question/${postId}`);
   };
 
   const handleClose = () => {
     router.back();
   };
 
+  if (loading) {
+    return (
+      <StyledSavedPostPage>
+        <Header types="close" text="좋아요한 질문" onClose={handleClose} />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledSavedPostPage>
+    );
+  }
+
+  if (error) {
+    return (
+      <StyledSavedPostPage>
+        <Header types="close" text="좋아요한 질문" onClose={handleClose} />
+        <ErrorText>질문을 불러올 수 없습니다.</ErrorText>
+      </StyledSavedPostPage>
+    );
+  }
+
   return (
     <StyledSavedPostPage>
       <Header types="close" text="좋아요한 질문" onClose={handleClose} />
       <SavedPostContent>
-        <SavedPostList
-          posts={mockPosts}
-          onCommentClick={handleCommentClick}
-        />
+        <SavedPostList posts={posts} onCommentClick={handleCommentClick} />
       </SavedPostContent>
     </StyledSavedPostPage>
   );
@@ -82,4 +80,20 @@ const SavedPostContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
 `;

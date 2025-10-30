@@ -1,14 +1,12 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { GuideItem } from './GuideItem';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { GuideItem } from "./GuideItem";
 
 interface Guide {
   id: string;
   title: string;
-  category: '학교생활' | '기숙사' | '유머';
-  categoryEmoji: string;
   likeCount: number;
 }
 

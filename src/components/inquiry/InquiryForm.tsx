@@ -1,24 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import styled from '@emotion/styled';
-import { z } from 'zod';
-import color from '@/packages/design-system/src/color';
-import { InquiryTypeButtons, type InquiryType } from './InquiryTypeButtons';
-import { PrivacySection } from './PrivacySection';
+import { useState } from "react";
+import styled from "@emotion/styled";
+import { z } from "zod";
+import color from "@/packages/design-system/src/color";
+import { InquiryTypeButtons, type InquiryType } from "./InquiryTypeButtons";
+import { PrivacySection } from "./PrivacySection";
 
-// Zod 스키마 정의
-const inquirySchema = z.object({
-  type: z.enum(['오류', '건의사항', '신고', '기타']).optional(),
-  content: z.string().min(20, '20자 이상 입력해주세요'),
-  email: z.string().email('올바른 이메일 주소를 입력해주세요'),
-  agreePrivacy: z.boolean().refine(val => val === true, {
-    message: '개인정보 수집 및 이용에 동의해주세요',
-  }),
-}).refine(data => data.type !== undefined, {
-  message: '문의 유형을 선택해주세요',
-  path: ['type'],
-});
+const inquirySchema = z
+  .object({
+    type: z.enum(["오류", "건의사항", "신고", "기타"]).optional(),
+    content: z.string().min(20, "20자 이상 입력해주세요"),
+    email: z.string().email("올바른 이메일 주소를 입력해주세요"),
+    agreePrivacy: z.boolean().refine((val) => val === true, {
+      message: "개인정보 수집 및 이용에 동의해주세요",
+    }),
+  })
+  .refine((data) => data.type !== undefined, {
+    message: "문의 유형을 선택해주세요",
+    path: ["type"],
+  });
 
 interface InquiryForm {
   type?: InquiryType;
@@ -34,40 +35,40 @@ interface InquiryFormProps {
 const InquiryForm = ({ onSubmit }: InquiryFormProps) => {
   const [formData, setFormData] = useState<InquiryForm>({
     type: undefined,
-    content: '',
-    email: '',
+    content: "",
+    email: "",
     agreePrivacy: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleTypeSelect = (type: InquiryType) => {
-    setFormData(prev => ({ ...prev, type }));
+    setFormData((prev) => ({ ...prev, type }));
     if (errors.type) {
-      setErrors(prev => ({ ...prev, type: '' }));
+      setErrors((prev) => ({ ...prev, type: "" }));
     }
   };
 
   const handleContentChange = (content: string) => {
-    setFormData(prev => ({ ...prev, content }));
+    setFormData((prev) => ({ ...prev, content }));
     if (errors.content && content.length >= 20) {
-      setErrors(prev => ({ ...prev, content: '' }));
+      setErrors((prev) => ({ ...prev, content: "" }));
     }
   };
 
   const handleEmailChange = (email: string) => {
-    setFormData(prev => ({ ...prev, email }));
+    setFormData((prev) => ({ ...prev, email }));
     if (errors.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (emailRegex.test(email)) {
-        setErrors(prev => ({ ...prev, email: '' }));
+        setErrors((prev) => ({ ...prev, email: "" }));
       }
     }
   };
 
   const handlePrivacyToggle = () => {
-    setFormData(prev => ({ ...prev, agreePrivacy: !prev.agreePrivacy }));
+    setFormData((prev) => ({ ...prev, agreePrivacy: !prev.agreePrivacy }));
     if (errors.agreePrivacy) {
-      setErrors(prev => ({ ...prev, agreePrivacy: '' }));
+      setErrors((prev) => ({ ...prev, agreePrivacy: "" }));
     }
   };
 
@@ -91,12 +92,14 @@ const InquiryForm = ({ onSubmit }: InquiryFormProps) => {
   };
 
   const isFormValid = () => {
-    return formData.type && 
-           formData.content && 
-           formData.content.length >= 20 &&
-           formData.email && 
-           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
-           formData.agreePrivacy;
+    return (
+      formData.type &&
+      formData.content &&
+      formData.content.length >= 20 &&
+      formData.email &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+      formData.agreePrivacy
+    );
   };
 
   const handleSubmit = () => {
@@ -130,7 +133,12 @@ const InquiryForm = ({ onSubmit }: InquiryFormProps) => {
           onChange={(e) => handleContentChange(e.target.value)}
           hasError={!!errors.content}
         />
-        <CharacterCount hasError={(formData.content?.length || 0) < 20 && (formData.content?.length || 0) > 0}>
+        <CharacterCount
+          hasError={
+            (formData.content?.length || 0) < 20 &&
+            (formData.content?.length || 0) > 0
+          }
+        >
           20자 이상 입력해주세요
         </CharacterCount>
         {errors.content && <ErrorText>{errors.content}</ErrorText>}
@@ -165,7 +173,7 @@ const InquiryForm = ({ onSubmit }: InquiryFormProps) => {
         />
       </PrivacySectionWrapper>
 
-      <SubmitButton 
+      <SubmitButton
         isEnabled={!!isFormValid()}
         onClick={handleSubmit}
         disabled={!isFormValid()}
@@ -231,7 +239,8 @@ const Required = styled.span`
 const ContentTextarea = styled.textarea<{ hasError?: boolean }>`
   min-height: 120px;
   padding: 20px;
-  border: 1px solid ${props => props.hasError ? color.accent : color.gray100};
+  border: 1px solid
+    ${(props) => (props.hasError ? color.accent : color.gray100)};
   border-radius: 16px;
   background-color: ${color.white};
   font-family: Pretendard, sans-serif;
@@ -254,13 +263,14 @@ const CharacterCount = styled.p<{ hasError?: boolean }>`
   font-family: Pretendard, sans-serif;
   font-size: 13px;
   font-weight: 400;
-  color: ${props => props.hasError ? color.accent : color.gray300};
+  color: ${(props) => (props.hasError ? color.accent : color.gray300)};
   margin: 0;
 `;
 
 const EmailInput = styled.input<{ hasError?: boolean }>`
   padding: 20px;
-  border: 1px solid ${props => props.hasError ? color.accent : color.gray100};
+  border: 1px solid
+    ${(props) => (props.hasError ? color.accent : color.gray100)};
   border-radius: 16px;
   background-color: ${color.white};
   font-family: Pretendard, sans-serif;
@@ -301,17 +311,19 @@ const SubmitButton = styled.button<{ isEnabled: boolean }>`
   padding: 16px 20px;
   border: none;
   border-radius: 100px;
-  background-color: ${props => props.isEnabled ? color.primary : color.gray200};
+  background-color: ${(props) =>
+    props.isEnabled ? color.primary : color.gray200};
   color: ${color.white};
   font-family: Pretendard, sans-serif;
   font-size: 20px;
   font-weight: 700;
-  cursor: ${props => props.isEnabled ? 'pointer' : 'not-allowed'};
+  cursor: ${(props) => (props.isEnabled ? "pointer" : "not-allowed")};
   transition: all 0.2s;
 
   &:hover {
-    background-color: ${props => props.isEnabled ? color.primary : color.gray200};
-    opacity: ${props => props.isEnabled ? 0.9 : 1};
+    background-color: ${(props) =>
+      props.isEnabled ? color.primary : color.gray200};
+    opacity: ${(props) => (props.isEnabled ? 0.9 : 1)};
   }
 `;
 

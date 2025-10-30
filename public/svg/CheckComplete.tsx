@@ -1,6 +1,10 @@
-import type { SVGProps } from 'react';
+import type { SVGProps } from "react";
 
-function CheckComplete({ width = "83", height = "83", ...props }: { width?: string; height?: string } & SVGProps<SVGSVGElement>) {
+function CheckComplete({
+  width = "83",
+  height = "83",
+  ...props
+}: { width?: string; height?: string } & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

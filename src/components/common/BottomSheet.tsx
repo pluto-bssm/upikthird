@@ -69,7 +69,7 @@ export default function BottomSheetSelector({
             <ItemContainer key={item.value}>
               <ItemRow
                 selected={item.value === selectedValue}
-                onClick={() => setSelectedValue(parseInt(item.value))}
+                onClick={() => {setSelectedValue(parseInt(item.value));}}
               >
                 <ItemText selected={item.value === selectedValue}>
                   {item.label}
