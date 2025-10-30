@@ -5,12 +5,14 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Header from "@/components/common/header";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Nexts, Completevote, Bad } from "../../../../../public/svg/svg";
 import MemberChoseBottomSheet from "@/components/votemake/MemberChoseBottomSheet";
 import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
+import { useVoteStore } from "@/store/useMakeVoteStore";
+import { useAiOptionCreate } from "@/hooks/useVote";
 
 const Options = () => {
   const router = useRouter();
@@ -20,18 +22,32 @@ const Options = () => {
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
   const [aiUsageCount, setAiUsageCount] = useState(0);
+  const [shouldFetchAi, setShouldFetchAi] = useState(false);
+  const { ballots, title, setBallots } = useVoteStore();
+
+
+  const { options, loading } = useAiOptionCreate(
+    shouldFetchAi ? ballots.length : 0,
+    shouldFetchAi ? title : ""
+  );
+
+  useEffect(() => {
+    if (shouldFetchAi && !loading && options.length > 0) {
+      setBallots(options);
+      setIsOpen_2(false);
+      setIsOpen_3(true);
+      setShouldFetchAi(false);
+    }
+  }, [loading, options, shouldFetchAi, setBallots]);
 
   function MakeAiBallot() {
     if (aiUsageCount < 3) {
       setAiUsageCount(aiUsageCount + 1);
       setIsOpen_1(false);
       setIsOpen_2(true);
-
-      setTimeout(() => {
-        setIsOpen_2(false);
-        setIsOpen_3(true);
-      }, 1000);
+      setShouldFetchAi(true);
     } else {
+      setIsOpen_1(false);
       setIsOpen_4(true);
     }
   }
