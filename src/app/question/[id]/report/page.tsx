@@ -1,40 +1,52 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import NavigationBar from '@/components/common/navigationbar';
-import color from '@/packages/design-system/src/color';
-import { CheckComplete } from '@/../public/svg/svg';
+import React from "react";
+import styled from "@emotion/styled";
+import { useRouter, useParams } from "next/navigation";
+import Header from "@/components/common/header";
+import NavigationBar from "@/components/common/navigationbar";
+import color from "@/packages/design-system/src/color";
+import { CheckComplete } from "@/../public/svg/svg";
+import { reportBoard } from "@/services/board/api";
 
-type ReportReason = 
-  | '유해한 내용을 포함하고 있어요'
-  | '명예훼손 또는 저작권이 침해되었어요'
-  | '욕설/생명경시/혐오 표현이 사용되었어요'
-  | '질문이 아니에요'
-  | '기타';
+type ReportReason =
+  | "유해한 내용을 포함하고 있어요"
+  | "명예훼손 또는 저작권이 침해되었어요"
+  | "욕설/생명경시/혐오 표현이 사용되었어요"
+  | "질문이 아니에요"
+  | "기타";
 
 const reportReasons: ReportReason[] = [
-  '유해한 내용을 포함하고 있어요',
-  '명예훼손 또는 저작권이 침해되었어요',
-  '욕설/생명경시/혐오 표현이 사용되었어요',
-  '질문이 아니에요',
-  '기타',
+  "유해한 내용을 포함하고 있어요",
+  "명예훼손 또는 저작권이 침해되었어요",
+  "욕설/생명경시/혐오 표현이 사용되었어요",
+  "질문이 아니에요",
+  "기타",
 ];
 
 const ReportPage = () => {
   const router = useRouter();
-  const [selectedReason, setSelectedReason] = React.useState<ReportReason | null>(null);
-  const [detailText, setDetailText] = React.useState('');
+  const params = useParams();
+  const boardId = params?.id as string;
+
+  const [selectedReason, setSelectedReason] =
+    React.useState<ReportReason | null>(null);
+  const [detailText, setDetailText] = React.useState("");
   const [showCancelModal, setShowCancelModal] = React.useState(false);
   const [showCompleteModal, setShowCompleteModal] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleSubmit = () => {
-    if (selectedReason && detailText.trim()) {
-      console.log('신고 제출:', { reason: selectedReason, detail: detailText });
-      // TODO: API 호출
+  const handleSubmit = async () => {
+    if (!selectedReason || !detailText.trim()) return;
+
+    try {
+      setIsSubmitting(true);
+      await reportBoard(boardId, selectedReason, detailText);
       setShowCompleteModal(true);
+    } catch (error) {
+      alert("신고 접수에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -97,8 +109,11 @@ const ReportPage = () => {
           <CharCount>{detailText.length}/500</CharCount>
         </DetailSection>
 
-        <SubmitButton onClick={handleSubmit} disabled={!selectedReason || !detailText.trim()}>
-          신고 접수하기
+        <SubmitButton
+          onClick={handleSubmit}
+          disabled={!selectedReason || !detailText.trim() || isSubmitting}
+        >
+          {isSubmitting ? "신고 중..." : "신고 접수하기"}
         </SubmitButton>
       </Container>
 
@@ -108,12 +123,20 @@ const ReportPage = () => {
           <ModalContainer>
             <ModalContent>
               <ModalTextContainer>
-                <ModalTitle>신고를 <CancelText>취소</CancelText>하시겠어요?</ModalTitle>
-                <ModalSubtitle>지금까지 작성한 내용은 저장되지 않습니다.</ModalSubtitle>
+                <ModalTitle>
+                  신고를 <CancelText>취소</CancelText>하시겠어요?
+                </ModalTitle>
+                <ModalSubtitle>
+                  지금까지 작성한 내용은 저장되지 않습니다.
+                </ModalSubtitle>
               </ModalTextContainer>
               <ModalButtonContainer>
-                <ModalCancelButton onClick={handleCancelModal}>취소</ModalCancelButton>
-                <ModalConfirmButton onClick={handleConfirmCancel}>확인</ModalConfirmButton>
+                <ModalCancelButton onClick={handleCancelModal}>
+                  취소
+                </ModalCancelButton>
+                <ModalConfirmButton onClick={handleConfirmCancel}>
+                  확인
+                </ModalConfirmButton>
               </ModalButtonContainer>
             </ModalContent>
           </ModalContainer>
@@ -127,13 +150,17 @@ const ReportPage = () => {
             <CompleteModalContent>
               <CheckComplete width="83" height="83" />
               <CompleteModalTextContainer>
-                <CompleteModalTitle>신고가 <SuccessText>성공적</SuccessText>으로 접수됐어요</CompleteModalTitle>
+                <CompleteModalTitle>
+                  신고가 <SuccessText>성공적</SuccessText>으로 접수됐어요
+                </CompleteModalTitle>
                 <CompleteModalSubtitle>
                   <p>지속적으로 정상적인 투표를 신고하는 경우</p>
                   <p>제재의 대상이 될 수 있어요</p>
                 </CompleteModalSubtitle>
               </CompleteModalTextContainer>
-              <CompleteModalButton onClick={handleCompleteClose}>확인</CompleteModalButton>
+              <CompleteModalButton onClick={handleCompleteClose}>
+                확인
+              </CompleteModalButton>
             </CompleteModalContent>
           </ModalContainer>
         </>
@@ -231,14 +258,16 @@ const ReasonList = styled.div`
 `;
 
 const ReasonButton = styled.button<{ isSelected: boolean }>`
-  border: 1px solid ${props => props.isSelected ? color.primary : color.gray100};
+  border: 1px solid
+    ${(props) => (props.isSelected ? color.primary : color.gray100)};
   border-radius: 16px;
   padding: 19px 20px;
-  background-color: ${props => props.isSelected ? color.primary : color.white};
+  background-color: ${(props) =>
+    props.isSelected ? color.primary : color.white};
   font-family: Pretendard, sans-serif;
   font-size: 15px;
   font-weight: 600;
-  color: ${props => props.isSelected ? color.white : color.gray600};
+  color: ${(props) => (props.isSelected ? color.white : color.gray600)};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -283,7 +312,8 @@ const CharCount = styled.p`
 `;
 
 const SubmitButton = styled.button`
-  background-color: ${props => props.disabled ? color.gray200 : color.gray600};
+  background-color: ${(props) =>
+    props.disabled ? color.gray200 : color.gray600};
   border: none;
   border-radius: 100px;
   padding: 16px 20px;
@@ -292,7 +322,7 @@ const SubmitButton = styled.button`
   font-size: 20px;
   font-weight: 700;
   color: ${color.white};
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
@@ -453,7 +483,7 @@ const CompleteModalSubtitle = styled.div`
   color: ${color.gray600};
   line-height: 1.4;
   margin: 0;
-  
+
   p {
     margin: 0;
     padding: 0;

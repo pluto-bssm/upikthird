@@ -1,24 +1,66 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import Header from '@/components/common/header';
-import AccountInfoBox from '@/components/my/info/AccountInfoBox';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import Header from "@/components/common/header";
+import AccountInfoBox from "@/components/my/info/AccountInfoBox";
+import { useCurrentUser } from "@/hooks/useAccount";
 
 const AccountInfoPage = () => {
+  const { user, loading, error } = useCurrentUser();
+
+  if (loading) {
+    return (
+      <StyledAccountInfoPage>
+        <Header types="close" text="" />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledAccountInfoPage>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <StyledAccountInfoPage>
+        <Header types="close" text="" />
+        <ErrorText>계정 정보를 불러올 수 없습니다.</ErrorText>
+      </StyledAccountInfoPage>
+    );
+  }
+
+  const getQualification = (role: string) => {
+    switch (role) {
+      case "ROLE_BSM":
+        return "재학생";
+      case "ROLE_GRADUATED":
+        return "졸업생";
+      case "ROLE_STAFF":
+        return "직원";
+      case "STUDENT":
+        return "재학생";
+      case "GRADUATED":
+        return "졸업생";
+      case "STAFF":
+        return "직원";
+      default:
+        return role;
+    }
+  };
+
+  const getStudentId = (email: string) => {
+    const match = email.match(/^(\d+)\./);
+    return match ? match[1] : "N/A";
+  };
+
   return (
     <StyledAccountInfoPage>
-      <Header types="close" text="" />
+      <Header types="register" />
       <AccountInfoPageContent>
         <AccountInfoBox
-          name="박가은"
-          studentId="2108"
-          qualification="재학생"
-          email="fake_bsm_email@bssm.hs.kr"
+          name={user.name}
+          studentId={getStudentId(user.email)}
+          qualification={getQualification(user.role)}
+          email={user.email}
         />
-        <LogoutSection>
-          <LogoutText>로그아웃 | 탈퇴하기</LogoutText>
-        </LogoutSection>
       </AccountInfoPageContent>
     </StyledAccountInfoPage>
   );
@@ -51,4 +93,20 @@ const LogoutText = styled.p`
   padding: 0;
   text-align: center;
   line-height: 1.2;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
 `;

@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { BackArrow } from '../../../../public/svg/svg';
+import React from "react";
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { BackArrow } from "../../../../public/svg/svg";
 
 const SearchPage = () => {
-  const [searchInput, setSearchInput] = React.useState('');
+  const [searchInput, setSearchInput] = React.useState("");
 
   return (
     <StyledSearchPage>

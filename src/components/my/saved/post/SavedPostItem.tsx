@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import type { SVGProps } from 'react';
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
+import type { SVGProps } from "react";
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
 
 interface SavedPostItemProps {
   title: string;
@@ -50,7 +50,8 @@ const StyledPostItem = styled.div`
   padding: 20px;
   border-bottom: 1px solid ${color.gray300};
   background-color: ${color.white};
-  box-shadow: -4px -4px 10px 0px rgba(0, 0, 0, 0.03),
+  box-shadow:
+    -4px -4px 10px 0px rgba(0, 0, 0, 0.03),
     4px 4px 10px 0px rgba(0, 0, 0, 0.03);
 `;
 
@@ -87,7 +88,7 @@ const MetaItem = styled.span`
   white-space: nowrap;
 
   &:not(:last-child)::after {
-    content: '';
+    content: "";
     width: 1px;
     height: 10px;
     background-color: ${color.gray700};

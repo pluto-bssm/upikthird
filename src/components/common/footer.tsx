@@ -1,9 +1,14 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter, usePathname } from 'next/navigation';
-import color from '@/packages/design-system/src/color';
-import { HomeIcon, VoteIcon, GuideIcon, DashboardIcon } from '../../../public/svg/svg';
+import styled from "@emotion/styled";
+import { useRouter, usePathname } from "next/navigation";
+import color from "@/packages/design-system/src/color";
+import {
+  HomeIcon,
+  VoteIcon,
+  GuideIcon,
+  DashboardIcon,
+} from "../../../public/svg/svg";
 
 const Footer = () => {
   const router = useRouter();
@@ -13,25 +18,34 @@ const Footer = () => {
 
   return (
     <StyledFooter>
-      <FooterItem onClick={() => router.push('/')} isActive={isActive('/')}>
+      <FooterItem onClick={() => router.push("/")} isActive={isActive("/")}>
         <IconWrapper>
           <HomeIcon width="24" height="24" />
         </IconWrapper>
         <Label>메인</Label>
       </FooterItem>
-      <FooterItem onClick={() => router.push('/vote')} isActive={isActive('vote')}>
+      <FooterItem
+        onClick={() => router.push("/vote")}
+        isActive={isActive("vote")}
+      >
         <IconWrapper>
           <VoteIcon width="24" height="24" />
         </IconWrapper>
         <Label>투표</Label>
       </FooterItem>
-      <FooterItem onClick={() => router.push('/guide')} isActive={isActive('guide')}>
+      <FooterItem
+        onClick={() => router.push("/guide")}
+        isActive={isActive("guide")}
+      >
         <IconWrapper>
           <GuideIcon width="24" height="24" />
         </IconWrapper>
         <Label>가이드</Label>
       </FooterItem>
-      <FooterItem onClick={() => router.push('/question')} isActive={isActive('question')}>
+      <FooterItem
+        onClick={() => router.push("/question")}
+        isActive={isActive("question")}
+      >
         <IconWrapper>
           <DashboardIcon width="24" height="24" />
         </IconWrapper>
@@ -54,9 +68,10 @@ const StyledFooter = styled.div`
   gap: 69px;
   align-items: flex-end;
   justify-content: center;
-  padding: 10px 36px 20px;
+  padding: 20px 36px 60px;
   background-color: ${color.white};
-  box-shadow: -4px -4px 10px 0px rgba(0, 0, 0, 0.03),
+  box-shadow:
+    -4px -4px 10px 0px rgba(0, 0, 0, 0.03),
     4px 4px 10px 0px rgba(0, 0, 0, 0.03);
   border-top: 1px solid ${color.gray300};
 `;

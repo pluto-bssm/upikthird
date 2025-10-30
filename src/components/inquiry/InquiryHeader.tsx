@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { ArrowLeftIcon } from '../../../public/svg/ArrowLeft';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { ArrowLeftIcon } from "../../../public/svg/ArrowLeft";
 
 interface InquiryHeaderProps {
   onBack: () => void;

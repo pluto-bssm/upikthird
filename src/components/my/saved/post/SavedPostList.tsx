@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { SavedPostItem } from './SavedPostItem';
+import styled from "@emotion/styled";
+import { SavedPostItem } from "./SavedPostItem";
 
 interface Post {
   id: string;

@@ -1,23 +1,27 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
 
 interface TabBarProps {
   savedGuideCount: number;
   likeQuestionCount: number;
-  onTabChange?: (tab: 'saved' | 'like') => void;
+  onTabChange?: (tab: "saved" | "like") => void;
 }
 
-const TabBar = ({ savedGuideCount, likeQuestionCount, onTabChange }: TabBarProps) => {
+const TabBar = ({
+  savedGuideCount,
+  likeQuestionCount,
+  onTabChange,
+}: TabBarProps) => {
   return (
     <TabBarWrapper>
-      <TabButton onClick={() => onTabChange?.('saved')}>
+      <TabButton onClick={() => onTabChange?.("saved")}>
         <TabButtonText>
           저장한 가이드 <TabCountBadge>{savedGuideCount}</TabCountBadge>
         </TabButtonText>
       </TabButton>
-      <TabButton onClick={() => onTabChange?.('like')}>
+      <TabButton onClick={() => onTabChange?.("like")}>
         <TabButtonText>
           좋아요한 질문 <TabCountBadge>{likeQuestionCount}</TabCountBadge>
         </TabButtonText>

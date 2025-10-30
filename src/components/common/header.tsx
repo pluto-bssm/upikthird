@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
@@ -30,7 +30,7 @@ type variant =
   | "title"
   | "close and option"
   | "search"
-  | "question"
+  | "question";
   | "default and no navi";
 
 type HeaderProps = {
@@ -65,29 +65,64 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Logo width="50" height="50" onClick={() => router.replace("/")} />
+              <Logo
+                width="50"
+                height="50"
+                onClick={() => {
+                  router.replace("/");
+                }}
+              />
             </LeftItemBox>
+
             <RightItemBox>
               <Bell width="25" height="25" />
-              <Search width="25" height="25" onClick={() => router.push(`${path}/search`)} />
+              <Search
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`${path}/search`);
+                }}
+              />
               <User width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
-          <Headernavigationbar type="vote" activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
+          <Headernavigationbar
+            type={"vote"}
+            activeIdx={activeIdx}
+            setActiveIdx={setActiveIdx}
+          />
         </HeaderLayout>
       );
-
     case "question":
       return (
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Logo width="50" height="50" onClick={() => router.replace("/")} />
+              <Logo
+                width="50"
+                height="50"
+                onClick={() => {
+                  router.replace("/");
+                }}
+              />
             </LeftItemBox>
+
             <RightItemBox>
               <Bell width="25" height="25" />
-              <Search width="25" height="25" onClick={() => router.push(`${path}/search`)} />
-              <User width="25" height="25" />
+              <Search
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`${path}/search`);
+                }}
+              />
+              <User
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`/my`);
+                }}
+              />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -98,16 +133,25 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back width="22" height="22" onClick={() => router.back()} />
+              <Back
+                width="22"
+                height="22"
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </LeftItemBox>
+
             <RightItemBox>
               <Bookmark width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
       );
-
-    case "close":
+    case "close": {
+      const handleCloseClick = () => {
+        onClose?.();
+      };
       return (
         <HeaderLayout>
           <HeaderItemBox>
@@ -115,18 +159,25 @@ const Header = ({
               <Title>{text}</Title>
             </CenterItemBox>
             <RightItemBox>
-              <Close width="25" height="25" onClick={onClose} />
+              <Close width="25" height="25" onClick={handleCloseClick} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
       );
+    }
 
     case "register":
       return (
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Close width="25" height="25" onClick={() => router.back()} />
+              <Close
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </LeftItemBox>
             <RightItemBox>
               <Button onClick={onSubmit}>등록</Button>
@@ -140,11 +191,24 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back width="22" height="22" onClick={() => router.back()} />
+              <Back
+                width="22"
+                height="22"
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </LeftItemBox>
+
             <RightItemBox>
-              <Report width="25" height="25" onClick={() => router.push(`${path}/report`)} />
-              <Close width="25" height="25" onClick={onClose} />
+              <Report
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`${path}/report`);
+                }}
+              />
+              <Close width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -155,7 +219,13 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back width="22" height="22" onClick={() => router.back()} />
+              <Back
+                width="22"
+                height="22"
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </LeftItemBox>
             <RightItemBox>
               <Report width="25" height="25" />
@@ -170,7 +240,13 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Back width="22" height="22" onClick={onSubmit ?? (() => router.back())} />
+              <Back
+                width="22"
+                height="22"
+                onClick={() => {
+                  router.back();
+                }}
+              />
             </LeftItemBox>
             <CenterItemBox>
               <Title>{text}</Title>
@@ -209,8 +285,8 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Report width="25" height="25" />
-              <Bookmark width="25" height="25" />
+              <Close width="25" height="25" />
+              <Options width="25" height="25" />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -245,25 +321,26 @@ const Header = ({
         <HeaderLayout>
           <HeaderItemBox>
             <LeftItemBox>
-              <Logo
-                width="50"
-                height="50"
+              <Back2
+                width="22"
+                height="22"
                 onClick={() => {
-                  router.replace("/");
+                  router.back();
                 }}
               />
             </LeftItemBox>
+            <CenterItemBox>
+              <SearchInput placeholder={placeholers} />
+            </CenterItemBox>
 
             <RightItemBox>
-              <Bell width="25" height="25" />
-              <Search
-                width="25"
-                height="25"
+              <Button
                 onClick={() => {
-                  router.push(`${path}/search`);
+                  onSubmit;
                 }}
-              />
-              <User width="25" height="25" />
+              >
+                검색
+              </Button>
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -316,7 +393,6 @@ const RightItemBox = styled.div`
   align-items: center;
   gap: 15px;
 `;
-
 const CenterItemBox = styled.div`
   display: flex;
   align-items: center;

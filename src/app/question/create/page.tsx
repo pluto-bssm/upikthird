@@ -1,38 +1,42 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import NavigationBar from '@/components/common/navigationbar';
-import color from '@/packages/design-system/src/color';
-import { validateQuestionCreate } from '@/schemas/question';
-import { ValidationErrorIcon, CheckComplete } from '../../../../public/svg/svg';
+import React from "react";
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import NavigationBar from "@/components/common/navigationbar";
+import color from "@/packages/design-system/src/color";
+import { validateQuestionCreate } from "@/schemas/question";
+import { ValidationErrorIcon, CheckComplete } from "../../../../public/svg/svg";
+import { createQuestion } from "@/services/board/api";
 
 const QuestionCreatePage = () => {
   const router = useRouter();
-  const [title, setTitle] = React.useState('');
-  const [content, setContent] = React.useState('');
-  const [validationError, setValidationError] = React.useState<string | null>(null);
+  const [title, setTitle] = React.useState("");
+  const [content, setContent] = React.useState("");
+  const [validationError, setValidationError] = React.useState<string | null>(
+    null,
+  );
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 
-  const handleSubmit = () => {
-    console.log('handleSubmit called, title:', title, 'content:', content);
+  const handleSubmit = async () => {
     const result = validateQuestionCreate({ title, content });
-    console.log('validation result:', result);
-    
+
     if (!result.success) {
-      // 첫 번째 에러 메시지만 표시
       const firstError = result.error.issues[0];
-      console.log('validation error:', firstError.message);
       setValidationError(firstError.message);
       return;
     }
 
-    console.log('질문 생성:', { title, content });
-    console.log('showSuccessModal 설정 전:', showSuccessModal);
-    setShowSuccessModal(true);
-    console.log('showSuccessModal 설정 후');
+    try {
+      const newQuestion = await createQuestion({
+        title,
+        content,
+      });
+      setShowSuccessModal(true);
+    } catch (error) {
+      setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   const handleClose = () => {
@@ -82,7 +86,7 @@ const QuestionCreatePage = () => {
                 <ValidationErrorIcon width="83" height="83" />
               </ModalIconContainer>
               <ModalTitle>
-                {validationError.includes('제목') ? (
+                {validationError.includes("제목") ? (
                   <>
                     <HighlightText>제목</HighlightText>을 작성하지 않았어요
                   </>
@@ -93,9 +97,9 @@ const QuestionCreatePage = () => {
                 )}
               </ModalTitle>
               <ModalSubtitle>
-                {validationError.includes('제목')
-                  ? '질문을 게시판에 작성할 때는 제목을 꼭 작성해야 해요'
-                  : '질문을 게시판에 작성할 때는 내용을 꼭 작성해야 해요'}
+                {validationError.includes("제목")
+                  ? "질문을 게시판에 작성할 때는 제목을 꼭 작성해야 해요"
+                  : "질문을 게시판에 작성할 때는 내용을 꼭 작성해야 해요"}
               </ModalSubtitle>
               <ModalButton onClick={handleValidationClose}>확인</ModalButton>
             </ModalContent>

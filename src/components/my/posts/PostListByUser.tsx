@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { UserPostItem } from './UserPostItem';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { UserPostItem } from "./UserPostItem";
 
 interface UserPost {
   id: string;
@@ -18,10 +18,7 @@ interface PostListByUserProps {
   onPostClick: (postId: string) => void;
 }
 
-export const PostListByUser = ({
-  posts,
-  onPostClick,
-}: PostListByUserProps) => {
+export const PostListByUser = ({ posts, onPostClick }: PostListByUserProps) => {
   return (
     <PostListWrapper>
       {posts.map((post) => (

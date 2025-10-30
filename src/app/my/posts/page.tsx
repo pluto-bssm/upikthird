@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import Header from '@/components/common/header';
-import { PostListByUser } from '@/components/my/posts/PostListByUser';
-import color from '@/packages/design-system/src/color';
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import Header from "@/components/common/header";
+import { PostListByUser } from "@/components/my/posts/PostListByUser";
+import color from "@/packages/design-system/src/color";
+import { useMyPosts } from "@/hooks/useMyPosts";
 
 interface UserPost {
   id: string;
@@ -15,50 +16,49 @@ interface UserPost {
   commentCount: number;
 }
 
-const mockPosts: UserPost[] = [
-  {
-    id: '1',
-    title: '게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    bookmarkCount: 16,
-    commentCount: 10,
-  },
-  {
-    id: '2',
-    title: '게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    bookmarkCount: 16,
-    commentCount: 4,
-  },
-  {
-    id: '3',
-    title: '게시판 질문',
-    author: '박땡땡',
-    date: '2025-08-31 21:31',
-    bookmarkCount: 16,
-    commentCount: 4,
-  },
-];
-
 const UserPostsPage = () => {
   const router = useRouter();
+  const { posts, loading, error } = useMyPosts();
 
   const handlePostClick = (postId: string) => {
-    console.log('Post clicked:', postId);
-    // TODO: Implement post navigation
   };
 
   const handleClose = () => {
     router.back();
   };
 
+  if (loading) {
+    return (
+      <StyledUserPostsPage>
+        <Header types="close" text="작성 내역" onClose={handleClose} />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledUserPostsPage>
+    );
+  }
+
+  if (error) {
+    return (
+      <StyledUserPostsPage>
+        <Header types="close" text="작성 내역" onClose={handleClose} />
+        <ErrorText>게시글을 불러올 수 없습니다.</ErrorText>
+      </StyledUserPostsPage>
+    );
+  }
+
+  const displayPosts: UserPost[] = posts.map((post) => ({
+    id: post.id,
+    title: post.title,
+    author: post.author?.name || "알 수 없음",
+    date: new Date(post.createdAt).toLocaleString("ko-KR"),
+    bookmarkCount: post.likes || 0,
+    commentCount: post.commentCount || 0,
+  }));
+
   return (
     <StyledUserPostsPage>
-      <Header types="close" text="" onClose={handleClose} />
+      <Header types="close" text="작성 내역" onClose={handleClose} />
       <UserPostsPageContent>
-        <PostListByUser posts={mockPosts} onPostClick={handlePostClick} />
+        <PostListByUser posts={displayPosts} onPostClick={handlePostClick} />
       </UserPostsPageContent>
     </StyledUserPostsPage>
   );
@@ -76,4 +76,20 @@ const StyledUserPostsPage = styled.div`
 const UserPostsPageContent = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: #e71d36;
+  padding: 40px 20px;
+  margin: 0;
 `;

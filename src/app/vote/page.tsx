@@ -51,7 +51,6 @@ const vote = () => {
       <VoteMakeButtonLayout>
         <VoteMakeButton onClick={() => router.push("/makevote")} />
       </VoteMakeButtonLayout>
-
       <NavigationBar />
     </VoteLayout>
   );

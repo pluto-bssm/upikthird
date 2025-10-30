@@ -1,19 +1,22 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from '@emotion/styled';
-import { useRouter } from 'next/navigation';
-import color from '@/packages/design-system/src/color';
-import UpikLogo from '@/../public/svg/UpikLogo';
-import { GoogleIcon } from '@/../public/svg/GoogleIcon';
+import React from "react";
+import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
+import color from "@/packages/design-system/src/color";
+import UpikLogo from "@/../public/svg/UpikLogo";
+import { GoogleIcon } from "@/../public/svg/GoogleIcon";
 
 const LoginPage = () => {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    // TODO: Google OAuth login
-    console.log('Google login clicked');
-    router.push('/');
+    const redirectUri = `${window.location.origin}/oauth/callback`;
+    const authUrl = new URL(
+      "https://upik-659794985248.asia-northeast3.run.app/oauth2/authorization/google",
+    );
+    authUrl.searchParams.append("redirect_uri", redirectUri);
+    window.location.href = authUrl.toString();
   };
 
   return (

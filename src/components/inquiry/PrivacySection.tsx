@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import color from '@/packages/design-system/src/color';
-import { CheckIcon } from '../../../public/svg/CheckIcon';
-import { ChevronRightIcon } from '../../../public/svg/ChevronRight';
+import styled from "@emotion/styled";
+import color from "@/packages/design-system/src/color";
+import { CheckIcon } from "../../../public/svg/CheckIcon";
+import { ChevronRightIcon } from "../../../public/svg/ChevronRight";
 
 interface PrivacySectionProps {
   isChecked: boolean;
@@ -11,7 +11,11 @@ interface PrivacySectionProps {
   error?: string;
 }
 
-const PrivacySection = ({ isChecked, onToggle, error }: PrivacySectionProps) => {
+const PrivacySection = ({
+  isChecked,
+  onToggle,
+  error,
+}: PrivacySectionProps) => {
   return (
     <Container>
       <SectionContainer onClick={onToggle}>
@@ -47,9 +51,11 @@ const SectionContainer = styled.div`
 const Checkbox = styled.div<{ isChecked: boolean }>`
   width: 16px;
   height: 16px;
-  border: 1px solid ${props => props.isChecked ? color.primary : color.gray300};
+  border: 1px solid
+    ${(props) => (props.isChecked ? color.primary : color.gray300)};
   border-radius: 4px;
-  background-color: ${props => props.isChecked ? color.primary : color.white};
+  background-color: ${(props) =>
+    props.isChecked ? color.primary : color.white};
   display: flex;
   align-items: center;
   justify-content: center;

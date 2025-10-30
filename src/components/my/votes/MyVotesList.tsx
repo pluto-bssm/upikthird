@@ -1,20 +1,11 @@
-'use client';
+"use client";
 
-import styled from '@emotion/styled';
-import { VoteItem } from './VoteItem';
-
-interface Vote {
-  id: string;
-  title: string;
-  category: '학교생활' | '기숙사' | '유머';
-  categoryEmoji: string;
-  participantCount: number;
-  status: 'urgent' | 'completed' | 'ongoing';
-  statusText: string;
-}
+import styled from "@emotion/styled";
+import { VoteItem } from "./VoteItem";
+import type { VotePayload } from "@/types/graphql";
 
 interface MyVotesListProps {
-  votes: Vote[];
+  votes: VotePayload[];
   onVoteClick: (voteId: string) => void;
 }
 
