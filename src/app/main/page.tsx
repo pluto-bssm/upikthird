@@ -93,13 +93,8 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   margin: 0;
-  font-family: "Pretendard";
-  font-weight: 400;
-  font-size: 14px;
-  line-height: normal;
+  font-family: ${font.H2};
   color: ${color.gray600};
-  text-align: center;
-  white-space: pre;
 `;
 
 const GuideList = styled.div`

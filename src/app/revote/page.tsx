@@ -7,20 +7,71 @@ import font from "@/packages/design-system/src/font";
 import Revote from "@/components/guide/revote/Revote";
 import DetailBox from "@/components/guide/revote/DetailBox";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import RevoteSend from "@/components/button/RevoteSend";
 import AccentModal from "@/components/modal/AccentModal";
 import Completevote from "../../../public/svg/Completevote";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
+import { upik } from "@/apis";
+import { API } from "@/constants/common/constant";
+import { OPTION_GENERATOR } from "@/graphql/queries";
 
 const revote = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(
     null,
   );
   const [detailText, setDetailText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isBackModalOpen, setIsBackModalOpen] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const guideId = searchParams.get("guideId");
+
+  const revoteReasons = [
+    "유해한 내용을 포함하고 있어요",
+    "명예훼손 또는 저작권이 침해되었어요",
+    "욕설/생명경시/혐오 표현이 사용되었어요",
+    "가이드의 내용이 현재 학교생활과 달라요",
+    "기타",
+  ];
+
+  const handleSubmit = async () => {
+    if (selectedReasonIndex === null) return;
+    if (!detailText.trim()) return;
+    if (!guideId) {
+      setIsBackModalOpen(true);
+      return;
+    }
+
+    const reporterName = revoteReasons[selectedReasonIndex];
+
+    try {
+      setIsSubmitting(true);
+      const response = await upik.post(API.GRAPHQL_URL, {
+        query: OPTION_GENERATOR,
+        variables: {
+          guideId,
+          reason: detailText.trim(),
+          reporterName,
+        },
+      });
+
+      const result =
+        response.data?.data?.optionGenerator?.reportGuide ?? null;
+
+      if (result?.success) {
+        setIsModalOpen(true);
+      } else {
+        alert(result?.message || "요청에 실패했어요.");
+      }
+    } catch (e) {
+      alert("요청 중 오류가 발생했어요.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <Root>
       <Header types="title" text="재투표 신청하기" />
@@ -56,9 +107,11 @@ const revote = () => {
         <SendBar>
           <RevoteSend
             disabled={
-              selectedReasonIndex === null || detailText.trim().length === 0
+              isSubmitting ||
+              selectedReasonIndex === null ||
+              detailText.trim().length === 0
             }
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleSubmit}
           >
             신청 보내기
           </RevoteSend>
@@ -78,7 +131,7 @@ const revote = () => {
 
       {isBackModalOpen && (
         <TwoOptionModal
-          title={"재투표 요청을 취소하시겠어요??"}
+          title={"재투표 요청을 취소하시겠어요?"}
           info={"지금까지 작성한 내용은 저장되지 않습니다."}
           passfunction={() => router.back()}
           isOpen={isBackModalOpen}
@@ -136,18 +189,18 @@ const Column = styled.div`
 `;
 
 const SmallHeader = styled.div`
-  font-family: ${font.H1};
+  ${font.H1};
   color: ${color.gray700};
 `;
 
 const Title = styled.h1`
   margin: 0;
   color: ${color.black};
-  font-family: ${font.D1};
+  ${font.D1};
 `;
 
 const SmallTitle = styled.div`
-  font-family: ${font.D3};
+  ${font.D3};
   color: ${color.gray700};
 `;
 
@@ -168,7 +221,7 @@ const SendBar = styled.div`
 `;
 
 const InnerText = styled.div`
-  font-family: ${font.H2};
+  ${font.H2};
   color: ${color.gray300};
   text-align: left;
   margin-top: 8px;

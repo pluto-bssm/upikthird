@@ -40,9 +40,11 @@ const getThumbnailImage = (category: string) => {
 interface GuideComponentProps {
   searchQuery?: string;
   onResultCountChange?: (count: number) => void;
+  sortBy?: "like" | "date";
+  limit?: number;
 }
 
-const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponentProps) => {
+const GuideComponent = ({ searchQuery = "", onResultCountChange, sortBy = "date", limit = 50 }: GuideComponentProps) => {
   const router = useRouter();
   const [guides, setGuides] = React.useState<GuideItem[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -56,13 +58,32 @@ const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponen
     try {
       setLoading(true);
       setError(null);
+      const sortField = sortBy === "like" ? "like" : "createdAt";
+      const requestedSize = sortBy === "like" ? Math.max(limit, 50) : limit;
       const response = await upik.post("", {
         query: GET_ALL_GUIDES,
-        variables: { page: 0, size: 50, sortBy: "createdAt,desc" },
+        variables: { page: 0, size: requestedSize, sortBy: `${sortField},desc` },
       } as GraphQLRequest);
 
-      const content: GuideItem[] =
-        response?.data?.data?.getAllGuides?.content ?? [];
+      let content: GuideItem[] = response?.data?.data?.getAllGuides?.content ?? [];
+
+      if (sortBy === "like") {
+        content = [...content]
+          .sort((a, b) => {
+            const aLike = (a as any).like ?? (a as any).likeCount ?? 0;
+            const bLike = (b as any).like ?? (b as any).likeCount ?? 0;
+            return bLike - aLike;
+          })
+          .slice(0, limit);
+      } else if (sortBy === "date") {
+        content = [...content]
+          .sort((a, b) => {
+            const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+            const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+            return bTime - aTime;
+          })
+          .slice(0, limit);
+      }
 
       setGuides(content);
     } catch (e) {
@@ -71,7 +92,7 @@ const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponen
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [sortBy, limit]);
 
   React.useEffect(() => {
     fetchGuides();
@@ -113,7 +134,7 @@ const GuideComponent = ({ searchQuery = "", onResultCountChange }: GuideComponen
                   <OtherInfo>
                     <GuideTag>{guide.category}</GuideTag>
                     <Bookmark width="12px" height="12px" />
-                    <MarkCount>{guide.like || 0}</MarkCount>
+                    <MarkCount>{(guide as any).like ?? (guide as any).likeCount ?? 0}</MarkCount>
                     <BookmarkIcon />
                   </OtherInfo>
                 </GuideText>

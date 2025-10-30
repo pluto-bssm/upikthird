@@ -42,6 +42,7 @@ type HeaderProps = {
   onSecondSubmit?: () => void;
   onSearchChange?: (value: string) => void;
   searchValue?: string;
+  onOptionClick?: () => void;
 };
 
 const Header = ({
@@ -53,6 +54,7 @@ const Header = ({
   onSecondSubmit,
   onSearchChange,
   searchValue,
+  onOptionClick,
 }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
@@ -90,6 +92,7 @@ const Header = ({
             type={"vote"}
             activeIdx={activeIdx}
             setActiveIdx={setActiveIdx}
+            onOptionClick={onOptionClick}
           />
         </HeaderLayout>
       );
@@ -422,4 +425,5 @@ const HeaderLayout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 `;

@@ -1,80 +1,90 @@
 "use client";
 
 import React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
+import { upik } from "@/apis";
+import { GUIDE_BY_ID } from "@/graphql/queries";
+import Image from "next/image";
 
-const mockData = [
-  {
-    id: 1,
-    title: "뭐가 재밌는지",
-    date: "2025-01-01",
-    category: "학교생활",
-    content:
-      "그런데, 지금 그 이야기까지 바로 난 날짱에 있는 것입니다. 그리고, 우리 둘 이는 아무 말 없이 내려앉고 있었습니다.",
-  },
-  {
-    id: 2,
-    title: "가이드 2",
-    date: "2025-01-02",
-    category: "학교생활",
-    content:
-      "두 번째 가이드의 내용입니다. 이 가이드는 다른 주제에 대해 다룹니다.",
-  },
-  {
-    id: 3,
-    title: "가이드 3",
-    date: "2025-01-03",
-    category: "학교생활",
-    content:
-      "세 번째 가이드의 내용입니다. 이 가이드는 또 다른 주제에 대해 다룹니다.",
-  },
-  {
-    id: 4,
-    title: "가이드 4",
-    date: "2025-01-04",
-    category: "학교생활",
-    content:
-      "네 번째 가이드의 내용입니다. 이 가이드는 또 다른 주제에 대해 다룹니다.",
-  },
-  {
-    id: 5,
-    title: "가이드 5",
-    date: "2025-01-05",
-    category: "학교생활",
-    content:
-      "다섯 번째 가이드의 내용입니다. 이 가이드는 또 다른 주제에 대해 다룹니다.",
-  },
-];
+const getThumbnailImage = (category: string) => {
+  switch (category) {
+    case "학교생활":
+      return "/svg/images/School.png";
+    case "유머":
+      return "/svg/images/Humors.png";
+    case "기숙사생활":
+      return "/svg/images/MakeSchool.png";
+    default:
+      return "/svg/images/School.png";
+  }
+};
+
+interface GraphQLRequest {
+  query: string;
+  variables?: Record<string, unknown>;
+}
 
 const MoreGuidePage = () => {
   const params = useParams();
-  const guideId = parseInt(params.id as string);
+  const guideId = params.id as string;
+  const router = useRouter();
 
-  const guideData = mockData.find((item) => item.id === guideId);
+  const [guide, setGuide] = React.useState<{
+    id: string;
+    title: string;
+    createdAt?: string;
+    category?: string;
+    content?: string;
+    voteId?: string | null;
+  } | null>(null);
 
-  const currentGuide = guideData || mockData[0];
+  React.useEffect(() => {
+    const fetchGuide = async () => {
+      try {
+        const response = await upik.post("", {
+          query: GUIDE_BY_ID,
+          variables: { id: guideId },
+        } as GraphQLRequest);
+        const data = response?.data?.data?.guideById;
+        if (data) {
+          setGuide({
+            id: data.id,
+            title: data.title,
+            createdAt: data.createdAt,
+            category: data.category,
+            content: data.content,
+            voteId: data.voteId ?? null,
+          });
+        }
+      } catch (e) {}
+    };
+    if (guideId) fetchGuide();
+  }, [guideId]);
 
   return (
     <Root>
       <Header types="bookmark" />
 
       <Content>
-        <Thumbnail>🏫</Thumbnail>
-        <GuideTitle>{currentGuide.title}</GuideTitle>
-        <Date>{currentGuide.date}</Date>
+        <Thumbnail>
+          <Image src={getThumbnailImage(guide?.category ?? "")} alt={guide?.category ?? ""} width={24} height={24} />
+        </Thumbnail>
+        <GuideTitle>{guide?.title ?? "가이드를 불러오는 중"}</GuideTitle>
+        <Date>{(guide?.createdAt ?? "").slice(0, 10)}</Date>
 
         <CardWrap>
           <ResultButton>투표 결과 확인하기</ResultButton>
-          <VoteBarChart />
+          {guide?.voteId ? <VoteBarChart voteId={guide.voteId} /> : null}
         </CardWrap>
 
-        <ContentText>{currentGuide.content}</ContentText>
+        <ContentText>{guide?.content}</ContentText>
         <Line />
+        <ReportTextButton onClick={() => router.push(`/revote?guideId=${guideId}`)}>가이드에 문제가 있다면?</ReportTextButton>
       </Content>
     </Root>
   );
@@ -149,4 +159,15 @@ const Line = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${color.gray300};
+`;
+
+const ReportTextButton = styled.button`
+  border: none;
+  background: none;
+  color: ${color.gray500};
+  font-family: ${font.caption};
+  cursor: pointer;
+  text-align: right;
+  margin-top: 16px;
+  margin-bottom: 16px;
 `;

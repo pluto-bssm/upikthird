@@ -4,46 +4,48 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import { upik } from "@/apis";
+import { GET_VOTE_BY_ID } from "@/graphql/queries";
 
-const mockData = [
-  {
-    title: "투표 제목",
-    participant: 200,
-    bars: [
-      {
-        label: "선택지 1",
-        value: 20,
-        fill: "#FF3B3B",
-      },
-      {
-        label: "선택지 2",
-        value: 60,
-        fill: "#FF9F1C",
-      },
-
-      {
-        label: "선택지 3",
-        value: 40,
-        fill: "#FFBE3C",
-      },
-
-      {
-        label: "선택지 4",
-        value: 30,
-        fill: "#58CCFF",
-      },
-    ],
-  },
-];
+interface GraphQLRequest {
+  query: string;
+  variables?: Record<string, unknown>;
+}
 
 export type VoteBar = {
   label: string;
-  value: number;
+  value: number; 
   fill: string;
 };
 
-const VoteBarChart = () => {
-  const { title, participant, bars } = mockData[0];
+const VoteBarChart = ({ voteId }: { voteId: string }) => {
+  const [title, setTitle] = React.useState<string>("");
+  const [participant, setParticipant] = React.useState<number>(0);
+  const [bars, setBars] = React.useState<VoteBar[]>([]);
+
+  React.useEffect(() => {
+    const fetchVote = async () => {
+      try {
+        const response = await upik.post("", {
+          query: GET_VOTE_BY_ID,
+          variables: { id: voteId },
+        } as GraphQLRequest);
+        const data = response?.data?.data?.vote?.getVoteById;
+        if (data) {
+          setTitle(data.title ?? "");
+          setParticipant(data.totalResponses ?? 0);
+          const palette = ["#FF3B3B", "#FF9F1C", "#FFBE3C", "#58CCFF", "#7C5CFF", "#00C896"];
+          const mapped = (data.options ?? []).map((opt: any, idx: number) => ({
+            label: opt.content,
+            value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
+            fill: palette[idx % palette.length],
+          }));
+          setBars(mapped);
+        }
+      } catch (e) {}
+    };
+    if (voteId) fetchVote();
+  }, [voteId]);
   return (
     <ChartCard>
       <CardBody>
@@ -52,7 +54,7 @@ const VoteBarChart = () => {
 
         <Bars>
           {bars.map((bar, idx) => (
-            <BarTrack key={idx}>
+            <BarTrack key={`${bar.label}-${idx}`}>
               <BarFill value={bar.value} fill={bar.fill} />
             </BarTrack>
           ))}
@@ -61,7 +63,7 @@ const VoteBarChart = () => {
         <LegendBox>
           <Legend>
             {bars.map((bar, idx) => (
-              <LegendItem key={idx}>
+              <LegendItem key={`${bar.label}-legend-${idx}`}>
                 <Dot style={{ backgroundColor: bar.fill }} />
                 <Option>{bar.label}</Option>
               </LegendItem>
