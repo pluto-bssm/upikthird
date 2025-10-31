@@ -95,6 +95,7 @@ const Header = ({
             type={"vote"}
             activeIdx={activeIdx}
             setActiveIdx={setActiveIdx}
+            onOptionClick={onOptionClick}
           />
         </HeaderLayout>
       );

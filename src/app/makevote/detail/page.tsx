@@ -101,29 +101,29 @@ const Detail = () => {
         setIsOpen_4(false);
         router.push(`${path}/likeguide`);
         return;
-      }
+      } else if (similarGuides && similarGuides.length === 0) {
+        const voteInput = {
+          title: title.trim(),
+          category: category,
+          options: ballots,
+          closureType: closureType,
+          ...(closureType === VoteClosureType.CUSTOM_DAYS &&
+            customDays && { customDays }),
+          ...(closureType === VoteClosureType.PARTICIPANT_COUNT &&
+            participantThreshold && { participantThreshold }),
+        };
 
-      const voteInput = {
-        title: title.trim(),
-        category: category,
-        options: ballots,
-        closureType: closureType,
-        ...(closureType === VoteClosureType.CUSTOM_DAYS &&
-          customDays && { customDays }),
-        ...(closureType === VoteClosureType.PARTICIPANT_COUNT &&
-          participantThreshold && { participantThreshold }),
-      };
+        console.log("투표 생성 Input:", voteInput);
 
-      console.log("투표 생성 Input:", voteInput);
+        const createResult = await createVote(voteInput);
 
-      const createResult = await createVote(voteInput);
+        setIsOpen_4(false);
 
-      setIsOpen_4(false);
-
-      if (createResult) {
-        console.log("투표 생성 성공:", createResult);
-        resetVoteData();
-        router.push("/vote");
+        if (createResult) {
+          console.log("투표 생성 성공:", createResult);
+          resetVoteData();
+          router.push("/vote");
+        }
       }
     } catch (error) {
       console.error("투표 제출 중 오류 발생:", error);

@@ -19,7 +19,6 @@ const Vote = () => {
   const [activeIdx, setActiveIdx] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 로딩 상태
   if (loading) {
     return (
       <LoadingLayout>
@@ -28,7 +27,6 @@ const Vote = () => {
     );
   }
 
-  // 에러 상태
   if (error) {
     return (
       <LoadingLayout>
@@ -37,31 +35,27 @@ const Vote = () => {
     );
   }
 
-  // 카테고리 필터링
   let filteredVotes =
     activeIdx === 0
       ? votes
       : votes.filter((vote) => vote.category === categories[activeIdx]);
 
-  // 정렬
   filteredVotes = [...filteredVotes].sort((a, b) => {
     switch (sortStandard) {
       case "투표 제작일 기준":
-        // finishedAt에서 7일을 뺀 날짜 (생성일 추정)
         const dateA =
           new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
         const dateB =
           new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
-        return dateB - dateA; // 최신순
+        return dateB - dateA;
 
       case "투표 종료일 기준":
         return (
           new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime()
-        ); // 빨리 끝나는 순
+        );
 
       case "투표 참여율 기준":
-        // totalResponses를 기준으로 정렬
-        return (b.totalResponses || 0) - (a.totalResponses || 0); // 참여 많은 순
+        return (b.totalResponses || 0) - (a.totalResponses || 0);
 
       default:
         return 0;
@@ -75,6 +69,7 @@ const Vote = () => {
         activeIdx={activeIdx}
         setActiveIdx={setActiveIdx}
         onSubmit={() => setIsModalOpen(true)}
+        onOptionClick={() => setIsModalOpen(true)}
       />
 
       <VoteContent>

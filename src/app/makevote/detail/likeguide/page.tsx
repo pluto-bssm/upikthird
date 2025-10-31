@@ -16,6 +16,7 @@ import { useSearchSimilarGuides } from "@/hooks/useGuides";
 import { useVoteStore } from "@/store/useMakeVoteStore";
 import { useCreateVote } from "@/hooks/useVotes";
 import type { SimilarGuide } from "@/services/guide/api";
+import { VoteClosureType } from "@/types/api";
 
 const LikeGuide = () => {
   const router = useRouter();
@@ -23,69 +24,64 @@ const LikeGuide = () => {
   const [isLoadingOpen, setIsLoadingOpen] = useState(false);
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
 
-  const { 
-    title, 
-    ballots, 
-    category, 
-    resetVoteData, 
-    closureType, 
-    customDays, 
-    participantThreshold 
+  const {
+    title,
+    ballots,
+    category,
+    resetVoteData,
+    closureType,
+    customDays,
+    participantThreshold,
   } = useVoteStore();
-  
+
   const { createVote, loading, error } = useCreateVote();
-  
-  // 훅 사용법 수정: data가 아니라 guides 사용
-  const { 
-    guides: similarGuides, 
-    loading: guidesLoading, 
-    error: guidesError 
+
+  const {
+    guides: similarGuides,
+    loading: guidesLoading,
+    error: guidesError,
   } = useSearchSimilarGuides(title);
 
   const handleSubmit = async () => {
-  try {
-    setIsLoadingOpen(true);
+    try {
+      setIsLoadingOpen(true);
 
-    // 기본 input
-    const voteInput: any = {
-      title: title.trim(),
-      category: category,
-      options: ballots,
-      closureType: closureType,
-    };
+      // 기본 input
+      const voteInput = {
+        title: title.trim(),
+        category: category,
+        options: ballots,
+        closureType: closureType,
+        ...(closureType === VoteClosureType.CUSTOM_DAYS &&
+          customDays && { customDays }),
+        ...(closureType === VoteClosureType.PARTICIPANT_COUNT &&
+          participantThreshold && { participantThreshold }),
+      };
 
-    // closureType에 따라 조건부로 추가
-    if (closureType === "CUSTOM_DAYS" && customDays) {
-      voteInput.customDays = customDays;
-    } else if (closureType === "PARTICIPANT_COUNT" && participantThreshold) {
-      voteInput.participantThreshold = participantThreshold;
+      console.log("Creating vote with input:", voteInput);
+      console.log("=== 투표 생성 디버깅 ===");
+      console.log("closureType:", closureType);
+      console.log("customDays:", customDays);
+      console.log("participantThreshold:", participantThreshold);
+      console.log("voteInput:", voteInput);
+
+      const result = await createVote(voteInput);
+
+      setIsLoadingOpen(false);
+
+      if (result) {
+        setIsCompleteOpen(true);
+        resetVoteData();
+      } else {
+        console.log(result);
+        alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (err) {
+      setIsLoadingOpen(false);
+      console.error("Vote creation error:", err);
+      alert("투표 생성 중 오류가 발생했습니다.");
     }
-
-    console.log("Creating vote with input:", voteInput);
-    console.log("=== 투표 생성 디버깅 ===");
-    console.log("closureType:", closureType);
-    console.log("customDays:", customDays);
-    console.log("participantThreshold:", participantThreshold);
-    console.log("voteInput:", voteInput);
-
-
-    const result = await createVote(voteInput);
-
-    setIsLoadingOpen(false);
-
-    if (result) {
-      setIsCompleteOpen(true);
-      resetVoteData();
-    } else {
-      alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
-    }
-  } catch (err) {
-    setIsLoadingOpen(false);
-    console.error("Vote creation error:", err);
-    alert("투표 생성 중 오류가 발생했습니다.");
-  }
-};
-
+  };
 
   const handleClose = () => {
     setIsOpen(true);
@@ -146,14 +142,19 @@ const LikeGuide = () => {
 
         <LikeGuideListArea>
           {similarGuides.length > 0 ? (
-            similarGuides.map((guide: SimilarGuide, index: number) => ( // 타입 명시
-              <GuideBlock
-                key={guide?.id || index}
-                title={guide?.title}
-                category={guide?.category}
-                viewCount={guide?.likeCount}
-              />
-            ))
+            similarGuides.map(
+              (
+                guide: SimilarGuide,
+                index: number, // 타입 명시
+              ) => (
+                <GuideBlock
+                  key={guide?.id || index}
+                  title={guide?.title}
+                  category={guide?.category}
+                  viewCount={guide?.likeCount}
+                />
+              ),
+            )
           ) : (
             <NoGuideText>유사한 가이드가 없습니다.</NoGuideText>
           )}

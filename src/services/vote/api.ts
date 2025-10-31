@@ -203,17 +203,13 @@ export async function generateAiOptions(
   }
   return result;
 }
-// src/services/vote/api.ts
 
-/**
- * 투표 생성
- */
 interface CreateVoteInput {
   title: string;
   category?: string;
-  options: string[]; // 🔥 변경: Array<{ content: string }> → string[]
+  options: string[];
   closureType?: "DEFAULT" | "CUSTOM_DAYS" | "PARTICIPANT_COUNT";
-  customDays?: number; // 🔥 추가
+  customDays?: number;
   participantThreshold?: number;
 }
 
@@ -244,11 +240,15 @@ export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
       throw new Error(errorMessage);
     }
 
-    const vote = response.data?.vote?.createVote;
+    // 🔥 수정: response.data.data.vote.createVote
+    const vote = response.data?.data?.vote?.createVote;
+
     if (!vote) {
       console.error("투표 생성 실패 - 전체 응답:", response.data);
       throw new Error("Failed to create vote");
     }
+
+    console.log("✅ 투표 생성 성공:", vote);
     return vote;
   } catch (error) {
     console.error("createVote 에러:", error);

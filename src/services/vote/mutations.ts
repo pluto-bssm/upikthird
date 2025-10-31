@@ -23,15 +23,12 @@ export const CREATE_VOTE = `
         finishedAt
         hasVoted
         closureType
-        customDays
-        participantThreshold
         options {
           id
           content
           responseCount
           percentage
         }
-        
       }
     }
   }

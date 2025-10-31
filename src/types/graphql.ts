@@ -13,6 +13,7 @@ export interface OptionWithStats {
 }
 
 import { VoteClosureType } from "./api";
+
 export interface VotePayload {
   id: string;
   title: string;
@@ -23,8 +24,6 @@ export interface VotePayload {
   options: OptionWithStats[];
   hasVoted: boolean;
   closureType?: VoteClosureType;
-  customDays?: number; // 🔥 optional
-  participantThreshold?: number; // 🔥 optional
 }
 
 export interface MyVote {
