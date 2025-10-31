@@ -38,8 +38,6 @@ export interface Guide {
   voteId?: string; // 연결된 투표 ID
 }
 
-
-
 export interface SimilarGuide {
   id: string;
   title: string;
@@ -55,8 +53,6 @@ export interface SimilarGuide {
   userName?: string | null;
   userProfileImage?: string | null;
 }
-
-
 
 export interface Comment {
   id: string;
@@ -82,7 +78,6 @@ export interface Question {
   isBookmarked?: boolean;
 }
 
-
 // types/api.ts 파일 생성
 export interface QuestionsResponse {
   data: {
@@ -105,8 +100,6 @@ export interface UseQuestionsReturn {
   error: Error | null;
   refetch: () => void;
 }
-
-
 
 export interface Page<T> {
   content: T[];
@@ -138,9 +131,9 @@ export interface CreateVoteInput {
   title: string;
   category: string;
   options: string[];
-  closureType: VoteClosureType, 
-  customDays: number, 
-  participantThreshold: number
+  closureType: VoteClosureType;
+  customDays: number;
+  participantThreshold: number;
 }
 
 export interface CreateVoteResponseInput {

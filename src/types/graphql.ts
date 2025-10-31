@@ -22,7 +22,7 @@ export interface VotePayload {
   finishedAt: number;
   options: OptionWithStats[];
   hasVoted: boolean;
-  closureType?:VoteClosureType;
+  closureType?: VoteClosureType;
   customDays?: number; // 🔥 optional
   participantThreshold?: number; // 🔥 optional
 }

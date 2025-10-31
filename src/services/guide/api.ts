@@ -1,11 +1,11 @@
 import { upik } from "@/apis";
-import { 
+import {
   GET_GUIDES,
   GET_GUIDES_BY_CATEGORY,
   GET_GUIDE_BY_ID,
   SEARCH_SIMILAR_GUIDES,
   GET_ALL_GUIDES,
-  GUIDE_BY_ID
+  GUIDE_BY_ID,
 } from "@/services/vote/queries";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
@@ -161,7 +161,9 @@ export async function getGuideDetail(id: string): Promise<GuideDetail> {
 /**
  * 유사한 가이드 검색
  */
-export async function searchSimilarGuides(title: string): Promise<SimilarGuide[]> {
+export async function searchSimilarGuides(
+  title: string,
+): Promise<SimilarGuide[]> {
   const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
     "",
@@ -186,7 +188,7 @@ export async function searchSimilarGuides(title: string): Promise<SimilarGuide[]
 export async function getPaginatedGuides(
   page: number = 0,
   size: number = 10,
-  sortBy: string = "createdAt"
+  sortBy: string = "createdAt",
 ): Promise<PaginatedGuides> {
   const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(

@@ -3,10 +3,7 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import {
-    Nexts,
-    Logo as LogoIcon, ProfileIcon,
-} from "@/../public/svg/svg";
+import { Nexts, Logo as LogoIcon, ProfileIcon } from "@/../public/svg/svg";
 import { useRouter } from "next/navigation";
 
 const reportHistoryData = [

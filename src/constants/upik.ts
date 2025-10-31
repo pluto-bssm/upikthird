@@ -1,6 +1,10 @@
 export const API = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://upik-659794985248.asia-northeast3.run.app/graphql",
-  GRAPHQL_URL: process.env.NEXT_PUBLIC_API_URL || "https://upik-659794985248.asia-northeast3.run.app/graphql",
+  BASE_URL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://upik-659794985248.asia-northeast3.run.app/graphql",
+  GRAPHQL_URL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://upik-659794985248.asia-northeast3.run.app/graphql",
   OAUTH_PROVIDER: "https://upik-659794985248.asia-northeast3.run.app",
   TIMEOUT: 30000,
 } as const;

@@ -16,9 +16,9 @@ const RootLayout = ({
   return (
     <html lang="ko">
       <Providers>
-      <body style={{ backgroundColor: "#FAFAFA", margin: 0, padding: 0 }}>
-        {children}
-      </body>
+        <body style={{ backgroundColor: "#FAFAFA", margin: 0, padding: 0 }}>
+          {children}
+        </body>
       </Providers>
     </html>
   );

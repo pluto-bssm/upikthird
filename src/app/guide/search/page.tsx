@@ -26,13 +26,13 @@ const guide = () => {
 
   return (
     <GuideLayout>
-      <Header 
-        types={"search"} 
+      <Header
+        types={"search"}
         placeholers="원하는 가이드를 검색하기"
         onSearchChange={handleSearchChange}
         onSubmit={() => handleSearch(searchQuery)}
       />
-      
+
       <SearchContent>
         {!hasSearched || searchQuery.trim() === "" ? (
           <EmptyState>
@@ -41,11 +41,13 @@ const guide = () => {
         ) : (
           <>
             <ResultHeader>
-              <ResultCount>결과 <span style={{ color: color.primary }}>{resultCount}</span></ResultCount>
+              <ResultCount>
+                결과 <span style={{ color: color.primary }}>{resultCount}</span>
+              </ResultCount>
             </ResultHeader>
             <GuideContainer>
-              <GuideComponent 
-                searchQuery={searchQuery} 
+              <GuideComponent
+                searchQuery={searchQuery}
                 onResultCountChange={setResultCount}
               />
             </GuideContainer>

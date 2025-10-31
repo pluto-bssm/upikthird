@@ -1,10 +1,20 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useQuery } from '@apollo/client/react';
-import { GET_CURRENT_USER } from '../graphql/queries';
-import { User } from '../types/api';
-import { getAccessToken, setAccessToken, removeAccessToken } from '../lib/auth-utils';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useQuery } from "@apollo/client/react";
+import { GET_CURRENT_USER } from "../graphql/queries";
+import { User } from "../types/api";
+import {
+  getAccessToken,
+  setAccessToken,
+  removeAccessToken,
+} from "../lib/auth-utils";
 
 interface CurrentUserData {
   iam: {
@@ -35,39 +45,47 @@ const UserContext = createContext<UserContextType>({
 export function UserProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  
-  const { data, loading: queryLoading, error: queryError, refetch } = useQuery<CurrentUserData>(GET_CURRENT_USER, {
+
+  const {
+    data,
+    loading: queryLoading,
+    error: queryError,
+    refetch,
+  } = useQuery<CurrentUserData>(GET_CURRENT_USER, {
     skip: !token,
-    fetchPolicy: 'network-only',
-    errorPolicy: 'ignore'
+    fetchPolicy: "network-only",
+    errorPolicy: "ignore",
   });
 
-  console.log('🚀 useUser 상태:', { token, queryLoading, data, queryError });
-  
+  console.log("🚀 useUser 상태:", { token, queryLoading, data, queryError });
+
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const savedToken = getAccessToken();
-    console.log('🔑 저장된 토큰:', savedToken);
+    console.log("🔑 저장된 토큰:", savedToken);
     if (savedToken) {
       setToken(savedToken);
     } else {
-      console.log('❌ 토큰이 없습니다');
+      console.log("❌ 토큰이 없습니다");
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    console.log('📡 useQuery 응답 데이터:', data);
+    console.log("📡 useQuery 응답 데이터:", data);
     if (data?.iam?.getCurrentUser) {
-      console.log('✅ 사용자 정보 찾음:', data.iam.getCurrentUser);
+      console.log("✅ 사용자 정보 찾음:", data.iam.getCurrentUser);
       setUser(data.iam.getCurrentUser);
     } else {
-      console.log('❌ 사용자 정보 없음, data 구조:', data);
+      console.log("❌ 사용자 정보 없음, data 구조:", data);
     }
     if (queryError) {
-      console.error('🔥 사용자 정보 조회 에러:', queryError);
-      if (queryError.message.includes('401') || queryError.message.includes('Unauthorized')) {
+      console.error("🔥 사용자 정보 조회 에러:", queryError);
+      if (
+        queryError.message.includes("401") ||
+        queryError.message.includes("Unauthorized")
+      ) {
         logout();
       }
     }
@@ -100,20 +118,21 @@ export function UserProvider({ children }: { children: ReactNode }) {
       if (data?.iam?.getCurrentUser) {
         setUser(data.iam.getCurrentUser);
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   return (
-    <UserContext.Provider value={{ 
-      user, 
-      loading, 
-      error: queryError || null, 
-      login,
-      logout,
-      isAuthenticated: !!user,
-      refetchUser 
-    }}>
+    <UserContext.Provider
+      value={{
+        user,
+        loading,
+        error: queryError || null,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        refetchUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
@@ -122,7 +141,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 export function useUser() {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error("useUser must be used within a UserProvider");
   }
   return context;
 }

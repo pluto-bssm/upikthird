@@ -14,7 +14,7 @@ interface GraphQLRequest {
 
 export type VoteBar = {
   label: string;
-  value: number; 
+  value: number;
   fill: string;
 };
 
@@ -34,7 +34,14 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
         if (data) {
           setTitle(data.title ?? "");
           setParticipant(data.totalResponses ?? 0);
-          const palette = ["#FF3B3B", "#FF9F1C", "#FFBE3C", "#58CCFF", "#7C5CFF", "#00C896"];
+          const palette = [
+            "#FF3B3B",
+            "#FF9F1C",
+            "#FFBE3C",
+            "#58CCFF",
+            "#7C5CFF",
+            "#00C896",
+          ];
           const mapped = (data.options ?? []).map((opt: any, idx: number) => ({
             label: opt.content,
             value: Math.max(0, Math.min(100, opt.percentage ?? 0)),

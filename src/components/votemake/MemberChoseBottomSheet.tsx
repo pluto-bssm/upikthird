@@ -27,7 +27,8 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const { setClosureType , setCustomDays , setParticipantThreshold } = useVoteStore();
+  const { setClosureType, setCustomDays, setParticipantThreshold } =
+    useVoteStore();
 
   useEffect(() => {
     if (isOpen) {

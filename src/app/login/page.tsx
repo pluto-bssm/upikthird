@@ -17,7 +17,6 @@ const LoginPage = () => {
     );
     authUrl.searchParams.append("redirect_uri", redirectUri);
     window.location.href = authUrl.toString();
-
   };
 
   return (

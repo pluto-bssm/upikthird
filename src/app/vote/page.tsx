@@ -14,7 +14,7 @@ import VoteSort from "@/components/vote/VoteSort";
 const Vote = () => {
   const router = useRouter();
   const { votes, loading, error, refetch } = useAllVotes();
-  const categories = ['전체', '학교생활', '기숙사', '유머'];
+  const categories = ["전체", "학교생활", "기숙사", "유머"];
   const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
   const [activeIdx, setActiveIdx] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,17 +48,21 @@ const Vote = () => {
     switch (sortStandard) {
       case "투표 제작일 기준":
         // finishedAt에서 7일을 뺀 날짜 (생성일 추정)
-        const dateA = new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
-        const dateB = new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
+        const dateA =
+          new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
+        const dateB =
+          new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
         return dateB - dateA; // 최신순
-      
+
       case "투표 종료일 기준":
-        return new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime(); // 빨리 끝나는 순
-      
+        return (
+          new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime()
+        ); // 빨리 끝나는 순
+
       case "투표 참여율 기준":
         // totalResponses를 기준으로 정렬
         return (b.totalResponses || 0) - (a.totalResponses || 0); // 참여 많은 순
-      
+
       default:
         return 0;
     }
@@ -66,13 +70,13 @@ const Vote = () => {
 
   return (
     <VoteLayout>
-      <Header 
-        types={"default"} 
-        activeIdx={activeIdx} 
-        setActiveIdx={setActiveIdx} 
+      <Header
+        types={"default"}
+        activeIdx={activeIdx}
+        setActiveIdx={setActiveIdx}
         onSubmit={() => setIsModalOpen(true)}
       />
-      
+
       <VoteContent>
         {filteredVotes.length === 0 ? (
           <IsNotFound>진행중인 투표가 없습니다.</IsNotFound>
@@ -93,7 +97,7 @@ const Vote = () => {
       <VoteMakeButtonLayout>
         <VoteMakeButton onClick={() => router.push("/makevote")} />
       </VoteMakeButtonLayout>
-      
+
       <NavigationBar />
 
       <VoteSort

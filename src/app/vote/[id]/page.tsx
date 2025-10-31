@@ -16,35 +16,35 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { id } = use(params);
-  
+
   // 투표 상세 조회 훅 - useVote는 vote 객체를 직접 반환
   const { vote, loading, error, refetch } = useVote(id);
-  
+
   // 투표 응답 훅 - createVoteResponse 사용
-  const { 
-    createVoteResponse, 
-    loading: responseLoading, 
-    error: responseError 
+  const {
+    createVoteResponse,
+    loading: responseLoading,
+    error: responseError,
   } = useCreateVoteResponse();
 
-  const labels = ['A', 'B', 'C', 'D', 'E'];
+  const labels = ["A", "B", "C", "D", "E"];
 
   const handleVoteSubmit = async () => {
     if (!selectedOption) {
       alert("선택지를 선택해주세요.");
       return;
     }
-    
+
     if (!vote) {
       alert("투표 정보를 불러올 수 없습니다.");
       return;
     }
-    
+
     try {
       console.log(id, selectedOption);
       // createVoteResponse는 voteId와 optionId를 별도 파라미터로 받음
       const result = await createVoteResponse(id, selectedOption);
-      
+
       if (result) {
         console.log("투표 응답 성공");
         router.push(`${path}/tailvote`);
@@ -104,12 +104,12 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
             <Ballot
               key={ballot.id}
               content={ballot.content}
-              letter={labels[index] ?? ''}
+              letter={labels[index] ?? ""}
               isSelected={selectedOption === ballot.id}
               type="vote"
               onClick={() =>
                 setSelectedOption((prev) =>
-                  prev === ballot.id ? null : ballot.id
+                  prev === ballot.id ? null : ballot.id,
                 )
               }
             />

@@ -36,7 +36,7 @@ const Options = () => {
       try {
         // AI 옵션 생성 호출
         const result = await generateAiOptions(ballots.length || 4, title);
-        
+
         if (result && result.options.length > 0) {
           setBallots(result.options);
           setIsOpen_2(false);

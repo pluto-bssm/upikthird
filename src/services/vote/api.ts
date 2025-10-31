@@ -1,18 +1,18 @@
 import { upik } from "@/apis";
 import type { VotePayload, CreateVoteResponseInput } from "@/types/graphql";
-import { 
-  GET_MY_VOTES, 
-  GET_VOTE_BY_ID, 
+import {
+  GET_MY_VOTES,
+  GET_VOTE_BY_ID,
   GET_ALL_VOTES,
   GET_VOTES,
   TODAY_VOTE,
   GET_CHECK_BADWORD,
-  AIOPTION_CREATE
+  AIOPTION_CREATE,
 } from "./queries";
-import { 
+import {
   CREATE_VOTE_RESPONSE,
   CREATE_VOTE,
-  CREATE_TAIL_VOTE
+  CREATE_TAIL_VOTE,
 } from "./mutations";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
@@ -211,17 +211,17 @@ export async function generateAiOptions(
 interface CreateVoteInput {
   title: string;
   category?: string;
-  options: string[];  // 🔥 변경: Array<{ content: string }> → string[]
+  options: string[]; // 🔥 변경: Array<{ content: string }> → string[]
   closureType?: "DEFAULT" | "CUSTOM_DAYS" | "PARTICIPANT_COUNT";
-  customDays?: number;  // 🔥 추가
+  customDays?: number; // 🔥 추가
   participantThreshold?: number;
 }
 
 export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
-  
+
   console.log("createVote 입력 데이터:", JSON.stringify(input, null, 2));
-  
+
   try {
     const response = await upik.post(
       "",
@@ -255,7 +255,6 @@ export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
     throw error;
   }
 }
-
 
 /**
  * 꼬리 투표 생성

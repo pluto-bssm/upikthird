@@ -5,7 +5,6 @@ import React from "react";
 
 import { Divider, Navoption } from "@/../public/svg/svg";
 
-
 type Variant = "vote" | "guide";
 
 type HeaderNavigationProps = {

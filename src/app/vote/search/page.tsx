@@ -10,16 +10,17 @@ import VoteBlock from "@/components/vote/voteblock";
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   const { votes, loading, error } = useVotes();
   const router = useRouter();
 
   // 검색 필터링 (대소문자 구분 없이)
-  const filteredVotes = searchQuery.trim() === "" 
-    ? [] 
-    : votes.filter(vote => 
-        vote.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+  const filteredVotes =
+    searchQuery.trim() === ""
+      ? []
+      : votes.filter((vote) =>
+          vote.title.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -33,12 +34,12 @@ const Search = () => {
   if (loading) {
     return (
       <VoteLayout>
-        <Header 
-          types={"search"} 
-          placeholers="원하는 투표를 검색해주세요" 
+        <Header
+          types={"search"}
+          placeholers="원하는 투표를 검색해주세요"
           searchValue={searchValue}
-          onSearchChange={handleSearchChange} 
-          onSubmit={handleSearchSubmit} 
+          onSearchChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
         />
         <LoadingContainer>
           <div>Loading...</div>
@@ -51,12 +52,12 @@ const Search = () => {
   if (error) {
     return (
       <VoteLayout>
-        <Header 
-          types={"search"} 
-          placeholers="원하는 투표를 검색해주세요" 
+        <Header
+          types={"search"}
+          placeholers="원하는 투표를 검색해주세요"
           searchValue={searchValue}
-          onSearchChange={handleSearchChange} 
-          onSubmit={handleSearchSubmit} 
+          onSearchChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
         />
         <VoteContent>
           <IsNotFound>투표를 불러오는 중 오류가 발생했습니다.</IsNotFound>
@@ -67,12 +68,12 @@ const Search = () => {
 
   return (
     <VoteLayout>
-      <Header 
-        types={"search"} 
-        placeholers="원하는 투표를 검색해주세요" 
+      <Header
+        types={"search"}
+        placeholers="원하는 투표를 검색해주세요"
         searchValue={searchValue}
-        onSearchChange={handleSearchChange} 
-        onSubmit={handleSearchSubmit} 
+        onSearchChange={handleSearchChange}
+        onSubmit={handleSearchSubmit}
       />
       <VoteContent>
         {searchQuery.trim() === "" ? (

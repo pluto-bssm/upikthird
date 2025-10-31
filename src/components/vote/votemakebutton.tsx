@@ -1,6 +1,6 @@
 import color from "@/packages/design-system/src/color";
 import styled from "@emotion/styled";
-import {VotemakeButton} from "../../../public/svg/svg";
+import { VotemakeButton } from "../../../public/svg/svg";
 
 type VoteMakeButtonProps = {
   onClick: () => void;

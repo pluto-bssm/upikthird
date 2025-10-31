@@ -14,14 +14,12 @@ import CategoryBottomSheet from "@/components/votemake/CategoryBottomSheet";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import { useRouter, usePathname } from "next/navigation";
 
-
 const MakeVote = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen_1, setIsOepn_1] = useState(false);
   const { category, setCategory, resetVoteData } = useVoteStore();
   const router = useRouter();
   const path = usePathname();
-
 
   function CanCelMakeVote() {
     resetVoteData();

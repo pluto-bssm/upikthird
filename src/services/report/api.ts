@@ -18,7 +18,6 @@ export interface ReportData {
 
 export const sendReport = async (data: ReportData) => {
   try {
-
     const templateParams = {
       to_email: data.email,
       from_name: "UPIK 신고 시스템",
@@ -46,7 +45,6 @@ export const sendReportToAdmin = async (
   adminEmail: string,
 ) => {
   try {
-
     const templateParams = {
       to_email: adminEmail,
       from_name: data.email,

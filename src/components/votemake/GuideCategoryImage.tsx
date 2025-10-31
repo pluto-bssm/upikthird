@@ -13,7 +13,7 @@ export default function GuideCategoryImage({ category }: { category: string }) {
   if (category === "기숙사") {
     return (
       <ImageLayout>
-         <MakeSchool width="100%" height="100%" />
+        <MakeSchool width="100%" height="100%" />
       </ImageLayout>
     );
   }

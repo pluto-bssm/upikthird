@@ -58,8 +58,7 @@ const revote = () => {
         },
       });
 
-      const result =
-        response.data?.data?.optionGenerator?.reportGuide ?? null;
+      const result = response.data?.data?.optionGenerator?.reportGuide ?? null;
 
       if (result?.success) {
         setIsModalOpen(true);

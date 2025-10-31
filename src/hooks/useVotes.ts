@@ -210,7 +210,9 @@ export function useCreateVote() {
   const [error, setError] = useState<string | null>(null);
   const [createdVote, setCreatedVote] = useState<VotePayload | null>(null);
 
-  const createVote = async (input: Parameters<typeof voteApi.createVote>[0]) => {
+  const createVote = async (
+    input: Parameters<typeof voteApi.createVote>[0],
+  ) => {
     try {
       setLoading(true);
       setError(null);
@@ -265,7 +267,7 @@ export function useTodayVote(options: UseVotesOptions = {}) {
 
   const voteResponse = async (optionId: string) => {
     if (!vote) return;
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -303,7 +305,9 @@ export function useTodayVote(options: UseVotesOptions = {}) {
 export function useCheckBadWord() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<Awaited<ReturnType<typeof voteApi.checkBadWord>> | null>(null);
+  const [result, setResult] = useState<Awaited<
+    ReturnType<typeof voteApi.checkBadWord>
+  > | null>(null);
 
   const checkBadWord = async (text: string) => {
     try {
@@ -340,7 +344,9 @@ export function useCheckBadWord() {
 export function useGenerateAiOptions() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<Awaited<ReturnType<typeof voteApi.generateAiOptions>> | null>(null);
+  const [result, setResult] = useState<Awaited<
+    ReturnType<typeof voteApi.generateAiOptions>
+  > | null>(null);
 
   const generateAiOptions = async (count: number, title: string) => {
     try {
@@ -379,7 +385,9 @@ export function useGenerateAiOptions() {
 export function useCreateTailVote() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<Awaited<ReturnType<typeof voteApi.createTailVote>> | null>(null);
+  const [result, setResult] = useState<Awaited<
+    ReturnType<typeof voteApi.createTailVote>
+  > | null>(null);
 
   const createTailVote = async (question: string, voteId: string) => {
     try {
@@ -441,7 +449,10 @@ export function useCreateVoteResponse() {
 }
 
 /* ===================== 유사 가이드 검색 ===================== */
-export function useSearchSimilarGuides(title: string, options: UseVotesOptions = {}) {
+export function useSearchSimilarGuides(
+  title: string,
+  options: UseVotesOptions = {},
+) {
   const { autoFetch = true } = options;
   const [guides, setGuides] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -449,7 +460,7 @@ export function useSearchSimilarGuides(title: string, options: UseVotesOptions =
 
   const searchSimilarGuides = async (searchTitle?: string) => {
     const titleToSearch = searchTitle || title;
-    
+
     if (!titleToSearch || titleToSearch.trim() === "") {
       setGuides([]);
       return;

@@ -43,15 +43,23 @@ const Detail = () => {
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
 
-  const { 
-    guides: similarGuides, 
-    loading: searchLoading, 
-    searchSimilarGuides 
+  const {
+    guides: similarGuides,
+    loading: searchLoading,
+    searchSimilarGuides,
   } = useSearchSimilarGuides(title, { autoFetch: false });
 
-  const { checkBadWord, loading: badWordLoading, result: badWordResult } = useCheckBadWord();
+  const {
+    checkBadWord,
+    loading: badWordLoading,
+    result: badWordResult,
+  } = useCheckBadWord();
 
-  const { createVote, loading: createLoading, error: createError } = useCreateVote();
+  const {
+    createVote,
+    loading: createLoading,
+    error: createError,
+  } = useCreateVote();
 
   function CanCelMakeVote() {
     resetVoteData();
@@ -100,8 +108,10 @@ const Detail = () => {
         category: category,
         options: ballots,
         closureType: closureType,
-        ...(closureType === VoteClosureType.CUSTOM_DAYS && customDays && { customDays }),
-        ...(closureType === VoteClosureType.PARTICIPANT_COUNT && participantThreshold && { participantThreshold }),
+        ...(closureType === VoteClosureType.CUSTOM_DAYS &&
+          customDays && { customDays }),
+        ...(closureType === VoteClosureType.PARTICIPANT_COUNT &&
+          participantThreshold && { participantThreshold }),
       };
 
       console.log("투표 생성 Input:", voteInput);

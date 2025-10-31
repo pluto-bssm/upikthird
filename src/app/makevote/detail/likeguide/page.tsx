@@ -63,10 +63,10 @@ const LikeGuide = () => {
 
     console.log("Creating vote with input:", voteInput);
     console.log("=== 투표 생성 디버깅 ===");
-console.log("closureType:", closureType);
-console.log("customDays:", customDays);
-console.log("participantThreshold:", participantThreshold);
-console.log("voteInput:", voteInput);
+    console.log("closureType:", closureType);
+    console.log("customDays:", customDays);
+    console.log("participantThreshold:", participantThreshold);
+    console.log("voteInput:", voteInput);
 
 
     const result = await createVote(voteInput);

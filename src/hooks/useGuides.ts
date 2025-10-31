@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 import * as guideApi from "@/services/guide/api";
-import type { Guide, GuideDetail, SimilarGuide, PaginatedGuides } from "@/services/guide/api";
+import type {
+  Guide,
+  GuideDetail,
+  SimilarGuide,
+  PaginatedGuides,
+} from "@/services/guide/api";
 
 interface UseGuideOptions {
   autoFetch?: boolean;
@@ -50,7 +55,10 @@ export function useGuides(options: UseGuideOptions = {}) {
 }
 
 /* ===================== 카테고리별 가이드 ===================== */
-export function useGuidesByCategory(category: string, options: UseGuideOptions = {}) {
+export function useGuidesByCategory(
+  category: string,
+  options: UseGuideOptions = {},
+) {
   const { autoFetch = true } = options;
   const [guides, setGuides] = useState<Guide[]>([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +72,9 @@ export function useGuidesByCategory(category: string, options: UseGuideOptions =
       setGuides(data);
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Failed to fetch guides by category";
+        err instanceof Error
+          ? err.message
+          : "Failed to fetch guides by category";
       setError(message);
     } finally {
       setLoading(false);
@@ -132,7 +142,10 @@ export function useGuide(id: string, options: UseGuideOptions = {}) {
 }
 
 /* ===================== 유사 가이드 검색 ===================== */
-export function useSearchSimilarGuides(title: string, options: UseGuideOptions = {}) {
+export function useSearchSimilarGuides(
+  title: string,
+  options: UseGuideOptions = {},
+) {
   const { autoFetch = true } = options;
   const [guides, setGuides] = useState<SimilarGuide[]>([]);
   const [loading, setLoading] = useState(false);
@@ -140,7 +153,7 @@ export function useSearchSimilarGuides(title: string, options: UseGuideOptions =
 
   const searchSimilarGuides = async (searchTitle?: string) => {
     const titleToSearch = searchTitle || title;
-    
+
     if (!titleToSearch || titleToSearch.trim() === "") {
       setGuides([]);
       return;
@@ -184,7 +197,7 @@ export function usePaginatedGuides(
   page: number = 0,
   size: number = 10,
   sortBy: string = "createdAt",
-  options: UseGuideOptions = {}
+  options: UseGuideOptions = {},
 ) {
   const { autoFetch = true } = options;
   const [guides, setGuides] = useState<PaginatedGuides | null>(null);

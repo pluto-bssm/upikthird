@@ -11,9 +11,20 @@ type Props = {
   options?: string[];
 };
 
-const Sortstandard = ["투표 제작일 기준", "투표 종료일 기준", "투표 참여율 기준"];
+const Sortstandard = [
+  "투표 제작일 기준",
+  "투표 종료일 기준",
+  "투표 참여율 기준",
+];
 
-const  Votesort = ({ sortstandard, setsortstandard, isOpen, setIsOpen, title, options }: Props) => {
+const Votesort = ({
+  sortstandard,
+  setsortstandard,
+  isOpen,
+  setIsOpen,
+  title,
+  options,
+}: Props) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
 
@@ -26,7 +37,7 @@ const  Votesort = ({ sortstandard, setsortstandard, isOpen, setIsOpen, title, op
       });
     } else {
       setIsAnimating(false);
- 
+
       const timer = setTimeout(() => {
         setShouldRender(false);
       }, 350);
@@ -43,7 +54,7 @@ const  Votesort = ({ sortstandard, setsortstandard, isOpen, setIsOpen, title, op
     >
       <BottomSheet
         isAnimating={isAnimating}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <Title>{title ?? "투표 정렬하기"}</Title>
         <CategoryList>
@@ -66,7 +77,7 @@ const  Votesort = ({ sortstandard, setsortstandard, isOpen, setIsOpen, title, op
       </BottomSheet>
     </Background>
   );
-}
+};
 
 export default Votesort;
 
@@ -93,7 +104,8 @@ const BottomSheet = styled.div<{ isAnimating: boolean }>`
   padding: 32px 24px 0 24px;
   box-sizing: border-box;
   height: 64vh;
-  transform: ${({ isAnimating }) => (isAnimating ? 'translateY(0)' : 'translateY(100%)')};
+  transform: ${({ isAnimating }) =>
+    isAnimating ? "translateY(0)" : "translateY(100%)"};
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
