@@ -37,7 +37,8 @@ export async function GET(request: NextRequest) {
           responseBody?.data?.accessToken ||
           responseBody?.accessToken ||
           responseBody?.access_token ||
-          responseBody?.token ||
+    } catch (parseError) {
+      console.error("Failed to parse token response:", parseError);
           "";
       }
     } catch (parseError) {}
