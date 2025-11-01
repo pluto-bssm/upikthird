@@ -40,6 +40,7 @@ const Options = () => {
           setIsOpen_3(true);
         }
       } catch (err) {
+        alert("AI 선지 생성에 실패했습니다. 다시 시도해주세요.");
       } finally {
         setIsOpen_2(false);
       }

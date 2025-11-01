@@ -29,11 +29,6 @@ const authLink = setContext((_, { headers }) => {
     token = localStorage.getItem("authToken") || "";
   }
 
-  // 환경변수에서 토큰 가져오기 (서버 사이드)
-  if (!token) {
-    token = process.env.NEXT_PUBLIC_AUTH_TOKEN || "";
-  }
-
   return {
     headers: {
       ...headers,
