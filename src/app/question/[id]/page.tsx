@@ -48,6 +48,7 @@ const QuestionDetailPage = () => {
         content: comment,
       });
       setComment("");
+      await refetchComments();
     } catch (error) {
     } finally {
       setSubmitting(false);
@@ -70,6 +71,7 @@ const QuestionDetailPage = () => {
       });
       setReplyContent("");
       setReplyingTo(null);
+      await refetchComments();
     } catch (error) {
     } finally {
       setSubmitting(false);
