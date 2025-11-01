@@ -130,18 +130,22 @@ const QuestionDetailPage = () => {
                       <FooterItem>
                         {new Date(comment.createdAt).toLocaleString("ko-KR")}
                       </FooterItem>
-                      <FooterReportItem
-                        onClick={() =>
-                          router.push(
-                            `/question/${boardId}/comment-report?commentId=${comment.id}`,
-                          )
-                        }
-                      >
-                        신고하기
-                      </FooterReportItem>
-                      <FooterItem onClick={() => handleReplyClick(comment.id)}>
-                        답글쓰기
-                      </FooterItem>
+                      <FooterInnerItem>
+                        <FooterReportItem
+                          onClick={() =>
+                            router.push(
+                              `/question/${boardId}/comment-report?commentId=${comment.id}`,
+                            )
+                          }
+                        >
+                          신고하기
+                        </FooterReportItem>
+                        <FooterItem
+                          onClick={() => handleReplyClick(comment.id)}
+                        >
+                          답글쓰기
+                        </FooterItem>
+                      </FooterInnerItem>
                     </CommentFooter>
                   </CommentBox>
                 </CommentItemWrapper>
@@ -767,4 +771,9 @@ const ReplySubmitButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
+`;
+
+const FooterInnerItem = styled.div`
+  display: flex;
+  gap: 12px;
 `;
