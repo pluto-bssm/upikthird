@@ -1,6 +1,6 @@
 export const API = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080",
-  GRAPHQL_URL: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/graphql`,
+  GRAPHQL_URL: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}`,
   TIMEOUT: 15000,
 } as const;
 

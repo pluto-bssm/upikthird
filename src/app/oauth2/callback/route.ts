@@ -37,8 +37,6 @@ export async function GET(request: NextRequest) {
           responseBody?.data?.accessToken ||
           responseBody?.accessToken ||
           responseBody?.access_token ||
-    } catch (parseError) {
-      console.error("Failed to parse token response:", parseError);
           "";
       }
     } catch (parseError) {}
@@ -49,11 +47,13 @@ export async function GET(request: NextRequest) {
         tokenResponse.headers.get("accessToken") ||
         tokenResponse.headers.get("x-access-token") ||
         tokenResponse.headers.get("authorization") ||
-    const setCookieHeader = tokenResponse.headers.get("set-cookie");
-    if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
-      const match = setCookieHeader.match(/refreshToken=([^;]+)/);
-      if (match) {
-        refreshToken = match[1];
+        "";
+    }
+
+    if (!refreshToken) {
+      const setCookieHeader = tokenResponse.headers.get("set-cookie");
+      if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
+        const match = setCookieHeader.match(/refreshToken=([^;]+)/);
         if (match) {
           refreshToken = match[1];
         }
