@@ -94,7 +94,6 @@ const dashboard = () => {
                   </ReportContent>
 
                   <ReportMeta>
-                    <Timestamp>{new Date(report.createdAt).toLocaleString("ko-KR")}</Timestamp>
                     <ArrowIcon>
                       <Nexts width="24" height="24" />
                     </ArrowIcon>
@@ -115,7 +114,7 @@ const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #fafafaff;
+  background-color: ${color.white};
 `;
 
 const TopHeader = styled.div`
@@ -141,10 +140,8 @@ const MainContent = styled.div`
   justify-content: center;
   align-items: flex-start;
   padding: 40px 20px;
-  background-color: #fafafaff;
+  background-color: ${color.white};
 `;
-
-// ReportCard moved to component
 
 const ReportList = styled.div`
   width: 100%;
@@ -156,7 +153,7 @@ const ReportList = styled.div`
 const ReportItem = styled.div`
   width: 100%;
   padding: 16px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid ${color.gray200};
   cursor: pointer;
   transition: background-color 0.2s;
   display: flex;
@@ -168,7 +165,7 @@ const ReportItem = styled.div`
   }
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${color.gray50};
     border-radius: 8px;
   }
 `;
@@ -199,12 +196,6 @@ const ReportMeta = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`;
-
-const Timestamp = styled.span`
-  font-family: ${font.caption};
-  color: ${color.black};
-  font-size: 14px;
 `;
 
 const ArrowIcon = styled.div`

@@ -12,7 +12,7 @@ import { useParams, useRouter } from "next/navigation";
 import ReportCard from "@/components/dashboard/ReportCard";
 import { upik } from "@/apis";
 import { API } from "@/constants/common/constant";
-import { GET_REPORTS_BY_TARGET } from "@/graphql/queries";
+import { GET_REPORTS_BY_TARGET, GET_ALL_REPORTS } from "@/graphql/queries";
 
 type ReportItem = {
   authorId: string;
@@ -35,9 +35,37 @@ const DashboardDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
+  const [allReports, setAllReports] = useState<ReportItem[]>([]);
   const [items, setItems] = useState<ReportItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingAll, setLoadingAll] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorAll, setErrorAll] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setLoadingAll(true);
+        setErrorAll(null);
+        const res = await upik.post(API.GRAPHQL_URL, {
+          query: GET_ALL_REPORTS,
+        });
+        const data = res.data?.data?.report?.getAllReports || [];
+        if (mounted) setAllReports(data);
+      } catch (e) {
+        if (mounted)
+          setErrorAll(
+            e instanceof Error ? e.message : "신고 내역을 불러오지 못했습니다.",
+          );
+      } finally {
+        if (mounted) setLoadingAll(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -84,15 +112,13 @@ const DashboardDetailPage = () => {
   }
 
   const handleReject = () => {
-    console.log("신고 반려하기");
   };
 
   const handleAccept = () => {
-    console.log("경고 횟수 추가하기");
   };
 
-  const handleReportClick = (reportId: string) => {
-    router.push(`/dashboard/${reportId}`);
+  const handleReportClick = (targetId: string) => {
+    router.push(`/dashboard/${targetId}`);
   };
 
   return (
@@ -108,13 +134,14 @@ const DashboardDetailPage = () => {
         <CardContainer>
           <ReportCard title="신고 내역 보기" variant="gray" titleAlign="center" scrollable maxHeight={520} style={{ flex: 1 }}>
             <ReportList>
-              {loading && <ReportDetails>불러오는 중…</ReportDetails>}
-              {error && <ReportDetails>{error}</ReportDetails>}
-              {!loading && !error &&
-                items.map((r, idx) => (
+              {loadingAll && <ReportDetails>불러오는 중…</ReportDetails>}
+              {errorAll && <ReportDetails>{errorAll}</ReportDetails>}
+              {!loadingAll && !errorAll &&
+                allReports.map((r, idx) => (
                   <ReportItem
                     key={`${r.targetType}-${r.targetId}-${r.createdAt}-${idx}`}
                     onClick={() => handleReportClick(String(r.targetId))}
+                    isSelected={String(r.targetId) === id}
                   >
                     <ReportContent>
                       <ReportReason>{r.reason}</ReportReason>
@@ -223,8 +250,6 @@ const CardContainer = styled.div`
   align-items: flex-start;
 `;
 
-// ReportCard moved to component
-
 const ReportList = styled.div`
   width: 100%;
   display: flex;
@@ -232,16 +257,21 @@ const ReportList = styled.div`
   gap: 0;
 `;
 
-const ReportItem = styled.div`
+const ReportItem = styled.div<{ isSelected?: boolean }>`
   width: 100%;
   padding: 20px 0;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid ${color.gray200};
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${color.gray50};
     border-radius: 8px;
   }
 `;
@@ -290,6 +320,7 @@ const DetailSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 16px 0;
 `;
 
 const DetailLabel = styled.p`
