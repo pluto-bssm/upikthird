@@ -16,11 +16,11 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { id } = use(params);
+  sessionStorage.setItem("voteId", String(id));
 
-  // 투표 상세 조회 훅 - useVote는 vote 객체를 직접 반환
   const { vote, loading, error, refetch } = useVote(id);
 
-  // 투표 응답 훅 - createVoteResponse 사용
+
   const {
     createVoteResponse,
     loading: responseLoading,
@@ -42,7 +42,6 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
 
     try {
       console.log(id, selectedOption);
-      // createVoteResponse는 voteId와 optionId를 별도 파라미터로 받음
       const result = await createVoteResponse(id, selectedOption);
 
       if (result) {
@@ -55,7 +54,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   };
 
-  // 로딩 상태
+
   if (loading) {
     return (
       <DesVoteLayout>
@@ -67,7 +66,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
     );
   }
 
-  // 에러 상태
+
   if (error || !vote) {
     return (
       <DesVoteLayout>

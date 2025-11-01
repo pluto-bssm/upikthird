@@ -13,6 +13,7 @@ import {
   CREATE_VOTE_RESPONSE,
   CREATE_VOTE,
   CREATE_TAIL_VOTE,
+  REPORT_QUESTION,
 } from "./mutations";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
@@ -288,4 +289,55 @@ export async function createTailVote(
     throw new Error("Failed to create tail vote");
   }
   return result;
+}
+
+// ===================== 신고 관련 함수 =====================
+
+/**
+ * 질문(투표) 신고
+ */
+interface ReportQuestionResult {
+  success: boolean;
+  message: string;
+}
+
+export async function reportQuestion(
+  questionId: string,
+  reason: string,
+): Promise<ReportQuestionResult> {
+  const token = Storage.getItem(TOKEN.ACCESS);
+
+  try {
+    const response = await upik.post(
+      "",
+      {
+        query: REPORT_QUESTION,
+        variables: { questionId, reason },
+      } as GraphQLRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    console.log("신고 응답:", JSON.stringify(response.data, null, 2));
+
+    if (response.data?.errors && response.data.errors.length > 0) {
+      const errorMessage = response.data.errors[0].message;
+      console.error("GraphQL 에러:", response.data.errors);
+      throw new Error(errorMessage);
+    }
+
+    const result = response.data?.data?.report?.reportQuestion;
+
+    if (!result) {
+      throw new Error("Failed to report question");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("reportQuestion 에러:", error);
+    throw error;
+  }
 }

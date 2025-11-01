@@ -18,7 +18,7 @@ export interface VotePayload {
   id: string;
   title: string;
   category: string;
-  status: string; // "OPEN" | "CLOSED"
+  status: string;
   totalResponses: number;
   finishedAt: number;
   options: OptionWithStats[];
