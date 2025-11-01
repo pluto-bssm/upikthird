@@ -1,20 +1,20 @@
 export const API = {
-  BASE_URL:
-    process.env.NEXT_PUBLIC_API_URL ||
-    "https://upik-659794985248.asia-northeast3.run.app",
-  GRAPHQL_URL:
-    process.env.NEXT_PUBLIC_API_URL ||
-    "https://upik-659794985248.asia-northeast3.run.app/graphql",
-  OAUTH_PROVIDER: "https://upik-659794985248.asia-northeast3.run.app",
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080",
+  GRAPHQL_URL: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}`,
   TIMEOUT: 15000,
 } as const;
 
+const OAUTH_BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080";
+
 export const OAUTH = {
   GOOGLE: {
-    REDIRECT_URI: `${API.OAUTH_PROVIDER}/login/oauth2/code/google`,
-    CALLBACK_PATH: "/login/oauth2/code/google",
+    AUTH_URL: `${OAUTH_BASE_URL}/oauth2/authorization/google`,
+    TOKEN_URL:
+      process.env.NEXT_PUBLIC_OAUTH_URL || `${OAUTH_BASE_URL}/auth/code?code=`,
+    CALLBACK_PATH: "/oauth2/callback",
   },
-} as const;
+};
 
 export const ROUTES = {
   LOGIN: "/login",

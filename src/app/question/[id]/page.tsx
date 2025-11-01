@@ -17,10 +17,11 @@ const QuestionDetailPage = () => {
   const { question, loading: questionLoading } = useQuestionDetail(
     boardId as string,
   );
-  const { comments, loading: commentsLoading } = useQuestionComments(
-    boardId as string,
-    { page: 0, size: 10 },
-  );
+  const {
+    comments,
+    loading: commentsLoading,
+    refetch: refetchComments,
+  } = useQuestionComments(boardId as string, { page: 0, size: 10 });
 
   const [comment, setComment] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
@@ -47,6 +48,7 @@ const QuestionDetailPage = () => {
         content: comment,
       });
       setComment("");
+      await refetchComments();
     } catch (error) {
     } finally {
       setSubmitting(false);
@@ -69,6 +71,7 @@ const QuestionDetailPage = () => {
       });
       setReplyContent("");
       setReplyingTo(null);
+      await refetchComments();
     } catch (error) {
     } finally {
       setSubmitting(false);
@@ -127,18 +130,22 @@ const QuestionDetailPage = () => {
                       <FooterItem>
                         {new Date(comment.createdAt).toLocaleString("ko-KR")}
                       </FooterItem>
-                      <FooterReportItem
-                        onClick={() =>
-                          router.push(
-                            `/question/${boardId}/comment-report?commentId=${comment.id}`,
-                          )
-                        }
-                      >
-                        신고하기
-                      </FooterReportItem>
-                      <FooterItem onClick={() => handleReplyClick(comment.id)}>
-                        답글쓰기
-                      </FooterItem>
+                      <FooterInnerItem>
+                        <FooterReportItem
+                          onClick={() =>
+                            router.push(
+                              `/question/${boardId}/comment-report?commentId=${comment.id}`,
+                            )
+                          }
+                        >
+                          신고하기
+                        </FooterReportItem>
+                        <FooterItem
+                          onClick={() => handleReplyClick(comment.id)}
+                        >
+                          답글쓰기
+                        </FooterItem>
+                      </FooterInnerItem>
                     </CommentFooter>
                   </CommentBox>
                 </CommentItemWrapper>
@@ -764,4 +771,9 @@ const ReplySubmitButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
+`;
+
+const FooterInnerItem = styled.div`
+  display: flex;
+  gap: 12px;
 `;

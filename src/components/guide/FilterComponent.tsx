@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import BottomSheetSelector from "../common/BottomSheet";
@@ -15,8 +13,8 @@ export default function FilterComponent({
   setIsOpen,
   onChange,
 }: Props) {
-  const [selectedValue, setSelectedValue] = useState("가이드 제작일 기준");
 
+  const [selectedValue, setSelectedValue] = useState("가이드 제작일 기준");
   const items = useMemo(
     () => [
       { value: "DATE", label: "가이드 제작일 기준" },

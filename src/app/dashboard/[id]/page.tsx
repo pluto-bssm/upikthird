@@ -142,7 +142,7 @@ const DashboardDetailPage = () => {
               {errorAll && <ReportDetails>{errorAll}</ReportDetails>}
               {!loadingAll &&
                 !errorAll &&
-                allReports.map((r, idx) => (
+                allReports.map((r: ReportItem, idx: number) => (
                   <ReportItem
                     key={`${r.targetType}-${r.targetId}-${r.createdAt}-${idx}`}
                     onClick={() => handleReportClick(String(r.targetId))}
@@ -259,7 +259,7 @@ const MainContent = styled.div`
 
 const CardContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 40px;
   width: 100%;
   max-width: 1200px;
   align-items: flex-start;

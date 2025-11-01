@@ -6,15 +6,14 @@ import { useRouter } from "next/navigation";
 import color from "@/packages/design-system/src/color";
 import UpikLogo from "@/../public/svg/UpikLogo";
 import { GoogleIcon } from "@/../public/svg/GoogleIcon";
+import { API, OAUTH } from "@/constants/upik";
 
 const LoginPage = () => {
   const router = useRouter();
 
   const handleGoogleLogin = () => {
-    const redirectUri = `${window.location.origin}/oauth/callback`;
-    const authUrl = new URL(
-      "https://upik-659794985248.asia-northeast3.run.app/oauth2/authorization/google",
-    );
+    const redirectUri = `${window.location.origin}${OAUTH.GOOGLE.CALLBACK_PATH}`;
+    const authUrl = new URL(OAUTH.GOOGLE.AUTH_URL);
     authUrl.searchParams.append("redirect_uri", redirectUri);
     window.location.href = authUrl.toString();
   };
