@@ -4,6 +4,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get("code");
+    const state = searchParams.get("state");
 
     if (!code) {
       return NextResponse.redirect(new URL("/login", request.url));
@@ -13,7 +14,6 @@ export async function GET(request: NextRequest) {
       process.env.NEXT_PUBLIC_OAUTH_URL ||
       "http://localhost:8080/auth/code?code=";
     const tokenUrl = `${tokenBaseUrl}${code}`;
-
     const tokenResponse = await fetch(tokenUrl, {
       method: "GET",
       headers: {
@@ -27,21 +27,17 @@ export async function GET(request: NextRequest) {
 
     let accessToken = "";
     let refreshToken = "";
-
-    try {
-      const responseText = await tokenResponse.text();
-
-      if (responseText) {
-        const responseBody = JSON.parse(responseText);
-        accessToken =
-          responseBody?.data?.accessToken ||
-          responseBody?.accessToken ||
-          responseBody?.access_token ||
-    } catch (parseError) {
-      console.error("Failed to parse token response:", parseError);
-          "";
-      }
-    } catch (parseError) {}
+    const tokenData = await tokenResponse.json();
+    accessToken =
+      tokenData?.data?.accessToken ||
+      tokenData?.accessToken ||
+      tokenData?.access_token ||
+      "";
+    refreshToken =
+      tokenData?.data?.refreshToken ||
+      tokenData?.refreshToken ||
+      tokenData?.refresh_token ||
+      "";
 
     if (!accessToken) {
       accessToken =
@@ -49,11 +45,13 @@ export async function GET(request: NextRequest) {
         tokenResponse.headers.get("accessToken") ||
         tokenResponse.headers.get("x-access-token") ||
         tokenResponse.headers.get("authorization") ||
-    const setCookieHeader = tokenResponse.headers.get("set-cookie");
-    if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
-      const match = setCookieHeader.match(/refreshToken=([^;]+)/);
-      if (match) {
-        refreshToken = match[1];
+        "";
+    }
+
+    if (!refreshToken) {
+      const setCookieHeader = tokenResponse.headers.get("set-cookie");
+      if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
+        const match = setCookieHeader.match(/refreshToken=([^;]+)/);
         if (match) {
           refreshToken = match[1];
         }
@@ -64,29 +62,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    const redirectUrl = new URL("/oauth2/callback/success", request.url);
-
-    const response = NextResponse.redirect(redirectUrl);
-
-    response.cookies.set("accessToken", accessToken, {
-      httpOnly: false,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    });
-
+    const redirectUrl = new URL("/oauth2/callback", request.url);
+    redirectUrl.searchParams.append("accessToken", accessToken);
     if (refreshToken) {
-      response.cookies.set("refreshToken", refreshToken, {
-        httpOnly: false,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-        path: "/",
-      });
+      redirectUrl.searchParams.append("refreshToken", refreshToken);
     }
 
-    return response;
+    return NextResponse.redirect(redirectUrl);
   } catch (error) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
