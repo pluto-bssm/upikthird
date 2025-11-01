@@ -1,7 +1,5 @@
 "use client";
 
-import client from "../lib/apolloClient";
-import { ApolloProvider } from "@apollo/client/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
 import { CacheProvider } from "@emotion/react";

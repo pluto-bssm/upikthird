@@ -2,12 +2,8 @@
 
 import { useEffect, useState } from "react";
 import * as guideApi from "@/services/guide/api";
-import type {
-  Guide,
-  GuideDetail,
-  SimilarGuide,
-  PaginatedGuides,
-} from "@/services/guide/api";
+import type { GuideDetail, PaginatedGuides } from "@/services/guide/api";
+import type { Guide, SimilarGuide } from "@/types/api";
 
 interface UseGuideOptions {
   autoFetch?: boolean;

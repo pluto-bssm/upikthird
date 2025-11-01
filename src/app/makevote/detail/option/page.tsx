@@ -39,13 +39,14 @@ const Options = () => {
 
         if (result && result.options.length > 0) {
           setBallots(result.options);
-          setIsOpen_2(false);
           setIsOpen_3(true);
         }
       } catch (err) {
         console.error("AI 옵션 생성 실패:", err);
-        setIsOpen_2(false);
         // 에러 처리 모달을 추가할 수 있습니다
+      } finally {
+        // 항상 로딩 모달을 닫음
+        setIsOpen_2(false);
       }
     } else {
       setIsOpen_1(false);

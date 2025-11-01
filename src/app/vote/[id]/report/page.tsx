@@ -31,7 +31,6 @@ const Report = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen_1, setIsOpen_1] = useState(false);
 
-
   const { reportQuestion, loading, error, reset } = useReportQuestion();
 
   useEffect(() => {
@@ -45,12 +44,10 @@ const Report = () => {
   const handleSubmit = async () => {
     if (!isActive || loading) return;
 
-   
     if (!voteId) {
       alert("투표 ID를 찾을 수 없습니다.");
       return;
     }
-
 
     const selectedReason = ReportReason.find((r) => r.id === selectedOption);
     if (!selectedReason) {
@@ -58,14 +55,13 @@ const Report = () => {
       return;
     }
 
-
     const fullReason = `${selectedReason.reason}\n\n상세 내용: ${detail}`;
 
     try {
       const result = await reportQuestion(voteId, fullReason);
 
       if (result.success) {
-        setIsOpen_1(true); 
+        setIsOpen_1(true);
       }
     } catch (err) {
       console.error("신고 실패:", err);
@@ -142,7 +138,6 @@ const Report = () => {
         />
       </ReportBlock>
 
-
       {isOpen && (
         <TwoOptionModal
           title="신고를 취소하시겠어요?"
@@ -150,12 +145,11 @@ const Report = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           passfunction={() => {
-            reset(); 
+            reset();
             router.back();
           }}
         />
       )}
-
 
       {isOpen_1 && (
         <AccentModal
@@ -166,7 +160,7 @@ const Report = () => {
           subText="지속적으로 정상적인 투표를 신고하는 경우
 제재의 대상이 될 수 있어요"
           onClick={() => {
-            reset(); 
+            reset();
             router.push("/");
           }}
         />

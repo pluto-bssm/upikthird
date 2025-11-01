@@ -20,7 +20,6 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const { vote, loading, error, refetch } = useVote(id);
 
-
   const {
     createVoteResponse,
     loading: responseLoading,
@@ -41,19 +40,16 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
     }
 
     try {
-      console.log(id, selectedOption);
       const result = await createVoteResponse(id, selectedOption);
 
       if (result) {
-        console.log("투표 응답 성공");
         router.push(`${path}/tailvote`);
       }
     } catch (err) {
-      console.error("투표 참여 중 오류:", err);
+      // error handled in hook; show generic alert for user
       alert("투표 참여 중 오류가 발생했습니다.");
     }
   };
-
 
   if (loading) {
     return (
@@ -65,7 +61,6 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
       </DesVoteLayout>
     );
   }
-
 
   if (error || !vote) {
     return (

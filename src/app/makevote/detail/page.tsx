@@ -15,6 +15,7 @@ import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useSearchSimilarGuides } from "@/hooks/useGuides";
+import { searchSimilarGuides as apiSearchSimilarGuides } from "@/services/guide/api";
 import { useCheckBadWord } from "@/hooks/useVotes";
 import { useCreateVote } from "@/hooks/useVotes";
 import { VoteClosureType } from "@/types/api";
@@ -95,13 +96,14 @@ const Detail = () => {
 
       setIsOpen_4(true);
 
-      await searchSimilarGuides(title);
+      // call service directly to get immediate result instead of relying on hook state
+      const guides = await apiSearchSimilarGuides(title);
 
-      if (similarGuides && similarGuides.length > 0) {
+      if (guides && guides.length > 0) {
         setIsOpen_4(false);
         router.push(`${path}/likeguide`);
         return;
-      } else if (similarGuides && similarGuides.length === 0) {
+      } else if (guides && guides.length === 0) {
         const voteInput = {
           title: title.trim(),
           category: category,

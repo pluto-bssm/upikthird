@@ -9,58 +9,25 @@ import {
 } from "@/services/vote/queries";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
+import type { Guide, SimilarGuide, Page } from "@/types/api";
 
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
-
-// ===================== 가이드 타입 정의 =====================
-
-export interface Guide {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-  createdAt: string;
-  like: number;
-}
-
-export interface GuideDetail {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-  createdAt: string;
-  guideType: string;
-  likeCount: number;
-  revoteCount: number;
+// GuideDetail and PaginatedGuides shape are derived from shared types
+export type GuideDetail = Guide & {
+  guideType?: string;
+  likeCount?: number;
+  revoteCount?: number;
   voteId?: string;
-}
+};
 
-export interface SimilarGuide {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-  createdAt: string;
-  guideType: string;
-  keyword: string;
-  likeCount: number;
-  revoteCount: number;
-  userEmail: string;
-  userId: string;
-  userName: string;
-  userProfileImage: string;
-}
-
-export interface PaginatedGuides {
-  content: Guide[];
+export type PaginatedGuides = Page<Guide> & {
   hasNext: boolean;
   pageNumber: number;
   size: number;
-  totalElements: number;
-  totalPages: number;
+};
+
+export interface GraphQLRequest {
+  query: string;
+  variables?: Record<string, unknown>;
 }
 
 // ===================== 가이드 조회 =====================
