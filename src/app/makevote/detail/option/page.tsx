@@ -33,7 +33,6 @@ const Options = () => {
       setIsOpen_2(true);
 
       try {
-
         const result = await generateAiOptions(ballots.length || 4, title);
 
         if (result && result.options.length > 0) {
@@ -41,10 +40,7 @@ const Options = () => {
           setIsOpen_3(true);
         }
       } catch (err) {
-        
-
       } finally {
-
         setIsOpen_2(false);
       }
     } else {

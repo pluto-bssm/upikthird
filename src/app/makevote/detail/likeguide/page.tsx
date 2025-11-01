@@ -46,7 +46,6 @@ const LikeGuide = () => {
     try {
       setIsLoadingOpen(true);
 
-
       const voteInput = {
         title: title.trim(),
         category: category,
@@ -58,8 +57,6 @@ const LikeGuide = () => {
           participantThreshold && { participantThreshold }),
       };
 
-
-
       const result = await createVote(voteInput);
 
       setIsLoadingOpen(false);
@@ -68,7 +65,6 @@ const LikeGuide = () => {
         setIsCompleteOpen(true);
         resetVoteData();
       } else {
-
         alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (err) {
@@ -92,7 +88,6 @@ const LikeGuide = () => {
     router.push("/vote");
   };
 
-
   if (guidesLoading) {
     return (
       <LikeGuideLayout>
@@ -103,7 +98,6 @@ const LikeGuide = () => {
       </LikeGuideLayout>
     );
   }
-
 
   if (guidesError) {
     return (
@@ -137,19 +131,14 @@ const LikeGuide = () => {
 
         <LikeGuideListArea>
           {similarGuides.length > 0 ? (
-            similarGuides.map(
-              (
-                guide: SimilarGuide,
-                index: number,
-              ) => (
-                <GuideBlock
-                  key={guide?.id || index}
-                  title={guide?.title}
-                  category={guide?.category}
-                  viewCount={guide?.likeCount}
-                />
-              ),
-            )
+            similarGuides.map((guide: SimilarGuide, index: number) => (
+              <GuideBlock
+                key={guide?.id || index}
+                title={guide?.title}
+                category={guide?.category}
+                viewCount={guide?.likeCount}
+              />
+            ))
           ) : (
             <NoGuideText>유사한 가이드가 없습니다.</NoGuideText>
           )}

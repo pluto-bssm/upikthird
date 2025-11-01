@@ -78,7 +78,6 @@ export interface Question {
   isBookmarked?: boolean;
 }
 
-
 export interface QuestionsResponse {
   data: {
     board: {
@@ -132,8 +131,8 @@ export interface CreateVoteInput {
   category: string;
   options: string[];
   closureType: VoteClosureType;
-  customDays: number;
-  participantThreshold: number;
+  customDays?: number;
+  participantThreshold?: number;
 }
 
 export interface CreateVoteResponseInput {

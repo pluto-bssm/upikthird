@@ -46,6 +46,7 @@ const Report = () => {
 
     if (!voteId) {
       alert("투표 ID를 찾을 수 없습니다.");
+      router.push("/");
       return;
     }
 
@@ -61,11 +62,15 @@ const Report = () => {
       const result = await reportQuestion(voteId, fullReason);
 
       if (result.success) {
+        setDetail("");
+        setSelectedOption(null);
         setIsOpen_1(true);
+      } else {
+        alert("신고 접수에 실패했습니다. 다시 시도해 주세요.");
       }
     } catch (err) {
-
-      alert(error || "신고 접수에 실패했습니다.");
+      alert(error || "신고 접수 중 오류가 발생했습니다.");
+      console.error("Report submission error:", err);
     }
   };
 

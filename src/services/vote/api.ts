@@ -205,19 +205,10 @@ export async function generateAiOptions(
   return result;
 }
 
-interface CreateVoteInput {
-  title: string;
-  category?: string;
-  options: string[];
-  closureType?: "DEFAULT" | "CUSTOM_DAYS" | "PARTICIPANT_COUNT";
-  customDays?: number;
-  participantThreshold?: number;
-}
+import { CreateVoteInput } from "@/types/api";
 
 export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
-
-
 
   try {
     const response = await upik.post(
@@ -233,8 +224,6 @@ export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
       },
     );
 
-      
-
     if (response.data?.errors && response.data.errors.length > 0) {
       const errorMessage = response.data.errors[0].message;
 
@@ -243,14 +232,11 @@ export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
     const vote = response.data?.data?.vote?.createVote;
 
     if (!vote) {
-
       throw new Error("Failed to create vote");
     }
 
-
     return vote;
   } catch (error) {
- 
     throw error;
   }
 }
@@ -319,8 +305,6 @@ export async function reportQuestion(
       },
     );
 
-    
-
     if (response.data?.errors && response.data.errors.length > 0) {
       const errorMessage = response.data.errors[0].message;
 
@@ -335,7 +319,6 @@ export async function reportQuestion(
 
     return result;
   } catch (error) {
-
     throw error;
   }
 }

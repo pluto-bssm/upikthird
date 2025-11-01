@@ -7,7 +7,7 @@ import font from "@/packages/design-system/src/font";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import Ballot from "@/components/vote/ballot";
-import { useState, use } from "react";
+import { useState, useEffect, use } from "react";
 import { useVote, useCreateVoteResponse } from "@/hooks/useVotes";
 
 const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -16,7 +16,12 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const { id } = use(params);
-  sessionStorage.setItem("voteId", String(id));
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("voteId", String(id));
+    }
+  }, [id]);
 
   const { vote, loading, error, refetch } = useVote(id);
 
@@ -46,7 +51,6 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
         router.push(`${path}/tailvote`);
       }
     } catch (err) {
-
       alert("투표 참여 중 오류가 발생했습니다.");
     }
   };

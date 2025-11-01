@@ -96,7 +96,6 @@ const Detail = () => {
 
       setIsOpen_4(true);
 
-
       const guides = await apiSearchSimilarGuides(title);
 
       if (guides && guides.length > 0) {
@@ -115,20 +114,16 @@ const Detail = () => {
             participantThreshold && { participantThreshold }),
         };
 
-        
-
         const createResult = await createVote(voteInput);
 
         setIsOpen_4(false);
 
         if (createResult) {
-         
           resetVoteData();
           router.push("/vote");
         }
       }
     } catch (error) {
-     
       setIsOpen_2(false);
       setIsOpen_4(false);
       alert("투표 생성 중 오류가 발생했습니다. 다시 시도해주세요.");

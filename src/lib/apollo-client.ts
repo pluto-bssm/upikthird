@@ -10,7 +10,6 @@ import {
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 
-// 에러 처리 링크
 const errorLink = onError(({ graphQLErrors, networkError }: any) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }: any) =>
@@ -21,7 +20,6 @@ const errorLink = onError(({ graphQLErrors, networkError }: any) => {
   if (networkError) console.error(`[Network error]: ${networkError}`);
 });
 
-// Authorization 헤더 추가 링크
 const authLink = setContext((_, { headers }) => {
   // 토큰을 localStorage에서 가져오거나 환경변수에서 가져오기
   let token = "";
@@ -36,12 +34,6 @@ const authLink = setContext((_, { headers }) => {
     token = process.env.NEXT_PUBLIC_AUTH_TOKEN || "";
   }
 
-  // 하드코딩된 토큰 (개발용)
-  if (!token) {
-    token =
-      "eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiZ29vZ2xlXzEwNjk1OTk4NTEwNjMxMTA4NzM2NyIsInJvbGUiOiJST0xFX05PQlNNIiwiaWF0IjoxNzU4MTEwODIwLCJleHAiOjE3NTgxMTE3MjB9.Wmy4cjtr5KCXQ5EHvGkxs3zwuvmTMY_6yBSU-IPZpzA";
-  }
-
   return {
     headers: {
       ...headers,
@@ -50,10 +42,23 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const GRAPHQL_ENDPOINT =
+  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ||
+  "https://upik-659794985248.asia-northeast3.run.app/graphql";
+
+// URL 정규화 함수
+const normalizeUrl = (url: string) => {
+  try {
+    const normalized = new URL(url);
+    return normalized.toString();
+  } catch (e) {
+    console.error("Invalid GraphQL endpoint URL:", e);
+    return url;
+  }
+};
+
 const httpLink = new HttpLink({
-  uri:
-    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ||
-    "https://upik-659794985248.asia-northeast3.run.app/graphql",
+  uri: normalizeUrl(GRAPHQL_ENDPOINT),
   credentials: "include",
 });
 

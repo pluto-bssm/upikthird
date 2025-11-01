@@ -14,7 +14,6 @@ const Search = () => {
   const { votes, loading, error } = useVotes();
   const router = useRouter();
 
-
   const filteredVotes =
     searchQuery.trim() === ""
       ? []
@@ -29,7 +28,6 @@ const Search = () => {
   const handleSearchSubmit = () => {
     setSearchQuery(searchValue.trim());
   };
-
 
   if (loading) {
     return (
@@ -47,7 +45,6 @@ const Search = () => {
       </VoteLayout>
     );
   }
-
 
   if (error) {
     return (
