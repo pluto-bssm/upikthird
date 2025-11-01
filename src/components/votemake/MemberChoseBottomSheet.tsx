@@ -28,13 +28,11 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-      // 다음 프레임에서 애니메이션 시작
       requestAnimationFrame(() => {
         setIsAnimating(true);
       });
     } else {
       setIsAnimating(false);
-      // 애니메이션 완료 후 컴포넌트 제거
       const timer = setTimeout(() => {
         setIsVisible(false);
       }, 350);

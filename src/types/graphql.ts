@@ -52,7 +52,6 @@ export interface Comment {
   updatedAt?: string;
   likes?: number;
   replies?: Comment[];
-  // For direct API response mapping
   userId?: string;
   userName?: string;
   userProfileImage?: string;

@@ -120,11 +120,9 @@ const DashboardDetailPage = () => {
   }
 
   const handleReject = () => {
-    console.log("신고 반려하기");
   };
 
   const handleAccept = () => {
-    console.log("경고 횟수 추가하기");
   };
 
   const handleReportClick = (reportId: string) => {
