@@ -23,8 +23,6 @@ import {
   REPORT_BOARD,
   REPORT_COMMENT,
 } from "./mutations";
-import { Storage } from "@/apis/storage/storage";
-import { TOKEN } from "@/constants/common/constant";
 import { API } from "@/constants/upik";
 
 interface GraphQLRequest {
@@ -35,19 +33,10 @@ interface GraphQLRequest {
 export async function getQuestionList(
   pagination: PaginationParams,
 ): Promise<PageResponse<Board>> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: GET_QUESTION_LIST,
-      variables: { page: pagination.page, size: pagination.size },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: GET_QUESTION_LIST,
+    variables: { page: pagination.page, size: pagination.size },
+  } as GraphQLRequest);
 
   const questions = response.data?.data?.board?.getQuestionList?.content || [];
   const totalPages =
@@ -85,19 +74,10 @@ export async function getQuestionList(
 }
 
 export async function getQuestionDetail(boardId: string): Promise<Board> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: GET_QUESTION_DETAIL,
-      variables: { boardId },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: GET_QUESTION_DETAIL,
+    variables: { boardId },
+  } as GraphQLRequest);
 
   const question = response.data?.data?.board?.getQuestionDetail;
   if (!question) {
@@ -130,19 +110,10 @@ export async function getComments(
   boardId: string,
   pagination: PaginationParams,
 ): Promise<CommentPage> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: GET_COMMENTS,
-      variables: { boardId, page: pagination.page, size: pagination.size },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: GET_COMMENTS,
+    variables: { boardId, page: pagination.page, size: pagination.size },
+  } as GraphQLRequest);
 
   const comments = response.data?.data?.board?.getComments?.content || [];
   const totalPages = response.data?.data?.board?.getComments?.totalPages || 1;
@@ -184,19 +155,10 @@ export async function searchQuestions(
   keyword: string,
   pagination: PaginationParams,
 ): Promise<PageResponse<Board>> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: SEARCH_QUESTIONS,
-      variables: { keyword, page: pagination.page, size: pagination.size },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: SEARCH_QUESTIONS,
+    variables: { keyword, page: pagination.page, size: pagination.size },
+  } as GraphQLRequest);
 
   const data = response.data?.data?.board?.searchQuestions;
   if (!data) {
@@ -208,19 +170,10 @@ export async function searchQuestions(
 export async function createQuestion(
   input: CreateQuestionInput,
 ): Promise<Board> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: CREATE_QUESTION,
-      variables: { input },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: CREATE_QUESTION,
+    variables: { input },
+  } as GraphQLRequest);
 
   const question = response.data?.data?.board?.createQuestion;
   if (!question) {
@@ -253,19 +206,10 @@ export async function updateQuestion(
   boardId: string,
   input: UpdateQuestionInput,
 ): Promise<Board> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: UPDATE_QUESTION,
-      variables: { boardId, input },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: UPDATE_QUESTION,
+    variables: { boardId, input },
+  } as GraphQLRequest);
 
   const question = response.data?.data?.board?.updateQuestion;
   if (!question) {
@@ -295,19 +239,10 @@ export async function updateQuestion(
 }
 
 export async function deleteQuestion(boardId: string): Promise<boolean> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: DELETE_QUESTION,
-      variables: { boardId },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: DELETE_QUESTION,
+    variables: { boardId },
+  } as GraphQLRequest);
 
   const result = response.data?.data?.board?.deleteQuestion;
   if (!result) {
@@ -319,19 +254,10 @@ export async function deleteQuestion(boardId: string): Promise<boolean> {
 export async function createComment(
   input: CreateCommentInput,
 ): Promise<Comment> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: CREATE_COMMENT,
-      variables: { input },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: CREATE_COMMENT,
+    variables: { input },
+  } as GraphQLRequest);
 
   const comment = response.data?.data?.board?.createComment;
   if (!comment) {
@@ -365,19 +291,10 @@ export async function reportBoard(
   reason: string,
   detail: string,
 ): Promise<boolean> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: REPORT_BOARD,
-      variables: { boardId, reason, detail },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: REPORT_BOARD,
+    variables: { boardId, reason, detail },
+  } as GraphQLRequest);
 
   const result = response.data?.data?.board?.reportBoard;
   if (!result) {
@@ -391,19 +308,10 @@ export async function reportComment(
   reason: string,
   detail: string,
 ): Promise<boolean> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: REPORT_COMMENT,
-      variables: { commentId, reason, detail },
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await upik.post(API.GRAPHQL_URL, {
+    query: REPORT_COMMENT,
+    variables: { commentId, reason, detail },
+  } as GraphQLRequest);
 
   const result = response.data?.data?.board?.reportComment;
   if (!result) {

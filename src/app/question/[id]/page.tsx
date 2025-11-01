@@ -17,10 +17,11 @@ const QuestionDetailPage = () => {
   const { question, loading: questionLoading } = useQuestionDetail(
     boardId as string,
   );
-  const { comments, loading: commentsLoading } = useQuestionComments(
-    boardId as string,
-    { page: 0, size: 10 },
-  );
+  const {
+    comments,
+    loading: commentsLoading,
+    refetch: refetchComments,
+  } = useQuestionComments(boardId as string, { page: 0, size: 10 });
 
   const [comment, setComment] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);

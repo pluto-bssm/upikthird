@@ -1,50 +1,70 @@
-export interface ReportData {
-  reason: string;
-  detail: string;
-  email: string;
-  boardId: string;
-  boardTitle?: string;
+import { upik } from "@/apis";
+import { API } from "@/constants/upik";
+
+interface GraphQLRequest {
+  query: string;
+  variables?: Record<string, unknown>;
 }
 
-export const sendReport = async (data: ReportData) => {
-  try {
-    const templateParams = {
-      to_email: data.email,
-      from_name: "UPIK 신고 시스템",
-      subject: `[UPIK 신고 알림] 게시물 신고 - ${data.reason}`,
-      reason: data.reason,
-      detail: data.detail,
-      board_id: data.boardId,
-      board_title: data.boardTitle || "제목 없음",
-      timestamp: new Date().toLocaleString("ko-KR"),
-    };
+export interface ReportBoardData {
+  boardId: string;
+  reason: string;
+  detail: string;
+}
 
-    const response = await emailjs.send(templateParams);
-    return { success: true, messageId: response.status };
+export interface ReportCommentData {
+  commentId: string;
+  reason: string;
+  detail: string;
+}
+
+const REPORT_BOARD_MUTATION = `
+  mutation ReportBoard($boardId: ID!, $detail: String!, $reason: String!) {
+    board {
+      reportBoard(boardId: $boardId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
+const REPORT_COMMENT_MUTATION = `
+  mutation ReportComment($commentId: ID!, $detail: String!, $reason: String!) {
+    board {
+      reportComment(commentId: $commentId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
+export const reportBoard = async (data: ReportBoardData) => {
+  try {
+    const response = await upik.post(API.GRAPHQL_URL, {
+      query: REPORT_BOARD_MUTATION,
+      variables: {
+        boardId: data.boardId,
+        detail: data.detail,
+        reason: data.reason,
+      },
+    } as GraphQLRequest);
+
+    const result = response.data?.data?.board?.reportBoard;
+    return { success: true, result };
   } catch (error) {
     throw error;
   }
 };
 
-export const sendReportToAdmin = async (
-  data: ReportData,
-  adminEmail: string,
-) => {
+export const reportComment = async (data: ReportCommentData) => {
   try {
-    const templateParams = {
-      to_email: adminEmail,
-      from_name: data.email,
-      subject: `[UPIK 신고] 게시물 신고 - ${data.reason}`,
-      reason: data.reason,
-      detail: data.detail,
-      board_id: data.boardId,
-      board_title: data.boardTitle || "제목 없음",
-      reporter_email: data.email,
-      timestamp: new Date().toLocaleString("ko-KR"),
-    };
+    const response = await upik.post(API.GRAPHQL_URL, {
+      query: REPORT_COMMENT_MUTATION,
+      variables: {
+        commentId: data.commentId,
+        detail: data.detail,
+        reason: data.reason,
+      },
+    } as GraphQLRequest);
 
-    const response = await emailjs.send(templateParams);
-    return { success: true, messageId: response.status };
+    const result = response.data?.data?.board?.reportComment;
+    return { success: true, result };
   } catch (error) {
     throw error;
   }

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import BottomSheetSelector from "../common/BottomSheet";
@@ -15,7 +13,7 @@ export default function FilterComponent({
   setIsOpen,
   onChange,
 }: Props) {
-  const [selectedValue, setSelectedValue] = useState("가이드 제작일 기준");
+  const [selectedValue, setSelectedValue] = useState("DATE");
 
   const items = useMemo(
     () => [
@@ -26,9 +24,7 @@ export default function FilterComponent({
   );
 
   const handleSelect = (value: string) => {
-    const next =
-      value === "DATE" ? "가이드 제작일 기준" : "많이 저장한 가이드 기준";
-    setSelectedValue(next);
+    setSelectedValue(value);
     setIsOpen(false);
     onChange?.(value === "DATE" ? "date" : "like");
   };
@@ -37,9 +33,7 @@ export default function FilterComponent({
     <Container>
       <BottomSheetSelector
         title="가이드 정렬하기"
-        selectedValue={
-          selectedValue === "가이드 제작일 기준" ? "DATE" : "SAVED"
-        }
+        selectedValue={selectedValue}
         setSelectedValue={handleSelect}
         items={items}
         isOpen={isOpen}
