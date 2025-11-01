@@ -4,10 +4,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useEffect, useMemo, useState } from "react";
-import {
-    Logo as LogoIcon,
-    Nexts, ProfileIcon,
-} from "@/../public/svg/svg";
+import { Logo as LogoIcon, Nexts, ProfileIcon } from "@/../public/svg/svg";
 import { useParams, useRouter } from "next/navigation";
 import ReportCard from "@/components/dashboard/ReportCard";
 import { upik } from "@/apis";
@@ -105,17 +102,17 @@ const DashboardDetailPage = () => {
           </ProfileIconWrapper>
         </TopHeader>
         <MainContent>
-          <ErrorMessage>{error || "신고 내역을 찾을 수 없습니다."}</ErrorMessage>
+          <ErrorMessage>
+            {error || "신고 내역을 찾을 수 없습니다."}
+          </ErrorMessage>
         </MainContent>
       </PageContainer>
     );
   }
 
-  const handleReject = () => {
-  };
+  const handleReject = () => {};
 
-  const handleAccept = () => {
-  };
+  const handleAccept = () => {};
 
   const handleReportClick = (targetId: string) => {
     router.push(`/dashboard/${targetId}`);
@@ -132,11 +129,19 @@ const DashboardDetailPage = () => {
 
       <MainContent>
         <CardContainer>
-          <ReportCard title="신고 내역 보기" variant="gray" titleAlign="center" scrollable maxHeight={520} style={{ flex: 1 }}>
+          <ReportCard
+            title="신고 내역 보기"
+            variant="gray"
+            titleAlign="center"
+            scrollable
+            maxHeight={520}
+            style={{ flex: 1 }}
+          >
             <ReportList>
               {loadingAll && <ReportDetails>불러오는 중…</ReportDetails>}
               {errorAll && <ReportDetails>{errorAll}</ReportDetails>}
-              {!loadingAll && !errorAll &&
+              {!loadingAll &&
+                !errorAll &&
                 allReports.map((r, idx) => (
                   <ReportItem
                     key={`${r.targetType}-${r.targetId}-${r.createdAt}-${idx}`}
@@ -146,12 +151,15 @@ const DashboardDetailPage = () => {
                     <ReportContent>
                       <ReportReason>{r.reason}</ReportReason>
                       <ReportDetails>
-                        신고자: {r.authorName} &nbsp;&nbsp;신고 대상: {r.targetType}
+                        신고자: {r.authorName} &nbsp;&nbsp;신고 대상:{" "}
+                        {r.targetType}
                       </ReportDetails>
                     </ReportContent>
 
                     <ReportMeta>
-                      <Timestamp>{new Date(r.createdAt).toLocaleString("ko-KR")}</Timestamp>
+                      <Timestamp>
+                        {new Date(r.createdAt).toLocaleString("ko-KR")}
+                      </Timestamp>
                       <ArrowIcon>
                         <Nexts width="24" height="24" />
                       </ArrowIcon>
@@ -161,15 +169,22 @@ const DashboardDetailPage = () => {
             </ReportList>
           </ReportCard>
 
-          <ReportCard title="신고 내용 상세보기" variant="gray" titleAlign="center" scrollable maxHeight={520} style={{ flex: 1 }}>
+          <ReportCard
+            title="신고 내용 상세보기"
+            variant="gray"
+            titleAlign="center"
+            scrollable
+            maxHeight={520}
+            style={{ flex: 1 }}
+          >
             <DetailSection>
               <DetailLabel>신고 사유</DetailLabel>
-              <DetailContentBox>{report?.reason || '-'}</DetailContentBox>
+              <DetailContentBox>{report?.reason || "-"}</DetailContentBox>
             </DetailSection>
 
             <DetailSection>
               <DetailLabel>상세 내용</DetailLabel>
-              <DetailContentBox>{report?.content || '-'}</DetailContentBox>
+              <DetailContentBox>{report?.content || "-"}</DetailContentBox>
             </DetailSection>
 
             <DetailSection>

@@ -4,10 +4,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useEffect, useState } from "react";
-import {
-    Nexts,
-    Logo as LogoIcon, ProfileIcon,
-} from "@/../public/svg/svg";
+import { Nexts, Logo as LogoIcon, ProfileIcon } from "@/../public/svg/svg";
 import { useRouter } from "next/navigation";
 import ReportCard from "@/components/dashboard/ReportCard";
 import { upik } from "@/apis";
@@ -76,11 +73,19 @@ const dashboard = () => {
       </TopHeader>
 
       <MainContent>
-        <ReportCard title="신고 내역 보기" variant="white" titleAlign="left" maxWidth={800} scrollable maxHeight={520}>
+        <ReportCard
+          title="신고 내역 보기"
+          variant="white"
+          titleAlign="left"
+          maxWidth={800}
+          scrollable
+          maxHeight={520}
+        >
           <ReportList>
             {loading && <ReportDetails>불러오는 중…</ReportDetails>}
             {error && <ReportDetails>{error}</ReportDetails>}
-            {!loading && !error &&
+            {!loading &&
+              !error &&
               reports.map((report, idx) => (
                 <ReportItem
                   key={`${report.targetType}-${report.targetId}-${report.createdAt}-${idx}`}
@@ -89,7 +94,8 @@ const dashboard = () => {
                   <ReportContent>
                     <ReportReason>{report.reason}</ReportReason>
                     <ReportDetails>
-                      신고자: {report.authorName} &nbsp;&nbsp;신고 대상: {report.targetType}
+                      신고자: {report.authorName} &nbsp;&nbsp;신고 대상:{" "}
+                      {report.targetType}
                     </ReportDetails>
                   </ReportContent>
 

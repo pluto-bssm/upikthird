@@ -12,8 +12,8 @@ type ReportCardProps = React.PropsWithChildren<{
   variant?: Variant;
   titleAlign?: "left" | "center";
   scrollable?: boolean;
-  maxHeight?: number; 
-  maxWidth?: number; 
+  maxHeight?: number;
+  maxWidth?: number;
   style?: React.CSSProperties;
   className?: string;
 }>;
@@ -30,9 +30,15 @@ const ReportCard = ({
   className,
 }: ReportCardProps) => {
   return (
-    <CardRoot variant={variant} style={{ maxWidth, ...style }} className={className}>
+    <CardRoot
+      variant={variant}
+      style={{ maxWidth, ...style }}
+      className={className}
+    >
       <CardTitle titleAlign={titleAlign}>{title}</CardTitle>
-      <CardBody scrollable={scrollable} maxHeight={maxHeight}>{children}</CardBody>
+      <CardBody scrollable={scrollable} maxHeight={maxHeight}>
+        {children}
+      </CardBody>
     </CardRoot>
   );
 };
@@ -72,5 +78,3 @@ const CardBody = styled.div<{ scrollable: boolean; maxHeight?: number }>`
       ? `overflow-y: auto; ${p.maxHeight ? `max-height: ${p.maxHeight}px;` : ""}`
       : ""}
 `;
-
-

@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
       },
     );
 
-
     if (!tokenResponse.ok) {
       return NextResponse.redirect(new URL("/login", request.url));
     }

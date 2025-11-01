@@ -5,7 +5,6 @@ import { CREATE_VOTE_RESPONSE } from "./mutations";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
 
-
 interface GraphQLRequest {
   query: string;
   variables?: Record<string, unknown>;

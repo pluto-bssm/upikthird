@@ -45,9 +45,9 @@ import GuideIcon from "./GuideIcon";
 import DashboardIcon from "./DashboardIcon";
 import ValidationErrorIcon from "./ValidationErrorIcon";
 import ProfileIcon from "./ProfileIcon";
-import Exclamation from './Exclamation';
-import Question from './Question';
-import GrayClose from './GrayClose';
+import Exclamation from "./Exclamation";
+import Question from "./Question";
+import GrayClose from "./GrayClose";
 
 export {
   Back,
@@ -99,5 +99,5 @@ export {
   DashboardIcon,
   ValidationErrorIcon,
   ProfileIcon,
-  GrayClose
+  GrayClose,
 };

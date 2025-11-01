@@ -305,29 +305,29 @@ const Header = ({
         </HeaderLayout>
       );
 
-      case "search":
-        return (
-          <HeaderLayout>
-            <HeaderItemBox>
-              <LeftItemBox>
-                <Back2 width="22" height="22" onClick={() => router.back()} />
-              </LeftItemBox>
-              <CenterItemBox>
-                <SearchInput 
-                  placeholder={placeholers} 
-                  value={searchInput}
-                  onChange={(e) => {
-                    setSearchInput(e.target.value);
-                    onSearchChange?.(e.target.value);
-                  }}
-                />
-              </CenterItemBox>
-              <RightItemBox>
-                <Button onClick={onSubmit}>검색</Button>
-              </RightItemBox>
-            </HeaderItemBox>
-          </HeaderLayout>
-        );
+    case "search":
+      return (
+        <HeaderLayout>
+          <HeaderItemBox>
+            <LeftItemBox>
+              <Back2 width="22" height="22" onClick={() => router.back()} />
+            </LeftItemBox>
+            <CenterItemBox>
+              <SearchInput
+                placeholder={placeholers}
+                value={searchInput}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                  onSearchChange?.(e.target.value);
+                }}
+              />
+            </CenterItemBox>
+            <RightItemBox>
+              <Button onClick={onSubmit}>검색</Button>
+            </RightItemBox>
+          </HeaderItemBox>
+        </HeaderLayout>
+      );
 
     case "default and no navi":
       return (

@@ -25,7 +25,9 @@ export default function RecoVoteCard() {
   React.useEffect(() => {
     const fetchTodayVote = async () => {
       try {
-        const response = await upik.post("", { query: TODAY_VOTE } as GraphQLRequest);
+        const response = await upik.post("", {
+          query: TODAY_VOTE,
+        } as GraphQLRequest);
         const data = response?.data?.data?.vote?.getLeastPopularOpenVote;
         if (data) {
           setVote({
@@ -37,8 +39,7 @@ export default function RecoVoteCard() {
               : [],
           });
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     };
     fetchTodayVote();
   }, []);
