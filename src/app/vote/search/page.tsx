@@ -14,7 +14,7 @@ const Search = () => {
   const { votes, loading, error } = useVotes();
   const router = useRouter();
 
-  // 검색 필터링 (대소문자 구분 없이)
+
   const filteredVotes =
     searchQuery.trim() === ""
       ? []
@@ -30,7 +30,7 @@ const Search = () => {
     setSearchQuery(searchValue.trim());
   };
 
-  // 로딩 상태
+
   if (loading) {
     return (
       <VoteLayout>
@@ -48,7 +48,7 @@ const Search = () => {
     );
   }
 
-  // 에러 상태
+
   if (error) {
     return (
       <VoteLayout>

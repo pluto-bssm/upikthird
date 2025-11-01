@@ -15,7 +15,7 @@ import AccentModal from "@/components/modal/AccentModal";
 import { useSearchSimilarGuides } from "@/hooks/useGuides";
 import { useVoteStore } from "@/store/useMakeVoteStore";
 import { useCreateVote } from "@/hooks/useVotes";
-import type { SimilarGuide } from "@/services/guide/api";
+import type { SimilarGuide } from "@/types/api";
 import { VoteClosureType } from "@/types/api";
 
 const LikeGuide = () => {
@@ -46,7 +46,7 @@ const LikeGuide = () => {
     try {
       setIsLoadingOpen(true);
 
-      // 기본 input
+
       const voteInput = {
         title: title.trim(),
         category: category,
@@ -58,12 +58,7 @@ const LikeGuide = () => {
           participantThreshold && { participantThreshold }),
       };
 
-      console.log("Creating vote with input:", voteInput);
-      console.log("=== 투표 생성 디버깅 ===");
-      console.log("closureType:", closureType);
-      console.log("customDays:", customDays);
-      console.log("participantThreshold:", participantThreshold);
-      console.log("voteInput:", voteInput);
+
 
       const result = await createVote(voteInput);
 
@@ -73,12 +68,12 @@ const LikeGuide = () => {
         setIsCompleteOpen(true);
         resetVoteData();
       } else {
-        console.log(result);
+
         alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (err) {
       setIsLoadingOpen(false);
-      console.error("Vote creation error:", err);
+
       alert("투표 생성 중 오류가 발생했습니다.");
     }
   };
@@ -97,7 +92,7 @@ const LikeGuide = () => {
     router.push("/vote");
   };
 
-  // 가이드 로딩 상태
+
   if (guidesLoading) {
     return (
       <LikeGuideLayout>
@@ -109,7 +104,7 @@ const LikeGuide = () => {
     );
   }
 
-  // 가이드 에러 상태
+
   if (guidesError) {
     return (
       <LikeGuideLayout>
@@ -145,7 +140,7 @@ const LikeGuide = () => {
             similarGuides.map(
               (
                 guide: SimilarGuide,
-                index: number, // 타입 명시
+                index: number,
               ) => (
                 <GuideBlock
                   key={guide?.id || index}

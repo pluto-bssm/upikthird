@@ -217,7 +217,7 @@ interface CreateVoteInput {
 export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
 
-  console.log("createVote 입력 데이터:", JSON.stringify(input, null, 2));
+
 
   try {
     const response = await upik.post(
@@ -233,26 +233,24 @@ export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
       },
     );
 
-    console.log("GraphQL 응답:", JSON.stringify(response.data, null, 2));
+      
 
     if (response.data?.errors && response.data.errors.length > 0) {
       const errorMessage = response.data.errors[0].message;
-      console.error("GraphQL 에러:", response.data.errors);
+
       throw new Error(errorMessage);
     }
-
-    // 🔥 수정: response.data.data.vote.createVote
     const vote = response.data?.data?.vote?.createVote;
 
     if (!vote) {
-      console.error("투표 생성 실패 - 전체 응답:", response.data);
+
       throw new Error("Failed to create vote");
     }
 
-    console.log("✅ 투표 생성 성공:", vote);
+
     return vote;
   } catch (error) {
-    console.error("createVote 에러:", error);
+ 
     throw error;
   }
 }
@@ -321,11 +319,11 @@ export async function reportQuestion(
       },
     );
 
-    console.log("신고 응답:", JSON.stringify(response.data, null, 2));
+    
 
     if (response.data?.errors && response.data.errors.length > 0) {
       const errorMessage = response.data.errors[0].message;
-      console.error("GraphQL 에러:", response.data.errors);
+
       throw new Error(errorMessage);
     }
 
@@ -337,7 +335,7 @@ export async function reportQuestion(
 
     return result;
   } catch (error) {
-    console.error("reportQuestion 에러:", error);
+
     throw error;
   }
 }

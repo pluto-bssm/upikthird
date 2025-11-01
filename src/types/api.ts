@@ -35,7 +35,7 @@ export interface Guide {
   like?: number;
   likeCount?: number;
   revoteCount?: number;
-  voteId?: string; // 연결된 투표 ID
+  voteId?: string;
 }
 
 export interface SimilarGuide {
@@ -78,7 +78,7 @@ export interface Question {
   isBookmarked?: boolean;
 }
 
-// types/api.ts 파일 생성
+
 export interface QuestionsResponse {
   data: {
     board: {

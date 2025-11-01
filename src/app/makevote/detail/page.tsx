@@ -96,7 +96,7 @@ const Detail = () => {
 
       setIsOpen_4(true);
 
-      // call service directly to get immediate result instead of relying on hook state
+
       const guides = await apiSearchSimilarGuides(title);
 
       if (guides && guides.length > 0) {
@@ -115,20 +115,20 @@ const Detail = () => {
             participantThreshold && { participantThreshold }),
         };
 
-        console.log("투표 생성 Input:", voteInput);
+        
 
         const createResult = await createVote(voteInput);
 
         setIsOpen_4(false);
 
         if (createResult) {
-          console.log("투표 생성 성공:", createResult);
+         
           resetVoteData();
           router.push("/vote");
         }
       }
     } catch (error) {
-      console.error("투표 제출 중 오류 발생:", error);
+     
       setIsOpen_2(false);
       setIsOpen_4(false);
       alert("투표 생성 중 오류가 발생했습니다. 다시 시도해주세요.");

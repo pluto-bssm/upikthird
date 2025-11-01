@@ -46,7 +46,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
         router.push(`${path}/tailvote`);
       }
     } catch (err) {
-      // error handled in hook; show generic alert for user
+
       alert("투표 참여 중 오류가 발생했습니다.");
     }
   };

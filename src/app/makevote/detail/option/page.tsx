@@ -26,7 +26,6 @@ const Options = () => {
 
   const { generateAiOptions, loading, options, error } = useGenerateAiOptions();
 
-  // AI 옵션 생성 함수
   async function MakeAiBallot() {
     if (aiUsageCount < 3) {
       setAiUsageCount(aiUsageCount + 1);
@@ -34,7 +33,7 @@ const Options = () => {
       setIsOpen_2(true);
 
       try {
-        // AI 옵션 생성 호출
+
         const result = await generateAiOptions(ballots.length || 4, title);
 
         if (result && result.options.length > 0) {
@@ -42,10 +41,10 @@ const Options = () => {
           setIsOpen_3(true);
         }
       } catch (err) {
-        console.error("AI 옵션 생성 실패:", err);
-        // 에러 처리 모달을 추가할 수 있습니다
+        
+
       } finally {
-        // 항상 로딩 모달을 닫음
+
         setIsOpen_2(false);
       }
     } else {

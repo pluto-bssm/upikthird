@@ -35,7 +35,7 @@ const TailVote = () => {
         setIsOpen(true);
       }
     } catch (err) {
-      console.error("꼬리 투표 생성 실패:", err);
+
       alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
     }
   };

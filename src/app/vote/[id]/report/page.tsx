@@ -64,7 +64,7 @@ const Report = () => {
         setIsOpen_1(true);
       }
     } catch (err) {
-      console.error("신고 실패:", err);
+
       alert(error || "신고 접수에 실패했습니다.");
     }
   };
