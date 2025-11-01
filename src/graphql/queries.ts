@@ -625,3 +625,27 @@ mutation OptionGenerator($guideId: ID!, $reason: String!, $reporterName: String!
   }
 }
 `;
+
+//대시보드 쿼리
+export const GET_ALL_REPORTS = `
+query GetAllReports {
+  report {
+    getAllReports {
+      authorId
+      authorName
+      category
+      content
+      createdAt
+      guideType
+      likeCount
+      reason
+      revoteCount
+      targetCreatedAt
+      targetId
+      targetTitle
+      targetType
+      userId
+    }
+  }
+}
+`;

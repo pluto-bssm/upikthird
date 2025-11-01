@@ -8,7 +8,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
 import { upik } from "@/apis";
-import { GUIDE_BY_ID } from "@/graphql/queries";
+import { GUIDE_BY_ID, TOGGLE_BOOKMARK } from "@/graphql/queries";
 import Image from "next/image";
 
 const getThumbnailImage = (category: string) => {
@@ -42,6 +42,7 @@ const MoreGuidePage = () => {
     content?: string;
     voteId?: string | null;
   } | null>(null);
+  const [bookmarked, setBookmarked] = React.useState(false);
 
   React.useEffect(() => {
     const fetchGuide = async () => {
@@ -68,7 +69,19 @@ const MoreGuidePage = () => {
 
   return (
     <Root>
-      <Header types="bookmark" />
+      <Header
+        types="bookmark"
+        bookmarked={bookmarked}
+        onToggleBookmark={async () => {
+          try {
+            await upik.post("", {
+              query: TOGGLE_BOOKMARK,
+              variables: { guideId },
+            } as GraphQLRequest);
+            setBookmarked((prev) => !prev);
+          } catch (e) {}
+        }}
+      />
 
       <Content>
         <Thumbnail>
