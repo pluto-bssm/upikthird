@@ -48,13 +48,11 @@ export async function GET(request: NextRequest) {
         tokenResponse.headers.get("accessToken") ||
         tokenResponse.headers.get("x-access-token") ||
         tokenResponse.headers.get("authorization") ||
-        "";
-    }
-
-    if (!refreshToken) {
-      const setCookieHeader = tokenResponse.headers.get("set-cookie");
-      if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
-        const match = setCookieHeader.match(/refreshToken=([^;]+)/);
+    const setCookieHeader = tokenResponse.headers.get("set-cookie");
+    if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
+      const match = setCookieHeader.match(/refreshToken=([^;]+)/);
+      if (match) {
+        refreshToken = match[1];
         if (match) {
           refreshToken = match[1];
         }
