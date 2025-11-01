@@ -60,6 +60,7 @@ const Report = () => {
 
     try {
       const result = await reportQuestion(voteId, fullReason);
+      console.log(result)
 
       if (result.success) {
         setDetail("");
@@ -166,7 +167,7 @@ const Report = () => {
 제재의 대상이 될 수 있어요"
           onClick={() => {
             reset();
-            router.push("/");
+            router.push("/vote");
           }}
         />
       )}
