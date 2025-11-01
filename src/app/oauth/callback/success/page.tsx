@@ -46,8 +46,7 @@ const OAuthCallbackContent = () => {
     if (refreshToken) {
       try {
         Storage.setItem(TOKEN.REFRESH, refreshToken);
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     setStatus("로그인 성공! 리다이렉트 중...");

@@ -12,15 +12,6 @@
             </PendingDiffInfo>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/src/services/my/account/api.ts">
-          <value>
-            <PendingDiffInfo>
-              <option name="filePath" value="$PROJECT_DIR$/src/services/my/account/api.ts" />
-              <option name="originalContent" value="import { upik } from &quot;@/apis&quot;;&#10;import type { User } from &quot;@/types/graphql&quot;;&#10;import { GET_MY_USER } from &quot;./queries&quot;;&#10;import { API } from &quot;@/constants/upik&quot;;&#10;&#10;interface GraphQLRequest {&#10;  query: string;&#10;  variables?: Record&lt;string, unknown&gt;;&#10;}&#10;&#10;export async function getMyUser(): Promise&lt;User&gt; {&#10;  const token =&#10;    typeof window !== &quot;undefined&quot; ? localStorage.getItem(&quot;accessToken&quot;) : null;&#10;&#10;  const requestBody = {&#10;    query: GET_MY_USER,&#10;  } as GraphQLRequest;&#10;&#10;  const response = await upik.post(API.GRAPHQL_URL, requestBody, {&#10;    headers: {&#10;      Authorization: `Bearer ${token}`,&#10;    },&#10;  });&#10;&#10;  const data = response.data?.data?.iam?.getCurrentUser;&#10;&#10;  if (!data) {&#10;    throw new Error(&quot;Failed to fetch my user&quot;);&#10;  }&#10;  return data;&#10;}&#10;" />
-              <option name="updatedContent" value="import { upik } from &quot;@/apis&quot;;&#10;import type { User } from &quot;@/types/graphql&quot;;&#10;import { GET_MY_USER } from &quot;./queries&quot;;&#10;import { API } from &quot;@/constants/upik&quot;;&#10;&#10;interface GraphQLRequest {&#10;  query: string;&#10;  variables?: Record&lt;string, unknown&gt;;&#10;}&#10;&#10;export async function getMyUser(): Promise&lt;User&gt; {&#10;  const requestBody = {&#10;    query: GET_MY_USER,&#10;  } as GraphQLRequest;&#10;&#10;  const response = await upik.post(API.GRAPHQL_URL, requestBody);&#10;&#10;  const data = response.data?.data?.iam?.getCurrentUser;&#10;&#10;  if (!data) {&#10;    throw new Error(&quot;Failed to fetch my user&quot;);&#10;  }&#10;  return data;&#10;}&#10;" />
-            </PendingDiffInfo>
-          </value>
-        </entry>
       </map>
     </option>
   </component>

@@ -9,7 +9,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    const tokenBaseUrl = process.env.NEXT_PUBLIC_OAUTH_URL || "http://localhost:8080/auth/code?code=";
+    const tokenBaseUrl =
+      process.env.NEXT_PUBLIC_OAUTH_URL ||
+      "http://localhost:8080/auth/code?code=";
     const tokenUrl = `${tokenBaseUrl}${code}`;
 
     const tokenResponse = await fetch(tokenUrl, {
@@ -31,17 +33,18 @@ export async function GET(request: NextRequest) {
 
       if (responseText) {
         const responseBody = JSON.parse(responseText);
-        accessToken = responseBody?.data?.accessToken ||
+        accessToken =
+          responseBody?.data?.accessToken ||
           responseBody?.accessToken ||
           responseBody?.access_token ||
           responseBody?.token ||
           "";
       }
-    } catch (parseError) {
-    }
+    } catch (parseError) {}
 
     if (!accessToken) {
-      accessToken = tokenResponse.headers.get("access-token") ||
+      accessToken =
+        tokenResponse.headers.get("access-token") ||
         tokenResponse.headers.get("accessToken") ||
         tokenResponse.headers.get("x-access-token") ||
         tokenResponse.headers.get("authorization") ||

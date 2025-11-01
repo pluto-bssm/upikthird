@@ -4,12 +4,14 @@ export const API = {
   TIMEOUT: 15000,
 } as const;
 
-const OAUTH_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080";
+const OAUTH_BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080";
 
 export const OAUTH = {
   GOOGLE: {
     AUTH_URL: `${OAUTH_BASE_URL}/oauth2/authorization/google`,
-    TOKEN_URL: process.env.NEXT_PUBLIC_OAUTH_URL || `${OAUTH_BASE_URL}/auth/code?code=`,
+    TOKEN_URL:
+      process.env.NEXT_PUBLIC_OAUTH_URL || `${OAUTH_BASE_URL}/auth/code?code=`,
     CALLBACK_PATH: "/oauth2/callback",
   },
 };

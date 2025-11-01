@@ -19,9 +19,7 @@ export const sendReport = async (data: ReportData) => {
       timestamp: new Date().toLocaleString("ko-KR"),
     };
 
-    const response = await emailjs.send(
-      templateParams,
-    );
+    const response = await emailjs.send(templateParams);
     return { success: true, messageId: response.status };
   } catch (error) {
     throw error;
@@ -45,9 +43,7 @@ export const sendReportToAdmin = async (
       timestamp: new Date().toLocaleString("ko-KR"),
     };
 
-    const response = await emailjs.send(
-      templateParams,
-    );
+    const response = await emailjs.send(templateParams);
     return { success: true, messageId: response.status };
   } catch (error) {
     throw error;

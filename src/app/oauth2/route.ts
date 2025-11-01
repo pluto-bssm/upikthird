@@ -10,7 +10,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    const tokenBaseUrl = process.env.NEXT_PUBLIC_OAUTH_URL || "http://localhost:8080/auth/code?code=";
+    const tokenBaseUrl =
+      process.env.NEXT_PUBLIC_OAUTH_URL ||
+      "http://localhost:8080/auth/code?code=";
     const tokenUrl = `${tokenBaseUrl}${code}`;
     const tokenResponse = await fetch(tokenUrl, {
       method: "GET",
@@ -25,18 +27,21 @@ export async function GET(request: NextRequest) {
 
     let accessToken = "";
     let refreshToken = "";
-      const tokenData = await tokenResponse.json();
-      accessToken = tokenData?.data?.accessToken ||
-        tokenData?.accessToken ||
-        tokenData?.access_token ||
-        "";
-      refreshToken = tokenData?.data?.refreshToken ||
-        tokenData?.refreshToken ||
-        tokenData?.refresh_token ||
-        "";
+    const tokenData = await tokenResponse.json();
+    accessToken =
+      tokenData?.data?.accessToken ||
+      tokenData?.accessToken ||
+      tokenData?.access_token ||
+      "";
+    refreshToken =
+      tokenData?.data?.refreshToken ||
+      tokenData?.refreshToken ||
+      tokenData?.refresh_token ||
+      "";
 
     if (!accessToken) {
-      accessToken = tokenResponse.headers.get("access-token") ||
+      accessToken =
+        tokenResponse.headers.get("access-token") ||
         tokenResponse.headers.get("accessToken") ||
         tokenResponse.headers.get("x-access-token") ||
         tokenResponse.headers.get("authorization") ||
