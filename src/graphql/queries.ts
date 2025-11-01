@@ -367,11 +367,41 @@ export const GET_COMMENTS = `
           createdAt
           updatedAt
           parentId
+          boardId
+          userId
+          userProfileImage
           replies {
             id
             content
             userName
             createdAt
+            updatedAt
+            parentId
+            boardId
+            userId
+            userProfileImage
+            replies {
+              id
+              content
+              userName
+              createdAt
+              updatedAt
+              parentId
+              boardId
+              userId
+              userProfileImage
+              replies {
+                id
+                content
+                userName
+                createdAt
+                updatedAt
+                parentId
+                boardId
+                userId
+                userProfileImage
+              }
+            }
           }
         }
         totalElements
@@ -398,6 +428,29 @@ export const REPORT_COMMENT = `
   mutation ReportComment($commentId: ID!, $detail: String!, $reason: String!) {
     board {
       reportComment(commentId: $commentId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
+export const GET_REPORTS_BY_TARGET = `
+  query GetReportsByTarget($targetId: ID!) {
+    report {
+      getReportsByTarget(targetId: $targetId) {
+        authorId
+        authorName
+        category
+        content
+        guideType
+        createdAt
+        likeCount
+        reason
+        revoteCount
+        targetCreatedAt
+        targetId
+        targetTitle
+        targetType
+        userId
+      }
     }
   }
 `;
