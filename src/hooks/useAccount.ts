@@ -31,5 +31,4 @@ export function useMyUser() {
   return { user, loading, error, refetch: fetchUser };
 }
 
-// 호환성을 위한 alias
 export const useCurrentUser = useMyUser;

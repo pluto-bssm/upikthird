@@ -8,41 +8,85 @@ export async function GET(request: NextRequest) {
     if (!code) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    const tokenResponse = await fetch(
-      `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
 
+    const tokenBaseUrl =
+      process.env.NEXT_PUBLIC_OAUTH_URL ||
+      "http://localhost:8080/auth/code?code=";
+    const tokenUrl = `${tokenBaseUrl}${code}`;
+
+    const tokenResponse = await fetch(tokenUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!tokenResponse.ok) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    let accessToken = tokenResponse.headers.get("authorization") || "";
 
+    let accessToken = "";
     let refreshToken = "";
-    const setCookieHeader = tokenResponse.headers.get("set-cookie") || "";
-    if (setCookieHeader.includes("refreshToken=")) {
+
+    try {
+      const responseText = await tokenResponse.text();
+
+      if (responseText) {
+        const responseBody = JSON.parse(responseText);
+        accessToken =
+          responseBody?.data?.accessToken ||
+          responseBody?.accessToken ||
+          responseBody?.access_token ||
+    } catch (parseError) {
+      console.error("Failed to parse token response:", parseError);
+          "";
+      }
+    } catch (parseError) {}
+
+    if (!accessToken) {
+      accessToken =
+        tokenResponse.headers.get("access-token") ||
+        tokenResponse.headers.get("accessToken") ||
+        tokenResponse.headers.get("x-access-token") ||
+        tokenResponse.headers.get("authorization") ||
+    const setCookieHeader = tokenResponse.headers.get("set-cookie");
+    if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
       const match = setCookieHeader.match(/refreshToken=([^;]+)/);
       if (match) {
         refreshToken = match[1];
+        if (match) {
+          refreshToken = match[1];
+        }
       }
     }
 
     if (!accessToken) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+
     const redirectUrl = new URL("/oauth2/callback/success", request.url);
-    redirectUrl.searchParams.append("accessToken", accessToken);
+
+    const response = NextResponse.redirect(redirectUrl);
+
+    response.cookies.set("accessToken", accessToken, {
+      httpOnly: false,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
     if (refreshToken) {
-      redirectUrl.searchParams.append("refreshToken", refreshToken);
+      response.cookies.set("refreshToken", refreshToken, {
+        httpOnly: false,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
     }
 
-    return NextResponse.redirect(redirectUrl);
+    return response;
   } catch (error) {
     return NextResponse.redirect(new URL("/login", request.url));
   }

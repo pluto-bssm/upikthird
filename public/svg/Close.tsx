@@ -3,7 +3,6 @@ import React from "react";
 
 const Close = (props: SVGProps<SVGSVGElement>) => {
   const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    console.log("Close clicked!", e);
     props.onClick?.(e as any);
   };
 

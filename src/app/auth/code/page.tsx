@@ -25,7 +25,6 @@ const AuthCodeContent = () => {
     if (accessToken || refreshToken) {
       router.push("/my");
     } else if (code) {
-      // 여기서 code를 백엔드에 보내서 token을 받을 수 있음
       router.push("/my");
     } else {
       router.push("/login");

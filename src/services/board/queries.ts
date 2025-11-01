@@ -48,12 +48,20 @@ export const GET_COMMENTS = `query MyQuery($boardId: ID!, $page: Int!, $size: In
         id
         parentId
         boardId
+        updatedAt
+        userId
+        userName
+        userProfileImage
         replies {
           boardId
           content
           createdAt
           id
           parentId
+          updatedAt
+          userId
+          userName
+          userProfileImage
           replies {
             boardId
             createdAt
@@ -64,16 +72,19 @@ export const GET_COMMENTS = `query MyQuery($boardId: ID!, $page: Int!, $size: In
             userId
             userName
             userProfileImage
+            replies {
+              boardId
+              createdAt
+              content
+              id
+              parentId
+              updatedAt
+              userId
+              userName
+              userProfileImage
+            }
           }
-          updatedAt
-          userId
-          userName
-          userProfileImage
         }
-        updatedAt
-        userId
-        userName
-        userProfileImage
       }
       totalElements
       totalPages
@@ -82,3 +93,24 @@ export const GET_COMMENTS = `query MyQuery($boardId: ID!, $page: Int!, $size: In
 }`;
 
 export const SEARCH_QUESTIONS = `query SearchQuestions($keyword: String!, $page: Int!, $size: Int!) { board { searchQuestions(keyword: $keyword, page: $page, size: $size) { content { id title content category status createdAt updatedAt views likes commentCount author { id name } } totalPages totalElements currentPage pageSize } } }`;
+
+export const GET_REPORTS_BY_TARGET = `query GetReportsByTarget($targetId: ID!) {
+  report {
+    getReportsByTarget(targetId: $targetId) {
+      authorId
+      authorName
+      category
+      content
+      guideType
+      createdAt
+      likeCount
+      reason
+      revoteCount
+      targetCreatedAt
+      targetId
+      targetTitle
+      targetType
+      userId
+    }
+  }
+}`;

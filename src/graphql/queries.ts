@@ -1,4 +1,3 @@
-/* ===================== 사용자 관련 ===================== */
 export const GET_CURRENT_USER = `
   query GetCurrentUser {
     iam {
@@ -13,7 +12,6 @@ export const GET_CURRENT_USER = `
   }
 `;
 
-/* ===================== 투표 관련 ===================== */
 export const GET_VOTES = `
   query GetVotes {
     vote {
@@ -36,14 +34,14 @@ export const GET_VOTES = `
   }
 `;
 
-export const GET_CHECK_BADWORD  = `
+export const GET_CHECK_BADWORD = `
 query MyQuery ($text: String!) {
   checkBadWord(text: $text) {
     checkedText
     containsBadWord
     message
   }
-}`
+}`;
 
 export const GET_ALL_VOTES = `
   query GetAllVotes {
@@ -119,10 +117,9 @@ mutation MyMutation($question: String!, $voteId: ID!) {
       voteId
     }
   }
-}`
-;
+}`;
 
-  export const CREATE_VOTE = `
+export const CREATE_VOTE = `
     mutation CreateVote($input: CreateVoteInput!) {
       vote {
         createVote(input: $input) {
@@ -179,7 +176,6 @@ export const AIOPTION_CREATE = `
   }
 `;
 
-/* ===================== 가이드 관련 ===================== */
 export const GET_GUIDES = `
   query GetGuides {
     guide {
@@ -248,7 +244,6 @@ export const SEARCH_SIMILAR_GUIDES = `
   }
 `;
 
-/* ===================== 질문/게시판 관련 ===================== */
 export const GET_QUESTIONS = `
   query GetQuestions($page: Int!, $size: Int!) {
     board {
@@ -355,7 +350,7 @@ export const GET_SAVED_QUESTIONS = `
     }
   }
 `;
-/* ===================== 댓글 관련 ===================== */
+
 export const GET_COMMENTS = `
   query GetComments($boardId: ID!, $page: Int!, $size: Int!) {
     board {
@@ -367,11 +362,41 @@ export const GET_COMMENTS = `
           createdAt
           updatedAt
           parentId
+          boardId
+          userId
+          userProfileImage
           replies {
             id
             content
             userName
             createdAt
+            updatedAt
+            parentId
+            boardId
+            userId
+            userProfileImage
+            replies {
+              id
+              content
+              userName
+              createdAt
+              updatedAt
+              parentId
+              boardId
+              userId
+              userProfileImage
+              replies {
+                id
+                content
+                userName
+                createdAt
+                updatedAt
+                parentId
+                boardId
+                userId
+                userProfileImage
+              }
+            }
           }
         }
         totalElements
@@ -402,7 +427,28 @@ export const REPORT_COMMENT = `
   }
 `;
 
-/* ===================== 북마크 관련 ===================== */
+export const GET_REPORTS_BY_TARGET = `
+  query GetReportsByTarget($targetId: ID!) {
+    report {
+      getReportsByTarget(targetId: $targetId) {
+        authorId
+        authorName
+        category
+        content
+        guideType
+        createdAt
+        likeCount
+        reason
+        revoteCount
+        targetCreatedAt
+        targetId
+        targetTitle
+        targetType
+        userId
+      }
+    }
+  }
+`;
 
 export const GET_BOOKMARKS = `
   query GetBookmarks {
@@ -438,7 +484,6 @@ export const GET_BOOKMARKED_GUIDES = `
   }
 `;
 
-//모든 가읻드
 export const GET_ALL_GUIDES = `
 query GetAllGuides($page: Int, $size: Int, $sortBy: String) {
   getAllGuides(page: $page, size: $size, sortBy: $sortBy) {
@@ -476,7 +521,6 @@ query GuideById($id: ID!) {
 }
 `;
 
-//재투표 뮤테이션
 export const REVOTE_MUTATION = `
 mutation RevoteMutation($input: CreateRevoteRequestInput!) {
   revote {
@@ -492,7 +536,6 @@ mutation RevoteMutation($input: CreateRevoteRequestInput!) {
 }
 `;
 
-//오늘의 투표
 export const TODAY_VOTE = `
 query TodayVote {
   vote {
@@ -515,7 +558,6 @@ query TodayVote {
 }
 `;
 
-//가장 인기없는 투표 쿼리(메인)
 export const GET_LEAST_POPULAR_OPEN_VOTE = `
 query GetLeastPopularOpenVote {
   vote {
@@ -538,7 +580,6 @@ query GetLeastPopularOpenVote {
 }
 `;
 
-//가장 인기많은 투표 쿼리(메인)
 export const GET_MOST_POPULAR_OPEN_VOTE = `
 query GetMostPopularOpenVote {
   vote {
@@ -561,7 +602,6 @@ query GetMostPopularOpenVote {
 }
 `;
 
-//재투표 요청 뮤테이션
 export const ACCEPT_GUIDE_REPORT = `
 mutation AcceptGuideReport($guideId: ID!, $userId: ID!) {
   revote {
@@ -574,7 +614,6 @@ mutation AcceptGuideReport($guideId: ID!, $userId: ID!) {
 }
 `;
 
-//재투표 요청 뮤테이션
 export const OPTION_GENERATOR = `
 mutation OptionGenerator($guideId: ID!, $reason: String!, $reporterName: String!) {
   optionGenerator {

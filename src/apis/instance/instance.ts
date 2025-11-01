@@ -1,6 +1,6 @@
 import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
-import { ROUTES, TOKEN, API } from "@/constants/common/constant";
+import { TOKEN, API } from "@/constants/common/constant";
 import { Storage } from "../storage/storage";
 
 export const upik = axios.create({
@@ -20,7 +20,6 @@ upik.interceptors.request.use(
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
-    } else {
     }
     return config;
   },

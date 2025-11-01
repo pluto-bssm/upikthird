@@ -1,7 +1,3 @@
-/**
- * Board (Question) GraphQL Mutations
- */
-
 export const CREATE_QUESTION = `
   mutation CreateQuestion($input: CreateBoardInput!) {
     board {

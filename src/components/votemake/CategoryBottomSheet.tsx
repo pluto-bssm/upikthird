@@ -58,7 +58,6 @@ const Overlay = styled.div`
   align-items: flex-end;
   justify-content: center;
 
-  /* 등장 애니메이션 (페이드 인) */
   animation: fadeIn 0.3s ease forwards;
 
   @keyframes fadeIn {
@@ -82,7 +81,6 @@ const BottomSheet = styled.div`
   position: relative;
   z-index: 1002;
 
-  /* 슬라이드업 애니메이션 */
   animation: slideUp 0.35s ease-out forwards;
 
   @keyframes slideUp {

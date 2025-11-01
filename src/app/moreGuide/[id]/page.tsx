@@ -72,7 +72,12 @@ const MoreGuidePage = () => {
 
       <Content>
         <Thumbnail>
-          <Image src={getThumbnailImage(guide?.category ?? "")} alt={guide?.category ?? ""} width={24} height={24} />
+          <Image
+            src={getThumbnailImage(guide?.category ?? "")}
+            alt={guide?.category ?? ""}
+            width={24}
+            height={24}
+          />
         </Thumbnail>
         <GuideTitle>{guide?.title ?? "가이드를 불러오는 중"}</GuideTitle>
         <Date>{(guide?.createdAt ?? "").slice(0, 10)}</Date>
@@ -84,7 +89,11 @@ const MoreGuidePage = () => {
 
         <ContentText>{guide?.content}</ContentText>
         <Line />
-        <ReportTextButton onClick={() => router.push(`/revote?guideId=${guideId}`)}>가이드에 문제가 있다면?</ReportTextButton>
+        <ReportTextButton
+          onClick={() => router.push(`/revote?guideId=${guideId}`)}
+        >
+          가이드에 문제가 있다면?
+        </ReportTextButton>
       </Content>
     </Root>
   );

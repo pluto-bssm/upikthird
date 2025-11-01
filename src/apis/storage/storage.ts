@@ -1,15 +1,30 @@
 export class Storage {
   static getItem(key: string) {
-    return typeof window !== "undefined" ? localStorage.getItem(key) : null;
+    if (typeof window === "undefined") {
+      return null;
+    }
+    try {
+      return localStorage.getItem(key);
+    } catch (error) {
+      return null;
+    }
   }
 
   static setItem(key: string, value: string) {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(key, value);
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      localStorage.setItem(key, value);
+    } catch (error) {}
   }
 
   static removeItem(key: string) {
-    if (typeof window === "undefined") return;
-    localStorage.removeItem(key);
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {}
   }
 }

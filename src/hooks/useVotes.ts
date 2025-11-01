@@ -43,7 +43,6 @@ export function useMyVotes(options: UseVotesOptions = {}) {
       setLoading(true);
       setError(null);
       await voteApi.createVoteResponse({ voteId, optionId });
-      // Refresh votes after voting
       await fetchMyVotes();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to vote";

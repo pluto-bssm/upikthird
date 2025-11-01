@@ -1,13 +1,3 @@
-import emailjs from "@emailjs/browser";
-
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
-
-if (EMAILJS_PUBLIC_KEY) {
-  emailjs.init(EMAILJS_PUBLIC_KEY);
-}
-
 export interface ReportData {
   reason: string;
   detail: string;
@@ -18,7 +8,6 @@ export interface ReportData {
 
 export const sendReport = async (data: ReportData) => {
   try {
-
     const templateParams = {
       to_email: data.email,
       from_name: "UPIK 신고 시스템",
@@ -30,11 +19,7 @@ export const sendReport = async (data: ReportData) => {
       timestamp: new Date().toLocaleString("ko-KR"),
     };
 
-    const response = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      templateParams,
-    );
+    const response = await emailjs.send(templateParams);
     return { success: true, messageId: response.status };
   } catch (error) {
     throw error;
@@ -46,7 +31,6 @@ export const sendReportToAdmin = async (
   adminEmail: string,
 ) => {
   try {
-
     const templateParams = {
       to_email: adminEmail,
       from_name: data.email,
@@ -59,11 +43,7 @@ export const sendReportToAdmin = async (
       timestamp: new Date().toLocaleString("ko-KR"),
     };
 
-    const response = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      templateParams,
-    );
+    const response = await emailjs.send(templateParams);
     return { success: true, messageId: response.status };
   } catch (error) {
     throw error;

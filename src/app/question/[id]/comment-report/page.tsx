@@ -505,3 +505,5 @@ const CompleteModalButton = styled.button`
     opacity: 0.9;
   }
 `;
+
+export default CommentReportPage;
