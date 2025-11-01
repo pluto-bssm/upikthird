@@ -9,18 +9,11 @@ interface GraphQLRequest {
 }
 
 export async function getMyUser(): Promise<User> {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-
   const requestBody = {
     query: GET_MY_USER,
   } as GraphQLRequest;
 
-  const response = await upik.post(API.GRAPHQL_URL, requestBody, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await upik.post(API.GRAPHQL_URL, requestBody);
 
   const data = response.data?.data?.iam?.getCurrentUser;
 

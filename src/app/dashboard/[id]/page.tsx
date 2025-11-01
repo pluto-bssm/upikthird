@@ -116,13 +116,9 @@ const DashboardDetailPage = () => {
     );
   }
 
-  const handleReject = () => {
-    console.log("신고 반려하기");
-  };
+  const handleReject = () => {};
 
-  const handleAccept = () => {
-    console.log("경고 횟수 추가하기");
-  };
+  const handleAccept = () => {};
 
   const handleReportClick = (reportId: string) => {
     router.push(`/dashboard/${reportId}`);

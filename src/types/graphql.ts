@@ -55,7 +55,6 @@ export interface Comment {
   updatedAt?: string;
   likes?: number;
   replies?: Comment[];
-  // For direct API response mapping
   userId?: string;
   userName?: string;
   userProfileImage?: string;
@@ -83,19 +82,19 @@ export interface Board {
   content: string;
   author?: BoardAuthor;
   category?: string;
-  status?: string; // "OPEN" | "CLOSED"
+  status?: string;
   createdAt: string;
   updatedAt?: string;
   views?: number;
-  viewCount?: number; // for question list
+  viewCount?: number;
   likes?: number;
-  like?: number; // for saved guides
+  like?: number;
   commentCount?: number;
-  voteId?: string; // for saved guides
+  voteId?: string;
   bookmarkCount?: number;
-  userId?: string; // for likes
-  userName?: string; // for likes
-  isBookmarked?: boolean; // for likes
+  userId?: string;
+  userName?: string;
+  isBookmarked?: boolean;
 }
 
 export interface BoardDetail extends Board {
