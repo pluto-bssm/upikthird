@@ -9,12 +9,35 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../public/svg/svg";
+import { useCreateTailVote } from "@/hooks/useVotes";
 
 const TailVote = () => {
   const router = useRouter();
   const path = usePathname();
   const newPath = path.replace("tailvote", "");
   const [isOpen, setIsOpen] = useState(false);
+  const [content, setContent] = useState("");
+
+  const { createTailVote, loading, error } = useCreateTailVote();
+
+  const HandleTailVoteMake = async () => {
+    try {
+      const voteId = newPath.split("/").filter(Boolean).pop() || "";
+
+      if (!content.trim()) {
+        alert("응답을 작성해주세요!");
+        return;
+      }
+
+      const result = await createTailVote(content, voteId);
+
+      if (result) {
+        setIsOpen(true);
+      }
+    } catch (err) {
+      alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <TailVoteLayout>
@@ -33,10 +56,17 @@ const TailVote = () => {
         </TailInfo>
 
         <TextAreaContainer>
-          <TextArea placeholder="응답을 작성해주세요! 꼬리 질문 응답은 더 질 높은 가이드를 제작하는데 도움이 됩니다." />
+          <TextArea
+            placeholder="응답을 작성해주세요! 꼬리 질문 응답은 더 질 높은 가이드를 제작하는데 도움이 됩니다."
+            onChange={(e) => setContent(e.target.value)}
+            value={content}
+          />
         </TextAreaContainer>
 
-        <Button text="투표 완료하기" onCkick={() => setIsOpen(true)} />
+        <Button
+          text={loading ? "투표 중..." : "투표 완료하기"}
+          onCkick={HandleTailVoteMake}
+        />
       </TailVoteBlock>
 
       {isOpen && (
@@ -47,7 +77,7 @@ const TailVote = () => {
           rightText="했어요!"
           subText="마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요"
           onClick={() => {
-            router.push("/");
+            router.push("/vote");
           }}
         />
       )}
@@ -73,8 +103,9 @@ const TailVoteBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 100px;
+  gap: 40px;
   margin-top: 100px;
+  margin-bottom: 100px;
 `;
 
 const TailInfo = styled.div`
@@ -105,6 +136,7 @@ const TextAreaContainer = styled.div`
   width: 90%;
   display: flex;
   justify-content: center;
+  margin-bottom: 60px;
 `;
 
 const TextArea = styled.textarea`
@@ -115,7 +147,7 @@ const TextArea = styled.textarea`
   padding: 16px;
   ${font.H3};
   background-color: ${color.white};
-  color: ${color.gray300};
+  color: ${color.black};
   resize: none;
   outline: none;
 

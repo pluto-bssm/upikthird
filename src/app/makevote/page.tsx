@@ -20,6 +20,7 @@ const MakeVote = () => {
   const { category, setCategory, resetVoteData } = useVoteStore();
   const router = useRouter();
   const path = usePathname();
+
   function CanCelMakeVote() {
     resetVoteData();
     router.back();
@@ -27,7 +28,7 @@ const MakeVote = () => {
 
   return (
     <MakeVoteLayout>
-      <Header types="close" onSubmit={() => setIsOepn_1(true)} />
+      <Header types="close" onClose={() => setIsOepn_1(true)} />
 
       <MakeVoteSection>
         <MakeVoteInfomation>

@@ -7,10 +7,12 @@ export interface User {
 }
 export interface OptionWithStats {
   id: string;
-  text: string;
+  content: string;
   votes: number;
   percentage: number;
 }
+
+import { VoteClosureType } from "./api";
 
 export interface VotePayload {
   id: string;
@@ -18,9 +20,10 @@ export interface VotePayload {
   category: string;
   status: string;
   totalResponses: number;
-  finishedAt: string | null;
+  finishedAt: number;
   options: OptionWithStats[];
   hasVoted: boolean;
+  closureType?: VoteClosureType;
 }
 
 export interface MyVote {
@@ -132,11 +135,7 @@ export interface CreateVoteResponseInput {
   optionId: string;
 }
 
-export interface CreateVoteInput {
-  title: string;
-  options: string[];
-  category?: string;
-}
+import { CreateVoteInput } from "./api";
 
 export interface QuestionReportPayload {
   success: boolean;

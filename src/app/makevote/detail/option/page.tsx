@@ -5,12 +5,14 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Header from "@/components/common/header";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Nexts, Completevote, Bad } from "../../../../../public/svg/svg";
 import MemberChoseBottomSheet from "@/components/votemake/MemberChoseBottomSheet";
 import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
+import { useVoteStore } from "@/store/useMakeVoteStore";
+import { useGenerateAiOptions } from "@/hooks/useVotes";
 
 const Options = () => {
   const router = useRouter();
@@ -20,18 +22,30 @@ const Options = () => {
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
   const [aiUsageCount, setAiUsageCount] = useState(0);
+  const { ballots, title, setBallots } = useVoteStore();
 
-  function MakeAiBallot() {
+  const { generateAiOptions, loading, options, error } = useGenerateAiOptions();
+
+  async function MakeAiBallot() {
     if (aiUsageCount < 3) {
       setAiUsageCount(aiUsageCount + 1);
       setIsOpen_1(false);
       setIsOpen_2(true);
 
-      setTimeout(() => {
+      try {
+        const result = await generateAiOptions(ballots.length || 4, title);
+
+        if (result && result.options.length > 0) {
+          setBallots(result.options);
+          setIsOpen_3(true);
+        }
+      } catch (err) {
+        alert("AI 선지 생성에 실패했습니다. 다시 시도해주세요.");
+      } finally {
         setIsOpen_2(false);
-        setIsOpen_3(true);
-      }, 1000);
+      }
     } else {
+      setIsOpen_1(false);
       setIsOpen_4(true);
     }
   }

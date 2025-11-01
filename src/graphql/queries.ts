@@ -136,6 +136,7 @@ export const CREATE_VOTE = `
             responseCount
             percentage
           }
+            participantThreshold
         }
       }
     }

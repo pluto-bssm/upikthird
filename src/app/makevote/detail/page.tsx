@@ -14,14 +14,58 @@ import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
 import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
+import { useSearchSimilarGuides } from "@/hooks/useGuides";
+import { searchSimilarGuides as apiSearchSimilarGuides } from "@/services/guide/api";
+import { useCheckBadWord } from "@/hooks/useVotes";
+import { useCreateVote } from "@/hooks/useVotes";
+import { VoteClosureType } from "@/types/api";
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
 const Detail = () => {
-  const { ballots, setBallots, title, setTitle } = useVoteStore();
+  const {
+    ballots,
+    setBallots,
+    title,
+    setTitle,
+    resetVoteData,
+    category,
+    closureType,
+    customDays,
+    participantThreshold,
+  } = useVoteStore();
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
+
+  const [IsOpen_1, setIsOpen_1] = useState(false);
+  const [IsOpen, setIsOpen] = useState(false);
+  const [IsOpen_2, setIsOpen_2] = useState(false);
+  const [IsOpen_3, setIsOpen_3] = useState(false);
+  const [IsOpen_4, setIsOpen_4] = useState(false);
+
+  const {
+    guides: similarGuides,
+    loading: searchLoading,
+    searchSimilarGuides,
+  } = useSearchSimilarGuides(title, { autoFetch: false });
+
+  const {
+    checkBadWord,
+    loading: badWordLoading,
+    result: badWordResult,
+  } = useCheckBadWord();
+
+  const {
+    createVote,
+    loading: createLoading,
+    error: createError,
+  } = useCreateVote();
+
+  function CanCelMakeVote() {
+    resetVoteData();
+    router.replace("/vote");
+  }
 
   const handleRemoveBallot = (idx: number) => {
     if (ballots.length > 2) {
@@ -34,30 +78,64 @@ const Detail = () => {
       setBallots([...ballots, ""]);
     }
   };
-  const [IsOpen_1, setIsOpen_1] = useState(false);
-  const [IsOpen, setIsOpen] = useState(false);
-  const [IsOpen_2, setIsOpen_2] = useState(false);
-  const [IsOpen_3, setIsOpen_3] = useState(false);
-  const [IsOpen_4, setIsOpen_4] = useState(false);
-  const [isok, setisok] = useState(false);
 
-  const handleVoteSubmit = () => {
+  const handleVoteSubmit = async () => {
     setIsOpen(false);
     setIsOpen_2(true);
 
-    setTimeout(() => {
+    try {
+      const currentTextToCheck = `${title} ${ballots.join(" ")}`;
+      const badWordCheckResult = await checkBadWord(currentTextToCheck);
+
       setIsOpen_2(false);
-      if (isok == false) {
+
+      if (badWordCheckResult?.containsBadWord === true) {
         setIsOpen_3(true);
-        setisok(true);
-      } else {
-        setIsOpen_4(true);
-        setTimeout(() => {
-          setIsOpen_4(false);
-          router.push(`${path}/likeguide`);
-        }, 2000);
+        return;
       }
-    }, 3000);
+
+      setIsOpen_4(true);
+
+      const guides = await apiSearchSimilarGuides(title);
+
+      if (guides && guides.length > 0) {
+        setIsOpen_4(false);
+        router.push(`${path}/likeguide`);
+        return;
+      } else if (guides && guides.length === 0) {
+        const voteInput = {
+          title: title.trim(),
+          category: category,
+          options: ballots,
+          closureType: closureType,
+          ...(closureType === VoteClosureType.CUSTOM_DAYS &&
+            customDays && { customDays }),
+          ...(closureType === VoteClosureType.PARTICIPANT_COUNT &&
+            participantThreshold && { participantThreshold }),
+        };
+
+        const createResult = await createVote(voteInput);
+
+        setIsOpen_4(false);
+
+        if (createResult) {
+          resetVoteData();
+          router.push("/vote");
+        }
+      }
+    } catch (error) {
+      setIsOpen_2(false);
+      setIsOpen_4(false);
+      alert("투표 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  const CheckVote = () => {
+    if (title.trim() === "" || ballots.some((b) => b.trim() === "")) {
+      alert("질문과 선지를 모두 작성해주세요.");
+      return;
+    }
+    setIsOpen(true);
   };
 
   return (
@@ -108,15 +186,16 @@ const Detail = () => {
       <Button
         icon={<Plus width={24} height={24} />}
         onCkick={() => {
-          setIsOpen(true);
+          CheckVote();
         }}
         text="투표 제작하기"
       />
+
       {IsOpen_1 && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
           info="지금까지 작성한 내용은 저장되지 않습니다."
-          passfunction={() => {}}
+          passfunction={CanCelMakeVote}
           isOpen={IsOpen_1}
           setIsOpen={setIsOpen_1}
         />
@@ -203,7 +282,7 @@ const Title = styled.input`
   outline: none;
   background-color: ${color.white};
   border: none;
-
+  width: 100%;
   ::placeholder {
     color: ${color.gray300};
   }
