@@ -1,4 +1,3 @@
-
 export const CREATE_INQUIRY = `
   mutation CreateInquiry($type: String!, $content: String!, $email: String!) {
     inquiry {

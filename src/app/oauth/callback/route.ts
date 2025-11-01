@@ -10,41 +10,73 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    const tokenResponse = await fetch(
-      `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const tokenBaseUrl = process.env.NEXT_PUBLIC_OAUTH_URL || "http://localhost:8080/auth/code?code=";
+    const tokenUrl = `${tokenBaseUrl}${code}`;
+    const tokenResponse = await fetch(tokenUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
-
+    });
 
     if (!tokenResponse.ok) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
     const tokenData = await tokenResponse.json();
-    const accessToken =
+    let accessToken =
       tokenData.accessToken ||
       tokenData.data?.accessToken ||
       tokenData.access_token;
-    const refreshToken =
+    let refreshToken =
       tokenData.refreshToken ||
       tokenData.data?.refreshToken ||
       tokenData.refresh_token;
 
     if (!accessToken) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-    const redirectUrl = new URL("/oauth/callback/success", request.url);
-    redirectUrl.searchParams.append("accessToken", accessToken);
-    if (refreshToken) {
-      redirectUrl.searchParams.append("refreshToken", refreshToken);
+      accessToken = tokenResponse.headers.get("access-token") ||
+        tokenResponse.headers.get("accessToken") ||
+        tokenResponse.headers.get("x-access-token") ||
+        tokenResponse.headers.get("authorization") ||
+        "";
     }
 
-    return NextResponse.redirect(redirectUrl);
+    if (!refreshToken) {
+      const setCookieHeader = tokenResponse.headers.get("set-cookie");
+      if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
+        const match = setCookieHeader.match(/refreshToken=([^;]+)/);
+        if (match) {
+          refreshToken = match[1];
+        }
+      }
+    }
+
+    if (!accessToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    const redirectUrl = new URL("/oauth/callback/success", request.url);
+    const response = NextResponse.redirect(redirectUrl);
+
+    response.cookies.set("accessToken", accessToken, {
+      httpOnly: false,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    if (refreshToken) {
+      response.cookies.set("refreshToken", refreshToken, {
+        httpOnly: false,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+    }
+
+    return response;
   } catch (error) {
     return NextResponse.redirect(new URL("/login", request.url));
   }

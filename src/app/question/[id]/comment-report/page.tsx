@@ -507,4 +507,3 @@ const CompleteModalButton = styled.button`
 `;
 
 export default CommentReportPage;
-

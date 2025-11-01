@@ -27,18 +27,22 @@ interface GraphQLRequest {
 }
 
 export default function PopularVote() {
-  const [votes, setVotes] = React.useState<Array<{
-    id: string;
-    title: string;
-    category?: string;
-    finishedAt?: string;
-    totalResponses?: number;
-  }>>([]);
+  const [votes, setVotes] = React.useState<
+    Array<{
+      id: string;
+      title: string;
+      category?: string;
+      finishedAt?: string;
+      totalResponses?: number;
+    }>
+  >([]);
 
   React.useEffect(() => {
     const fetchMostPopular = async () => {
       try {
-        const response = await upik.post("", { query: GET_MOST_POPULAR_OPEN_VOTE } as GraphQLRequest);
+        const response = await upik.post("", {
+          query: GET_MOST_POPULAR_OPEN_VOTE,
+        } as GraphQLRequest);
         const data = response?.data?.data?.vote?.getMostPopularOpenVote;
         if (Array.isArray(data)) {
           const mapped = data.map((d: any) => ({
@@ -70,7 +74,12 @@ export default function PopularVote() {
       {votes.map((v) => (
         <CardContainer key={v.id}>
           <Thumbnail>
-            <Image src={getThumbnailImage(v.category ?? "")} alt={v.category ?? ""} width={20} height={20} />
+            <Image
+              src={getThumbnailImage(v.category ?? "")}
+              alt={v.category ?? ""}
+              width={20}
+              height={20}
+            />
           </Thumbnail>
           <ContentWrapper>
             <Title>{v.title}</Title>
@@ -82,7 +91,9 @@ export default function PopularVote() {
                 </BookmarkIcon>
                 <BookmarkCount>{v.totalResponses ?? 0}</BookmarkCount>
               </BookmarkInfo>
-              <DeadLine>{(v.finishedAt ?? "").slice(0, 10)}에 마감되는 투표</DeadLine>
+              <DeadLine>
+                {(v.finishedAt ?? "").slice(0, 10)}에 마감되는 투표
+              </DeadLine>
             </MetaInfo>
           </ContentWrapper>
         </CardContainer>

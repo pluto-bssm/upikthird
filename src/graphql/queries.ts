@@ -34,14 +34,14 @@ export const GET_VOTES = `
   }
 `;
 
-export const GET_CHECK_BADWORD  = `
+export const GET_CHECK_BADWORD = `
 query MyQuery ($text: String!) {
   checkBadWord(text: $text) {
     checkedText
     containsBadWord
     message
   }
-}`
+}`;
 
 export const GET_ALL_VOTES = `
   query GetAllVotes {
@@ -117,10 +117,9 @@ mutation MyMutation($question: String!, $voteId: ID!) {
       voteId
     }
   }
-}`
-;
+}`;
 
-  export const CREATE_VOTE = `
+export const CREATE_VOTE = `
     mutation CreateVote($input: CreateVoteInput!) {
       vote {
         createVote(input: $input) {

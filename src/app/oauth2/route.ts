@@ -10,38 +10,53 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    // 백엔드에 code를 보내서 token 받기
-    const tokenResponse = await fetch(
-      `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const tokenBaseUrl = process.env.NEXT_PUBLIC_OAUTH_URL || "http://localhost:8080/auth/code?code=";
+    const tokenUrl = `${tokenBaseUrl}${code}`;
+    const tokenResponse = await fetch(tokenUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+    });
 
     if (!tokenResponse.ok) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    const tokenData = await tokenResponse.json();
+    let accessToken = "";
+    let refreshToken = "";
+      const tokenData = await tokenResponse.json();
+      accessToken = tokenData?.data?.accessToken ||
+        tokenData?.accessToken ||
+        tokenData?.access_token ||
+        "";
+      refreshToken = tokenData?.data?.refreshToken ||
+        tokenData?.refreshToken ||
+        tokenData?.refresh_token ||
+        "";
 
-    // 클라이언트 페이지로 리다이렉트하면서 토큰 전달
-    const accessToken =
-      tokenData.data?.accessToken ||
-      tokenData.accessToken ||
-      tokenData.access_token;
-    const refreshToken =
-      tokenData.data?.refreshToken ||
-      tokenData.refreshToken ||
-      tokenData.refresh_token;
+    if (!accessToken) {
+      accessToken = tokenResponse.headers.get("access-token") ||
+        tokenResponse.headers.get("accessToken") ||
+        tokenResponse.headers.get("x-access-token") ||
+        tokenResponse.headers.get("authorization") ||
+        "";
+    }
+
+    if (!refreshToken) {
+      const setCookieHeader = tokenResponse.headers.get("set-cookie");
+      if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
+        const match = setCookieHeader.match(/refreshToken=([^;]+)/);
+        if (match) {
+          refreshToken = match[1];
+        }
+      }
+    }
 
     if (!accessToken) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    // 쿼리 파라미터로 클라이언트 페이지로 리다이렉트
     const redirectUrl = new URL("/oauth2/callback", request.url);
     redirectUrl.searchParams.append("accessToken", accessToken);
     if (refreshToken) {

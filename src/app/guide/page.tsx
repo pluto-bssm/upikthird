@@ -13,14 +13,11 @@ const guide = () => {
   const [sortBy, setSortBy] = useState<"date" | "like">("date");
   return (
     <GuideLayout>
-      <Header
-        types={"default"}
-        onOptionClick={() => setIsFilterOpen(true)}
-      />
+      <Header types={"default"} onOptionClick={() => setIsFilterOpen(true)} />
 
       <Section>
-        <FilterComponent 
-          isOpen={isFilterOpen} 
+        <FilterComponent
+          isOpen={isFilterOpen}
           setIsOpen={setIsFilterOpen}
           onChange={(next) => setSortBy(next)}
         />

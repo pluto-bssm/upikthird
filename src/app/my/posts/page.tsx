@@ -20,8 +20,7 @@ const UserPostsPage = () => {
   const router = useRouter();
   const { posts, loading, error } = useMyPosts();
 
-  const handlePostClick = (postId: string) => {
-  };
+  const handlePostClick = (postId: string) => {};
 
   const handleClose = () => {
     router.back();
