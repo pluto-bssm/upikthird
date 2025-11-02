@@ -7,11 +7,15 @@ export async function GET(request: NextRequest) {
     const error = searchParams.get("error");
 
     if (error) {
-      return NextResponse.redirect(new URL(`/login?error=${error}`, request.url));
+      return NextResponse.redirect(
+        new URL(`/login?error=${error}`, request.url),
+      );
     }
 
     if (!code) {
-      return NextResponse.redirect(new URL("/login?error=no_code", request.url));
+      return NextResponse.redirect(
+        new URL("/login?error=no_code", request.url),
+      );
     }
 
     const tokenUrl = `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`;
@@ -25,18 +29,24 @@ export async function GET(request: NextRequest) {
         },
       });
     } catch (fetchError) {
-      return NextResponse.redirect(new URL("/login?error=network_error", request.url));
+      return NextResponse.redirect(
+        new URL("/login?error=network_error", request.url),
+      );
     }
 
     if (!tokenResponse.ok) {
-      return NextResponse.redirect(new URL(`/login?error=token_api_failed`, request.url));
+      return NextResponse.redirect(
+        new URL(`/login?error=token_api_failed`, request.url),
+      );
     }
 
     let tokenData;
     try {
       tokenData = await tokenResponse.json();
     } catch (parseError) {
-      return NextResponse.redirect(new URL("/login?error=invalid_response", request.url));
+      return NextResponse.redirect(
+        new URL("/login?error=invalid_response", request.url),
+      );
     }
 
     let accessToken =
@@ -56,7 +66,9 @@ export async function GET(request: NextRequest) {
       "";
 
     if (!accessToken) {
-      return NextResponse.redirect(new URL("/login?error=no_access_token", request.url));
+      return NextResponse.redirect(
+        new URL("/login?error=no_access_token", request.url),
+      );
     }
 
     const callbackUrl = new URL("/oauth2/callback", request.url);
@@ -67,8 +79,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(callbackUrl);
   } catch (error) {
-    return NextResponse.redirect(new URL("/login?error=server_error", request.url));
+    return NextResponse.redirect(
+      new URL("/login?error=server_error", request.url),
+    );
   }
 }
-
-

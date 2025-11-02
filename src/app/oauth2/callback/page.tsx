@@ -13,9 +13,9 @@ export default function OAuthCallbackPage() {
     const handleCallback = async () => {
       try {
         const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
         let accessToken = params.get("accessToken");
         let refreshToken = params.get("refreshToken");
-        const code = params.get("code");
 
         if (code && !accessToken && !refreshToken) {
           const tokenUrl = `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`;
@@ -23,42 +23,20 @@ export default function OAuthCallbackPage() {
           try {
             const response = await fetch(tokenUrl, {
               method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              redirect: "manual",
+              headers: { "Content-Type": "application/json" },
               credentials: "include",
             });
 
-            if (response.status === 307 || response.status === 302) {
-              const location = response.headers.get("location");
+            accessToken = response.headers.get("authorization") || accessToken;
+            refreshToken = response.headers.get("refreshToken") || refreshToken;
 
-              if (location) {
-                const redirectUrl = new URL(location, window.location.origin);
-                accessToken = redirectUrl.searchParams.get("accessToken") || accessToken;
-                refreshToken = redirectUrl.searchParams.get("refreshToken") || refreshToken;
-              }
-            } else if (response.ok) {
-              const data = await response.json();
-
-              accessToken = data?.accessToken || data?.data?.accessToken || accessToken;
-              refreshToken = data?.refreshToken || data?.data?.refreshToken || refreshToken;
-
-              if (!accessToken) {
-                const cookies = document.cookie.split(';');
-                for (const cookie of cookies) {
-                  const [name, value] = cookie.trim().split('=');
-                  if (name === 'accessToken') {
-                    accessToken = decodeURIComponent(value);
-                  }
-                  if (name === 'refreshToken') {
-                    refreshToken = decodeURIComponent(value);
-                  }
-                }
-              }
+            if (!accessToken && response.ok) {
+              const data = await response.json().catch(() => null);
+              accessToken = data?.accessToken || accessToken;
+              refreshToken = data?.refreshToken || refreshToken;
             }
           } catch (error) {
-            // ignore
+            console.error("토큰 요청 에러:", error);
           }
         }
 
@@ -69,18 +47,8 @@ export default function OAuthCallbackPage() {
         }
 
         Storage.setItem(TOKEN.ACCESS, accessToken);
+        if (refreshToken) Storage.setItem(TOKEN.REFRESH, refreshToken);
 
-        const savedAccessToken = Storage.getItem(TOKEN.ACCESS);
-
-        if (!savedAccessToken) {
-          setStatus("토큰 저장 실패");
-          setTimeout(() => router.push("/login"), 2000);
-          return;
-        }
-
-        if (refreshToken) {
-          Storage.setItem(TOKEN.REFRESH, refreshToken);
-        }
         router.push("/my");
       } catch (error) {
         setStatus("오류가 발생했습니다");
@@ -107,4 +75,3 @@ export default function OAuthCallbackPage() {
     </div>
   );
 }
-

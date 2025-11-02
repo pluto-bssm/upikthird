@@ -15,15 +15,15 @@ const LoginPage = () => {
     const error = searchParams.get("error");
     if (error) {
       const errorMap: Record<string, string> = {
-        "access_denied": "로그인이 거부되었습니다",
-        "no_code": "인증 코드를 받지 못했습니다",
-        "token_failed": "토큰 발급에 실패했습니다",
-        "token_api_failed": "백엔드 토큰 API 호출 실패",
-        "no_access_token": "응답에 액세스 토큰이 없습니다",
-        "no_token": "토큰을 받지 못했습니다",
-        "server_error": "서버 오류가 발생했습니다",
-        "network_error": "네트워크 연결 오류",
-        "invalid_response": "유효하지 않은 응답 형식",
+        access_denied: "로그인이 거부되었습니다",
+        no_code: "인증 코드를 받지 못했습니다",
+        token_failed: "토큰 발급에 실패했습니다",
+        token_api_failed: "백엔드 토큰 API 호출 실패",
+        no_access_token: "응답에 액세스 토큰이 없습니다",
+        no_token: "토큰을 받지 못했습니다",
+        server_error: "서버 오류가 발생했습니다",
+        network_error: "네트워크 연결 오류",
+        invalid_response: "유효하지 않은 응답 형식",
       };
       setErrorMessage(errorMap[error] || `오류: ${error}`);
     }
@@ -46,11 +46,7 @@ const LoginPage = () => {
           <Tagline>재학생이 만드는 학교 가이드</Tagline>
         </LogoSection>
 
-        {errorMessage && (
-          <ErrorMessage>
-            {errorMessage}
-          </ErrorMessage>
-        )}
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
         <GoogleLoginButton onClick={handleGoogleLogin}>
           <GoogleIconWrapper>
@@ -185,4 +181,3 @@ const FooterText = styled.p`
   line-height: 1;
   margin: 0;
 `;
-
