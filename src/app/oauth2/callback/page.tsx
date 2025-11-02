@@ -49,7 +49,7 @@ export default function OAuthCallbackPage() {
         Storage.setItem(TOKEN.ACCESS, accessToken);
         if (refreshToken) Storage.setItem(TOKEN.REFRESH, refreshToken);
 
-        router.push("/my");
+        router.push("/main");
       } catch (error) {
         setStatus("오류가 발생했습니다");
         setTimeout(() => router.push("/login"), 2000);
