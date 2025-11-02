@@ -30,10 +30,8 @@ const getThumbnailImage = (category: string) => {
       return "/svg/images/School.png";
     case "유머":
       return "/svg/images/Humors.png";
-    case "기숙사생활":
+    case "기숙사":
       return "/svg/images/MakeSchool.png";
-    default:
-      return "/svg/images/School.png";
   }
 };
 
@@ -42,6 +40,7 @@ interface GuideComponentProps {
   onResultCountChange?: (count: number) => void;
   sortBy?: "like" | "date";
   limit?: number;
+  category?: string | null;
 }
 
 const GuideComponent = ({
@@ -49,6 +48,7 @@ const GuideComponent = ({
   onResultCountChange,
   sortBy = "date",
   limit = 50,
+  category = null,
 }: GuideComponentProps) => {
   const router = useRouter();
   const [guides, setGuides] = React.useState<GuideItem[]>([]);
@@ -109,11 +109,18 @@ const GuideComponent = ({
   }, [fetchGuides]);
 
   const filteredGuides = React.useMemo(
-    () =>
-      guides.filter((guide) =>
+    () => {
+      let filtered = guides.filter((guide) =>
         (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
-      ),
-    [guides, searchQuery],
+      );
+      
+      if (category) {
+        filtered = filtered.filter((guide) => guide.category === category);
+      }
+      
+      return filtered;
+    },
+    [guides, searchQuery, category],
   );
 
   React.useEffect(() => {
@@ -134,8 +141,8 @@ const GuideComponent = ({
                 >
                   <Thumnail>
                     <Image
-                      src={getThumbnailImage(guide.category)}
-                      alt={guide.category}
+                      src={getThumbnailImage(guide.category ?? "전체") ?? ""}
+                      alt={guide.category ?? "전체"}
                       width={20}
                       height={20}
                     />
