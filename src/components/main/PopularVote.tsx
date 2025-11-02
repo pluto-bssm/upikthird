@@ -7,6 +7,7 @@ import { Views } from "../../../public/svg/svg";
 import { upik } from "@/apis";
 import { GET_MOST_POPULAR_OPEN_VOTE } from "@/graphql/queries";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const getThumbnailImage = (category: string) => {
   switch (category) {
@@ -27,6 +28,7 @@ interface GraphQLRequest {
 }
 
 export default function PopularVote() {
+  const router = useRouter();
   const [votes, setVotes] = React.useState<
     Array<{
       id: string;
@@ -72,7 +74,10 @@ export default function PopularVote() {
   return (
     <>
       {votes.map((v) => (
-        <CardContainer key={v.id}>
+        <CardContainer
+          key={v.id}
+          onClick={() => router.push(`/vote/${v.id}`)}
+        >
           <Thumbnail>
             <Image
               src={getThumbnailImage(v.category ?? "")}
@@ -114,6 +119,7 @@ const CardContainer = styled.div`
   width: 100%;
   box-sizing: border-box;
   flex: 0 0 80%;
+  cursor: pointer;
 `;
 
 const Thumbnail = styled.div`

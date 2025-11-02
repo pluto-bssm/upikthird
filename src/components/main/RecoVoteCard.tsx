@@ -61,7 +61,7 @@ export default function RecoVoteCard() {
   };
 
   return (
-    <RecoVoteContainer>
+    <RecoVoteContainer onClick={handleGoToVote}>
       <FeaturedVoteContent>
         <VoteHeader>
           <VoteLabel>오늘의 추천 투표</VoteLabel>
@@ -73,7 +73,7 @@ export default function RecoVoteCard() {
           <VoteOption>{displayedOptions[1]?.content ?? "옵션 2"}</VoteOption>
         </VoteOptions>
       </FeaturedVoteContent>
-      <VoteLink onClick={handleGoToVote}>
+      <VoteLink onClick={(e) => e.stopPropagation()}>
         투표하러 가기
         <Arrow>
           <Nexts />
@@ -92,6 +92,7 @@ const RecoVoteContainer = styled.div`
   border: 1px solid ${color.gray50};
   border-radius: 8px;
   width: 100%;
+  cursor: pointer;
 `;
 
 const FeaturedVoteContent = styled.div`
