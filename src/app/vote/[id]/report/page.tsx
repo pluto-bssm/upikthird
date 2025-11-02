@@ -9,8 +9,9 @@ import { useState, useEffect } from "react";
 import SelectButton from "@/packages/ui/src/button/SelectButton";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import AccentModal from "@/components/modal/AccentModal";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Completevote } from "../../../../../public/svg/svg";
+import { useReportQuestion } from "@/hooks/useReportQuestion";
 
 const ReportReason = [
   { id: "1", reason: "유해한 내용을 포함하고 있어요" },
@@ -24,8 +25,13 @@ const Report = () => {
   const [detail, setDetail] = useState<string>("");
   const [isActive, setIsActive] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const voteId = sessionStorage.getItem("voteId") || "";
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen_1, setIsOpen_1] = useState(false);
+
+  const { reportQuestion, loading, error, reset } = useReportQuestion();
 
   useEffect(() => {
     if (selectedOption && detail.trim().length > 0) {
@@ -35,9 +41,38 @@ const Report = () => {
     }
   }, [selectedOption, detail]);
 
-  const handleSubmit = () => {
-    if (!isActive) return;
-    setIsOpen_1(true);
+  const handleSubmit = async () => {
+    if (!isActive || loading) return;
+
+    if (!voteId) {
+      alert("투표 ID를 찾을 수 없습니다.");
+      router.push("/");
+      return;
+    }
+
+    const selectedReason = ReportReason.find((r) => r.id === selectedOption);
+    if (!selectedReason) {
+      alert("신고 사유를 선택해주세요.");
+      return;
+    }
+
+    const fullReason = `${selectedReason.reason}\n\n상세 내용: ${detail}`;
+
+    try {
+      const result = await reportQuestion(voteId, fullReason);
+      console.log(result);
+
+      if (result.success) {
+        setDetail("");
+        setSelectedOption(null);
+        setIsOpen_1(true);
+      } else {
+        alert("신고 접수에 실패했습니다. 다시 시도해 주세요.");
+      }
+    } catch (err) {
+      alert(error || "신고 접수 중 오류가 발생했습니다.");
+      console.error("Report submission error:", err);
+    }
   };
 
   return (
@@ -88,17 +123,23 @@ const Report = () => {
               <TextArea
                 placeholder="신고 사유에 대해서 더 자세히 설명해주세요."
                 value={detail}
-                onChange={(e) => setDetail(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value.length <= 500) {
+                    setDetail(e.target.value);
+                  }
+                }}
+                maxLength={500}
+                disabled={loading}
               />
             </TextAreaContainer>
 
-            <TextMaxAlertText>500자 이내로 입력해주세요</TextMaxAlertText>
+            <TextMaxAlertText>{detail.length}/500자</TextMaxAlertText>
           </ReportReasonBottomBox>
         </ReportBallotBox>
 
         <SelectButton
-          text="신고 접수하기"
-          active={isActive}
+          text={loading ? "신고 접수 중..." : "신고 접수하기"}
+          active={isActive && !loading}
           onCkick={handleSubmit}
         />
       </ReportBlock>
@@ -110,10 +151,12 @@ const Report = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           passfunction={() => {
+            reset();
             router.back();
           }}
         />
       )}
+
       {isOpen_1 && (
         <AccentModal
           icon={<Completevote width="30" height="30" />}
@@ -123,7 +166,8 @@ const Report = () => {
           subText="지속적으로 정상적인 투표를 신고하는 경우
 제재의 대상이 될 수 있어요"
           onClick={() => {
-            router.push("/");
+            reset();
+            router.push("/vote");
           }}
         />
       )}
@@ -170,6 +214,7 @@ const ReportBlock = styled.div`
   align-items: center;
   gap: 32px;
 `;
+
 const ReportBallotBox = styled.div`
   width: 90%;
   display: flex;
@@ -215,12 +260,17 @@ const TextArea = styled.textarea`
   padding: 16px;
   ${font.H3};
   background-color: ${color.white};
-  color: ${color.gray300};
+  color: ${color.gray700};
   resize: none;
   outline: none;
 
   ::placeholder {
     color: ${color.gray300};
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 

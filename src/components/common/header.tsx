@@ -43,9 +43,10 @@ type HeaderProps = {
   onSearchChange?: (value: string) => void;
   searchValue?: string;
   onOptionClick?: () => void;
-
   onToggleBookmark?: () => void;
   bookmarked?: boolean;
+  activeIdx?: number;
+  setActiveIdx?: (idx: number) => void;
 };
 
 const Header = ({
@@ -60,10 +61,11 @@ const Header = ({
   onOptionClick,
   onToggleBookmark,
   bookmarked,
+  activeIdx,
+  setActiveIdx,
 }: HeaderProps) => {
   const router = useRouter();
   const path = usePathname();
-  const [activeIdx, setActiveIdx] = useState(0);
   const [searchInput, setSearchInput] = useState(searchValue || "");
 
   switch (types) {
@@ -101,6 +103,7 @@ const Header = ({
           />
         </HeaderLayout>
       );
+
     case "question":
       return (
         <HeaderLayout>
@@ -161,6 +164,7 @@ const Header = ({
           </HeaderItemBox>
         </HeaderLayout>
       );
+
     case "close": {
       const handleCloseClick = () => {
         onClose?.();
@@ -221,7 +225,7 @@ const Header = ({
                   router.push(`${path}/report`);
                 }}
               />
-              <Close width="25" height="25" />
+              <Close width="25" height="25" onClick={onClose} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -283,28 +287,6 @@ const Header = ({
         </HeaderLayout>
       );
 
-    case "report and bookmark":
-      return (
-        <HeaderLayout>
-          <HeaderItemBox>
-            <LeftItemBox>
-              <Back
-                width="22"
-                height="22"
-                onClick={() => {
-                  router.back();
-                }}
-              />
-            </LeftItemBox>
-
-            <RightItemBox>
-              <Close width="25" height="25" />
-              <Options width="25" height="25" />
-            </RightItemBox>
-          </HeaderItemBox>
-        </HeaderLayout>
-      );
-
     case "search":
       return (
         <HeaderLayout>
@@ -357,6 +339,9 @@ const Header = ({
           </HeaderItemBox>
         </HeaderLayout>
       );
+
+    default:
+      return null;
   }
 };
 
@@ -413,6 +398,7 @@ const RightItemBox = styled.div`
   align-items: center;
   gap: 15px;
 `;
+
 const CenterItemBox = styled.div`
   display: flex;
   align-items: center;

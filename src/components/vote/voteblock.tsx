@@ -8,7 +8,7 @@ type VoteBlockProps = {
   category: string;
   title: string;
   viewCount: number;
-  finishDate: string;
+  finishDate: number;
   onClick?: () => void;
 };
 

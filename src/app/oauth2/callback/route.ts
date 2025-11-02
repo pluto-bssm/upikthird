@@ -4,72 +4,83 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get("code");
-    const state = searchParams.get("state");
+    const error = searchParams.get("error");
+
+    if (error) {
+      return NextResponse.redirect(
+        new URL(`/login?error=${error}`, request.url),
+      );
+    }
 
     if (!code) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(
+        new URL("/login?error=no_code", request.url),
+      );
     }
 
-    const tokenBaseUrl =
-      process.env.NEXT_PUBLIC_OAUTH_URL ||
-      "http://localhost:8080/auth/code?code=";
-    const tokenUrl = `${tokenBaseUrl}${code}`;
-    const tokenResponse = await fetch(tokenUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const tokenUrl = `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`;
+
+    let tokenResponse;
+    try {
+      tokenResponse = await fetch(tokenUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (fetchError) {
+      return NextResponse.redirect(
+        new URL("/login?error=network_error", request.url),
+      );
+    }
 
     if (!tokenResponse.ok) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(
+        new URL(`/login?error=token_api_failed`, request.url),
+      );
     }
 
-    let accessToken = "";
-    let refreshToken = "";
-    const tokenData = await tokenResponse.json();
-    accessToken =
-      tokenData?.data?.accessToken ||
+    let tokenData;
+    try {
+      tokenData = await tokenResponse.json();
+    } catch (parseError) {
+      return NextResponse.redirect(
+        new URL("/login?error=invalid_response", request.url),
+      );
+    }
+
+    let accessToken =
       tokenData?.accessToken ||
+      tokenData?.data?.accessToken ||
       tokenData?.access_token ||
+      tokenData?.data?.access_token ||
+      tokenData?.token ||
+      tokenData?.data?.token ||
       "";
-    refreshToken =
-      tokenData?.data?.refreshToken ||
+
+    let refreshToken =
       tokenData?.refreshToken ||
+      tokenData?.data?.refreshToken ||
       tokenData?.refresh_token ||
+      tokenData?.data?.refresh_token ||
       "";
 
     if (!accessToken) {
-      accessToken =
-        tokenResponse.headers.get("access-token") ||
-        tokenResponse.headers.get("accessToken") ||
-        tokenResponse.headers.get("x-access-token") ||
-        tokenResponse.headers.get("authorization") ||
-        "";
+      return NextResponse.redirect(
+        new URL("/login?error=no_access_token", request.url),
+      );
     }
 
-    if (!refreshToken) {
-      const setCookieHeader = tokenResponse.headers.get("set-cookie");
-      if (setCookieHeader && setCookieHeader.includes("refreshToken=")) {
-        const match = setCookieHeader.match(/refreshToken=([^;]+)/);
-        if (match) {
-          refreshToken = match[1];
-        }
-      }
-    }
-
-    if (!accessToken) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    const redirectUrl = new URL("/oauth2/callback", request.url);
-    redirectUrl.searchParams.append("accessToken", accessToken);
+    const callbackUrl = new URL("/oauth2/callback", request.url);
+    callbackUrl.searchParams.append("accessToken", accessToken);
     if (refreshToken) {
-      redirectUrl.searchParams.append("refreshToken", refreshToken);
+      callbackUrl.searchParams.append("refreshToken", refreshToken);
     }
 
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(callbackUrl);
   } catch (error) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(
+      new URL("/login?error=server_error", request.url),
+    );
   }
 }

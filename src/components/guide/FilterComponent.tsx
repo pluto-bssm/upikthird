@@ -38,7 +38,8 @@ export default function FilterComponent({
         selectedValue={
           selectedValue === "가이드 제작일 기준" ? "DATE" : "SAVED"
         }
-        setSelectedValue={handleSelect}
+        setSelectedValue={() => {}}
+        setSelect={handleSelect}
         items={items}
         isOpen={isOpen}
         setIsOpen={setIsOpen}

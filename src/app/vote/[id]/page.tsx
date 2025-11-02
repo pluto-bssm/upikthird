@@ -7,40 +7,78 @@ import font from "@/packages/design-system/src/font";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import Ballot from "@/components/vote/ballot";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
+import { useVote, useCreateVoteResponse } from "@/hooks/useVotes";
 
-const BallotData = [
-  {
-    content: "내용1",
-    letter: "A",
-    id: "1",
-  },
-  {
-    content: "내용2",
-    letter: "B",
-    id: "2",
-  },
-  {
-    content: "내용3",
-    letter: "C",
-    id: "3",
-  },
-  {
-    content: "내용4",
-    letter: "D",
-    id: "4",
-  },
-  {
-    content: "내용5",
-    letter: "E",
-    id: "5",
-  },
-];
-
-const DesVote = () => {
+const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
   const path = usePathname();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const { id } = use(params);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("voteId", String(id));
+    }
+  }, [id]);
+
+  const { vote, loading, error, refetch } = useVote(id);
+
+  const {
+    createVoteResponse,
+    loading: responseLoading,
+    error: responseError,
+  } = useCreateVoteResponse();
+
+  const labels = ["A", "B", "C", "D", "E"];
+
+  const handleVoteSubmit = async () => {
+    if (!selectedOption) {
+      alert("선택지를 선택해주세요.");
+      return;
+    }
+
+    if (!vote) {
+      alert("투표 정보를 불러올 수 없습니다.");
+      return;
+    }
+
+    try {
+      const result = await createVoteResponse(id, selectedOption);
+
+      if (result) {
+        router.push(`${path}/tailvote`);
+      }
+    } catch (err) {
+      alert("투표 참여 중 오류가 발생했습니다.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <DesVoteLayout>
+        <Header types={"report and close"} />
+        <VoteBlock>
+          <Title>투표를 불러오는 중...</Title>
+        </VoteBlock>
+      </DesVoteLayout>
+    );
+  }
+
+  if (error || !vote) {
+    return (
+      <DesVoteLayout>
+        <Header types={"report and close"} />
+        <VoteBlock>
+          <Title>투표를 불러올 수 없습니다.</Title>
+          <SubTitle>{error || "투표 정보가 없습니다."}</SubTitle>
+          <Button text="돌아가기" onCkick={() => router.back()} />
+        </VoteBlock>
+      </DesVoteLayout>
+    );
+  }
+
   return (
     <DesVoteLayout>
       <Header
@@ -53,21 +91,18 @@ const DesVote = () => {
       <VoteBlock>
         <VoteInfo>
           <MenuText>투표하기</MenuText>
-          <Title>
-            투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표
-            질문
-          </Title>
+          <Title>{vote.title}</Title>
           <SubTitle>
             부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요
           </SubTitle>
         </VoteInfo>
 
         <VoteContent>
-          {BallotData.map((ballot, index) => (
+          {vote.options?.map((ballot, index) => (
             <Ballot
-              key={index}
+              key={ballot.id}
               content={ballot.content}
-              letter={ballot.letter}
+              letter={labels[index] ?? ""}
               isSelected={selectedOption === ballot.id}
               type="vote"
               onClick={() =>
@@ -80,8 +115,8 @@ const DesVote = () => {
         </VoteContent>
 
         <Button
-          text="투표 완료하기"
-          onCkick={() => router.push(`${path}/tailvote`)}
+          text={responseLoading ? "투표 중..." : "투표 완료하기"}
+          onCkick={handleVoteSubmit}
         />
       </VoteBlock>
     </DesVoteLayout>

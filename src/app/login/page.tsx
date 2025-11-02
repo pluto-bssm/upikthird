@@ -1,21 +1,39 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import color from "@/packages/design-system/src/color";
 import UpikLogo from "@/../public/svg/UpikLogo";
 import { GoogleIcon } from "@/../public/svg/GoogleIcon";
-import { API, OAUTH } from "@/constants/upik";
 
 const LoginPage = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) {
+      const errorMap: Record<string, string> = {
+        access_denied: "로그인이 거부되었습니다",
+        no_code: "인증 코드를 받지 못했습니다",
+        token_failed: "토큰 발급에 실패했습니다",
+        token_api_failed: "백엔드 토큰 API 호출 실패",
+        no_access_token: "응답에 액세스 토큰이 없습니다",
+        no_token: "토큰을 받지 못했습니다",
+        server_error: "서버 오류가 발생했습니다",
+        network_error: "네트워크 연결 오류",
+        invalid_response: "유효하지 않은 응답 형식",
+      };
+      setErrorMessage(errorMap[error] || `오류: ${error}`);
+    }
+  }, [searchParams]);
 
   const handleGoogleLogin = () => {
-    const redirectUri = `${window.location.origin}${OAUTH.GOOGLE.CALLBACK_PATH}`;
-    const authUrl = new URL(OAUTH.GOOGLE.AUTH_URL);
-    authUrl.searchParams.append("redirect_uri", redirectUri);
-    window.location.href = authUrl.toString();
+    const redirectUri = encodeURIComponent(`${window.location.origin}/oauth2`);
+    const authUrl = `https://upik-659794985248.asia-northeast3.run.app/oauth2/authorization/google?redirect_uri=${redirectUri}`;
+
+    window.location.href = authUrl;
   };
 
   return (
@@ -27,6 +45,8 @@ const LoginPage = () => {
           </Logo>
           <Tagline>재학생이 만드는 학교 가이드</Tagline>
         </LogoSection>
+
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
         <GoogleLoginButton onClick={handleGoogleLogin}>
           <GoogleIconWrapper>
@@ -93,6 +113,18 @@ const Tagline = styled.p`
   margin: 0;
 `;
 
+const ErrorMessage = styled.div`
+  padding: 12px 16px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+  max-width: 300px;
+`;
+
 const GoogleLoginButton = styled.button`
   display: flex;
   align-items: center;
@@ -121,12 +153,6 @@ const GoogleIconWrapper = styled.div`
   justify-content: center;
   width: 20px;
   height: 20px;
-`;
-
-const GoogleIconImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 `;
 
 const GoogleLoginText = styled.p`
