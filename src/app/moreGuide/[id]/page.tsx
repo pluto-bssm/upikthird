@@ -7,8 +7,7 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
-import { upik } from "@/apis";
-import { GUIDE_BY_ID, TOGGLE_BOOKMARK } from "@/graphql/queries";
+import { getGuideById, toggleBookmark } from "@/services/guide/api";
 import Image from "next/image";
 
 const getThumbnailImage = (category: string) => {
@@ -23,11 +22,6 @@ const getThumbnailImage = (category: string) => {
       return "/svg/images/School.png";
   }
 };
-
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
 
 const MoreGuidePage = () => {
   const params = useParams();
@@ -46,12 +40,7 @@ const MoreGuidePage = () => {
 
   React.useEffect(() => {
     const fetchGuide = async () => {
-      try {
-        const response = await upik.post("", {
-          query: GUIDE_BY_ID,
-          variables: { id: guideId },
-        } as GraphQLRequest);
-        const data = response?.data?.data?.guideById;
+        const data = await getGuideById(guideId);
         if (data) {
           setGuide({
             id: data.id,
@@ -62,7 +51,6 @@ const MoreGuidePage = () => {
             voteId: data.voteId ?? null,
           });
         }
-      } catch (e) {}
     };
     if (guideId) fetchGuide();
   }, [guideId]);
@@ -73,13 +61,8 @@ const MoreGuidePage = () => {
         types="bookmark"
         bookmarked={bookmarked}
         onToggleBookmark={async () => {
-          try {
-            await upik.post("", {
-              query: TOGGLE_BOOKMARK,
-              variables: { guideId },
-            } as GraphQLRequest);
-            setBookmarked((prev) => !prev);
-          } catch (e) {}
+          await toggleBookmark(guideId);
+          setBookmarked((prev) => !prev);
         }}
       />
 

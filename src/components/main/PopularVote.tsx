@@ -4,8 +4,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Views } from "../../../public/svg/svg";
-import { upik } from "@/apis";
-import { GET_MOST_POPULAR_OPEN_VOTE } from "@/graphql/queries";
+import * as guideApi from "@/services/guide/api";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -22,11 +21,6 @@ const getThumbnailImage = (category: string) => {
   }
 };
 
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
-
 export default function PopularVote() {
   const router = useRouter();
   const [votes, setVotes] = React.useState<
@@ -42,30 +36,16 @@ export default function PopularVote() {
   React.useEffect(() => {
     const fetchMostPopular = async () => {
       try {
-        const response = await upik.post("", {
-          query: GET_MOST_POPULAR_OPEN_VOTE,
-        } as GraphQLRequest);
-        const data = response?.data?.data?.vote?.getMostPopularOpenVote;
-        if (Array.isArray(data)) {
-          const mapped = data.map((d: any) => ({
-            id: d.id,
-            title: d.title,
-            category: d.category,
-            finishedAt: d.finishedAt,
-            totalResponses: d.totalResponses,
-          }));
-          setVotes(mapped);
-        } else if (data) {
-          setVotes([
-            {
-              id: data.id,
-              title: data.title,
-              category: data.category,
-              finishedAt: data.finishedAt,
-              totalResponses: data.totalResponses,
-            },
-          ]);
-        }
+        const data = await guideApi.getMostPopularOpenVote();
+        const votesArray = Array.isArray(data) ? data : [data];
+        const mapped = votesArray.map((v) => ({
+          id: v.id,
+          title: v.title,
+          category: v.category,
+          finishedAt: v.finishedAt,
+          totalResponses: v.totalResponses,
+        }));
+        setVotes(mapped);
       } catch (e) {}
     };
     fetchMostPopular();

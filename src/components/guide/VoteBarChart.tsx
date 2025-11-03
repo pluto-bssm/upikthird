@@ -4,13 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { upik } from "@/apis";
-import { GET_VOTE_BY_ID } from "@/graphql/queries";
-
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
+import { getVoteById } from "@/services/vote/api";
 
 export type VoteBar = {
   label: string;
@@ -25,12 +19,7 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
 
   React.useEffect(() => {
     const fetchVote = async () => {
-      try {
-        const response = await upik.post("", {
-          query: GET_VOTE_BY_ID,
-          variables: { id: voteId },
-        } as GraphQLRequest);
-        const data = response?.data?.data?.vote?.getVoteById;
+        const data = await getVoteById(voteId);
         if (data) {
           setTitle(data.title ?? "");
           setParticipant(data.totalResponses ?? 0);
@@ -49,7 +38,6 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
           }));
           setBars(mapped);
         }
-      } catch (e) {}
     };
     if (voteId) fetchVote();
   }, [voteId]);

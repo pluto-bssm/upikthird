@@ -6,23 +6,12 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Bookmark } from "../../../public/svg/svg";
 import Image from "next/image";
-import { upik } from "@/apis";
-import { GET_ALL_GUIDES } from "@/graphql/queries";
+import * as guideApi from "@/services/guide/api";
+import type { Guide } from "@/types/api";
 
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
-
-interface GuideItem {
-  id: string | number;
-  title: string;
-  category: string;
-  content?: string;
-  like?: number;
-  createdAt?: string;
+type GuideItem = Guide & {
   voteId?: string | null;
-}
+};
 
 const getThumbnailImage = (category: string) => {
   switch (category) {
@@ -55,7 +44,7 @@ const GuideComponent = ({
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  const handleGuideClick = (guideId: string | number) => {
+  const handleGuideClick = (guideId: string) => {
     router.push(`/moreGuide/${guideId}`);
   };
 
@@ -65,23 +54,20 @@ const GuideComponent = ({
       setError(null);
       const sortField = sortBy === "like" ? "like" : "createdAt";
       const requestedSize = sortBy === "like" ? Math.max(limit, 50) : limit;
-      const response = await upik.post("", {
-        query: GET_ALL_GUIDES,
-        variables: {
-          page: 0,
-          size: requestedSize,
-          sortBy: `${sortField},desc`,
-        },
-      } as GraphQLRequest);
+      
+      const response = await guideApi.getPaginatedGuides(
+        0,
+        requestedSize,
+        `${sortField},desc`
+      );
 
-      let content: GuideItem[] =
-        response?.data?.data?.getAllGuides?.content ?? [];
+      let content: GuideItem[] = response.content ?? [];
 
       if (sortBy === "like") {
         content = [...content]
           .sort((a, b) => {
-            const aLike = (a as any).like ?? (a as any).likeCount ?? 0;
-            const bLike = (b as any).like ?? (b as any).likeCount ?? 0;
+            const aLike = a.like ?? a.likeCount ?? 0;
+            const bLike = b.like ?? b.likeCount ?? 0;
             return bLike - aLike;
           })
           .slice(0, limit);
@@ -153,7 +139,7 @@ const GuideComponent = ({
                       <GuideTag>{guide.category}</GuideTag>
                       <Bookmark width="12px" height="12px" />
                       <MarkCount>
-                        {(guide as any).like ?? (guide as any).likeCount ?? 0}
+                        {guide.like ?? guide.likeCount ?? 0}
                       </MarkCount>
                       <BookmarkIcon />
                     </OtherInfo>

@@ -4,14 +4,8 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Nexts } from "../../../public/svg/svg";
-import { upik } from "@/apis";
-import { TODAY_VOTE } from "@/graphql/queries";
+import * as guideApi from "@/services/guide/api";
 import { useRouter } from "next/navigation";
-
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
 
 export default function RecoVoteCard() {
   const router = useRouter();
@@ -25,17 +19,14 @@ export default function RecoVoteCard() {
   React.useEffect(() => {
     const fetchTodayVote = async () => {
       try {
-        const response = await upik.post("", {
-          query: TODAY_VOTE,
-        } as GraphQLRequest);
-        const data = response?.data?.data?.vote?.getLeastPopularOpenVote;
+        const data = await guideApi.getLeastPopularOpenVote();
         if (data) {
           setVote({
             id: data.id,
             title: data.title,
             category: data.category,
             options: Array.isArray(data.options)
-              ? data.options.map((o: any) => ({ id: o.id, content: o.content }))
+              ? data.options.map((o) => ({ id: o.id, content: o.content }))
               : [],
           });
         }
