@@ -12,9 +12,7 @@ import RevoteSend from "@/components/button/RevoteSend";
 import AccentModal from "@/components/modal/AccentModal";
 import Completevote from "../../../public/svg/Completevote";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
-import { upik } from "@/apis";
-import { API } from "@/constants/common/constant";
-import { OPTION_GENERATOR } from "@/graphql/queries";
+import { createRevote } from "@/services/guide/api";
 
 const RevotePage = () => {
   const router = useRouter();
@@ -45,29 +43,18 @@ const RevotePage = () => {
       return;
     }
 
-    const reporterName = revoteReasons[selectedReasonIndex];
+    const reason = revoteReasons[selectedReasonIndex];
+    const detailReason = detailText.trim();
 
     try {
       setIsSubmitting(true);
-      const response = await upik.post(API.GRAPHQL_URL, {
-        query: OPTION_GENERATOR,
-        variables: {
-          guideId,
-          reason: detailText.trim(),
-          reporterName,
-        },
-      });
-
-      const result = response.data?.data?.optionGenerator?.reportGuide ?? null;
-
-      if (result?.success) {
+      const result = await createRevote({ guideId, reason, detailReason });
+      if (result?.id) {
         setIsModalOpen(true);
       } else {
-        alert(result?.message || "요청에 실패했어요.");
       }
     } catch (e) {
       void e;
-      alert("요청 중 오류가 발생했어요.");
     } finally {
       setIsSubmitting(false);
     }

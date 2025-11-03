@@ -163,3 +163,16 @@ export interface ReportInput {
   reason: string;
   targetType: string;
 }
+
+export type CreateRevoteInput = Record<string, unknown>;
+export type CreateRevotePayload = {
+  createdAt: string;
+  detailReason?: string | null;
+  guideId: string;
+  id: string;
+  reason: string;
+  status: string;
+  statusDescription?: string | null;
+  updatedAt: string;
+  userId: string;
+};

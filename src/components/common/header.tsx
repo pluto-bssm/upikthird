@@ -42,6 +42,8 @@ type HeaderProps = {
   onSearchChange?: (value: string) => void;
   searchValue?: string;
   onOptionClick?: () => void;
+  onToggleBookmark?: () => void;
+  bookmarked?: boolean;
   activeIdx?: number;
   setActiveIdx?: (idx: number) => void;
 };
@@ -56,6 +58,8 @@ const Header = ({
   onSearchChange,
   searchValue,
   onOptionClick,
+  onToggleBookmark,
+  bookmarked,
   activeIdx,
   setActiveIdx,
 }: HeaderProps) => {
@@ -149,7 +153,12 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bookmark width="25" height="25" />
+              <StyledBookmark
+                width="25"
+                height="25"
+                onClick={onToggleBookmark}
+                bookmarked={bookmarked}
+              />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
@@ -336,6 +345,14 @@ const Header = ({
 };
 
 export default Header;
+
+const StyledBookmark = styled(Bookmark, {
+  shouldForwardProp: (prop) => prop !== "bookmarked",
+})<{ bookmarked?: boolean }>`
+  path {
+    fill: ${(p) => (p.bookmarked ? color.black : color.gray300)};
+  }
+`;
 
 const SearchInput = styled.input`
   width: 100%;

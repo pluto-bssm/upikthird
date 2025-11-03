@@ -7,8 +7,7 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
-import { upik } from "@/apis";
-import { GUIDE_BY_ID } from "@/graphql/queries";
+import { getGuideById, toggleBookmark, isGuideBookmarked } from "@/services/guide/api";
 import Image from "next/image";
 
 const getThumbnailImage = (category: string) => {
@@ -24,11 +23,6 @@ const getThumbnailImage = (category: string) => {
   }
 };
 
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
-
 const MoreGuidePage = () => {
   const params = useParams();
   const guideId = params.id as string;
@@ -42,27 +36,26 @@ const MoreGuidePage = () => {
     content?: string;
     voteId?: string | null;
   } | null>(null);
+  const [bookmarked, setBookmarked] = React.useState(false);
 
   React.useEffect(() => {
     const fetchGuide = async () => {
-      try {
-        const response = await upik.post("", {
-          query: GUIDE_BY_ID,
-          variables: { id: guideId },
-        } as GraphQLRequest);
-        const data = response?.data?.data?.guideById;
-        if (data) {
-          setGuide({
-            id: data.id,
-            title: data.title,
-            createdAt: data.createdAt,
-            category: data.category,
-            content: data.content,
-            voteId: data.voteId ?? null,
-          });
+      const data = await getGuideById(guideId);
+      if (data) {
+        setGuide({
+          id: data.id,
+          title: data.title,
+          createdAt: data.createdAt,
+          category: data.category,
+          content: data.content,
+          voteId: data.voteId ?? null,
+        });
+        try {
+          const isBookmarked = await isGuideBookmarked(guideId);
+          setBookmarked(isBookmarked);
+        } catch (_error) {
+          setBookmarked(false);
         }
-      } catch (e) {
-        void e;
       }
     };
     if (guideId) fetchGuide();
@@ -70,7 +63,19 @@ const MoreGuidePage = () => {
 
   return (
     <Root>
-      <Header types="bookmark" />
+      <Header
+        types="bookmark"
+        bookmarked={bookmarked}
+        onToggleBookmark={async () => {
+          try {
+            const next = await toggleBookmark(guideId);
+            setBookmarked((prev) =>
+              typeof next === "boolean" ? next : prev,
+            );
+          } catch (_error) {
+          }
+        }}
+      />
 
       <Content>
         <Thumbnail>
