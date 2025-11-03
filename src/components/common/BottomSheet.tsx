@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Select } from "../../../public/svg/svg";
+
 type SelectorItem = {
   value: string;
   label: string;
@@ -10,7 +11,7 @@ type SelectorItem = {
 type Props = {
   title: string;
   selectedValue: string;
-  setSelectedValue: (value: number) => void;
+  setSelectedValue: (value: string) => void;
   items: SelectorItem[];
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
@@ -69,7 +70,7 @@ export default function BottomSheetSelector({
               <ItemRow
                 selected={item.value === selectedValue}
                 onClick={() => {
-                  setSelectedValue(parseInt(item.value));
+                  setSelectedValue(item.value); // ✅ string 그대로 전달
                   setSelect(item.value);
                 }}
               >
@@ -93,6 +94,8 @@ export default function BottomSheetSelector({
     </Background>
   );
 }
+
+
 
 const SelectorBox = styled.div<{ isAnimating: boolean }>`
   width: 100%;

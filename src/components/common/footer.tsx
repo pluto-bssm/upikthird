@@ -58,6 +58,7 @@ const Footer = () => {
 export default Footer;
 
 const StyledFooter = styled.div`
+  z-index : 100;
   position: fixed;
   bottom: 0;
   left: 50%;

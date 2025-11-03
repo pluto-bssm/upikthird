@@ -17,16 +17,28 @@ const QuestionDetailPage = () => {
   const { question, loading: questionLoading } = useQuestionDetail(
     boardId as string,
   );
+  
   const {
     comments,
     loading: commentsLoading,
+    error: commentsError,
     refetch: refetchComments,
-  } = useQuestionComments(boardId as string, { page: 0, size: 10 });
+  } = useQuestionComments(
+    boardId as string, 
+    { page: 0, size: 10 },
+  );
 
   const [comment, setComment] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
   const [replyingTo, setReplyingTo] = React.useState<string | null>(null);
   const [replyContent, setReplyContent] = React.useState("");
+
+  React.useEffect(() => {
+    if (!boardId) {
+      console.error("Board ID is missing");
+      return;
+    }
+  }, [boardId]);
 
   const handleReportClick = () => {
     router.push(`/question/${boardId}/report`);
@@ -39,7 +51,7 @@ const QuestionDetailPage = () => {
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!comment.trim()) return;
+    if (!comment.trim() || !boardId) return;
 
     try {
       setSubmitting(true);
@@ -51,7 +63,7 @@ const QuestionDetailPage = () => {
       await refetchComments();
     } catch (error) {
       alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
-      console.log(error);
+      console.error("Comment submission error:", error);
     } finally {
       setSubmitting(false);
     }
@@ -62,7 +74,7 @@ const QuestionDetailPage = () => {
     parentCommentId: string,
   ) => {
     e.preventDefault();
-    if (!replyContent.trim()) return;
+    if (!replyContent.trim() || !boardId) return;
 
     try {
       setSubmitting(true);
@@ -76,11 +88,23 @@ const QuestionDetailPage = () => {
       await refetchComments();
     } catch (error) {
       alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
-      console.log(error);
+      console.error("Reply submission error:", error);
     } finally {
       setSubmitting(false);
     }
   };
+
+  if (!boardId) {
+    return (
+      <StyledPage>
+        <Header types="report and close" text="" onClose={() => router.back()} />
+        <Container>
+          <ErrorSection>잘못된 접근입니다.</ErrorSection>
+        </Container>
+        <NavigationBar />
+      </StyledPage>
+    );
+  }
 
   return (
     <StyledPage>
@@ -117,7 +141,10 @@ const QuestionDetailPage = () => {
 
         <CommentsSection>
           <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
-          {commentsLoading ? (
+          
+          {commentsError ? (
+            <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
+          ) : commentsLoading ? (
             <LoadingText>댓글 로딩 중...</LoadingText>
           ) : comments?.content && comments.content.length > 0 ? (
             comments.content.map((comment) => (
@@ -214,7 +241,7 @@ const QuestionDetailPage = () => {
             />
             <CommentSubmitButton
               onClick={handleCommentSubmit}
-              disabled={submitting}
+              disabled={submitting || !comment.trim()}
             >
               등록
             </CommentSubmitButton>
@@ -228,6 +255,18 @@ const QuestionDetailPage = () => {
 };
 
 export default QuestionDetailPage;
+
+
+const ErrorText = styled.p`
+  text-align: center;
+  font-size: 14px;
+  color: ${color.accent || "#ff4444"};
+  padding: 20px;
+  margin: 0;
+`;
+
+
+
 
 const StyledPage = styled.div`
   width: 100%;

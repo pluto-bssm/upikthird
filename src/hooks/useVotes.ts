@@ -491,7 +491,7 @@ export function useSearchSimilarGuides(
     if (autoFetch && title && title.trim() !== "") {
       searchSimilarGuides();
     }
-  }, [searchSimilarGuides, autoFetch,title]);
+  }, [searchSimilarGuides, autoFetch, title]);
 
   return {
     guides,

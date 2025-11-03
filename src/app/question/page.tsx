@@ -52,7 +52,9 @@ const QuestionPage = () => {
       <FloatingButton onClick={handleCreateQuestion}>
         <VotemakeButton width="24" height="24" />
       </FloatingButton>
+
     </StyledQuestionPage>
+    
   );
 };
 

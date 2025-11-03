@@ -98,7 +98,6 @@ export function useQuestionDetail(boardId: string) {
 
   return { question: questionDetail, loading, error, refetch };
 }
-
 export function useQuestionComments(
   boardId: string,
   initialPagination: PaginationParams = { page: 0, size: 10 },
@@ -118,10 +117,7 @@ export function useQuestionComments(
         setError(null);
         const data = await boardApi.getComments(boardId, pagination);
         setComments(data);
-        setPagination({
-          page: data.currentPage ?? 0,
-          size: data.pageSize ?? 10,
-        });
+        // ✅ setPagination 제거 (초기값으로 충분)
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to fetch comments";
@@ -132,11 +128,21 @@ export function useQuestionComments(
     };
 
     load();
-  }, [boardId, pagination, setComments]);
+  }, [boardId, setComments]); // ✅ pagination 제거
 
   const refetch = async () => {
-    const data = await boardApi.getComments(boardId, pagination);
-    setComments(data);
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await boardApi.getComments(boardId, pagination);
+      setComments(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch comments";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {
@@ -149,9 +155,6 @@ export function useQuestionComments(
   };
 }
 
-//
-// 🧩 useSearchQuestions
-//
 export function useSearchQuestions(
   keyword: string,
   initialPagination: PaginationParams = { page: 0, size: 10 },
