@@ -314,7 +314,7 @@ const CharCount = styled.p`
 
 const SubmitButton = styled.button`
   background-color: ${(props) =>
-    props.disabled ? color.gray200 : color.gray600};
+    props.disabled ? color.gray200 : color.primary};
   border: none;
   border-radius: 100px;
   padding: 16px 20px;
