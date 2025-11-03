@@ -70,7 +70,6 @@ export default function BottomSheetSelector({
               <ItemRow
                 selected={item.value === selectedValue}
                 onClick={() => {
-                  setSelectedValue(item.value); // ✅ string 그대로 전달
                   setSelect(item.value);
                 }}
               >
