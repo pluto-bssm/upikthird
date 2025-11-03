@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as guideApi from "@/services/guide/api";
 import type { GuideDetail, PaginatedGuides } from "@/services/guide/api";
 import type { Guide, SimilarGuide } from "@/types/api";
@@ -16,7 +16,7 @@ export function useGuides(options: UseGuideOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGuides = async () => {
+  const fetchGuides = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -29,17 +29,17 @@ export function useGuides(options: UseGuideOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [setGuides]);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchGuides();
-  };
+  }, [fetchGuides]);
 
   useEffect(() => {
     if (autoFetch) {
       fetchGuides();
     }
-  }, [autoFetch]);
+  }, [autoFetch, fetchGuides]);
 
   return {
     guides,
@@ -60,7 +60,7 @@ export function useGuidesByCategory(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGuidesByCategory = async () => {
+  const fetchGuidesByCategory = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -75,17 +75,17 @@ export function useGuidesByCategory(
     } finally {
       setLoading(false);
     }
-  };
+  }, [category, setGuides]);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchGuidesByCategory();
-  };
+  }, [fetchGuidesByCategory]);
 
   useEffect(() => {
     if (autoFetch && category) {
       fetchGuidesByCategory();
     }
-  }, [category, autoFetch]);
+  }, [category, autoFetch, fetchGuidesByCategory]);
 
   return {
     guides,
@@ -103,7 +103,7 @@ export function useGuide(id: string, options: UseGuideOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGuide = async () => {
+  const fetchGuide = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -116,17 +116,17 @@ export function useGuide(id: string, options: UseGuideOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, setGuide]);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchGuide();
-  };
+  }, [fetchGuide]);
 
   useEffect(() => {
     if (autoFetch && id) {
       fetchGuide();
     }
-  }, [id, autoFetch]);
+  }, [id, autoFetch, fetchGuide]);
 
   return {
     guide,
@@ -147,7 +147,8 @@ export function useSearchSimilarGuides(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const searchSimilarGuides = async (searchTitle?: string) => {
+  const searchSimilarGuides = useCallback(
+    async (searchTitle?: string) => {
     const titleToSearch = searchTitle || title;
 
     if (!titleToSearch || titleToSearch.trim() === "") {
@@ -155,29 +156,31 @@ export function useSearchSimilarGuides(
       return;
     }
 
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await guideApi.searchSimilarGuides(titleToSearch);
-      setGuides(data);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to search similar guides";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await guideApi.searchSimilarGuides(titleToSearch);
+        setGuides(data);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to search similar guides";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [title, setGuides],
+  );
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await searchSimilarGuides();
-  };
+  }, [searchSimilarGuides]);
 
   useEffect(() => {
     if (autoFetch && title && title.trim() !== "") {
       searchSimilarGuides();
     }
-  }, [title, autoFetch]);
+  }, [title, autoFetch, searchSimilarGuides]);
 
   return {
     guides,
@@ -200,7 +203,7 @@ export function usePaginatedGuides(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPaginatedGuides = async () => {
+  const fetchPaginatedGuides = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -213,17 +216,17 @@ export function usePaginatedGuides(
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, size, sortBy, setGuides]);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchPaginatedGuides();
-  };
+  }, [fetchPaginatedGuides]);
 
   useEffect(() => {
     if (autoFetch) {
       fetchPaginatedGuides();
     }
-  }, [page, size, sortBy, autoFetch]);
+  }, [page, size, sortBy, autoFetch, fetchPaginatedGuides]);
 
   return {
     guides,

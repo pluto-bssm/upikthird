@@ -3,7 +3,6 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Headernavigationbar from "./headernavigationbar";

@@ -19,17 +19,6 @@ export const QuestionItem = ({ question }: QuestionItemProps) => {
     });
   };
 
-  const getCategoryEmoji = (category?: string) => {
-    switch (category) {
-      case "학교생활":
-        return "🏫";
-      case "기숙사":
-        return "🏠";
-      case "유머":
-        return "😂";
-    }
-  };
-
   return (
     <StyledLink href={`/question/${question.id}`}>
       <StyledQuestionItem>
@@ -131,12 +120,4 @@ const CommentLabel = styled.p`
   color: ${color.gray700};
   line-height: 1;
   margin: 0;
-`;
-
-const LikeCount = styled.span`
-  display: none;
-`;
-
-const LikeIcon = styled.span`
-  display: none;
 `;

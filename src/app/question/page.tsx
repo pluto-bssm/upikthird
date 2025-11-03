@@ -13,6 +13,7 @@ const QuestionPage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState<"all" | "popular">("all");
   const { questions, loading, error } = useQuestions({ page: 0, size: 10 });
+  void error;
 
   const handleCreateQuestion = () => {
     router.push("/question/create");

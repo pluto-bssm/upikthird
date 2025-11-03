@@ -35,6 +35,9 @@ const LikeGuide = () => {
   } = useVoteStore();
 
   const { createVote, loading, error } = useCreateVote();
+  // mark unused vars as intentionally unused to satisfy linter
+  void loading;
+  void error;
 
   const {
     guides: similarGuides,
@@ -69,7 +72,7 @@ const LikeGuide = () => {
       }
     } catch (err) {
       setIsLoadingOpen(false);
-
+      void err;
       alert("투표 생성 중 오류가 발생했습니다.");
     }
   };

@@ -5,6 +5,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get("code");
     const state = searchParams.get("state");
+    void state;
 
     if (!code) {
       return NextResponse.redirect(new URL("/login", request.url));
@@ -81,6 +82,7 @@ export async function GET(request: NextRequest) {
 
     return response;
   } catch (error) {
+    void error;
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }

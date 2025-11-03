@@ -50,22 +50,6 @@ const GuideItemButton = styled.button`
   }
 `;
 
-const CategoryIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-`;
-
-const CategoryEmoji = styled.p`
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
-  line-height: 1.2;
-`;
 
 const GuideContentWrapper = styled.div`
   display: flex;
@@ -89,16 +73,6 @@ const GuideMetaWrapper = styled.div`
   display: flex;
   gap: 6px;
   align-items: center;
-`;
-
-const CategoryTag = styled.p`
-  font-size: 10px;
-  font-weight: 400;
-  color: ${color.gray600};
-  margin: 0;
-  padding: 0;
-  line-height: 1.2;
-  white-space: nowrap;
 `;
 
 const LikeInfo = styled.div`

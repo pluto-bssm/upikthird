@@ -34,16 +34,6 @@ export const VoteItem = ({ vote, onClick }: VoteItemProps) => {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "OPEN":
-        return color.accent;
-      case "CLOSED":
-        return color.gray500;
-      default:
-        return color.gray500;
-    }
-  };
 
   return (
     <VoteItemButton onClick={onClick}>

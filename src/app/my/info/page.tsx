@@ -8,6 +8,7 @@ import { useCurrentUser } from "@/hooks/useAccount";
 
 const AccountInfoPage = () => {
   const { user, loading, error } = useCurrentUser();
+  void error;
 
   if (loading) {
     return (
@@ -84,6 +85,7 @@ const LogoutSection = styled.div`
   padding: 20px;
   border-top: 1px solid ${color.gray100};
 `;
+void LogoutSection;
 
 const LogoutText = styled.p`
   font-size: 12px;
@@ -94,6 +96,7 @@ const LogoutText = styled.p`
   text-align: center;
   line-height: 1.2;
 `;
+void LogoutText;
 
 const LoadingText = styled.p`
   text-align: center;

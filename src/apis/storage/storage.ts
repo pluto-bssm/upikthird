@@ -6,6 +6,7 @@ export class Storage {
     try {
       return localStorage.getItem(key);
     } catch (error) {
+      void error;
       return null;
     }
   }
@@ -16,7 +17,9 @@ export class Storage {
     }
     try {
       localStorage.setItem(key, value);
-    } catch (error) {}
+    } catch (error) {
+      void error;
+    }
   }
 
   static removeItem(key: string) {
@@ -25,6 +28,8 @@ export class Storage {
     }
     try {
       localStorage.removeItem(key);
-    } catch (error) {}
+    } catch (error) {
+      void error;
+    }
   }
 }

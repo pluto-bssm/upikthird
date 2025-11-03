@@ -35,8 +35,9 @@ export default function OAuthCallbackPage() {
               accessToken = data?.accessToken || accessToken;
               refreshToken = data?.refreshToken || refreshToken;
             }
-          } catch (error) {
-            console.error("토큰 요청 에러:", error);
+            } catch (error) {
+              void error;
+              console.error("토큰 요청 에러:", error);
           }
         }
 
@@ -50,8 +51,9 @@ export default function OAuthCallbackPage() {
         if (refreshToken) Storage.setItem(TOKEN.REFRESH, refreshToken);
 
         router.push("/main");
-      } catch (error) {
-        setStatus("오류가 발생했습니다");
+        } catch (error) {
+          void error;
+          setStatus("오류가 발생했습니다");
         setTimeout(() => router.push("/login"), 2000);
       }
     };

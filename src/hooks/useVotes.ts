@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useVoteStore } from "@/store";
 import * as voteApi from "@/services/vote/api";
 import * as guideApi from "@/services/guide/api";
@@ -25,7 +25,7 @@ export function useMyVotes(options: UseVotesOptions = {}) {
     clearMyVotes,
   } = useVoteStore();
 
-  const fetchMyVotes = async () => {
+  const fetchMyVotes = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -38,7 +38,7 @@ export function useMyVotes(options: UseVotesOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [setMyVotes]);
 
   const voteResponse = async (voteId: string, optionId: string) => {
     try {
@@ -63,7 +63,7 @@ export function useMyVotes(options: UseVotesOptions = {}) {
     if (autoFetch) {
       fetchMyVotes();
     }
-  }, [autoFetch]);
+  }, [autoFetch, fetchMyVotes]);
 
   return {
     myVotes,
@@ -85,7 +85,7 @@ export function useVote(voteId: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchVote = async () => {
+  const fetchVote = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -98,7 +98,7 @@ export function useVote(voteId: string) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [voteId]);
 
   const voteResponse = async (optionId: string) => {
     try {
@@ -117,7 +117,7 @@ export function useVote(voteId: string) {
 
   useEffect(() => {
     fetchVote();
-  }, [voteId]);
+  }, [fetchVote]);
 
   return { vote, loading, error, voteResponse, refetch: fetchVote };
 }
@@ -129,7 +129,7 @@ export function useAllVotes(options: UseVotesOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAllVotes = async () => {
+  const fetchAllVotes = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -142,7 +142,7 @@ export function useAllVotes(options: UseVotesOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const refetch = async () => {
     await fetchAllVotes();
@@ -152,7 +152,7 @@ export function useAllVotes(options: UseVotesOptions = {}) {
     if (autoFetch) {
       fetchAllVotes();
     }
-  }, [autoFetch]);
+  }, [autoFetch, fetchAllVotes]);
 
   return {
     votes,
@@ -170,7 +170,7 @@ export function useVotes(options: UseVotesOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchVotes = async () => {
+  const fetchVotes = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -183,7 +183,7 @@ export function useVotes(options: UseVotesOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const refetch = async () => {
     await fetchVotes();
@@ -193,7 +193,7 @@ export function useVotes(options: UseVotesOptions = {}) {
     if (autoFetch) {
       fetchVotes();
     }
-  }, [autoFetch]);
+  }, [autoFetch, fetchVotes]);
 
   return {
     votes,
@@ -250,7 +250,7 @@ export function useTodayVote(options: UseVotesOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchTodayVote = async () => {
+  const fetchTodayVote = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -263,7 +263,7 @@ export function useTodayVote(options: UseVotesOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const voteResponse = async (optionId: string) => {
     if (!vote) return;
@@ -290,7 +290,7 @@ export function useTodayVote(options: UseVotesOptions = {}) {
     if (autoFetch) {
       fetchTodayVote();
     }
-  }, [autoFetch]);
+  }, [autoFetch, fetchTodayVote]);
 
   return {
     vote,
@@ -454,31 +454,34 @@ export function useSearchSimilarGuides(
   options: UseVotesOptions = {},
 ) {
   const { autoFetch = true } = options;
-  const [guides, setGuides] = useState<any[]>([]);
+  const [guides, setGuides] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const searchSimilarGuides = async (searchTitle?: string) => {
-    const titleToSearch = searchTitle || title;
+  const searchSimilarGuides = useCallback(
+    async (searchTitle?: string) => {
+      const titleToSearch = searchTitle || title;
 
-    if (!titleToSearch || titleToSearch.trim() === "") {
-      setGuides([]);
-      return;
-    }
+      if (!titleToSearch || titleToSearch.trim() === "") {
+        setGuides([]);
+        return;
+      }
 
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await guideApi.searchSimilarGuides(titleToSearch);
-      setGuides(data);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to search similar guides";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await guideApi.searchSimilarGuides(titleToSearch);
+        setGuides(data);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to search similar guides";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [title],
+  );
 
   const refetch = async () => {
     await searchSimilarGuides();
@@ -488,7 +491,7 @@ export function useSearchSimilarGuides(
     if (autoFetch && title && title.trim() !== "") {
       searchSimilarGuides();
     }
-  }, [title, autoFetch]);
+  }, [searchSimilarGuides, autoFetch,title]);
 
   return {
     guides,

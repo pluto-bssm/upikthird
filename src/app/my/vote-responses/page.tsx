@@ -12,12 +12,13 @@ interface DisplayVote {
   title: string;
   category: string;
   status: string;
-  finishedAt: string | null;
+  finishedAt: string | number;
 }
 
 const VoteResponsesListPage = () => {
   const router = useRouter();
   const { responses, loading, error } = useMyVoteResponses();
+  void error;
 
   const handleClose = () => {
     router.back();
@@ -187,6 +188,7 @@ const StyledVoteResponsePage = styled.div`
   margin: 0 auto;
   padding-top: 80px;
 `;
+void StyledVoteResponsePage;
 
 const VoteResponseContent = styled.div`
   display: flex;
@@ -194,12 +196,14 @@ const VoteResponseContent = styled.div`
   padding: 20px;
   gap: 20px;
 `;
+void VoteResponseContent;
 
 const VoteSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
 `;
+void VoteSection;
 
 const SectionTitle = styled.p`
   font-size: 15px;
@@ -209,6 +213,7 @@ const SectionTitle = styled.p`
   padding: 0;
   line-height: 1.2;
 `;
+void SectionTitle;
 
 const VoteQuestion = styled.p`
   font-size: 22px;
@@ -219,6 +224,7 @@ const VoteQuestion = styled.p`
   line-height: 1.3;
   word-break: break-word;
 `;
+void VoteQuestion;
 
 const SelectedOptionBox = styled.div`
   display: flex;
@@ -229,6 +235,7 @@ const SelectedOptionBox = styled.div`
   background-color: rgba(255, 159, 28, 0.1);
   border-radius: 12px;
 `;
+void SelectedOptionBox;
 
 const OptionLabel = styled.p`
   font-size: 10px;
@@ -238,6 +245,7 @@ const OptionLabel = styled.p`
   padding: 0;
   line-height: 1.2;
 `;
+void OptionLabel;
 
 const OptionText = styled.p`
   font-size: 15px;
@@ -247,18 +255,21 @@ const OptionText = styled.p`
   padding: 0;
   line-height: 1.2;
 `;
+void OptionText;
 
 const Divider = styled.div`
   height: 1px;
   background-color: ${color.gray50};
   margin: 0;
 `;
+void Divider;
 
 const TailQuestionSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
 `;
+void TailQuestionSection;
 
 const TailQuestionTitle = styled.p`
   font-size: 14px;
@@ -268,6 +279,7 @@ const TailQuestionTitle = styled.p`
   padding: 0;
   line-height: 1.2;
 `;
+void TailQuestionTitle;
 
 const TailQuestion = styled.p`
   font-size: 20px;
@@ -278,6 +290,7 @@ const TailQuestion = styled.p`
   line-height: 1.3;
   word-break: break-word;
 `;
+void TailQuestion;
 
 const TailAnswerBox = styled.div`
   display: flex;
@@ -289,6 +302,7 @@ const TailAnswerBox = styled.div`
   border-radius: 12px;
   min-height: 120px;
 `;
+void TailAnswerBox;
 
 const AnswerText = styled.p`
   font-size: 12px;
@@ -299,11 +313,13 @@ const AnswerText = styled.p`
   line-height: 1.4;
   word-break: break-word;
 `;
+void AnswerText;
 
 const SeparatorBox = styled.div`
   height: 8px;
   background-color: ${color.gray50};
 `;
+void SeparatorBox;
 
 const ResponseInfoSection = styled.div`
   display: flex;
@@ -312,12 +328,14 @@ const ResponseInfoSection = styled.div`
   padding: 20px;
   background-color: ${color.white};
 `;
+void ResponseInfoSection;
 
 const InfoGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
+void InfoGroup;
 
 const InfoLabel = styled.p`
   font-size: 10px;
@@ -327,6 +345,7 @@ const InfoLabel = styled.p`
   padding: 0;
   line-height: 1.2;
 `;
+void InfoLabel;
 
 const InfoValue = styled.p`
   font-size: 13px;
@@ -336,3 +355,4 @@ const InfoValue = styled.p`
   padding: 0;
   line-height: 1.2;
 `;
+void InfoValue;

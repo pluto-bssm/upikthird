@@ -8,7 +8,7 @@ import GuideComponent from "@/components/guide/GuideComponent";
 import React, { useState } from "react";
 import FilterComponent from "@/components/guide/FilterComponent";
 
-const guide = () => {
+const Guide = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState<"date" | "like">("date");
   return (
@@ -29,7 +29,7 @@ const guide = () => {
   );
 };
 
-export default guide;
+export default Guide;
 
 const GuideLayout = styled.div`
   width: 100%;

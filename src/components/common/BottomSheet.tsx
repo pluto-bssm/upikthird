@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Select } from "../../../public/svg/svg";
-import { useVoteStore } from "@/store/useMakeVoteStore";
 type SelectorItem = {
   value: string;
   label: string;

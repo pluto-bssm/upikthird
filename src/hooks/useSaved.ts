@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as savedApi from "@/services/my/saved/api";
 import * as likesApi from "@/services/my/likes/api";
-import type { Board, PageResponse } from "@/types/graphql";
+import type { Board } from "@/types/graphql";
 
 export function useSavedGuides(initialPage: number = 0, pageSize: number = 10) {
   const [guides, setGuides] = useState<Board[]>([]);
@@ -14,25 +14,28 @@ export function useSavedGuides(initialPage: number = 0, pageSize: number = 10) {
     size: pageSize,
   });
 
-  const fetchGuides = async (page = initialPage, size = pageSize) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await savedApi.getSavedGuides(page, size);
-      setGuides(data.content);
-      setPagination({ page: data.currentPage, size: data.pageSize });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to fetch saved guides";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchGuides = useCallback(
+    async (page = initialPage, size = pageSize) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await savedApi.getSavedGuides(page, size);
+        setGuides(data.content);
+        setPagination({ page: data.currentPage, size: data.pageSize });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to fetch saved guides";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [initialPage, pageSize],
+  );
 
   useEffect(() => {
     fetchGuides();
-  }, []);
+  }, [fetchGuides]);
 
   return { guides, loading, error, pagination, refetch: fetchGuides };
 }
@@ -46,25 +49,28 @@ export function useSavedPosts(initialPage: number = 0, pageSize: number = 10) {
     size: pageSize,
   });
 
-  const fetchPosts = async (page = initialPage, size = pageSize) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await savedApi.getSavedPosts(page, size);
-      setPosts(data.content);
-      setPagination({ page: data.currentPage, size: data.pageSize });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to fetch saved posts";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchPosts = useCallback(
+    async (page = initialPage, size = pageSize) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await savedApi.getSavedPosts(page, size);
+        setPosts(data.content);
+        setPagination({ page: data.currentPage, size: data.pageSize });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to fetch saved posts";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [initialPage, pageSize],
+  );
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   return { posts, loading, error, pagination, refetch: fetchPosts };
 }
@@ -81,25 +87,28 @@ export function useLikedQuestions(
     size: pageSize,
   });
 
-  const fetchQuestions = async (page = initialPage, size = pageSize) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await likesApi.getLikedQuestions(page, size);
-      setQuestions(data.content);
-      setPagination({ page: data.currentPage, size: data.pageSize });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to fetch liked questions";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchQuestions = useCallback(
+    async (page = initialPage, size = pageSize) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await likesApi.getLikedQuestions(page, size);
+        setQuestions(data.content);
+        setPagination({ page: data.currentPage, size: data.pageSize });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to fetch liked questions";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [initialPage, pageSize],
+  );
 
   useEffect(() => {
     fetchQuestions();
-  }, []);
+  }, [fetchQuestions]);
 
   return { questions, loading, error, pagination, refetch: fetchQuestions };
 }

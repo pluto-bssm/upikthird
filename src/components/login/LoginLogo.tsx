@@ -20,9 +20,3 @@ const StyledLogoContainer = styled.div`
   height: 80px;
 `;
 
-const LogoImage = styled.img`
-  width: auto;
-  height: 100%;
-  max-width: 150px;
-  object-fit: contain;
-`;

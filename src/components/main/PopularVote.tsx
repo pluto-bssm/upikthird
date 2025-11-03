@@ -45,26 +45,44 @@ export default function PopularVote() {
         } as GraphQLRequest);
         const data = response?.data?.data?.vote?.getMostPopularOpenVote;
         if (Array.isArray(data)) {
-          const mapped = data.map((d: any) => ({
-            id: d.id,
-            title: d.title,
-            category: d.category,
-            finishedAt: d.finishedAt,
-            totalResponses: d.totalResponses,
-          }));
+          const mapped = data.map((d: unknown) => {
+            const x = d as {
+              id: string;
+              title: string;
+              category?: string;
+              finishedAt?: string;
+              totalResponses?: number;
+            };
+            return {
+              id: x.id,
+              title: x.title,
+              category: x.category,
+              finishedAt: x.finishedAt,
+              totalResponses: x.totalResponses,
+            };
+          });
           setVotes(mapped);
         } else if (data) {
+          const x = data as {
+            id: string;
+            title: string;
+            category?: string;
+            finishedAt?: string;
+            totalResponses?: number;
+          };
           setVotes([
             {
-              id: data.id,
-              title: data.title,
-              category: data.category,
-              finishedAt: data.finishedAt,
-              totalResponses: data.totalResponses,
+              id: x.id,
+              title: x.title,
+              category: x.category,
+              finishedAt: x.finishedAt,
+              totalResponses: x.totalResponses,
             },
           ]);
         }
-      } catch (e) {}
+      } catch (e) {
+        void e;
+      }
     };
     fetchMostPopular();
   }, []);

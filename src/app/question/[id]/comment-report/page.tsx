@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import styled from "@emotion/styled";
 import Header from "@/components/common/header";
-import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import { CheckComplete } from "@/../public/svg/svg";
 import { reportComment } from "@/services/board/api";
@@ -15,6 +14,8 @@ type ReportReason =
   | "욕설/생명경시/혐오 표현이 사용되었어요"
   | "질문이 아니에요"
   | "기타";
+
+
 
 const reportReasons: ReportReason[] = [
   "유해한 내용을 포함하고 있어요",
@@ -44,6 +45,7 @@ const CommentReportPage = () => {
       await reportComment(commentId, selectedReason, detailText);
       setShowCompleteModal(true);
     } catch (error) {
+      void error;
       alert("신고 접수에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);

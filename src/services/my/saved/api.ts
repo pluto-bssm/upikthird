@@ -30,7 +30,7 @@ export async function getSavedGuides(
   const guides = response.data?.data?.bookmark?.getBookmarkedGuides || [];
 
   const data: PageResponse<Board> = {
-    content: guides as any[],
+    content: (guides as unknown[]) as Board[],
     totalPages: 1,
     totalElements: guides.length,
     currentPage: page,

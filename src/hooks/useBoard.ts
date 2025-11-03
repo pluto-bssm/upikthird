@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useBoardStore } from "@/store";
 import * as boardApi from "@/services/board/api";
-import type {
-  Board,
-  CommentPage,
-  PageResponse,
-  PaginationParams,
-} from "@/types/graphql";
+import type { PaginationParams } from "@/types/graphql";
 
 export function useQuestions(
   initialPagination: PaginationParams = { page: 0, size: 10 },
@@ -19,29 +14,32 @@ export function useQuestions(
 
   const { questions, setQuestions } = useBoardStore();
 
-  const fetchQuestions = async (params = pagination) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await boardApi.getQuestionList(params);
-      setQuestions(data.content);
-      setPagination({ page: data.currentPage, size: data.pageSize });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to fetch questions";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchQuestions = useCallback(
+    async (params = pagination) => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await boardApi.getQuestionList(params);
+        setQuestions(data.content);
+        setPagination({ page: data.currentPage, size: data.pageSize });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to fetch questions";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pagination, setQuestions],
+  );
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchQuestions(pagination);
-  };
+  }, [fetchQuestions, pagination]);
 
   useEffect(() => {
     fetchQuestions();
-  }, []);
+  }, [fetchQuestions]);
 
   return {
     questions,
@@ -53,14 +51,16 @@ export function useQuestions(
     refetch,
   };
 }
-
 export function useQuestionDetail(boardId: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   const { questionDetail, setQuestionDetail } = useBoardStore();
 
-  const fetchDetail = async () => {
+  const fetchDetail = useCallback(async () => {
+    if (!boardId) return;
+    
     try {
       setLoading(true);
       setError(null);
@@ -73,16 +73,18 @@ export function useQuestionDetail(boardId: string) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [boardId, setQuestionDetail]);
 
   useEffect(() => {
-    if (boardId) {
+    if (boardId && !hasInitialized) {
       fetchDetail();
+      setHasInitialized(true);
     }
-  }, [boardId]);
+  }, [boardId, hasInitialized,fetchDetail]);
 
   return { question: questionDetail, loading, error, refetch: fetchDetail };
 }
+
 
 export function useQuestionComments(
   boardId: string,
@@ -91,34 +93,50 @@ export function useQuestionComments(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState(initialPagination);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   const { comments, setComments } = useBoardStore();
 
-  const fetchComments = async (params = pagination) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await boardApi.getComments(boardId, params);
-      setComments(data);
-      setPagination({ page: data.currentPage ?? 0, size: data.pageSize ?? 10 });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to fetch comments";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchComments = useCallback(
+    async (params?: PaginationParams) => {
+      if (!boardId) return;
+      
+      const actualParams = params || pagination;
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await boardApi.getComments(boardId, actualParams);
+        setComments(data);
+        
+        // 페이지네이션 업데이트는 params가 없을 때만
+        if (!params) {
+          setPagination({ 
+            page: data.currentPage ?? 0, 
+            size: data.pageSize ?? 10 
+          });
+        }
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to fetch comments";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [boardId, pagination, setComments],
+  );
 
-  const refetch = async () => {
-    await fetchComments(pagination);
-  };
-
+  // 초기 로딩만 useEffect로 처리
   useEffect(() => {
-    if (boardId) {
-      fetchComments();
+    if (boardId && !hasInitialized) {
+      fetchComments(initialPagination);
+      setHasInitialized(true);
     }
-  }, [boardId]);
+  }, [boardId, hasInitialized, initialPagination,fetchComments]);
+
+  const refetch = useCallback(async () => {
+    await fetchComments();
+  }, [fetchComments]);
 
   return {
     comments,
@@ -141,30 +159,30 @@ export function useSearchQuestions(
 
   const { questions, setQuestions } = useBoardStore();
 
-  const searchQuestions = async (
-    searchKeyword: string,
-    params = pagination,
-  ) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await boardApi.searchQuestions(searchKeyword, params);
-      setQuestions(data.content);
-      setPagination({ page: data.currentPage, size: data.pageSize });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to search questions";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const searchQuestions = useCallback(
+    async (searchKeyword: string, params = pagination) => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await boardApi.searchQuestions(searchKeyword, params);
+        setQuestions(data.content);
+        setPagination({ page: data.currentPage, size: data.pageSize });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to search questions";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pagination, setQuestions],
+  );
 
   useEffect(() => {
     if (keyword) {
       searchQuestions(keyword);
     }
-  }, [keyword]);
+  }, [keyword, searchQuestions]);
 
   return {
     questions,

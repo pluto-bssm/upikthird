@@ -51,7 +51,7 @@ const reportHistoryData = [
   },
 ];
 
-const dashboard = () => {
+const Dashboard = () => {
   const router = useRouter();
 
   const handleReportClick = (id: number) => {
@@ -99,7 +99,7 @@ const dashboard = () => {
   );
 };
 
-export default dashboard;
+export default Dashboard;
 
 const PageContainer = styled.div`
   width: 100vw;

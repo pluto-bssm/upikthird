@@ -46,24 +46,27 @@ export async function getQuestionList(
     questions.length;
 
   const data: PageResponse<Board> = {
-    content: questions.map((q: any) => ({
-      id: q.id,
-      title: q.title,
-      content: q.content,
-      createdAt: q.createdAt,
-      updatedAt: q.updatedAt,
-      author: {
-        id: q.userId,
-        name: q.userName,
-        avatar: q.userProfileImage,
-      },
-      views: q.viewCount || 0,
-      likes: 0,
-      commentCount: q.commentCount || 0,
-      status: "OPEN",
-      isBookmarked: q.isBookmarked,
-      bookmarkCount: q.bookmarkCount || 0,
-    })) as any[],
+    content: questions.map((q: unknown) => {
+      const qq = q as Record<string, unknown>;
+      return {
+        id: String(qq.id ?? ""),
+        title: String(qq.title ?? ""),
+        content: String(qq.content ?? ""),
+        createdAt: String(qq.createdAt ?? new Date().toISOString()),
+        updatedAt: String(qq.updatedAt ?? ""),
+        author: {
+          id: String(qq.userId ?? ""),
+          name: String(qq.userName ?? ""),
+          avatar: String(qq.userProfileImage ?? ""),
+        },
+        views: Number(qq.viewCount ?? 0) || 0,
+        likes: 0,
+        commentCount: Number(qq.commentCount ?? 0) || 0,
+        status: "OPEN",
+        isBookmarked: Boolean(qq.isBookmarked),
+        bookmarkCount: Number(qq.bookmarkCount ?? 0) || 0,
+      } as Board;
+    }),
     totalPages: totalPages,
     totalElements: totalElements,
     currentPage: pagination.page,
@@ -120,25 +123,28 @@ export async function getComments(
   const totalElements =
     response.data?.data?.board?.getComments?.totalElements || comments.length;
 
-  const mapComment = (c: any): Comment => ({
-    id: c.id,
-    content: c.content,
-    createdAt: c.createdAt,
-    updatedAt: c.updatedAt,
-    userId: c.userId,
-    userName: c.userName,
-    userProfileImage: c.userProfileImage,
-    boardId: c.boardId,
-    parentId: c.parentId,
-    author: {
-      id: c.userId,
-      name: c.userName,
-      avatar: c.userProfileImage,
-    },
-    replies:
-      c.replies && c.replies.length > 0 ? c.replies.map(mapComment) : undefined,
-    likes: 0,
-  });
+  const mapComment = (c: unknown): Comment => {
+    const cc = c as Record<string, unknown>;
+    const replies = (cc.replies as unknown[] | undefined) || undefined;
+    return {
+      id: String(cc.id ?? ""),
+      content: String(cc.content ?? ""),
+      createdAt: String(cc.createdAt ?? ""),
+      updatedAt: String(cc.updatedAt ?? ""),
+      userId: String(cc.userId ?? ""),
+      userName: String(cc.userName ?? ""),
+      userProfileImage: String(cc.userProfileImage ?? ""),
+      boardId: String(cc.boardId ?? ""),
+      parentId: cc.parentId ? String(cc.parentId) : undefined,
+      author: {
+        id: String(cc.userId ?? ""),
+        name: String(cc.userName ?? ""),
+        avatar: String(cc.userProfileImage ?? ""),
+      },
+      replies: replies && replies.length > 0 ? replies.map(mapComment) : undefined,
+      likes: 0,
+    };
+  };
 
   const data: CommentPage = {
     content: comments.map(mapComment),
@@ -264,24 +270,28 @@ export async function createComment(
     throw new Error("Failed to create comment");
   }
 
-  const mapComment = (c: any): Comment => ({
-    id: c.id,
-    content: c.content,
-    createdAt: c.createdAt,
-    updatedAt: c.updatedAt,
-    userId: c.userId,
-    userName: c.userName,
-    userProfileImage: c.userProfileImage,
-    boardId: c.boardId,
-    parentId: c.parentId,
-    author: {
-      id: c.userId,
-      name: c.userName,
-      avatar: c.userProfileImage,
-    },
-    likes: 0,
-    replies: c.replies?.map(mapComment) || [],
-  });
+  const mapComment = (c: unknown): Comment => {
+    const cc = c as Record<string, unknown>;
+    const replies = (cc.replies as unknown[] | undefined) || [];
+    return {
+      id: String(cc.id ?? ""),
+      content: String(cc.content ?? ""),
+      createdAt: String(cc.createdAt ?? ""),
+      updatedAt: String(cc.updatedAt ?? ""),
+      userId: String(cc.userId ?? ""),
+      userName: String(cc.userName ?? ""),
+      userProfileImage: String(cc.userProfileImage ?? ""),
+      boardId: String(cc.boardId ?? ""),
+      parentId: cc.parentId ? String(cc.parentId) : undefined,
+      author: {
+        id: String(cc.userId ?? ""),
+        name: String(cc.userName ?? ""),
+        avatar: String(cc.userProfileImage ?? ""),
+      },
+      likes: 0,
+      replies: replies.map(mapComment) || [],
+    };
+  };
 
   return mapComment(comment);
 }

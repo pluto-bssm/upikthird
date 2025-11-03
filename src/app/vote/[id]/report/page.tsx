@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import SelectButton from "@/packages/ui/src/button/SelectButton";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import AccentModal from "@/components/modal/AccentModal";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Completevote } from "../../../../../public/svg/svg";
 import { useReportQuestion } from "@/hooks/useReportQuestion";
 
@@ -25,7 +25,6 @@ const Report = () => {
   const [detail, setDetail] = useState<string>("");
   const [isActive, setIsActive] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const voteId = sessionStorage.getItem("voteId") || "";
   const [isOpen, setIsOpen] = useState(false);

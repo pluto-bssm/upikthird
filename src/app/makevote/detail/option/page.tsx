@@ -5,7 +5,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Header from "@/components/common/header";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Nexts, Completevote, Bad } from "../../../../../public/svg/svg";
 import MemberChoseBottomSheet from "@/components/votemake/MemberChoseBottomSheet";
 import IconTwoOptionModal from "@/components/modal/IconTwoOptionModal";
@@ -25,6 +25,9 @@ const Options = () => {
   const { ballots, title, setBallots } = useVoteStore();
 
   const { generateAiOptions, loading, options, error } = useGenerateAiOptions();
+  void loading;
+  void options;
+  void error;
 
   async function MakeAiBallot() {
     if (aiUsageCount < 3) {
@@ -40,6 +43,7 @@ const Options = () => {
           setIsOpen_3(true);
         }
       } catch (err) {
+        void err;
         alert("AI 선지 생성에 실패했습니다. 다시 시도해주세요.");
       } finally {
         setIsOpen_2(false);

@@ -15,6 +15,7 @@ import { CheckComplete } from "@/../public/svg/svg";
 const InquiryPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  void isLoading;
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -35,6 +36,7 @@ const InquiryPage = () => {
       });
       setShowSuccessModal(true);
     } catch (error) {
+      void error;
       setErrorMessage("문의 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsLoading(false);

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { VotePayload, Board, Comment, CommentPage } from "@/types/graphql";
+import type { VotePayload, Board, CommentPage } from "@/types/graphql";
 
 interface VoteStore {
   myVotes: VotePayload[];

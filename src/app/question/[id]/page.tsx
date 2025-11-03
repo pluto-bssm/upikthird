@@ -50,6 +50,8 @@ const QuestionDetailPage = () => {
       setComment("");
       await refetchComments();
     } catch (error) {
+      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+      console.log(error);
     } finally {
       setSubmitting(false);
     }
@@ -73,6 +75,8 @@ const QuestionDetailPage = () => {
       setReplyingTo(null);
       await refetchComments();
     } catch (error) {
+      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+      console.log(error);
     } finally {
       setSubmitting(false);
     }
@@ -407,23 +411,6 @@ const FooterItem = styled.p`
   }
 `;
 
-const SubmitButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-`;
-
-const SubmitButton = styled.button`
-  font-family: Pretendard, sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: ${color.primary};
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-`;
-
 const CommentInputBox = styled.div`
   display: flex;
   gap: 10px;
@@ -483,191 +470,7 @@ const FooterReportItem = styled.p`
   }
 `;
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-`;
 
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  max-height: 90vh;
-  overflow-y: auto;
-  width: 90vw;
-  max-width: 400px;
-`;
-
-const ModalContent = styled.div`
-  background-color: ${color.white};
-  border: 1px solid ${color.gray200};
-  border-radius: 24px;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-`;
-
-const ModalTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const ModalSubtitle = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: ${color.gray700};
-  line-height: 1;
-  margin: 0;
-`;
-
-const ModalTitle = styled.h2`
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: ${color.black};
-  line-height: 1;
-  margin: 0;
-`;
-
-const ModalReasonSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const ModalDetailSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const LabelWithRequired = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-`;
-
-const Label = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${color.gray700};
-  line-height: 1;
-  margin: 0;
-`;
-
-const RequiredMark = styled.span`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: #e71d36;
-  line-height: 1;
-  margin: 0;
-`;
-
-const ReasonList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const ReasonButton = styled.button<{ isSelected: boolean }>`
-  border: 1px solid
-    ${(props) => (props.isSelected ? color.primary : color.gray100)};
-  border-radius: 16px;
-  padding: 19px 20px;
-  background-color: ${(props) =>
-    props.isSelected ? color.primary : color.white};
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${(props) => (props.isSelected ? color.white : color.gray600)};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const DetailTextarea = styled.textarea`
-  border: 1px solid ${color.gray100};
-  border-radius: 16px;
-  padding: 20px;
-  min-height: 120px;
-  font-family: Pretendard, sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: ${color.black};
-  background-color: ${color.white};
-  resize: none;
-  outline: none;
-
-  &::placeholder {
-    color: ${color.gray300};
-  }
-`;
-
-const CharCount = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: ${color.gray300};
-  line-height: 1;
-  margin: 0;
-`;
-
-const ModalButtonContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
-
-const ModalCancelButton = styled.button`
-  flex: 1;
-  background-color: ${color.white};
-  border: 1px solid ${color.gray100};
-  border-radius: 100px;
-  padding: 12px 20px;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${color.black};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const ModalConfirmButton = styled.button`
-  flex: 1;
-  background-color: ${(props) =>
-    props.disabled ? color.gray200 : color.primary};
-  border: none;
-  border-radius: 100px;
-  padding: 12px 20px;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${color.white};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  transition: all 0.2s ease;
-`;
 
 const LoadingText = styled.p`
   text-align: center;

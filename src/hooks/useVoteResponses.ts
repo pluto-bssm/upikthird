@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as voteResponsesApi from "@/services/my/vote-responses/api";
 import type { VotePayload } from "@/types/graphql";
 
@@ -14,7 +14,7 @@ export function useMyVoteResponses(options: UseMyVoteResponsesOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchResponses = async () => {
+  const fetchResponses = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -27,13 +27,13 @@ export function useMyVoteResponses(options: UseMyVoteResponsesOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (autoFetch) {
       fetchResponses();
     }
-  }, [autoFetch]);
+  }, [autoFetch, fetchResponses]);
 
   return {
     responses,
@@ -55,7 +55,7 @@ export function useVoteResponseDetail(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchDetail = async () => {
+  const fetchDetail = useCallback(async () => {
     if (!id) return;
 
     try {
@@ -70,11 +70,11 @@ export function useVoteResponseDetail(
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchDetail();
-  }, [id]);
+  }, [fetchDetail]);
 
   return {
     detail,

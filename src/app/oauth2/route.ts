@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
         },
       });
     } catch (fetchError) {
+      void fetchError;
       return NextResponse.redirect(
         new URL("/login?error=network_error", request.url),
       );
@@ -44,12 +45,13 @@ export async function GET(request: NextRequest) {
     try {
       tokenData = await tokenResponse.json();
     } catch (parseError) {
+      void parseError;
       return NextResponse.redirect(
         new URL("/login?error=invalid_response", request.url),
       );
     }
 
-    let accessToken =
+    const accessToken =
       tokenData?.accessToken ||
       tokenData?.data?.accessToken ||
       tokenData?.access_token ||
@@ -58,7 +60,7 @@ export async function GET(request: NextRequest) {
       tokenData?.data?.token ||
       "";
 
-    let refreshToken =
+    const refreshToken =
       tokenData?.refreshToken ||
       tokenData?.data?.refreshToken ||
       tokenData?.refresh_token ||
@@ -79,6 +81,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(callbackUrl);
   } catch (error) {
+    void error;
     return NextResponse.redirect(
       new URL("/login?error=server_error", request.url),
     );

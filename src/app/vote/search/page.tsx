@@ -12,6 +12,7 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const { votes, loading, error } = useVotes();
+  void error;
   const router = useRouter();
 
   const filteredVotes =

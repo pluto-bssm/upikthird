@@ -8,6 +8,7 @@ import { TOKEN } from "@/constants/common/constant";
 const OAuthCallbackContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  void searchParams;
   const [status, setStatus] = useState("로그인 처리 중...");
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const OAuthCallbackContent = () => {
         return;
       }
     } catch (error) {
+      void error;
       setStatus("토큰 저장 실패");
       setTimeout(() => router.push("/login"), 2000);
       return;
@@ -46,7 +48,9 @@ const OAuthCallbackContent = () => {
     if (refreshToken) {
       try {
         Storage.setItem(TOKEN.REFRESH, refreshToken);
-      } catch (error) {}
+      } catch (error) {
+        void error;
+      }
     }
 
     setStatus("로그인 성공! 리다이렉트 중...");
