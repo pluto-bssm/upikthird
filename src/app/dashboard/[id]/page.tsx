@@ -7,9 +7,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Logo as LogoIcon, Nexts, ProfileIcon } from "@/../public/svg/svg";
 import { useParams, useRouter } from "next/navigation";
 import ReportCard from "@/components/dashboard/ReportCard";
-import { upik } from "@/apis";
-import { API } from "@/constants/common/constant";
-import { GET_REPORTS_BY_TARGET, GET_ALL_REPORTS, REJECT_REPORT } from "@/graphql/queries";
+import {
+  getAllReports,
+  getReportsByTarget,
+  rejectReport,
+} from "@/services/dashboard/api";
 
 type ReportItem = {
   authorId: string;
@@ -46,10 +48,7 @@ const DashboardDetailPage = () => {
       try {
         setLoadingAll(true);
         setErrorAll(null);
-        const res = await upik.post(API.GRAPHQL_URL, {
-          query: GET_ALL_REPORTS,
-        });
-        const data = res.data?.data?.report?.getAllReports || [];
+        const data = await getAllReports();
         if (mounted) setAllReports(data);
       } catch (e) {
         if (mounted)
@@ -71,11 +70,7 @@ const DashboardDetailPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await upik.post(API.GRAPHQL_URL, {
-          query: GET_REPORTS_BY_TARGET,
-          variables: { targetId: id },
-        });
-        const data = res.data?.data?.report?.getReportsByTarget || [];
+        const data = await getReportsByTarget(id);
         if (mounted) setItems(data);
       } catch (e) {
         if (mounted)
@@ -123,32 +118,21 @@ const DashboardDetailPage = () => {
 
     try {
       setRejecting(true);
-      const res = await upik.post(API.GRAPHQL_URL, {
-        query: REJECT_REPORT,
-        variables: {
-          targetId: report.targetId,
-          userId: report.userId,
-        },
-      });
+      const message = await rejectReport(report.targetId, report.userId);
 
-      const message = res.data?.data?.report?.rejectReport?.message;
-      
       if (message) {
         alert(message);
       } else {
         alert("신고가 반려되었습니다.");
       }
 
-      const allRes = await upik.post(API.GRAPHQL_URL, {
-        query: GET_ALL_REPORTS,
-      });
-      const allData = allRes.data?.data?.report?.getAllReports || [];
+      const allData = await getAllReports();
       setAllReports(allData);
 
       router.push("/dashboard");
     } catch (e) {
       alert(
-        e instanceof Error ? e.message : "신고 반려 중 오류가 발생했습니다."
+        e instanceof Error ? e.message : "신고 반려 중 오류가 발생했습니다.",
       );
     } finally {
       setRejecting(false);
@@ -248,8 +232,8 @@ const DashboardDetailPage = () => {
             </DetailSection>
 
             <ButtonContainer>
-              <ActionButton 
-                buttonType="reject" 
+              <ActionButton
+                buttonType="reject"
                 onClick={handleReject}
                 disabled={rejecting}
               >

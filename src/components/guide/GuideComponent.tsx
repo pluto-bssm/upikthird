@@ -54,11 +54,11 @@ const GuideComponent = ({
       setError(null);
       const sortField = sortBy === "like" ? "like" : "createdAt";
       const requestedSize = sortBy === "like" ? Math.max(limit, 50) : limit;
-      
+
       const response = await guideApi.getPaginatedGuides(
         0,
         requestedSize,
-        `${sortField},desc`
+        `${sortField},desc`,
       );
 
       let content: GuideItem[] = response.content ?? [];
@@ -94,20 +94,17 @@ const GuideComponent = ({
     fetchGuides();
   }, [fetchGuides]);
 
-  const filteredGuides = React.useMemo(
-    () => {
-      let filtered = guides.filter((guide) =>
-        (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      
-      if (category) {
-        filtered = filtered.filter((guide) => guide.category === category);
-      }
-      
-      return filtered;
-    },
-    [guides, searchQuery, category],
-  );
+  const filteredGuides = React.useMemo(() => {
+    let filtered = guides.filter((guide) =>
+      (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+
+    if (category) {
+      filtered = filtered.filter((guide) => guide.category === category);
+    }
+
+    return filtered;
+  }, [guides, searchQuery, category]);
 
   React.useEffect(() => {
     onResultCountChange?.(filteredGuides.length);

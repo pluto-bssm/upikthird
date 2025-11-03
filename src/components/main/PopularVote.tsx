@@ -54,10 +54,7 @@ export default function PopularVote() {
   return (
     <>
       {votes.map((v) => (
-        <CardContainer
-          key={v.id}
-          onClick={() => router.push(`/vote/${v.id}`)}
-        >
+        <CardContainer key={v.id} onClick={() => router.push(`/vote/${v.id}`)}>
           <Thumbnail>
             <Image
               src={getThumbnailImage(v.category ?? "")}

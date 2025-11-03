@@ -19,25 +19,25 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
 
   React.useEffect(() => {
     const fetchVote = async () => {
-        const data = await getVoteById(voteId);
-        if (data) {
-          setTitle(data.title ?? "");
-          setParticipant(data.totalResponses ?? 0);
-          const palette = [
-            "#FF3B3B",
-            "#FF9F1C",
-            "#FFBE3C",
-            "#58CCFF",
-            "#7C5CFF",
-            "#00C896",
-          ];
-          const mapped = (data.options ?? []).map((opt: any, idx: number) => ({
-            label: opt.content,
-            value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
-            fill: palette[idx % palette.length],
-          }));
-          setBars(mapped);
-        }
+      const data = await getVoteById(voteId);
+      if (data) {
+        setTitle(data.title ?? "");
+        setParticipant(data.totalResponses ?? 0);
+        const palette = [
+          "#FF3B3B",
+          "#FF9F1C",
+          "#FFBE3C",
+          "#58CCFF",
+          "#7C5CFF",
+          "#00C896",
+        ];
+        const mapped = (data.options ?? []).map((opt: any, idx: number) => ({
+          label: opt.content,
+          value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
+          fill: palette[idx % palette.length],
+        }));
+        setBars(mapped);
+      }
     };
     if (voteId) fetchVote();
   }, [voteId]);

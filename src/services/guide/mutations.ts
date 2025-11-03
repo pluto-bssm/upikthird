@@ -1,12 +1,17 @@
-export const REVOTE_MUTATION = `
-mutation RevoteMutation($input: CreateRevoteRequestInput!) {
+export const CREATE_REVOTE = `
+mutation CreateRevote($input: CreateRevoteInput!) {
   revote {
-    createRevoteRequest(input: $input) {
+    createRevote(
+      input: $input
+    ) {
       createdAt
       detailReason
       guideId
       id
       reason
+      status
+      statusDescription
+      updatedAt
       userId
     }
   }

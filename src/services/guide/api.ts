@@ -8,12 +8,18 @@ import {
   GET_MOST_POPULAR_OPEN_VOTE,
   TOGGLE_BOOKMARK,
 } from "@/services/guide/queries";
-import { REVOTE_MUTATION } from "@/services/guide/mutations";
+import { CREATE_REVOTE } from "@/services/guide/mutations";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
-import type { Guide, SimilarGuide, Page, Vote } from "@/types/api";
+import type {
+  Guide,
+  SimilarGuide,
+  Page,
+  Vote,
+  CreateRevoteInput,
+  CreateRevotePayload,
+} from "@/types/api";
 
-// GuideDetail and PaginatedGuides shape are derived from shared types
 export type GuideDetail = Guide & {
   guideType?: string;
   likeCount?: number;
@@ -248,30 +254,15 @@ export async function toggleBookmark(guideId: string): Promise<boolean> {
   return result ?? false;
 }
 
-/**
- * 재투표 요청 생성
- */
-export interface CreateRevoteRequestInput {
-  guideId: string;
-  reason: string;
-  detailReason: string;
-}
-
-export interface CreateRevoteRequestResponse {
-  id: string;
-  guideId: string;
-  reason: string;
-  detailReason: string;
-  userId: string;
-  createdAt: string;
-}
-
-export async function createRevoteRequest(input: CreateRevoteRequestInput): Promise<CreateRevoteRequestResponse> {
+//재투표 요청
+export async function createRevote(
+  input: CreateRevoteInput,
+): Promise<CreateRevotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
     "",
     {
-      query: REVOTE_MUTATION,
+      query: CREATE_REVOTE,
       variables: { input },
     } as GraphQLRequest,
     {
@@ -280,9 +271,5 @@ export async function createRevoteRequest(input: CreateRevoteRequestInput): Prom
       },
     },
   );
-  const result = response.data?.data?.revote?.createRevoteRequest;
-  if (!result) {
-    throw new Error("Failed to create revote request");
-  }
-  return result;
-} 
+  return response.data?.data?.revote?.createRevote;
+}

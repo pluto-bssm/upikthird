@@ -7,9 +7,7 @@ import { useEffect, useState } from "react";
 import { Nexts, Logo as LogoIcon, ProfileIcon } from "@/../public/svg/svg";
 import { useRouter } from "next/navigation";
 import ReportCard from "@/components/dashboard/ReportCard";
-import { upik } from "@/apis";
-import { API } from "@/constants/common/constant";
-import { GET_ALL_REPORTS } from "@/graphql/queries";
+import { getAllReports } from "@/services/dashboard/api";
 
 type ReportSummary = {
   authorId: string;
@@ -40,10 +38,7 @@ const Dashboard = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await upik.post(API.GRAPHQL_URL, {
-          query: GET_ALL_REPORTS,
-        });
-        const data = res.data?.data?.report?.getAllReports || [];
+        const data = await getAllReports();
         if (mounted) setReports(data);
       } catch (e) {
         if (mounted)

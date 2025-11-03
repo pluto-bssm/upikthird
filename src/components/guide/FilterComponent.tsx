@@ -13,7 +13,6 @@ export default function FilterComponent({
   setIsOpen,
   onChange,
 }: Props) {
-
   const [selectedValue, setSelectedValue] = useState("가이드 제작일 기준");
   const items = useMemo(
     () => [

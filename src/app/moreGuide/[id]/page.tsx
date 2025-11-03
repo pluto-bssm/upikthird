@@ -40,17 +40,17 @@ const MoreGuidePage = () => {
 
   React.useEffect(() => {
     const fetchGuide = async () => {
-        const data = await getGuideById(guideId);
-        if (data) {
-          setGuide({
-            id: data.id,
-            title: data.title,
-            createdAt: data.createdAt,
-            category: data.category,
-            content: data.content,
-            voteId: data.voteId ?? null,
-          });
-        }
+      const data = await getGuideById(guideId);
+      if (data) {
+        setGuide({
+          id: data.id,
+          title: data.title,
+          createdAt: data.createdAt,
+          category: data.category,
+          content: data.content,
+          voteId: data.voteId ?? null,
+        });
+      }
     };
     if (guideId) fetchGuide();
   }, [guideId]);
