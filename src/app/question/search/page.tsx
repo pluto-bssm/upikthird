@@ -4,9 +4,50 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { BackArrow } from "../../../../public/svg/svg";
+import { QuestionList } from "@/components/question/QuestionList";
+import * as boardApi from "@/services/board/api";
+import type { Board } from "@/types/graphql";
 
 const SearchPage = () => {
   const [searchInput, setSearchInput] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState<Board[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [hasSearched, setHasSearched] = React.useState(false);
+
+  const handleSearch = React.useCallback(async () => {
+    if (!searchInput.trim()) {
+      setSearchResults([]);
+      setHasSearched(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setHasSearched(true);
+      const response = await boardApi.searchQuestions(searchInput.trim(), {
+        page: 0,
+        size: 50,
+      });
+      setSearchResults(response.content);
+    } catch (error) {
+      console.error("검색 실패:", error);
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [searchInput]);
+
+  React.useEffect(() => {
+    if (searchInput.trim()) {
+      const debounce = setTimeout(() => {
+        handleSearch();
+      }, 500);
+      return () => clearTimeout(debounce);
+    } else {
+      setSearchResults([]);
+      setHasSearched(false);
+    }
+  }, [searchInput, handleSearch]);
 
   return (
     <StyledSearchPage>
@@ -17,7 +58,7 @@ const SearchPage = () => {
         <SearchInputWrapper>
           <SearchInput
             type="text"
-            placeholder="원하는 가이드 검색하기"
+            placeholder="원하는 질문 검색하기"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             autoFocus
@@ -25,7 +66,16 @@ const SearchPage = () => {
         </SearchInputWrapper>
       </SearchHeader>
       <SearchContent>
-        <EmptyMessage>검색어를 입력해주세요</EmptyMessage>
+        {loading && <EmptyMessage>검색 중...</EmptyMessage>}
+        {!loading && !hasSearched && (
+          <EmptyMessage>검색어를 입력해주세요</EmptyMessage>
+        )}
+        {!loading && hasSearched && searchResults.length === 0 && (
+          <EmptyMessage>검색 결과가 없습니다</EmptyMessage>
+        )}
+        {!loading && searchResults.length > 0 && (
+          <QuestionList questions={searchResults} />
+        )}
       </SearchContent>
     </StyledSearchPage>
   );
@@ -105,17 +155,16 @@ const SearchContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   flex: 1;
-  padding: 20px;
-  gap: 16px;
+  width: 100%;
 `;
 
 const EmptyMessage = styled.p`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: ${color.black};
+  color: ${color.gray600};
   line-height: 1;
-  margin: 0;
+  margin: 40px 0;
+  text-align: center;
 `;

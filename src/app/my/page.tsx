@@ -94,10 +94,14 @@ const MyPage = () => {
       </StyledMyPage>
     );
   }
+    const handleClose = () => {
+        router.back();
+    };
 
-  return (
+
+    return (
     <StyledMyPage>
-      <Header types="close" text="" />
+        <Header types="close" text="투표 응답 내역" onClose={handleClose} />
       <MyPageContent>
         <ProfileBox
           name={user.name}

@@ -3,40 +3,17 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
 import Header from "@/components/common/header";
-import { PostListByUser } from "@/components/my/posts/PostListByUser";
+import { QuestionList } from "@/components/question/QuestionList";
 import color from "@/packages/design-system/src/color";
 import { useMyPosts } from "@/hooks/useMyPosts";
-
-interface UserPost {
-  id: string;
-  title: string;
-  author: string;
-  date: string;
-  bookmarkCount: number;
-  commentCount: number;
-}
 
 const UserPostsPage = () => {
   const router = useRouter();
   const { posts, loading, error } = useMyPosts();
-  void error;
-
-  const handlePostClick = (postId: string) => {
-    void postId;
-  };
 
   const handleClose = () => {
     router.back();
   };
-
-  if (loading) {
-    return (
-      <StyledUserPostsPage>
-        <Header types="close" text="작성 내역" onClose={handleClose} />
-        <LoadingText>로딩 중...</LoadingText>
-      </StyledUserPostsPage>
-    );
-  }
 
   if (error) {
     return (
@@ -47,20 +24,17 @@ const UserPostsPage = () => {
     );
   }
 
-  const displayPosts: UserPost[] = posts.map((post) => ({
-    id: post.id,
-    title: post.title,
-    author: post.author?.name || "알 수 없음",
-    date: new Date(post.createdAt).toLocaleString("ko-KR"),
-    bookmarkCount: post.likes || 0,
-    commentCount: post.commentCount || 0,
-  }));
-
   return (
     <StyledUserPostsPage>
       <Header types="close" text="작성 내역" onClose={handleClose} />
       <UserPostsPageContent>
-        <PostListByUser posts={displayPosts} onPostClick={handlePostClick} />
+        {loading ? (
+          <LoadingText>로딩 중...</LoadingText>
+        ) : posts.length === 0 ? (
+          <NoPostsText>작성한 게시글이 없습니다.</NoPostsText>
+        ) : (
+          <QuestionList questions={posts} />
+        )}
       </UserPostsPageContent>
     </StyledUserPostsPage>
   );
@@ -72,12 +46,15 @@ const StyledUserPostsPage = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  background-color: ${color.white};
+  min-height: 100vh;
   padding-top: 80px;
 `;
 
 const UserPostsPageContent = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const LoadingText = styled.p`
@@ -95,3 +72,12 @@ const ErrorText = styled.p`
   padding: 40px 20px;
   margin: 0;
 `;
+
+const NoPostsText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: ${color.gray600};
+  padding: 40px 20px;
+  margin: 0;
+`;
+

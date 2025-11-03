@@ -22,7 +22,7 @@ const QuestionPage = () => {
     return (
       <StyledQuestionPage>
         <Header types="question" text="질문 게시판" />
-        <ErrorText>질문 목록을 불러올 수 없습니다.</ErrorText>
+        <ErrorText>문제가 생겼어요! 잠시 기다려주세요 🥺</ErrorText>
       </StyledQuestionPage>
     );
   }
