@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import styled from "@emotion/styled";
 import { useSearchParams } from "next/navigation";
 import color from "@/packages/design-system/src/color";
 import UpikLogo from "@/../public/svg/UpikLogo";
 import { GoogleIcon } from "@/../public/svg/GoogleIcon";
 
-const LoginPage = () => {
+const LoginContent = () => {
   const searchParams = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -60,6 +60,14 @@ const LoginPage = () => {
         <FooterText>PLUTO</FooterText>
       </Footer>
     </Container>
+  );
+};
+
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 };
 
