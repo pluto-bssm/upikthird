@@ -3,34 +3,70 @@ export const GET_MY_VOTE_RESPONSES = `
     vote {
       getMyVotes {
         category
+        closureType
         finishedAt
         id
         hasVoted
+        participantThresxhold
         status
         title
-        totalResponses
-      }
-    }
-  }
-`;
-
-export const GET_VOTE_RESPONSE_DETAIL = `
-  query GetVoteDetail($id: ID!) {
-    vote {
-      getVoteById(id: $id) {
-        id
-        title
-        category
-        status
-        finishedAt
         totalResponses
         options {
           id
           content
-          votes
+          responseCount
           percentage
         }
       }
     }
   }
 `;
+
+export const GET_VOTE_RESPONSE_DETAIL = `
+  query GetVoteDetail {
+    vote {
+      getMyVotes {
+        id
+        title
+        category
+        status
+        closureType
+        participantThreshold
+        finishedAt
+        totalResponses
+        hasVoted
+        options {
+          id
+          content
+          responseCount
+          percentage
+        }
+      }
+    }
+  }
+`;
+
+export const GET_VOTE_RESPONSE_COUNT = `
+  query GetVoteResponseCount($voteId: ID!) {
+    voteResponse {
+      getVoteResponseCount(voteId: $voteId)
+    }
+  }
+`;
+
+export const GET_OPTION_RESPONSE_COUNT = `
+  query GetOptionResponseCount($optionId: ID!) {
+    voteResponse {
+      getOptionResponseCount(optionId: $optionId)
+    }
+  }
+`;
+
+export const HAS_USER_VOTED = `
+  query HasUserVoted($voteId: ID!) {
+    voteResponse {
+      hasUserVoted(voteId: $voteId)
+    }
+  }
+`;
+

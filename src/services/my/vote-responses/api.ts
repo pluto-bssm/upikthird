@@ -37,9 +37,7 @@ export async function getMyVoteResponses(): Promise<VotePayload[]> {
     },
   );
 
-  const data = response.data?.data?.vote?.getMyVotes || [];
-
-  return data;
+  return response.data?.data?.vote?.getMyVotes || [];
 }
 
 export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
@@ -49,7 +47,6 @@ export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
     API.GRAPHQL_URL,
     {
       query: GET_VOTE_RESPONSE_DETAIL,
-      variables: { id },
     } as GraphQLRequest,
     {
       headers: {
@@ -58,10 +55,12 @@ export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
     },
   );
 
-  const data = response.data?.data?.vote?.getVoteById;
-  if (!data) {
+  const myVotes = response.data?.data?.vote?.getMyVotes || [];
+  const voteData = myVotes.find((vote: VotePayload) => vote.id === id);
+
+  if (!voteData) {
     throw new Error("Vote detail not found");
   }
 
-  return data;
+  return voteData;
 }

@@ -5,10 +5,11 @@ export interface User {
   role: string;
   username: string;
 }
+
 export interface OptionWithStats {
   id: string;
   content: string;
-  votes: number;
+  responseCount: number;
   percentage: number;
 }
 
@@ -24,6 +25,9 @@ export interface VotePayload {
   options: OptionWithStats[];
   hasVoted: boolean;
   closureType?: VoteClosureType;
+  participantThreshold?: number;
+  mySelectedOptionId?: string;
+  myTailResponse?: string;
 }
 
 export interface MyVote {
