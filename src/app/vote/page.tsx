@@ -11,6 +11,7 @@ import { useAllVotes } from "@/hooks/useVotes";
 import { useState } from "react";
 import VoteSort from "@/components/vote/VoteSort";
 
+
 const Vote = () => {
   const router = useRouter();
   const { votes, loading, error, refetch } = useAllVotes();
