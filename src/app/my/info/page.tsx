@@ -60,7 +60,7 @@ const AccountInfoPage = () => {
 
   return (
     <StyledAccountInfoPage>
-        <Header types="close" text="내정보" onClose={handleClose} />
+      <Header types="close" text="내정보" onClose={handleClose} />
       <AccountInfoPageContent>
         <AccountInfoBox
           name={user.name}

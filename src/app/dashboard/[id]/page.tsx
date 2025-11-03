@@ -308,8 +308,8 @@ const ReportItem = styled.div<{ isSelected?: boolean }>`
   border-bottom: 1px solid ${color.gray200};
   background-color: ${({ isSelected }) =>
     isSelected ? color.gray50 : "transparent"};
-    border-radius: ${({ isSelected }) => (isSelected ? "8px" : "0")};
-  
+  border-radius: ${({ isSelected }) => (isSelected ? "8px" : "0")};
+
   &:last-child {
     border-bottom: none;
   }

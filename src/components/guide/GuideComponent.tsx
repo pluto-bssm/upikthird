@@ -24,14 +24,6 @@ const getThumbnailImage = (category: string) => {
   }
 };
 
-const getLikeCount = (item: unknown): number => {
-  const it = item as Record<string, unknown>;
-  const maybeLike = it.like ?? it.likeCount;
-  if (typeof maybeLike === "number") return maybeLike;
-  if (typeof maybeLike === "string") return Number(maybeLike) || 0;
-  return 0;
-};
-
 interface GuideComponentProps {
   searchQuery?: string;
   onResultCountChange?: (count: number) => void;

@@ -46,7 +46,9 @@ export default function PopularVote() {
           totalResponses: v.totalResponses,
         }));
         setVotes(mapped);
-      } catch (e) {}
+      } catch (e) {
+        console.error("인기 투표를 불러오는 중 오류가 발생했습니다." + e);
+      }
     };
     fetchMostPopular();
   }, []);

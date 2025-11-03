@@ -42,28 +42,28 @@ const SavedGuidePage = () => {
         {!loading && error && (
           <NoResultsMessage>가이드를 불러올 수 없습니다.</NoResultsMessage>
         )}
-        {!loading && !error && boardGuides && boardGuides.length > 0 ? (
-          boardGuides.map((guide, index) => (
-            <GuideCard key={index} onClick={() => handleGuideClick(guide.id)}>
-              <Thumnail>
-                <Image
-                  src={getThumbnailImage(guide.category ?? "전체")}
-                  alt={guide.category ?? "전체"}
-                  width={20}
-                  height={20}
-                />
-              </Thumnail>
-              <GuideText>
-                <GuideTitle>{guide.title}</GuideTitle>
-                <OtherInfo>
-                  <GuideTag>{guide.category}</GuideTag>
-                  <Bookmark width="12px" height="12px" />
-                  <MarkCount>{guide.like ?? 0}</MarkCount>
-                </OtherInfo>
-              </GuideText>
-            </GuideCard>
-          ))
-        ) : null}
+        {!loading && !error && boardGuides && boardGuides.length > 0
+          ? boardGuides.map((guide, index) => (
+              <GuideCard key={index} onClick={() => handleGuideClick(guide.id)}>
+                <Thumnail>
+                  <Image
+                    src={getThumbnailImage(guide.category ?? "전체")}
+                    alt={guide.category ?? "전체"}
+                    width={20}
+                    height={20}
+                  />
+                </Thumnail>
+                <GuideText>
+                  <GuideTitle>{guide.title}</GuideTitle>
+                  <OtherInfo>
+                    <GuideTag>{guide.category}</GuideTag>
+                    <Bookmark width="12px" height="12px" />
+                    <MarkCount>{guide.like ?? 0}</MarkCount>
+                  </OtherInfo>
+                </GuideText>
+              </GuideCard>
+            ))
+          : null}
         {!loading && !error && (!boardGuides || boardGuides.length === 0) && (
           <NoResultsMessage>저장한 가이드가 없어요</NoResultsMessage>
         )}

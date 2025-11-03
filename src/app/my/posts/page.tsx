@@ -80,4 +80,3 @@ const NoPostsText = styled.p`
   padding: 40px 20px;
   margin: 0;
 `;
-

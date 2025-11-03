@@ -27,34 +27,43 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
     const fetchVote = async () => {
       try {
         setError(null);
-      const data = await getVoteById(voteId);
-      if (data) {
-        setTitle(data.title ?? "");
-        setParticipant(data.totalResponses ?? 0);
-        const palette = [
-          "#FF3B3B",
-          "#FF9F1C",
-          "#FFBE3C",
-          "#58CCFF",
-          "#7C5CFF",
-          "#00C896",
-        ];
-        const mapped = (data.options ?? []).map((opt: VoteOption, idx: number) => ({
-          label: opt.content,
-          value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
-          fill: palette[idx % palette.length],
-        }));
-        setBars(mapped);
-      }
-    } catch (err) {
+        const data = await getVoteById(voteId);
+        if (data) {
+          setTitle(data.title ?? "");
+          setParticipant(data.totalResponses ?? 0);
+          const palette = [
+            "#FF3B3B",
+            "#FF9F1C",
+            "#FFBE3C",
+            "#58CCFF",
+            "#7C5CFF",
+            "#00C896",
+          ];
+          const mapped = (data.options ?? []).map(
+            (opt: VoteOption, idx: number) => ({
+              label: opt.content,
+              value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
+              fill: palette[idx % palette.length],
+            }),
+          );
+          setBars(mapped);
+        }
+      } catch (err) {
         setError("투표 데이터를 불러오는데 실패했습니다.");
+        console.error("Error fetching vote data:", err);
       }
     };
     if (voteId) fetchVote();
   }, [voteId]);
 
   if (error) {
-    return <ChartCard><CardBody><div>{error}</div></CardBody></ChartCard>;
+    return (
+      <ChartCard>
+        <CardBody>
+          <div>{error}</div>
+        </CardBody>
+      </ChartCard>
+    );
   }
 
   return (

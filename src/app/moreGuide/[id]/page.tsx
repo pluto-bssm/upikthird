@@ -7,7 +7,11 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
-import { getGuideById, toggleBookmark, isGuideBookmarked } from "@/services/guide/api";
+import {
+  getGuideById,
+  toggleBookmark,
+  isGuideBookmarked,
+} from "@/services/guide/api";
 import Image from "next/image";
 
 const getThumbnailImage = (category: string) => {
@@ -55,6 +59,9 @@ const MoreGuidePage = () => {
           setBookmarked(isBookmarked);
         } catch (_error) {
           setBookmarked(false);
+          console.error(
+            "북마크 상태를 불러오는 중 오류가 발생했습니다." + _error,
+          );
         }
       }
     };
@@ -69,10 +76,9 @@ const MoreGuidePage = () => {
         onToggleBookmark={async () => {
           try {
             const next = await toggleBookmark(guideId);
-            setBookmarked((prev) =>
-              typeof next === "boolean" ? next : prev,
-            );
+            setBookmarked((prev) => (typeof next === "boolean" ? next : prev));
           } catch (_error) {
+            console.error("북마크 토글 중 오류가 발생했습니다." + _error);
           }
         }}
       />
