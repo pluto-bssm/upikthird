@@ -1,19 +1,25 @@
 "use client";
 
 import styled from "@emotion/styled";
+import { useRouter } from "next/navigation";
 import color from "@/packages/design-system/src/color";
 import Header from "@/components/common/header";
 import AccountInfoBox from "@/components/my/info/AccountInfoBox";
 import { useCurrentUser } from "@/hooks/useAccount";
 
 const AccountInfoPage = () => {
+  const router = useRouter();
   const { user, loading, error } = useCurrentUser();
   void error;
+
+  const handleClose = () => {
+    router.back();
+  };
 
   if (loading) {
     return (
       <StyledAccountInfoPage>
-        <Header types="close" text="" />
+        <Header types="close" text="내정보" onClose={handleClose} />
         <LoadingText>로딩 중...</LoadingText>
       </StyledAccountInfoPage>
     );
@@ -22,7 +28,7 @@ const AccountInfoPage = () => {
   if (error || !user) {
     return (
       <StyledAccountInfoPage>
-        <Header types="close" text="" />
+        <Header types="close" text="내정보" onClose={handleClose} />
         <ErrorText>계정 정보를 불러올 수 없습니다.</ErrorText>
       </StyledAccountInfoPage>
     );
@@ -54,7 +60,7 @@ const AccountInfoPage = () => {
 
   return (
     <StyledAccountInfoPage>
-      <Header types="register" />
+        <Header types="close" text="내정보" onClose={handleClose} />
       <AccountInfoPageContent>
         <AccountInfoBox
           name={user.name}

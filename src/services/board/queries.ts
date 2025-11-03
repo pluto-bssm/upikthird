@@ -92,7 +92,28 @@ export const GET_COMMENTS = `query MyQuery($boardId: ID!, $page: Int!, $size: In
   }
 }`;
 
-export const SEARCH_QUESTIONS = `query SearchQuestions($keyword: String!, $page: Int!, $size: Int!) { board { searchQuestions(keyword: $keyword, page: $page, size: $size) { content { id title content category status createdAt updatedAt views likes commentCount author { id name } } totalPages totalElements currentPage pageSize } } }`;
+export const SEARCH_QUESTIONS = `query SearchQuestions($keyword: String!, $page: Int!, $size: Int!) {
+  board {
+    searchQuestions(keyword: $keyword, page: $page, size: $size) {
+      content {
+        bookmarkCount
+        commentCount
+        content
+        createdAt
+        id
+        title
+        updatedAt
+        isBookmarked
+        userId
+        userName
+        userProfileImage
+        viewCount
+      }
+      totalElements
+      totalPages
+    }
+  }
+}`;
 
 export const GET_REPORTS_BY_TARGET = `query GetReportsByTarget($targetId: ID!) {
   report {

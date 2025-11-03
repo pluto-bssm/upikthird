@@ -167,10 +167,41 @@ export async function searchQuestions(
     variables: { keyword, page: pagination.page, size: pagination.size },
   } as GraphQLRequest);
 
-  const data = response.data?.data?.board?.searchQuestions;
-  if (!data) {
-    throw new Error("Failed to search questions");
-  }
+  const questions = response.data?.data?.board?.searchQuestions?.content || [];
+  const totalPages =
+    response.data?.data?.board?.searchQuestions?.totalPages || 1;
+  const totalElements =
+    response.data?.data?.board?.searchQuestions?.totalElements ||
+    questions.length;
+
+  const data: PageResponse<Board> = {
+    content: questions.map((q: unknown) => {
+      const qq = q as Record<string, unknown>;
+      return {
+        id: String(qq.id ?? ""),
+        title: String(qq.title ?? ""),
+        content: String(qq.content ?? ""),
+        createdAt: String(qq.createdAt ?? new Date().toISOString()),
+        updatedAt: String(qq.updatedAt ?? ""),
+        author: {
+          id: String(qq.userId ?? ""),
+          name: String(qq.userName ?? ""),
+          avatar: String(qq.userProfileImage ?? ""),
+        },
+        views: Number(qq.viewCount ?? 0) || 0,
+        likes: 0,
+        commentCount: Number(qq.commentCount ?? 0) || 0,
+        status: "OPEN",
+        isBookmarked: Boolean(qq.isBookmarked),
+        bookmarkCount: Number(qq.bookmarkCount ?? 0) || 0,
+      } as Board;
+    }),
+    totalPages: totalPages,
+    totalElements: totalElements,
+    currentPage: pagination.page,
+    pageSize: pagination.size,
+  };
+
   return data;
 }
 
