@@ -6,23 +6,12 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Bookmark } from "../../../public/svg/svg";
 import Image from "next/image";
-import { upik } from "@/apis";
-import { GET_ALL_GUIDES } from "@/graphql/queries";
+import * as guideApi from "@/services/guide/api";
+import type { Guide } from "@/types/api";
 
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
-
-interface GuideItem {
-  id: string | number;
-  title: string;
-  category: string;
-  content?: string;
-  like?: number;
-  createdAt?: string;
+type GuideItem = Guide & {
   voteId?: string | null;
-}
+};
 
 const getThumbnailImage = (category: string) => {
   switch (category) {
@@ -30,10 +19,8 @@ const getThumbnailImage = (category: string) => {
       return "/svg/images/School.png";
     case "유머":
       return "/svg/images/Humors.png";
-    case "기숙사생활":
+    case "기숙사":
       return "/svg/images/MakeSchool.png";
-    default:
-      return "/svg/images/School.png";
   }
 };
 
@@ -50,6 +37,7 @@ interface GuideComponentProps {
   onResultCountChange?: (count: number) => void;
   sortBy?: "like" | "date";
   limit?: number;
+  category?: string | null;
 }
 
 const GuideComponent = ({
@@ -57,13 +45,14 @@ const GuideComponent = ({
   onResultCountChange,
   sortBy = "date",
   limit = 50,
+  category = null,
 }: GuideComponentProps) => {
   const router = useRouter();
   const [guides, setGuides] = React.useState<GuideItem[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  const handleGuideClick = (guideId: string | number) => {
+  const handleGuideClick = (guideId: string) => {
     router.push(`/moreGuide/${guideId}`);
   };
 
@@ -73,23 +62,20 @@ const GuideComponent = ({
       setError(null);
       const sortField = sortBy === "like" ? "like" : "createdAt";
       const requestedSize = sortBy === "like" ? Math.max(limit, 50) : limit;
-      const response = await upik.post("", {
-        query: GET_ALL_GUIDES,
-        variables: {
-          page: 0,
-          size: requestedSize,
-          sortBy: `${sortField},desc`,
-        },
-      } as GraphQLRequest);
 
-      let content: GuideItem[] =
-        response?.data?.data?.getAllGuides?.content ?? [];
+      const response = await guideApi.getPaginatedGuides(
+        0,
+        requestedSize,
+        `${sortField},desc`,
+      );
+
+      let content: GuideItem[] = response.content ?? [];
 
       if (sortBy === "like") {
         content = [...content]
           .sort((a, b) => {
-            const aLike = getLikeCount(a);
-            const bLike = getLikeCount(b);
+            const aLike = a.like ?? a.likeCount ?? 0;
+            const bLike = b.like ?? b.likeCount ?? 0;
             return bLike - aLike;
           })
           .slice(0, limit);
@@ -116,13 +102,17 @@ const GuideComponent = ({
     fetchGuides();
   }, [fetchGuides]);
 
-  const filteredGuides = React.useMemo(
-    () =>
-      guides.filter((guide) =>
-        (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
-      ),
-    [guides, searchQuery],
-  );
+  const filteredGuides = React.useMemo(() => {
+    let filtered = guides.filter((guide) =>
+      (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+
+    if (category) {
+      filtered = filtered.filter((guide) => guide.category === category);
+    }
+
+    return filtered;
+  }, [guides, searchQuery, category]);
 
   React.useEffect(() => {
     onResultCountChange?.(filteredGuides.length);
@@ -142,8 +132,8 @@ const GuideComponent = ({
                 >
                   <Thumnail>
                     <Image
-                      src={getThumbnailImage(guide.category)}
-                      alt={guide.category}
+                      src={getThumbnailImage(guide.category ?? "전체") ?? ""}
+                      alt={guide.category ?? "전체"}
                       width={20}
                       height={20}
                     />
@@ -153,7 +143,9 @@ const GuideComponent = ({
                     <OtherInfo>
                       <GuideTag>{guide.category}</GuideTag>
                       <Bookmark width="12px" height="12px" />
-                      <MarkCount>{getLikeCount(guide)}</MarkCount>
+                      <MarkCount>
+                        {guide.like ?? guide.likeCount ?? 0}
+                      </MarkCount>
                       <BookmarkIcon />
                     </OtherInfo>
                   </GuideText>

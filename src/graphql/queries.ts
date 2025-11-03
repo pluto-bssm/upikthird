@@ -626,3 +626,38 @@ mutation OptionGenerator($guideId: ID!, $reason: String!, $reporterName: String!
   }
 }
 `;
+
+//대시보드 쿼리
+export const GET_ALL_REPORTS = `
+query GetAllReports {
+  report {
+    getAllReports {
+      authorId
+      authorName
+      category
+      content
+      createdAt
+      guideType
+      likeCount
+      reason
+      revoteCount
+      targetCreatedAt
+      targetId
+      targetTitle
+      targetType
+      userId
+    }
+  }
+}
+`;
+
+//신고반려 쿼리 뮤테이션
+export const REJECT_REPORT = `
+mutation RejectReport($targetId: ID!, $userId: ID!) {
+  report {
+    rejectReport(targetId: $targetId, userId: $userId) {
+      message
+    }
+  }
+}
+`;

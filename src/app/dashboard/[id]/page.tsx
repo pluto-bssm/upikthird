@@ -3,104 +3,92 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import { useEffect, useMemo, useState } from "react";
 import { Logo as LogoIcon, Nexts, ProfileIcon } from "@/../public/svg/svg";
 import { useParams, useRouter } from "next/navigation";
+import ReportCard from "@/components/dashboard/ReportCard";
+import {
+  getAllReports,
+  getReportsByTarget,
+  rejectReport,
+} from "@/services/dashboard/api";
 
-const reportDetailsData: Record<
-  string,
-  {
-    id: number;
-    reason: string;
-    reasonDetail: string;
-    detailContent: string;
-    reporterId: string;
-    reporterName: string;
-    targetId: string;
-    targetName: string;
-    targetType: string;
-  }
-> = {
-  "1": {
-    id: 1,
-    reason: "신고 사유",
-    reasonDetail: "욕설/생명경시/혐오 표현이 사용되었어요",
-    detailContent:
-      "욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설",
-    reporterId: "fake_user_id1",
-    reporterName: "김땡땡",
-    targetId: "fake_user_id2",
-    targetName: "박땡땡",
-    targetType: "가이드",
-  },
-  "2": {
-    id: 2,
-    reason: "신고 사유",
-    reasonDetail: "욕설/생명경시/혐오 표현이 사용되었어요",
-    detailContent:
-      "욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설",
-    reporterId: "fake_user_id1",
-    reporterName: "김땡땡",
-    targetId: "fake_user_id2",
-    targetName: "박땡땡",
-    targetType: "가이드",
-  },
-  "3": {
-    id: 3,
-    reason: "신고 사유",
-    reasonDetail: "욕설/생명경시/혐오 표현이 사용되었어요",
-    detailContent:
-      "욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설",
-    reporterId: "fake_user_id1",
-    reporterName: "김땡땡",
-    targetId: "fake_user_id2",
-    targetName: "박땡땡",
-    targetType: "가이드",
-  },
-  "4": {
-    id: 4,
-    reason: "신고 사유",
-    reasonDetail: "욕설/생명경시/혐오 표현이 사용되었어요",
-    detailContent:
-      "욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설",
-    reporterId: "fake_user_id1",
-    reporterName: "김땡땡",
-    targetId: "fake_user_id2",
-    targetName: "박땡땡",
-    targetType: "가이드",
-  },
-  "5": {
-    id: 5,
-    reason: "신고 사유",
-    reasonDetail: "욕설/생명경시/혐오 표현이 사용되었어요",
-    detailContent:
-      "욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설",
-    reporterId: "fake_user_id1",
-    reporterName: "김땡땡",
-    targetId: "fake_user_id2",
-    targetName: "박땡땡",
-    targetType: "가이드",
-  },
-  "6": {
-    id: 6,
-    reason: "신고 사유",
-    reasonDetail: "욕설/생명경시/혐오 표현이 사용되었어요",
-    detailContent:
-      "욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설 욕설",
-    reporterId: "fake_user_id1",
-    reporterName: "김땡땡",
-    targetId: "fake_user_id2",
-    targetName: "박땡땡",
-    targetType: "가이드",
-  },
+type ReportItem = {
+  authorId: string;
+  authorName: string;
+  category: string;
+  content: string;
+  createdAt: string;
+  guideType?: string;
+  likeCount?: number;
+  reason: string;
+  revoteCount?: number;
+  targetCreatedAt?: string;
+  targetId: string;
+  targetTitle: string;
+  targetType: string;
+  userId?: string;
 };
 
 const DashboardDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
-  const report = reportDetailsData[id];
+  const [allReports, setAllReports] = useState<ReportItem[]>([]);
+  const [items, setItems] = useState<ReportItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingAll, setLoadingAll] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [errorAll, setErrorAll] = useState<string | null>(null);
+  const [rejecting, setRejecting] = useState<boolean>(false);
 
-  if (!report) {
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setLoadingAll(true);
+        setErrorAll(null);
+        const data = await getAllReports();
+        if (mounted) setAllReports(data);
+      } catch (e) {
+        if (mounted)
+          setErrorAll(
+            e instanceof Error ? e.message : "신고 내역을 불러오지 못했습니다.",
+          );
+      } finally {
+        if (mounted) setLoadingAll(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getReportsByTarget(id);
+        if (mounted) setItems(data);
+      } catch (e) {
+        if (mounted)
+          setError(
+            e instanceof Error ? e.message : "신고 상세를 불러오지 못했습니다.",
+          );
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [id]);
+
+  const report = useMemo(() => items[0], [items]);
+
+  if (!loading && !report) {
     return (
       <PageContainer>
         <TopHeader>
@@ -110,18 +98,49 @@ const DashboardDetailPage = () => {
           </ProfileIconWrapper>
         </TopHeader>
         <MainContent>
-          <ErrorMessage>신고 내역을 찾을 수 없습니다.</ErrorMessage>
+          <ErrorMessage>
+            {error || "신고 내역을 찾을 수 없습니다."}
+          </ErrorMessage>
         </MainContent>
       </PageContainer>
     );
   }
 
-  const handleReject = () => {};
+  const handleReject = async () => {
+    if (!report || !report.targetId || !report.userId) {
+      alert("신고 정보가 없습니다.");
+      return;
+    }
 
-  const handleAccept = () => {};
+    if (!confirm("신고를 반려하시겠습니까?")) {
+      return;
+    }
 
-  const handleReportClick = (reportId: string) => {
-    router.push(`/dashboard/${reportId}`);
+    try {
+      setRejecting(true);
+      const message = await rejectReport(report.targetId, report.userId);
+
+      if (message) {
+        alert(message);
+      } else {
+        alert("신고가 반려되었습니다.");
+      }
+
+      const allData = await getAllReports();
+      setAllReports(allData);
+
+      router.push("/dashboard");
+    } catch (e) {
+      alert(
+        e instanceof Error ? e.message : "신고 반려 중 오류가 발생했습니다.",
+      );
+    } finally {
+      setRejecting(false);
+    }
+  };
+
+  const handleReportClick = (targetId: string) => {
+    router.push(`/dashboard/${targetId}`);
   };
 
   return (
@@ -135,72 +154,90 @@ const DashboardDetailPage = () => {
 
       <MainContent>
         <CardContainer>
-          <ReportCard>
-            <CardTitle>신고 내역 보기</CardTitle>
+          <ReportCard
+            title="신고 내역 보기"
+            variant="gray"
+            titleAlign="center"
+            scrollable
+            maxHeight={520}
+            style={{ flex: 1 }}
+          >
             <ReportList>
-              {Object.entries(reportDetailsData).map(
-                ([reportId, reportData]) => (
+              {loadingAll && <ReportDetails>불러오는 중…</ReportDetails>}
+              {errorAll && <ReportDetails>{errorAll}</ReportDetails>}
+              {!loadingAll &&
+                !errorAll &&
+                allReports.map((r: ReportItem, idx: number) => (
                   <ReportItem
-                    key={reportData.id}
-                    onClick={() => handleReportClick(reportId)}
+                    key={`${r.targetType}-${r.targetId}-${r.createdAt}-${idx}`}
+                    onClick={() => handleReportClick(String(r.targetId))}
+                    isSelected={String(r.targetId) === id}
                   >
                     <ReportContent>
-                      <ReportReason>{reportData.reason}</ReportReason>
+                      <ReportReason>{r.reason}</ReportReason>
                       <ReportDetails>
-                        신고자: {reportData.reporterName} &nbsp;&nbsp;신고자
-                        대상: {reportData.targetType}
+                        신고자: {r.authorName} &nbsp;&nbsp;신고 대상:{" "}
+                        {r.targetType}
                       </ReportDetails>
                     </ReportContent>
 
                     <ReportMeta>
-                      <Timestamp>2025-06-12 09:12</Timestamp>
+                      <Timestamp>
+                        {new Date(r.createdAt).toLocaleString("ko-KR")}
+                      </Timestamp>
                       <ArrowIcon>
                         <Nexts width="24" height="24" />
                       </ArrowIcon>
                     </ReportMeta>
                   </ReportItem>
-                ),
-              )}
+                ))}
             </ReportList>
           </ReportCard>
 
-          <ReportCard>
-            <CardTitle>신고 내용 상세보기</CardTitle>
+          <ReportCard
+            title="신고 내용 상세보기"
+            variant="gray"
+            titleAlign="center"
+            scrollable
+            maxHeight={520}
+            style={{ flex: 1 }}
+          >
             <DetailSection>
               <DetailLabel>신고 사유</DetailLabel>
-              <DetailContentBox>{report.reasonDetail}</DetailContentBox>
+              <DetailContentBox>{report?.reason || "-"}</DetailContentBox>
             </DetailSection>
 
             <DetailSection>
               <DetailLabel>상세 내용</DetailLabel>
-              <DetailContentBox>{report.detailContent}</DetailContentBox>
+              <DetailContentBox>{report?.content || "-"}</DetailContentBox>
             </DetailSection>
 
             <DetailSection>
               <DetailOtherLabel>신고자 아이디/이름</DetailOtherLabel>
               <DetailOtherText>
-                {report.reporterId}/{report.reporterName}
+                {report?.authorId}/{report?.authorName}
               </DetailOtherText>
             </DetailSection>
 
             <DetailSection>
               <DetailOtherLabel>신고 대상자 아이디/이름</DetailOtherLabel>
               <DetailOtherText>
-                {report.targetId}/{report.targetName}
+                {report?.targetId}/{report?.targetTitle}
               </DetailOtherText>
             </DetailSection>
 
             <DetailSection>
               <DetailOtherLabel>신고 대상</DetailOtherLabel>
-              <DetailOtherText>{report.targetType}</DetailOtherText>
+              <DetailOtherText>{report?.targetType}</DetailOtherText>
             </DetailSection>
 
             <ButtonContainer>
-              <ActionButton buttonType="reject" onClick={handleReject}>
-                신고 반려하기
-              </ActionButton>
-              <ActionButton buttonType="addWarning" onClick={handleAccept}>
-                경고 횟수 추가하기
+              <ActionButton
+                buttonType="reject"
+                onClick={handleReject}
+                disabled={rejecting}
+              >
+                {rejecting ? "처리 중..." : "신고 반려하기"}
               </ActionButton>
             </ButtonContainer>
           </ReportCard>
@@ -248,28 +285,10 @@ const MainContent = styled.div`
 
 const CardContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 40px;
   width: 100%;
   max-width: 1200px;
   align-items: flex-start;
-`;
-
-const ReportCard = styled.div`
-  flex: 1;
-  background-color: ${color.gray50};
-  border-radius: 32px;
-  border: 1px solid ${color.gray300};
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const CardTitle = styled.h1`
-  ${font.D1};
-  color: ${color.black};
-  margin: 0 0 24px 0;
-  text-align: center;
 `;
 
 const ReportList = styled.div`
@@ -279,16 +298,24 @@ const ReportList = styled.div`
   gap: 0;
 `;
 
-const ReportItem = styled.div`
+const ReportItem = styled.div<{ isSelected?: boolean }>`
   width: 100%;
   padding: 20px 0;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid ${color.gray200};
+  background-color: ${({ isSelected }) =>
+    isSelected ? color.gray50 : "transparent"};
+    border-radius: ${({ isSelected }) => (isSelected ? "8px" : "0")};
+  
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${color.gray50};
     border-radius: 8px;
   }
 `;
@@ -337,6 +364,7 @@ const DetailSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 16px 0;
 `;
 
 const DetailLabel = styled.p`
@@ -371,9 +399,14 @@ const ActionButton = styled.button<{ buttonType: "reject" | "addWarning" }>`
   background-color: ${color.gray200};
   color: ${color.white};
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${color.primary};
     color: ${color.white};
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 

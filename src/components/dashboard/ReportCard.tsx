@@ -3,80 +3,78 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { Nexts } from "@/../public/svg/svg";
-import { useRouter } from "next/navigation";
+import React from "react";
 
-export interface NotificationItemProps {
-  id: string;
+type Variant = "white" | "gray";
+
+type ReportCardProps = React.PropsWithChildren<{
   title: string;
-  reporter: string;
-  target: string;
-  date: string;
-}
+  variant?: Variant;
+  titleAlign?: "left" | "center";
+  scrollable?: boolean;
+  maxHeight?: number;
+  maxWidth?: number;
+  style?: React.CSSProperties;
+  className?: string;
+}>;
 
-const NotificationItem = ({
-  id,
+const ReportCard = ({
   title,
-  reporter,
-  target,
-  date,
-}: NotificationItemProps) => {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/dashboard/${id}`);
-  };
-
+  variant = "white",
+  titleAlign = "left",
+  scrollable = false,
+  maxHeight,
+  maxWidth,
+  children,
+  style,
+  className,
+}: ReportCardProps) => {
   return (
-    <ItemContainer onClick={handleClick}>
-      <ContentWrapper>
-        <TitleText>{title}</TitleText>
-        <SubtitleText>
-          신고자: {reporter} · 신고자 대상: {target}
-        </SubtitleText>
-      </ContentWrapper>
-      <RightSection>
-        <DateText>{date}</DateText>
-        <Nexts width="20" height="20" />
-      </RightSection>
-    </ItemContainer>
+    <CardRoot
+      variant={variant}
+      style={{ maxWidth, ...style }}
+      className={className}
+    >
+      <CardTitle titleAlign={titleAlign}>{title}</CardTitle>
+      <CardBody scrollable={scrollable} maxHeight={maxHeight}>
+        {children}
+      </CardBody>
+    </CardRoot>
   );
 };
 
-export default NotificationItem;
+export default ReportCard;
 
-const ItemContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 0;
-  border-bottom: 1px solid ${color.gray300};
-`;
-
-const ContentWrapper = styled.div`
+const CardRoot = styled.div<{ variant: Variant }>`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 0;
+  width: 100%;
+  border-radius: 20px;
+  ${(p) =>
+    p.variant === "white"
+      ? `background-color: ${color.white};
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+         padding: 32px 24px;`
+      : `background-color: ${color.gray50};
+         border-radius: 32px;
+         border: 1px solid ${color.gray300};
+         padding: 32px;`}
 `;
 
-const TitleText = styled.p`
-  ${font.D3};
+const CardTitle = styled.h1<{ titleAlign: "left" | "center" }>`
+  ${font.D1};
   color: ${color.black};
+  margin: 0 0 24px 0;
+  text-align: ${(p) => p.titleAlign};
 `;
 
-const SubtitleText = styled.p`
-  ${font.H3};
-  color: ${color.gray500};
-`;
-
-const RightSection = styled.div`
+const CardBody = styled.div<{ scrollable: boolean; maxHeight?: number }>`
   display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const DateText = styled.p`
-  ${font.caption};
-  color: ${color.gray400};
+  flex-direction: column;
+  gap: 0;
+  ${(p) =>
+    p.scrollable
+      ? `overflow-y: auto; ${p.maxHeight ? `max-height: ${p.maxHeight}px;` : ""}`
+      : ""}
 `;

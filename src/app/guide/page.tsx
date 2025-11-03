@@ -11,9 +11,19 @@ import FilterComponent from "@/components/guide/FilterComponent";
 const Guide = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState<"date" | "like">("date");
+  const categories = ["전체", "학교생활", "기숙사", "유머"];
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const selectedCategory = activeIdx === 0 ? null : categories[activeIdx];
+
   return (
     <GuideLayout>
-      <Header types={"default"} onOptionClick={() => setIsFilterOpen(true)} />
+      <Header
+        types={"default"}
+        activeIdx={activeIdx}
+        setActiveIdx={setActiveIdx}
+        onOptionClick={() => setIsFilterOpen(true)}
+      />
 
       <Section>
         <FilterComponent
@@ -21,7 +31,7 @@ const Guide = () => {
           setIsOpen={setIsFilterOpen}
           onChange={(next) => setSortBy(next)}
         />
-        <GuideComponent sortBy={sortBy} />
+        <GuideComponent sortBy={sortBy} category={selectedCategory} />
       </Section>
 
       <NavigationBar />

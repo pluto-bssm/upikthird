@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const Guide = () => {
+const GuideSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [resultCount, setResultCount] = useState(0);
@@ -58,7 +58,7 @@ const Guide = () => {
   );
 };
 
-export default Guide;
+export default GuideSearch;
 
 const GuideLayout = styled.div`
   width: 100%;

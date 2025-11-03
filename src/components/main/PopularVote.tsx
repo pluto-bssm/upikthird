@@ -4,9 +4,9 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Views } from "../../../public/svg/svg";
-import { upik } from "@/apis";
-import { GET_MOST_POPULAR_OPEN_VOTE } from "@/graphql/queries";
+import * as guideApi from "@/services/guide/api";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const getThumbnailImage = (category: string) => {
   switch (category) {
@@ -21,12 +21,8 @@ const getThumbnailImage = (category: string) => {
   }
 };
 
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
-
 export default function PopularVote() {
+  const router = useRouter();
   const [votes, setVotes] = React.useState<
     Array<{
       id: string;
@@ -40,49 +36,17 @@ export default function PopularVote() {
   React.useEffect(() => {
     const fetchMostPopular = async () => {
       try {
-        const response = await upik.post("", {
-          query: GET_MOST_POPULAR_OPEN_VOTE,
-        } as GraphQLRequest);
-        const data = response?.data?.data?.vote?.getMostPopularOpenVote;
-        if (Array.isArray(data)) {
-          const mapped = data.map((d: unknown) => {
-            const x = d as {
-              id: string;
-              title: string;
-              category?: string;
-              finishedAt?: string;
-              totalResponses?: number;
-            };
-            return {
-              id: x.id,
-              title: x.title,
-              category: x.category,
-              finishedAt: x.finishedAt,
-              totalResponses: x.totalResponses,
-            };
-          });
-          setVotes(mapped);
-        } else if (data) {
-          const x = data as {
-            id: string;
-            title: string;
-            category?: string;
-            finishedAt?: string;
-            totalResponses?: number;
-          };
-          setVotes([
-            {
-              id: x.id,
-              title: x.title,
-              category: x.category,
-              finishedAt: x.finishedAt,
-              totalResponses: x.totalResponses,
-            },
-          ]);
-        }
-      } catch (e) {
-        void e;
-      }
+        const data = await guideApi.getMostPopularOpenVote();
+        const votesArray = Array.isArray(data) ? data : [data];
+        const mapped = votesArray.map((v) => ({
+          id: v.id,
+          title: v.title,
+          category: v.category,
+          finishedAt: v.finishedAt,
+          totalResponses: v.totalResponses,
+        }));
+        setVotes(mapped);
+      } catch (e) {}
     };
     fetchMostPopular();
   }, []);
@@ -90,7 +54,7 @@ export default function PopularVote() {
   return (
     <>
       {votes.map((v) => (
-        <CardContainer key={v.id}>
+        <CardContainer key={v.id} onClick={() => router.push(`/vote/${v.id}`)}>
           <Thumbnail>
             <Image
               src={getThumbnailImage(v.category ?? "")}
@@ -132,6 +96,7 @@ const CardContainer = styled.div`
   width: 100%;
   box-sizing: border-box;
   flex: 0 0 80%;
+  cursor: pointer;
 `;
 
 const Thumbnail = styled.div`

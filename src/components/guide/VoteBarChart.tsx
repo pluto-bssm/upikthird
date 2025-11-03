@@ -4,13 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { upik } from "@/apis";
-import { GET_VOTE_BY_ID } from "@/graphql/queries";
-
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
+import { getVoteById } from "@/services/vote/api";
 
 export type VoteBar = {
   label: string;
@@ -18,48 +12,51 @@ export type VoteBar = {
   fill: string;
 };
 
+export type VoteOption = {
+  content: string;
+  percentage: number;
+};
+
 const VoteBarChart = ({ voteId }: { voteId: string }) => {
   const [title, setTitle] = React.useState<string>("");
   const [participant, setParticipant] = React.useState<number>(0);
   const [bars, setBars] = React.useState<VoteBar[]>([]);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const fetchVote = async () => {
       try {
-        const response = await upik.post("", {
-          query: GET_VOTE_BY_ID,
-          variables: { id: voteId },
-        } as GraphQLRequest);
-        const data = response?.data?.data?.vote?.getVoteById;
-        if (data) {
-          setTitle(data.title ?? "");
-          setParticipant(data.totalResponses ?? 0);
-          const palette = [
-            "#FF3B3B",
-            "#FF9F1C",
-            "#FFBE3C",
-            "#58CCFF",
-            "#7C5CFF",
-            "#00C896",
-          ];
-          const mapped = (data.options ?? []).map(
-            (opt: unknown, idx: number) => {
-              const o = opt as { content?: string; percentage?: number };
-              return {
-                label: o.content ?? "",
-                value: Math.max(0, Math.min(100, o.percentage ?? 0)),
-                fill: palette[idx % palette.length],
-              };
-            },
-          );
-          setBars(mapped);
-        }
-      } catch (e) {
-        void e;
+        setError(null);
+      const data = await getVoteById(voteId);
+      if (data) {
+        setTitle(data.title ?? "");
+        setParticipant(data.totalResponses ?? 0);
+        const palette = [
+          "#FF3B3B",
+          "#FF9F1C",
+          "#FFBE3C",
+          "#58CCFF",
+          "#7C5CFF",
+          "#00C896",
+        ];
+        const mapped = (data.options ?? []).map((opt: VoteOption, idx: number) => ({
+          label: opt.content,
+          value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
+          fill: palette[idx % palette.length],
+        }));
+        setBars(mapped);
+      }
+    } catch (err) {
+        setError("투표 데이터를 불러오는데 실패했습니다.");
       }
     };
     if (voteId) fetchVote();
   }, [voteId]);
+
+  if (error) {
+    return <ChartCard><CardBody><div>{error}</div></CardBody></ChartCard>;
+  }
+
   return (
     <ChartCard>
       <CardBody>

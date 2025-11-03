@@ -1,17 +1,27 @@
 import { upik } from "@/apis";
 import {
-  GET_GUIDES,
   GET_GUIDES_BY_CATEGORY,
   GET_GUIDE_BY_ID,
   SEARCH_SIMILAR_GUIDES,
   GET_ALL_GUIDES,
-  GUIDE_BY_ID,
-} from "@/services/vote/queries";
+  GET_LEAST_POPULAR_OPEN_VOTE,
+  GET_MOST_POPULAR_OPEN_VOTE,
+  TOGGLE_BOOKMARK,
+  GET_BOOKMARKS,
+} from "@/services/guide/queries";
+import { CREATE_REVOTE } from "@/services/guide/mutations";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
-import type { Guide, SimilarGuide, Page } from "@/types/api";
+import type {
+  Guide,
+  SimilarGuide,
+  Page,
+  Vote,
+  CreateRevoteInput,
+  CreateRevotePayload,
+  Bookmark,
+} from "@/types/api";
 
-// GuideDetail and PaginatedGuides shape are derived from shared types
 export type GuideDetail = Guide & {
   guideType?: string;
   likeCount?: number;
@@ -40,7 +50,7 @@ export async function getAllGuides(): Promise<Guide[]> {
   const response = await upik.post(
     "",
     {
-      query: GET_GUIDES,
+      query: GET_ALL_GUIDES,
     } as GraphQLRequest,
     {
       headers: {
@@ -108,7 +118,7 @@ export async function getGuideDetail(id: string): Promise<GuideDetail> {
   const response = await upik.post(
     "",
     {
-      query: GUIDE_BY_ID,
+      query: GET_GUIDE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
     {
@@ -176,4 +186,115 @@ export async function getPaginatedGuides(
     throw new Error("Failed to fetch guides");
   }
   return guides;
+}
+
+/**
+ * 가장 인기 없는 가이드 조회
+ */
+export async function getLeastPopularOpenVote(): Promise<Vote> {
+  const token = Storage.getItem(TOKEN.ACCESS);
+  const response = await upik.post(
+    "",
+    {
+      query: GET_LEAST_POPULAR_OPEN_VOTE,
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  const vote = response.data?.data?.vote?.getLeastPopularOpenVote;
+  if (!vote) {
+    throw new Error("Failed to fetch vote");
+  }
+  return vote;
+}
+
+/**
+ * 가장 인기 있는 가이드 조회
+ */
+export async function getMostPopularOpenVote(): Promise<Vote | Vote[]> {
+  const token = Storage.getItem(TOKEN.ACCESS);
+  const response = await upik.post(
+    "",
+    {
+      query: GET_MOST_POPULAR_OPEN_VOTE,
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  const vote = response.data?.data?.vote?.getMostPopularOpenVote;
+  if (!vote) {
+    throw new Error("Failed to fetch vote");
+  }
+  return vote;
+}
+
+/**
+ * 북마크 토글
+ */
+export async function toggleBookmark(guideId: string): Promise<boolean> {
+  const token = Storage.getItem(TOKEN.ACCESS);
+  const response = await upik.post(
+    "",
+    {
+      query: TOGGLE_BOOKMARK,
+      variables: { guideId },
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  const result = response.data?.data?.bookmark?.toggleBookmark;
+  return result ?? false;
+}
+
+/**
+ * 북마크 목록 조회 후 특정 가이드가 북마크되었는지 확인
+ */
+export async function isGuideBookmarked(guideId: string): Promise<boolean> {
+  const token = Storage.getItem(TOKEN.ACCESS);
+  const response = await upik.post(
+    "",
+    {
+      query: GET_BOOKMARKS,
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  const bookmarks: Bookmark[] =
+    response.data?.data?.bookmark?.getBookmarks ?? [];
+
+  return bookmarks.some((b) => b.guideId === guideId);
+}
+
+//재투표 요청
+export async function createRevote(
+  input: CreateRevoteInput,
+): Promise<CreateRevotePayload> {
+  const token = Storage.getItem(TOKEN.ACCESS);
+  const response = await upik.post(
+    "",
+    {
+      query: CREATE_REVOTE,
+      variables: { input },
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data?.data?.revote?.createRevote;
 }

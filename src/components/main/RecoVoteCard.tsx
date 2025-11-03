@@ -4,14 +4,8 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Nexts } from "../../../public/svg/svg";
-import { upik } from "@/apis";
-import { TODAY_VOTE } from "@/graphql/queries";
+import * as guideApi from "@/services/guide/api";
 import { useRouter } from "next/navigation";
-
-interface GraphQLRequest {
-  query: string;
-  variables?: Record<string, unknown>;
-}
 
 export default function RecoVoteCard() {
   const router = useRouter();
@@ -25,20 +19,14 @@ export default function RecoVoteCard() {
   React.useEffect(() => {
     const fetchTodayVote = async () => {
       try {
-        const response = await upik.post("", {
-          query: TODAY_VOTE,
-        } as GraphQLRequest);
-        const data = response?.data?.data?.vote?.getLeastPopularOpenVote;
+        const data = await guideApi.getLeastPopularOpenVote();
         if (data) {
           setVote({
             id: data.id,
             title: data.title,
             category: data.category,
             options: Array.isArray(data.options)
-              ? data.options.map((o: unknown) => {
-                  const oo = o as { id: string; content: string };
-                  return { id: oo.id, content: oo.content };
-                })
+              ? data.options.map((o) => ({ id: o.id, content: o.content }))
               : [],
           });
         }
@@ -66,7 +54,7 @@ export default function RecoVoteCard() {
   };
 
   return (
-    <RecoVoteContainer>
+    <RecoVoteContainer onClick={handleGoToVote}>
       <FeaturedVoteContent>
         <VoteHeader>
           <VoteLabel>오늘의 추천 투표</VoteLabel>
@@ -78,7 +66,7 @@ export default function RecoVoteCard() {
           <VoteOption>{displayedOptions[1]?.content ?? "옵션 2"}</VoteOption>
         </VoteOptions>
       </FeaturedVoteContent>
-      <VoteLink onClick={handleGoToVote}>
+      <VoteLink onClick={(e) => e.stopPropagation()}>
         투표하러 가기
         <Arrow>
           <Nexts />
@@ -97,6 +85,7 @@ const RecoVoteContainer = styled.div`
   border: 1px solid ${color.gray50};
   border-radius: 8px;
   width: 100%;
+  cursor: pointer;
 `;
 
 const FeaturedVoteContent = styled.div`
