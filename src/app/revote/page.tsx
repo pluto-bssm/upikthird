@@ -16,7 +16,7 @@ import { upik } from "@/apis";
 import { API } from "@/constants/common/constant";
 import { OPTION_GENERATOR } from "@/graphql/queries";
 
-const revote = () => {
+const RevotePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(
@@ -141,7 +141,7 @@ const revote = () => {
   );
 };
 
-export default revote;
+export default RevotePage;
 
 const Root = styled.div`
   display: flex;

@@ -4,11 +4,11 @@ import Header from "@/components/common/header";
 import NavigationBar from "@/components/common/navigationbar";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
-import GuideComponent from "@/components/guide/GuideComponent";
+import GuideComponent from "@/components/guide/GuideComponent"; 
 import React, { useState } from "react";
 import FilterComponent from "@/components/guide/FilterComponent";
 
-const guide = () => {
+const Guide = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState<"date" | "like">("date");
   const categories = ["전체", "학교생활", "기숙사", "유머"];
@@ -39,7 +39,7 @@ const guide = () => {
   );
 };
 
-export default guide;
+export default Guide;
 
 const GuideLayout = styled.div`
   width: 100%;

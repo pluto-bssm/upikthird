@@ -9,7 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import ReportCard from "@/components/dashboard/ReportCard";
 import { upik } from "@/apis";
 import { API } from "@/constants/common/constant";
-import { GET_REPORTS_BY_TARGET, GET_ALL_REPORTS } from "@/graphql/queries";
+import { GET_REPORTS_BY_TARGET, GET_ALL_REPORTS, REJECT_REPORT } from "@/graphql/queries";
 
 type ReportItem = {
   authorId: string;
@@ -38,6 +38,7 @@ const DashboardDetailPage = () => {
   const [loadingAll, setLoadingAll] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [errorAll, setErrorAll] = useState<string | null>(null);
+  const [rejecting, setRejecting] = useState<boolean>(false);
 
   useEffect(() => {
     let mounted = true;
@@ -110,9 +111,49 @@ const DashboardDetailPage = () => {
     );
   }
 
-  const handleReject = () => {};
+  const handleReject = async () => {
+    if (!report || !report.targetId || !report.userId) {
+      alert("신고 정보가 없습니다.");
+      return;
+    }
 
-  const handleAccept = () => {};
+    if (!confirm("신고를 반려하시겠습니까?")) {
+      return;
+    }
+
+    try {
+      setRejecting(true);
+      const res = await upik.post(API.GRAPHQL_URL, {
+        query: REJECT_REPORT,
+        variables: {
+          targetId: report.targetId,
+          userId: report.userId,
+        },
+      });
+
+      const message = res.data?.data?.report?.rejectReport?.message;
+      
+      if (message) {
+        alert(message);
+      } else {
+        alert("신고가 반려되었습니다.");
+      }
+
+      const allRes = await upik.post(API.GRAPHQL_URL, {
+        query: GET_ALL_REPORTS,
+      });
+      const allData = allRes.data?.data?.report?.getAllReports || [];
+      setAllReports(allData);
+
+      router.push("/dashboard");
+    } catch (e) {
+      alert(
+        e instanceof Error ? e.message : "신고 반려 중 오류가 발생했습니다."
+      );
+    } finally {
+      setRejecting(false);
+    }
+  };
 
   const handleReportClick = (targetId: string) => {
     router.push(`/dashboard/${targetId}`);
@@ -207,11 +248,12 @@ const DashboardDetailPage = () => {
             </DetailSection>
 
             <ButtonContainer>
-              <ActionButton buttonType="reject" onClick={handleReject}>
-                신고 반려하기
-              </ActionButton>
-              <ActionButton buttonType="addWarning" onClick={handleAccept}>
-                경고 횟수 추가하기
+              <ActionButton 
+                buttonType="reject" 
+                onClick={handleReject}
+                disabled={rejecting}
+              >
+                {rejecting ? "처리 중..." : "신고 반려하기"}
               </ActionButton>
             </ButtonContainer>
           </ReportCard>
@@ -370,9 +412,14 @@ const ActionButton = styled.button<{ buttonType: "reject" | "addWarning" }>`
   background-color: ${color.gray200};
   color: ${color.white};
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${color.primary};
     color: ${color.white};
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 

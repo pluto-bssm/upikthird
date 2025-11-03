@@ -650,3 +650,14 @@ query GetAllReports {
   }
 }
 `;
+
+//신고반려 쿼리 뮤테이션
+export const REJECT_REPORT = `
+mutation RejectReport($targetId: ID!, $userId: ID!) {
+  report {
+    rejectReport(targetId: $targetId, userId: $userId) {
+      message
+    }
+  }
+}
+`;

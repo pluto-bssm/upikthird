@@ -28,7 +28,7 @@ type ReportSummary = {
   userId?: string;
 };
 
-const dashboard = () => {
+const Dashboard = () => {
   const router = useRouter();
   const [reports, setReports] = useState<ReportSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -113,7 +113,7 @@ const dashboard = () => {
   );
 };
 
-export default dashboard;
+export default Dashboard;
 
 const PageContainer = styled.div`
   width: 100vw;
