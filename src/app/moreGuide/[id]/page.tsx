@@ -61,8 +61,13 @@ const MoreGuidePage = () => {
         types="bookmark"
         bookmarked={bookmarked}
         onToggleBookmark={async () => {
-          await toggleBookmark(guideId);
-          setBookmarked((prev) => !prev);
+          try {
+            const next = await toggleBookmark(guideId);
+            setBookmarked((prev) =>
+              typeof next === "boolean" ? next : prev,
+            );
+          } catch (_error) {
+          }
         }}
       />
 

@@ -12,13 +12,21 @@ export type VoteBar = {
   fill: string;
 };
 
+export type VoteOption = {
+  content: string;
+  percentage: number;
+};
+
 const VoteBarChart = ({ voteId }: { voteId: string }) => {
   const [title, setTitle] = React.useState<string>("");
   const [participant, setParticipant] = React.useState<number>(0);
   const [bars, setBars] = React.useState<VoteBar[]>([]);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const fetchVote = async () => {
+      try {
+        setError(null);
       const data = await getVoteById(voteId);
       if (data) {
         setTitle(data.title ?? "");
@@ -31,16 +39,24 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
           "#7C5CFF",
           "#00C896",
         ];
-        const mapped = (data.options ?? []).map((opt: any, idx: number) => ({
+        const mapped = (data.options ?? []).map((opt: VoteOption, idx: number) => ({
           label: opt.content,
           value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
           fill: palette[idx % palette.length],
         }));
         setBars(mapped);
       }
+    } catch (err) {
+        setError("투표 데이터를 불러오는데 실패했습니다.");
+      }
     };
     if (voteId) fetchVote();
   }, [voteId]);
+
+  if (error) {
+    return <ChartCard><CardBody><div>{error}</div></CardBody></ChartCard>;
+  }
+
   return (
     <ChartCard>
       <CardBody>
