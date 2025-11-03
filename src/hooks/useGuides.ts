@@ -149,12 +149,12 @@ export function useSearchSimilarGuides(
 
   const searchSimilarGuides = useCallback(
     async (searchTitle?: string) => {
-    const titleToSearch = searchTitle || title;
+      const titleToSearch = searchTitle || title;
 
-    if (!titleToSearch || titleToSearch.trim() === "") {
-      setGuides([]);
-      return;
-    }
+      if (!titleToSearch || titleToSearch.trim() === "") {
+        setGuides([]);
+        return;
+      }
 
       try {
         setLoading(true);
@@ -163,7 +163,9 @@ export function useSearchSimilarGuides(
         setGuides(data);
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Failed to search similar guides";
+          err instanceof Error
+            ? err.message
+            : "Failed to search similar guides";
         setError(message);
       } finally {
         setLoading(false);

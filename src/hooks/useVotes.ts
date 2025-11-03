@@ -474,7 +474,9 @@ export function useSearchSimilarGuides(
         setGuides(data);
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Failed to search similar guides";
+          err instanceof Error
+            ? err.message
+            : "Failed to search similar guides";
         setError(message);
       } finally {
         setLoading(false);

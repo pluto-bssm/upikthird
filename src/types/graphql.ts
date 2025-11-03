@@ -135,7 +135,6 @@ export interface CreateVoteResponseInput {
   optionId: string;
 }
 
-
 export interface QuestionReportPayload {
   success: boolean;
   message: string;

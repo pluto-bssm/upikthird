@@ -19,4 +19,3 @@ const StyledLogoContainer = styled.div`
   justify-content: center;
   height: 80px;
 `;
-

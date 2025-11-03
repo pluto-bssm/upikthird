@@ -10,7 +10,7 @@ interface ProfileBoxProps {
   email: string;
 }
 
-const ProfileBox = ({  name, status, email }: ProfileBoxProps) => {
+const ProfileBox = ({ name, status, email }: ProfileBoxProps) => {
   return (
     <ProfileBoxWrapper>
       <ProfileBoxContent>

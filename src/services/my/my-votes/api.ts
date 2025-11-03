@@ -34,7 +34,9 @@ export const getMyVotes = async (): Promise<MyVote[]> => {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`API request failed with status ${response.status} ${errorText}`);
+    throw new Error(
+      `API request failed with status ${response.status} ${errorText}`,
+    );
   }
 
   const data: GetMyVotesResponse = await response.json();

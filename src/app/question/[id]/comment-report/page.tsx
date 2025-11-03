@@ -15,8 +15,6 @@ type ReportReason =
   | "질문이 아니에요"
   | "기타";
 
-
-
 const reportReasons: ReportReason[] = [
   "유해한 내용을 포함하고 있어요",
   "명예훼손 또는 저작권이 침해되었어요",

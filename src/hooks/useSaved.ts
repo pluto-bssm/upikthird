@@ -97,7 +97,9 @@ export function useLikedQuestions(
         setPagination({ page: data.currentPage, size: data.pageSize });
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Failed to fetch liked questions";
+          err instanceof Error
+            ? err.message
+            : "Failed to fetch liked questions";
         setError(message);
       } finally {
         setLoading(false);

@@ -141,7 +141,8 @@ export async function getComments(
         name: String(cc.userName ?? ""),
         avatar: String(cc.userProfileImage ?? ""),
       },
-      replies: replies && replies.length > 0 ? replies.map(mapComment) : undefined,
+      replies:
+        replies && replies.length > 0 ? replies.map(mapComment) : undefined,
       likes: 0,
     };
   };

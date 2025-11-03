@@ -34,7 +34,6 @@ export const VoteItem = ({ vote, onClick }: VoteItemProps) => {
     }
   };
 
-
   return (
     <VoteItemButton onClick={onClick}>
       <CategoryIconWrapper>

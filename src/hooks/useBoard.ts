@@ -14,30 +14,11 @@ export function useQuestions(
 
   const { questions, setQuestions } = useBoardStore();
 
-  const refetch = async () => {
-    await fetchQuestions(pagination);
-  };
-
-  const fetchQuestions = async (params = pagination) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await boardApi.getQuestionList(params);
-      setQuestions(data.content);
-      setPagination({ page: data.currentPage, size: data.pageSize });
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to fetch questions";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await boardApi.getQuestionList(pagination);
         setQuestions(data.content);
         setPagination({ page: data.currentPage, size: data.pageSize });
@@ -49,9 +30,26 @@ export function useQuestions(
         setLoading(false);
       }
     };
+
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // ✅ 한 번만 실행됨
+  }, []);
+
+  const refetch = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await boardApi.getQuestionList(pagination);
+      setQuestions(data.content);
+      setPagination({ page: data.currentPage, size: data.pageSize });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch questions";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     questions,
@@ -59,7 +57,6 @@ export function useQuestions(
     error,
     pagination,
     setPagination,
-    fetchQuestions,
     refetch,
   };
 }
@@ -81,7 +78,9 @@ export function useQuestionDetail(boardId: string) {
         setQuestionDetail(data);
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Failed to fetch question detail";
+          err instanceof Error
+            ? err.message
+            : "Failed to fetch question detail";
         setError(message);
       } finally {
         setLoading(false);
@@ -98,6 +97,7 @@ export function useQuestionDetail(boardId: string) {
 
   return { question: questionDetail, loading, error, refetch };
 }
+
 export function useQuestionComments(
   boardId: string,
   initialPagination: PaginationParams = { page: 0, size: 10 },
@@ -117,7 +117,6 @@ export function useQuestionComments(
         setError(null);
         const data = await boardApi.getComments(boardId, pagination);
         setComments(data);
-        // ✅ setPagination 제거 (초기값으로 충분)
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to fetch comments";
@@ -128,7 +127,8 @@ export function useQuestionComments(
     };
 
     load();
-  }, [boardId, setComments]); // ✅ pagination 제거
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boardId, setComments]);
 
   const refetch = async () => {
     try {
@@ -185,7 +185,26 @@ export function useSearchQuestions(
     };
 
     load();
-  }, [keyword, pagination, setQuestions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword, setQuestions]);
+
+  const refetch = async () => {
+    if (!keyword) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await boardApi.searchQuestions(keyword, pagination);
+      setQuestions(data.content);
+      setPagination({ page: data.currentPage, size: data.pageSize });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to search questions";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     questions,
@@ -193,6 +212,6 @@ export function useSearchQuestions(
     error,
     pagination,
     setPagination,
+    refetch,
   };
 }
-

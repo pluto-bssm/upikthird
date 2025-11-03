@@ -50,7 +50,6 @@ const GuideItemButton = styled.button`
   }
 `;
 
-
 const GuideContentWrapper = styled.div`
   display: flex;
   flex-direction: column;

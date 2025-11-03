@@ -95,8 +95,6 @@ export default function BottomSheetSelector({
   );
 }
 
-
-
 const SelectorBox = styled.div<{ isAnimating: boolean }>`
   width: 100%;
   max-width: 600px;

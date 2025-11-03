@@ -17,16 +17,13 @@ const QuestionDetailPage = () => {
   const { question, loading: questionLoading } = useQuestionDetail(
     boardId as string,
   );
-  
+
   const {
     comments,
     loading: commentsLoading,
     error: commentsError,
     refetch: refetchComments,
-  } = useQuestionComments(
-    boardId as string, 
-    { page: 0, size: 10 },
-  );
+  } = useQuestionComments(boardId as string, { page: 0, size: 10 });
 
   const [comment, setComment] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
@@ -97,7 +94,11 @@ const QuestionDetailPage = () => {
   if (!boardId) {
     return (
       <StyledPage>
-        <Header types="report and close" text="" onClose={() => router.back()} />
+        <Header
+          types="report and close"
+          text=""
+          onClose={() => router.back()}
+        />
         <Container>
           <ErrorSection>잘못된 접근입니다.</ErrorSection>
         </Container>
@@ -141,7 +142,7 @@ const QuestionDetailPage = () => {
 
         <CommentsSection>
           <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
-          
+
           {commentsError ? (
             <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
           ) : commentsLoading ? (
@@ -256,7 +257,6 @@ const QuestionDetailPage = () => {
 
 export default QuestionDetailPage;
 
-
 const ErrorText = styled.p`
   text-align: center;
   font-size: 14px;
@@ -264,9 +264,6 @@ const ErrorText = styled.p`
   padding: 20px;
   margin: 0;
 `;
-
-
-
 
 const StyledPage = styled.div`
   width: 100%;
@@ -508,8 +505,6 @@ const FooterReportItem = styled.p`
     display: inline-block;
   }
 `;
-
-
 
 const LoadingText = styled.p`
   text-align: center;
