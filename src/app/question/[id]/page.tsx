@@ -192,7 +192,9 @@ const QuestionDetailPage = () => {
                       />
                       <ReplySubmitButton
                         onClick={(e) => handleReplySubmit(e, comment.id)}
-                        disabled={submitting}
+                        disabled={
+                          submitting || !replyContent.trim() || !boardId
+                        }
                       >
                         등록
                       </ReplySubmitButton>
@@ -242,7 +244,7 @@ const QuestionDetailPage = () => {
             />
             <CommentSubmitButton
               onClick={handleCommentSubmit}
-              disabled={submitting || !comment.trim()}
+              disabled={submitting || !comment.trim() || !boardId}
             >
               등록
             </CommentSubmitButton>

@@ -11,7 +11,7 @@ type SelectorItem = {
 type Props = {
   title: string;
   selectedValue: string;
-  setSelectedValue: (value: string) => void;
+  setSelectedValue?: (value: string) => void;
   items: SelectorItem[];
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
@@ -23,7 +23,6 @@ type Props = {
 export default function BottomSheetSelector({
   title,
   selectedValue,
-  setSelectedValue,
   items,
   isOpen,
   setIsOpen,

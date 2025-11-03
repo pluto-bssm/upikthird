@@ -34,7 +34,6 @@ export default function FilterComponent({
       <BottomSheetSelector
         title="가이드 정렬하기"
         selectedValue={selectedValue}
-        setSelectedValue={handleSelect}
         setSelect={handleSelect}
         items={items}
         isOpen={isOpen}

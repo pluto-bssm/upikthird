@@ -172,9 +172,16 @@ export function useSearchQuestions(
       try {
         setLoading(true);
         setError(null);
-        const data = await boardApi.searchQuestions(keyword, pagination);
+        const data = await boardApi.searchQuestions(keyword, {
+          page: pagination.page,
+          size: pagination.size,
+        });
         setQuestions(data.content);
-        setPagination({ page: data.currentPage, size: data.pageSize });
+        setPagination((prev) =>
+          prev.page === data.currentPage && prev.size === data.pageSize
+            ? prev
+            : { page: data.currentPage, size: data.pageSize },
+        );
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to search questions";
@@ -185,8 +192,7 @@ export function useSearchQuestions(
     };
 
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, setQuestions]);
+  }, [keyword, pagination.page, pagination.size, setQuestions]);
 
   const refetch = async () => {
     if (!keyword) return;
