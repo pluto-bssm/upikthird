@@ -36,6 +36,7 @@ export default function OAuthCallbackPage() {
               refreshToken = data?.refreshToken || refreshToken;
             }
           } catch (error) {
+            void error;
             console.error("토큰 요청 에러:", error);
           }
         }
@@ -51,6 +52,7 @@ export default function OAuthCallbackPage() {
 
         router.push("/main");
       } catch (error) {
+        void error;
         setStatus("오류가 발생했습니다");
         setTimeout(() => router.push("/login"), 2000);
       }

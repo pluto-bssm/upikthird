@@ -1,6 +1,5 @@
 "use client";
 
-import type { SVGProps } from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 

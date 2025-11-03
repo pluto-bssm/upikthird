@@ -19,6 +19,7 @@ const TailVote = () => {
   const [content, setContent] = useState("");
 
   const { createTailVote, loading, error } = useCreateTailVote();
+  void error;
 
   const HandleTailVoteMake = async () => {
     try {
@@ -35,6 +36,7 @@ const TailVote = () => {
         setIsOpen(true);
       }
     } catch (err) {
+      void err;
       alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
     }
   };

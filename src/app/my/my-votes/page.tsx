@@ -10,12 +10,15 @@ import { useMyVotes } from "@/hooks/useVotes";
 const MyVotesPage = () => {
   const router = useRouter();
   const { myVotes, loading, error } = useMyVotes();
+  void error;
 
   const handleClose = () => {
     router.back();
   };
 
-  const handleVoteClick = (voteId: string) => {};
+  const handleVoteClick = (voteId: string) => {
+    void voteId;
+  };
 
   if (loading) {
     return (

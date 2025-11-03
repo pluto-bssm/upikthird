@@ -25,10 +25,12 @@ const getCategoryEmoji = (category: string) => {
       return "✨";
   }
 };
+void getCategoryEmoji;
 
 const SavedGuidePage = () => {
   const router = useRouter();
   const { guides: boardGuides, loading, error } = useSavedGuides(0, 20);
+  void error;
 
   const guides: Guide[] = (boardGuides || [])
     .filter((board) => board && board.id && board.title)

@@ -28,6 +28,7 @@ const LikedQuestionsPage = () => {
     loading,
     error,
   } = useLikedQuestions(0, 20);
+  void error;
 
   const questions: Question[] = boardQuestions.map((board) => ({
     id: board.id,

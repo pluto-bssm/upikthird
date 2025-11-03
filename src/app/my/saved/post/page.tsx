@@ -19,6 +19,7 @@ interface Post {
 const SavedPostPage = () => {
   const router = useRouter();
   const { posts: boardPosts, loading, error } = useSavedPosts(0, 20);
+  void error;
 
   const posts: Post[] = boardPosts.map((board) => ({
     id: board.id,

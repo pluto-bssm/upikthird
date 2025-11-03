@@ -29,23 +29,26 @@ export async function getLikedQuestions(
 
   const questions = response.data?.data?.board?.getQuestionList?.content || [];
   const data: PageResponse<Board> = {
-    content: questions.map((q: any) => ({
-      id: q.id,
-      title: q.title,
-      content: q.content,
-      createdAt: q.createdAt,
-      updatedAt: q.updatedAt,
-      author: {
-        id: q.userId,
-        name: q.userName,
-        avatar: q.userProfileImage,
-      },
-      likes: 0,
-      commentCount: 0,
-      views: 0,
-      status: "OPEN",
-      isBookmarked: q.isBookmarked,
-    })) as any[],
+    content: questions.map((q: unknown) => {
+      const qq = q as Record<string, unknown>;
+      return {
+        id: String(qq.id ?? ""),
+        title: String(qq.title ?? ""),
+        content: String(qq.content ?? ""),
+        createdAt: String(qq.createdAt ?? ""),
+        updatedAt: String(qq.updatedAt ?? ""),
+        author: {
+          id: String(qq.userId ?? ""),
+          name: String(qq.userName ?? ""),
+          avatar: String(qq.userProfileImage ?? ""),
+        },
+        likes: 0,
+        commentCount: 0,
+        views: 0,
+        status: "OPEN",
+        isBookmarked: Boolean(qq.isBookmarked),
+      } as Board;
+    }),
     totalPages: 1,
     totalElements: questions.length,
     currentPage: page,

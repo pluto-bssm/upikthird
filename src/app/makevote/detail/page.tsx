@@ -49,18 +49,25 @@ const Detail = () => {
     loading: searchLoading,
     searchSimilarGuides,
   } = useSearchSimilarGuides(title, { autoFetch: false });
+  void similarGuides;
+  void searchLoading;
+  void searchSimilarGuides;
 
   const {
     checkBadWord,
     loading: badWordLoading,
     result: badWordResult,
   } = useCheckBadWord();
+  void badWordLoading;
+  void badWordResult;
 
   const {
     createVote,
     loading: createLoading,
     error: createError,
   } = useCreateVote();
+  void createLoading;
+  void createError;
 
   function CanCelMakeVote() {
     resetVoteData();
@@ -124,6 +131,7 @@ const Detail = () => {
         }
       }
     } catch (error) {
+      void error;
       setIsOpen_2(false);
       setIsOpen_4(false);
       alert("투표 생성 중 오류가 발생했습니다. 다시 시도해주세요.");

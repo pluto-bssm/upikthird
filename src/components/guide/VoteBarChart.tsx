@@ -42,14 +42,21 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
             "#7C5CFF",
             "#00C896",
           ];
-          const mapped = (data.options ?? []).map((opt: any, idx: number) => ({
-            label: opt.content,
-            value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
-            fill: palette[idx % palette.length],
-          }));
+          const mapped = (data.options ?? []).map(
+            (opt: unknown, idx: number) => {
+              const o = opt as { content?: string; percentage?: number };
+              return {
+                label: o.content ?? "",
+                value: Math.max(0, Math.min(100, o.percentage ?? 0)),
+                fill: palette[idx % palette.length],
+              };
+            },
+          );
           setBars(mapped);
         }
-      } catch (e) {}
+      } catch (e) {
+        void e;
+      }
     };
     if (voteId) fetchVote();
   }, [voteId]);

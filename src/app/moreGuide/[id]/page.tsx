@@ -61,7 +61,9 @@ const MoreGuidePage = () => {
             voteId: data.voteId ?? null,
           });
         }
-      } catch (e) {}
+      } catch (e) {
+        void e;
+      }
     };
     if (guideId) fetchGuide();
   }, [guideId]);

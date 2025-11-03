@@ -14,6 +14,8 @@ import VoteSort from "@/components/vote/VoteSort";
 const Vote = () => {
   const router = useRouter();
   const { votes, loading, error, refetch } = useAllVotes();
+  void error;
+  void refetch;
   const categories = ["전체", "학교생활", "기숙사", "유머"];
   const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
   const [activeIdx, setActiveIdx] = useState(0);

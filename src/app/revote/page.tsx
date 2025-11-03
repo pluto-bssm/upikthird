@@ -16,7 +16,7 @@ import { upik } from "@/apis";
 import { API } from "@/constants/common/constant";
 import { OPTION_GENERATOR } from "@/graphql/queries";
 
-const revote = () => {
+const RevotePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(
@@ -66,6 +66,7 @@ const revote = () => {
         alert(result?.message || "요청에 실패했어요.");
       }
     } catch (e) {
+      void e;
       alert("요청 중 오류가 발생했어요.");
     } finally {
       setIsSubmitting(false);
@@ -141,7 +142,7 @@ const revote = () => {
   );
 };
 
-export default revote;
+export default RevotePage;
 
 const Root = styled.div`
   display: flex;

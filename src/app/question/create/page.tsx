@@ -20,6 +20,12 @@ const QuestionCreatePage = () => {
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 
   const handleSubmit = async () => {
+    console.log(
+      "Submitting question with title:",
+      title,
+      "and content:",
+      content,
+    );
     const result = validateQuestionCreate({ title, content });
 
     if (!result.success) {
@@ -33,14 +39,12 @@ const QuestionCreatePage = () => {
         title,
         content,
       });
+      console.log("Question created successfully:", newQuestion);
       setShowSuccessModal(true);
     } catch (error) {
       setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요.");
+      console.log(error);
     }
-  };
-
-  const handleClose = () => {
-    router.back();
   };
 
   const handleValidationClose = () => {
@@ -160,38 +164,10 @@ const Section = styled.div`
   padding: 20px;
 `;
 
-const SectionHeader = styled.h2`
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: ${color.black};
-  line-height: 1;
-  margin: 0;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 16px;
-  border: 1px solid ${color.gray200};
-  border-radius: 12px;
-  background-color: ${color.white};
-`;
-
 const Divider = styled.div`
   height: 1px;
   background-color: ${color.gray200};
   width: 100%;
-`;
-
-const TitleLabel = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: ${color.gray300};
-  line-height: 1;
-  margin: 0;
 `;
 
 const TitleInput = styled.input`
@@ -210,16 +186,6 @@ const TitleInput = styled.input`
     color: ${color.gray300};
   }
 `;
-
-const ContentLabel = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  color: ${color.gray300};
-  line-height: 24px;
-  margin: 0;
-`;
-
 const ContentTextarea = styled.textarea`
   border: none;
   background: transparent;

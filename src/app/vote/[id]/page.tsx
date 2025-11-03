@@ -24,12 +24,15 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   }, [id]);
 
   const { vote, loading, error, refetch } = useVote(id);
+  void refetch;
+  void error;
 
   const {
     createVoteResponse,
     loading: responseLoading,
     error: responseError,
   } = useCreateVoteResponse();
+  void responseError;
 
   const labels = ["A", "B", "C", "D", "E"];
 
@@ -51,6 +54,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
         router.push(`${path}/tailvote`);
       }
     } catch (err) {
+      void err;
       alert("투표 참여 중 오류가 발생했습니다.");
     }
   };

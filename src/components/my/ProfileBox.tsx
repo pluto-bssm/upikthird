@@ -5,13 +5,12 @@ import color from "@/packages/design-system/src/color";
 import { ProfileIcon } from "../../../public/svg/svg";
 
 interface ProfileBoxProps {
-  profileImage?: string;
   name: string;
   status: string;
   email: string;
 }
 
-const ProfileBox = ({ profileImage, name, status, email }: ProfileBoxProps) => {
+const ProfileBox = ({ name, status, email }: ProfileBoxProps) => {
   return (
     <ProfileBoxWrapper>
       <ProfileBoxContent>
@@ -60,14 +59,6 @@ const ProfileIconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ProfileImage = styled.img`
-  width: 54px;
-  height: 54px;
-  border-radius: 27px;
-  object-fit: cover;
-  flex-shrink: 0;
 `;
 
 const ProfileInfoBox = styled.div`

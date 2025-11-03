@@ -12,6 +12,7 @@ import { useCurrentUser } from "@/hooks/useAccount";
 const MyPage = () => {
   const router = useRouter();
   const { user, loading, error } = useCurrentUser();
+  void error;
 
   const menuItems: MenuItem[] = [
     {
@@ -99,7 +100,6 @@ const MyPage = () => {
       <Header types="close" text="" />
       <MyPageContent>
         <ProfileBox
-          profileImage="https://via.placeholder.com/54"
           name={user.name}
           status={getQualification(user.role)}
           email={user.email}

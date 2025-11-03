@@ -35,11 +35,16 @@ export default function RecoVoteCard() {
             title: data.title,
             category: data.category,
             options: Array.isArray(data.options)
-              ? data.options.map((o: any) => ({ id: o.id, content: o.content }))
+              ? data.options.map((o: unknown) => {
+                  const oo = o as { id: string; content: string };
+                  return { id: oo.id, content: oo.content };
+                })
               : [],
           });
         }
-      } catch (e) {}
+      } catch (e) {
+        void e;
+      }
     };
     fetchTodayVote();
   }, []);

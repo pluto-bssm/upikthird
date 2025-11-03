@@ -48,6 +48,7 @@ export default function OAuthCallbackContent() {
         router.push("/my");
       }, 300);
     } catch (error) {
+      void error;
       setStatus("오류가 발생했습니다");
       setTimeout(() => router.push("/login"), 2000);
     }

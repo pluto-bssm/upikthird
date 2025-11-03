@@ -135,8 +135,6 @@ export interface CreateVoteResponseInput {
   optionId: string;
 }
 
-import { CreateVoteInput } from "./api";
-
 export interface QuestionReportPayload {
   success: boolean;
   message: string;

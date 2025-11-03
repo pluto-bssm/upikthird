@@ -37,22 +37,25 @@ export async function getMyPosts(): Promise<Board[]> {
   );
   const data = response.data?.data?.board?.getMyQuestions?.content || [];
 
-  return data.map((post: any) => ({
-    id: post.id,
-    title: post.title,
-    content: post.content,
-    createdAt: post.createdAt,
-    updatedAt: post.updatedAt,
-    author: {
-      id: post.userId,
-      name: post.userName,
-      avatar: post.userProfileImage,
-    },
-    views: post.viewCount || 0,
-    likes: 0,
-    commentCount: post.commentCount || 0,
-    status: "OPEN",
-    isBookmarked: post.isBookmarked || false,
-    bookmarkCount: post.bookmarkCount || 0,
-  }));
+  return data.map((post: unknown) => {
+    const p = post as Record<string, unknown>;
+    return {
+      id: String(p.id ?? ""),
+      title: String(p.title ?? ""),
+      content: String(p.content ?? ""),
+      createdAt: String(p.createdAt ?? ""),
+      updatedAt: String(p.updatedAt ?? ""),
+      author: {
+        id: String(p.userId ?? ""),
+        name: String(p.userName ?? ""),
+        avatar: String(p.userProfileImage ?? ""),
+      },
+      views: Number(p.viewCount ?? 0) || 0,
+      likes: 0,
+      commentCount: Number(p.commentCount ?? 0) || 0,
+      status: "OPEN",
+      isBookmarked: Boolean(p.isBookmarked) || false,
+      bookmarkCount: Number(p.bookmarkCount ?? 0) || 0,
+    } as Board;
+  });
 }

@@ -37,6 +37,14 @@ const getThumbnailImage = (category: string) => {
   }
 };
 
+const getLikeCount = (item: unknown): number => {
+  const it = item as Record<string, unknown>;
+  const maybeLike = it.like ?? it.likeCount;
+  if (typeof maybeLike === "number") return maybeLike;
+  if (typeof maybeLike === "string") return Number(maybeLike) || 0;
+  return 0;
+};
+
 interface GuideComponentProps {
   searchQuery?: string;
   onResultCountChange?: (count: number) => void;
@@ -80,8 +88,8 @@ const GuideComponent = ({
       if (sortBy === "like") {
         content = [...content]
           .sort((a, b) => {
-            const aLike = (a as any).like ?? (a as any).likeCount ?? 0;
-            const bLike = (b as any).like ?? (b as any).likeCount ?? 0;
+            const aLike = getLikeCount(a);
+            const bLike = getLikeCount(b);
             return bLike - aLike;
           })
           .slice(0, limit);
@@ -145,9 +153,7 @@ const GuideComponent = ({
                     <OtherInfo>
                       <GuideTag>{guide.category}</GuideTag>
                       <Bookmark width="12px" height="12px" />
-                      <MarkCount>
-                        {(guide as any).like ?? (guide as any).likeCount ?? 0}
-                      </MarkCount>
+                      <MarkCount>{getLikeCount(guide)}</MarkCount>
                       <BookmarkIcon />
                     </OtherInfo>
                   </GuideText>

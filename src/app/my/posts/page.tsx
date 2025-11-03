@@ -19,8 +19,11 @@ interface UserPost {
 const UserPostsPage = () => {
   const router = useRouter();
   const { posts, loading, error } = useMyPosts();
+  void error;
 
-  const handlePostClick = (postId: string) => {};
+  const handlePostClick = (postId: string) => {
+    void postId;
+  };
 
   const handleClose = () => {
     router.back();
