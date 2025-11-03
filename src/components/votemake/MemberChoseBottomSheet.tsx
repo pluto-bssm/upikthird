@@ -27,8 +27,7 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const { setClosureType, setCustomDays, setParticipantThreshold } =
-    useVoteStore();
+  const { setClosureType } = useVoteStore();
 
   useEffect(() => {
     if (isOpen) {
@@ -186,7 +185,6 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
       <BottomSheetSelector
         title="시간 선택하기"
         selectedValue={selectedTime}
-        setSelectedValue={setCustomDays}
         setSelect={setSelectedTime}
         items={timeOptions}
         isOpen={isTimeOpen}
@@ -196,7 +194,6 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
       <BottomSheetSelector
         title="인원수 선택하기"
         selectedValue={selectedMembers}
-        setSelectedValue={setParticipantThreshold}
         setSelect={setSelectedMembers}
         items={memberOptions}
         isOpen={isMemberOpen}
