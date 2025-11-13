@@ -31,9 +31,7 @@ const LoginContent = () => {
 
   const handleGoogleLogin = () => {
     const redirectUri = encodeURIComponent(`${window.location.origin}/oauth2`);
-    const authUrl = `https://heodongun.com/oauth2/authorization/google?redirect_uri=${redirectUri}`;
-
-    window.location.href = authUrl;
+    window.location.href = `https://heodongun.com/oauth2/authorization/google?redirect_uri=${redirectUri}`;
   };
 
   return (
@@ -65,7 +63,7 @@ const LoginContent = () => {
 
 const LoginPage = () => {
   return (
-    <Suspense fallback={<Container><Content /></Container>}>
+    <Suspense fallback={<div>로딩 중...</div>}>
       <LoginContent />
     </Suspense>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styled from "@emotion/styled";
 import Header from "@/components/common/header";
@@ -23,7 +23,7 @@ const reportReasons: ReportReason[] = [
   "기타",
 ];
 
-const CommentReportPage = () => {
+const CommentReportContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const commentId = searchParams?.get("commentId") as string;
@@ -168,6 +168,16 @@ const CommentReportPage = () => {
     </StyledPage>
   );
 };
+
+const CommentReportPage = () => {
+  return (
+    <Suspense fallback={<div><Header types="close" text="신고하기" /></div>}>
+      <CommentReportContent />
+    </Suspense>
+  );
+};
+
+export default CommentReportPage;
 
 const StyledPage = styled.div`
   width: 100%;
@@ -506,4 +516,3 @@ const CompleteModalButton = styled.button`
   }
 `;
 
-export default CommentReportPage;

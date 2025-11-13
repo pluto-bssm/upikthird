@@ -131,7 +131,7 @@ const RevotePageContent = () => {
 
 const RevotePage = () => {
   return (
-    <Suspense fallback={<Root><Header types="title" text="재투표 신청하기" /></Root>}>
+    <Suspense fallback={<div><Header types="title" text="재투표 신청하기" /></div>}>
       <RevotePageContent />
     </Suspense>
   );
