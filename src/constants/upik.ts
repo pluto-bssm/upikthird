@@ -1,11 +1,11 @@
 export const API = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080",
-  GRAPHQL_URL: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}`,
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://heodongun.com",
+  GRAPHQL_URL: `${process.env.NEXT_PUBLIC_API_URL || "https://heodongun.com"}`,
   TIMEOUT: 15000,
 } as const;
 
 const OAUTH_BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://heodongun.com";
 
 export const OAUTH = {
   GOOGLE: {

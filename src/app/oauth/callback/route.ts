@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     const tokenBaseUrl =
       process.env.NEXT_PUBLIC_OAUTH_URL ||
-      "http://localhost:8080/auth/code?code=";
+      "http://https://heodongun.com/auth/code?code=";
     const tokenUrl = `${tokenBaseUrl}${code}`;
     const tokenResponse = await fetch(tokenUrl, {
       method: "GET",
