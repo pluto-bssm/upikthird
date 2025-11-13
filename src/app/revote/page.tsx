@@ -6,7 +6,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Revote from "@/components/guide/revote/Revote";
 import DetailBox from "@/components/guide/revote/DetailBox";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import RevoteSend from "@/components/button/RevoteSend";
 import AccentModal from "@/components/modal/AccentModal";
@@ -14,7 +14,7 @@ import Completevote from "../../../public/svg/Completevote";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import { createRevote } from "@/services/guide/api";
 
-const RevotePage = () => {
+const RevotePageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(
@@ -126,6 +126,14 @@ const RevotePage = () => {
         />
       )}
     </Root>
+  );
+};
+
+const RevotePage = () => {
+  return (
+    <Suspense fallback={<Root><Header types="title" text="재투표 신청하기" /></Root>}>
+      <RevotePageContent />
+    </Suspense>
   );
 };
 

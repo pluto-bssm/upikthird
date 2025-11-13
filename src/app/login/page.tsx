@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useSearchParams } from "next/navigation";
 import color from "@/packages/design-system/src/color";
 import UpikLogo from "@/../public/svg/UpikLogo";
 import { GoogleIcon } from "@/../public/svg/GoogleIcon";
 
-const LoginPage = () => {
+const LoginContent = () => {
   const searchParams = useSearchParams();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,7 +31,7 @@ const LoginPage = () => {
 
   const handleGoogleLogin = () => {
     const redirectUri = encodeURIComponent(`${window.location.origin}/oauth2`);
-    const authUrl = `https://upik-659794985248.asia-northeast3.run.app/oauth2/authorization/google?redirect_uri=${redirectUri}`;
+    const authUrl = `https://heodongun.com/oauth2/authorization/google?redirect_uri=${redirectUri}`;
 
     window.location.href = authUrl;
   };
@@ -60,6 +60,14 @@ const LoginPage = () => {
         <FooterText>PLUTO</FooterText>
       </Footer>
     </Container>
+  );
+};
+
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<Container><Content /></Container>}>
+      <LoginContent />
+    </Suspense>
   );
 };
 

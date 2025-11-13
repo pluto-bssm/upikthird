@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const tokenUrl = `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`;
+    const tokenUrl = `https://heodongun.com/auth/code?code=${code}`;
 
     let tokenResponse;
     try {

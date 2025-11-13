@@ -18,7 +18,7 @@ export default function OAuthCallbackPage() {
         let refreshToken = params.get("refreshToken");
 
         if (code && !accessToken && !refreshToken) {
-          const tokenUrl = `https://upik-659794985248.asia-northeast3.run.app/auth/code?code=${code}`;
+          const tokenUrl = `https://heodongun.com/auth/code?code=${code}`;
 
           try {
             const response = await fetch(tokenUrl, {
