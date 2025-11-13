@@ -27,7 +27,7 @@ interface GraphQLRequest {
 
 export async function getMyVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_MY_VOTES,
     } as GraphQLRequest,
@@ -39,7 +39,7 @@ export async function getMyVotes(): Promise<VotePayload[]> {
 
 export async function getVoteById(id: string): Promise<VotePayload> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_VOTE_BY_ID,
       variables: { id },
@@ -56,7 +56,7 @@ export async function getVoteById(id: string): Promise<VotePayload> {
 
 export async function getAllVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_ALL_VOTES,
     } as GraphQLRequest,
@@ -70,7 +70,7 @@ export async function createVoteResponse(
   input: CreateVoteResponseInput,
 ): Promise<boolean> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: CREATE_VOTE_RESPONSE,
       variables: { input },
@@ -92,7 +92,7 @@ export async function createVoteResponse(
  */
 export async function getVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_VOTES,
     } as GraphQLRequest,
@@ -107,7 +107,7 @@ export async function getVotes(): Promise<VotePayload[]> {
  */
 export async function getTodayVote(): Promise<VotePayload | null> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: TODAY_VOTE,
     } as GraphQLRequest,
@@ -128,7 +128,7 @@ interface CheckBadWordResult {
 
 export async function checkBadWord(text: string): Promise<CheckBadWordResult> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_CHECK_BADWORD,
       variables: { text },
@@ -156,7 +156,7 @@ export async function generateAiOptions(
   title: string,
 ): Promise<GenerateOptionsResult> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: AIOPTION_CREATE,
       variables: { count, title },
@@ -177,7 +177,7 @@ export async function generateAiOptions(
 export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
   try {
     const response = await upik.post(
-      "/graphql",
+      "",
       {
         query: CREATE_VOTE,
         variables: { input },
@@ -215,7 +215,7 @@ export async function createTailVote(
   voteId: string,
 ): Promise<CreateTailVoteResult> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: CREATE_TAIL_VOTE,
       variables: { question, voteId },
@@ -246,7 +246,7 @@ export async function reportQuestion(
 ): Promise<ReportQuestionResult> {
   try {
     const response = await upik.post(
-      "/graphql",
+      "",
       {
         query: REPORT_QUESTION,
         variables: { questionId, reason },
