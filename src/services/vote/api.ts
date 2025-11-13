@@ -15,8 +15,8 @@ import {
   CREATE_TAIL_VOTE,
   REPORT_QUESTION,
 } from "./mutations";
-import { Storage } from "@/apis/storage/storage";
-import { TOKEN } from "@/constants/common/constant";
+import { authorization } from "@/apis/token";
+import { CreateVoteInput } from "@/types/api";
 
 interface GraphQLRequest {
   query: string;
@@ -26,36 +26,25 @@ interface GraphQLRequest {
 // ===================== 기존 함수들 =====================
 
 export async function getMyVotes(): Promise<VotePayload[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_MY_VOTES,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
-  const votes = response.data?.data?.vote?.getMyVotes || [];
-  return votes;
+  return response.data?.data?.vote?.getMyVotes || [];
 }
 
 export async function getVoteById(id: string): Promise<VotePayload> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_VOTE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const vote = response.data?.data?.vote?.getVoteById;
@@ -66,29 +55,27 @@ export async function getVoteById(id: string): Promise<VotePayload> {
 }
 
 export async function getAllVotes(): Promise<VotePayload[]> {
-  const response = await upik.post("", {
-    query: GET_ALL_VOTES,
-  } as GraphQLRequest);
+  const response = await upik.post(
+    "/graphql",
+    {
+      query: GET_ALL_VOTES,
+    } as GraphQLRequest,
+    authorization()
+  );
 
-  const votes = response.data?.data?.vote?.getAllVotes || [];
-  return votes;
+  return response.data?.data?.vote?.getAllVotes || [];
 }
 
 export async function createVoteResponse(
   input: CreateVoteResponseInput,
 ): Promise<boolean> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: CREATE_VOTE_RESPONSE,
       variables: { input },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const result = response.data?.data?.voteResponse?.createVoteResponse;
@@ -104,38 +91,27 @@ export async function createVoteResponse(
  * 모든 투표 목록 조회 (필터링 포함)
  */
 export async function getVotes(): Promise<VotePayload[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_VOTES,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
-  const votes = response.data?.data?.vote?.getAllVotes || [];
-  return votes;
+  return response.data?.data?.vote?.getAllVotes || [];
 }
 
 /**
  * 오늘의 투표 조회 (가장 인기 없는 투표)
  */
 export async function getTodayVote(): Promise<VotePayload | null> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: TODAY_VOTE,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   return response.data?.data?.vote?.getLeastPopularOpenVote || null;
@@ -151,18 +127,13 @@ interface CheckBadWordResult {
 }
 
 export async function checkBadWord(text: string): Promise<CheckBadWordResult> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_CHECK_BADWORD,
       variables: { text },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const result = response.data?.data?.checkBadWord;
@@ -184,18 +155,13 @@ export async function generateAiOptions(
   count: number,
   title: string,
 ): Promise<GenerateOptionsResult> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: AIOPTION_CREATE,
       variables: { count, title },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const result = response.data?.data?.optionGenerator?.generateOptions;
@@ -205,32 +171,26 @@ export async function generateAiOptions(
   return result;
 }
 
-import { CreateVoteInput } from "@/types/api";
-
+/**
+ * 투표 생성
+ */
 export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-
   try {
     const response = await upik.post(
-      "",
+      "/graphql",
       {
         query: CREATE_VOTE,
         variables: { input },
       } as GraphQLRequest,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      authorization()
     );
 
     if (response.data?.errors && response.data.errors.length > 0) {
       const errorMessage = response.data.errors[0].message;
-
       throw new Error(errorMessage);
     }
-    const vote = response.data?.data?.vote?.createVote;
 
+    const vote = response.data?.data?.vote?.createVote;
     if (!vote) {
       throw new Error("Failed to create vote");
     }
@@ -254,18 +214,13 @@ export async function createTailVote(
   question: string,
   voteId: string,
 ): Promise<CreateTailVoteResult> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: CREATE_TAIL_VOTE,
       variables: { question, voteId },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const result = response.data?.data?.tail?.createTail;
@@ -289,30 +244,22 @@ export async function reportQuestion(
   questionId: string,
   reason: string,
 ): Promise<ReportQuestionResult> {
-  const token = Storage.getItem(TOKEN.ACCESS);
-
   try {
     const response = await upik.post(
-      "",
+      "/graphql",
       {
         query: REPORT_QUESTION,
         variables: { questionId, reason },
       } as GraphQLRequest,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      authorization()
     );
 
     if (response.data?.errors && response.data.errors.length > 0) {
       const errorMessage = response.data.errors[0].message;
-
       throw new Error(errorMessage);
     }
 
     const result = response.data?.data?.report?.reportQuestion;
-
     if (!result) {
       throw new Error("Failed to report question");
     }
@@ -322,3 +269,4 @@ export async function reportQuestion(
     throw error;
   }
 }
+

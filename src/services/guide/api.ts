@@ -10,8 +10,7 @@ import {
   GET_BOOKMARKS,
 } from "@/services/guide/queries";
 import { CREATE_REVOTE } from "@/services/guide/mutations";
-import { Storage } from "@/apis/storage/storage";
-import { TOKEN } from "@/constants/common/constant";
+import { authorization } from "@/apis/token";
 import type {
   Guide,
   SimilarGuide,
@@ -46,61 +45,44 @@ export interface GraphQLRequest {
  * 모든 가이드 조회
  */
 export async function getAllGuides(): Promise<Guide[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_ALL_GUIDES,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
-  const guides = response.data?.data?.guide?.getAllGuides || [];
-  return guides;
+  return response.data?.data?.guide?.getAllGuides || [];
 }
 
 /**
  * 카테고리별 가이드 조회
  */
 export async function getGuidesByCategory(category: string): Promise<Guide[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_GUIDES_BY_CATEGORY,
       variables: { category },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
-  const guides = response.data?.data?.guide?.getGuidesByCategory || [];
-  return guides;
+  return response.data?.data?.guide?.getGuidesByCategory || [];
 }
 
 /**
  * 가이드 상세 조회 (ID로)
  */
 export async function getGuideById(id: string): Promise<GuideDetail> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_GUIDE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const guide = response.data?.data?.guideById;
@@ -114,18 +96,13 @@ export async function getGuideById(id: string): Promise<GuideDetail> {
  * 가이드 상세 조회 (GUIDE_BY_ID 쿼리 사용)
  */
 export async function getGuideDetail(id: string): Promise<GuideDetail> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_GUIDE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const guide = response.data?.data?.guideById;
@@ -141,22 +118,16 @@ export async function getGuideDetail(id: string): Promise<GuideDetail> {
 export async function searchSimilarGuides(
   title: string,
 ): Promise<SimilarGuide[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: SEARCH_SIMILAR_GUIDES,
       variables: { title },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
-  const guides = response.data?.data?.keywordGuide?.searchSimilarByTitle || [];
-  return guides;
+  return response.data?.data?.keywordGuide?.searchSimilarByTitle || [];
 }
 
 /**
@@ -167,18 +138,13 @@ export async function getPaginatedGuides(
   size: number = 10,
   sortBy: string = "createdAt",
 ): Promise<PaginatedGuides> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_ALL_GUIDES,
       variables: { page, size, sortBy },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const guides = response.data?.data?.getAllGuides;
@@ -192,18 +158,14 @@ export async function getPaginatedGuides(
  * 가장 인기 없는 가이드 조회
  */
 export async function getLeastPopularOpenVote(): Promise<Vote> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_LEAST_POPULAR_OPEN_VOTE,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
+
   const vote = response.data?.data?.vote?.getLeastPopularOpenVote;
   if (!vote) {
     throw new Error("Failed to fetch vote");
@@ -215,18 +177,14 @@ export async function getLeastPopularOpenVote(): Promise<Vote> {
  * 가장 인기 있는 가이드 조회
  */
 export async function getMostPopularOpenVote(): Promise<Vote | Vote[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_MOST_POPULAR_OPEN_VOTE,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
+
   const vote = response.data?.data?.vote?.getMostPopularOpenVote;
   if (!vote) {
     throw new Error("Failed to fetch vote");
@@ -238,18 +196,13 @@ export async function getMostPopularOpenVote(): Promise<Vote | Vote[]> {
  * 북마크 토글
  */
 export async function toggleBookmark(guideId: string): Promise<boolean> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: TOGGLE_BOOKMARK,
       variables: { guideId },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const result = response.data?.data?.bookmark?.toggleBookmark;
@@ -260,17 +213,12 @@ export async function toggleBookmark(guideId: string): Promise<boolean> {
  * 북마크 목록 조회 후 특정 가이드가 북마크되었는지 확인
  */
 export async function isGuideBookmarked(guideId: string): Promise<boolean> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: GET_BOOKMARKS,
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
 
   const bookmarks: Bookmark[] =
@@ -279,22 +227,21 @@ export async function isGuideBookmarked(guideId: string): Promise<boolean> {
   return bookmarks.some((b) => b.guideId === guideId);
 }
 
-//재투표 요청
+/**
+ * 재투표 요청
+ */
 export async function createRevote(
   input: CreateRevoteInput,
 ): Promise<CreateRevotePayload> {
-  const token = Storage.getItem(TOKEN.ACCESS);
   const response = await upik.post(
-    "",
+    "/graphql",
     {
       query: CREATE_REVOTE,
       variables: { input },
     } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    authorization()
   );
+
   return response.data?.data?.revote?.createRevote;
 }
+

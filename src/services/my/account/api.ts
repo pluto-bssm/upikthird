@@ -2,6 +2,7 @@ import { upik } from "@/apis";
 import type { User } from "@/types/graphql";
 import { GET_MY_USER } from "./queries";
 import { API } from "@/constants/upik";
+import { authorization } from "@/apis/token";
 
 interface GraphQLRequest {
   query: string;
@@ -13,7 +14,11 @@ export async function getMyUser(): Promise<User> {
     query: GET_MY_USER,
   } as GraphQLRequest;
 
-  const response = await upik.post(API.GRAPHQL_URL, requestBody);
+  const response = await upik.post(
+    API.GRAPHQL_URL,
+    requestBody,
+    authorization()
+  );
 
   const data = response.data?.data?.iam?.getCurrentUser;
 
