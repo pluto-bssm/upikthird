@@ -59,14 +59,16 @@ const VoteResponseDetailPage = ({
     return date.toTimeString().split(" ")[0].substring(0, 5);
   };
 
-  const selectedOptionId = detail.mySelectedOptionId ||
+  const selectedOptionId =
+    detail.mySelectedOptionId ||
     (detail.hasVoted && detail.options.length > 0
       ? detail.options.reduce((prev, current) =>
-          (prev.percentage > current.percentage) ? prev : current
+          prev.percentage > current.percentage ? prev : current,
         ).id
       : null);
 
-  const tailResponse = detail.myTailResponse ||
+  const tailResponse =
+    detail.myTailResponse ||
     (detail.hasVoted
       ? "네!!!! 꼬리 질문에! 무조건 응답합니다에!!!!!!!!!!!!!"
       : "응답하지 않았습니다.");
@@ -100,9 +102,7 @@ const VoteResponseDetailPage = ({
           </TailQuestionSubtitle>
 
           <TailResponseBox>
-            <TailResponseText>
-              {tailResponse}
-            </TailResponseText>
+            <TailResponseText>{tailResponse}</TailResponseText>
           </TailResponseBox>
         </TailQuestionSection>
 
@@ -233,4 +233,3 @@ const DateTimeValue = styled.p`
   ${font.D3};
   color: ${color.black};
 `;
-

@@ -69,4 +69,3 @@ export const HAS_USER_VOTED = `
     }
   }
 `;
-

@@ -171,7 +171,13 @@ const CommentReportContent = () => {
 
 const CommentReportPage = () => {
   return (
-    <Suspense fallback={<div><Header types="close" text="신고하기" /></div>}>
+    <Suspense
+      fallback={
+        <div>
+          <Header types="close" text="신고하기" />
+        </div>
+      }
+    >
       <CommentReportContent />
     </Suspense>
   );
@@ -515,4 +521,3 @@ const CompleteModalButton = styled.button`
     opacity: 0.9;
   }
 `;
-
