@@ -46,7 +46,7 @@ export interface GraphQLRequest {
  */
 export async function getAllGuides(): Promise<Guide[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_ALL_GUIDES,
     } as GraphQLRequest,
@@ -61,7 +61,7 @@ export async function getAllGuides(): Promise<Guide[]> {
  */
 export async function getGuidesByCategory(category: string): Promise<Guide[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_GUIDES_BY_CATEGORY,
       variables: { category },
@@ -77,7 +77,7 @@ export async function getGuidesByCategory(category: string): Promise<Guide[]> {
  */
 export async function getGuideById(id: string): Promise<GuideDetail> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_GUIDE_BY_ID,
       variables: { id },
@@ -97,7 +97,7 @@ export async function getGuideById(id: string): Promise<GuideDetail> {
  */
 export async function getGuideDetail(id: string): Promise<GuideDetail> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_GUIDE_BY_ID,
       variables: { id },
@@ -119,7 +119,7 @@ export async function searchSimilarGuides(
   title: string,
 ): Promise<SimilarGuide[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: SEARCH_SIMILAR_GUIDES,
       variables: { title },
@@ -139,7 +139,7 @@ export async function getPaginatedGuides(
   sortBy: string = "createdAt",
 ): Promise<PaginatedGuides> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_ALL_GUIDES,
       variables: { page, size, sortBy },
@@ -159,7 +159,7 @@ export async function getPaginatedGuides(
  */
 export async function getLeastPopularOpenVote(): Promise<Vote> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_LEAST_POPULAR_OPEN_VOTE,
     } as GraphQLRequest,
@@ -178,7 +178,7 @@ export async function getLeastPopularOpenVote(): Promise<Vote> {
  */
 export async function getMostPopularOpenVote(): Promise<Vote | Vote[]> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_MOST_POPULAR_OPEN_VOTE,
     } as GraphQLRequest,
@@ -197,7 +197,7 @@ export async function getMostPopularOpenVote(): Promise<Vote | Vote[]> {
  */
 export async function toggleBookmark(guideId: string): Promise<boolean> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: TOGGLE_BOOKMARK,
       variables: { guideId },
@@ -214,7 +214,7 @@ export async function toggleBookmark(guideId: string): Promise<boolean> {
  */
 export async function isGuideBookmarked(guideId: string): Promise<boolean> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: GET_BOOKMARKS,
     } as GraphQLRequest,
@@ -234,7 +234,7 @@ export async function createRevote(
   input: CreateRevoteInput,
 ): Promise<CreateRevotePayload> {
   const response = await upik.post(
-    "/graphql",
+    "",
     {
       query: CREATE_REVOTE,
       variables: { input },
