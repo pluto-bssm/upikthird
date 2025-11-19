@@ -7,11 +7,12 @@ import Header from "@/components/common/header";
 import ProfileBox from "@/components/my/ProfileBox";
 import TabBar from "@/components/my/TabBar";
 import MenuSection, { type MenuItem } from "@/components/my/MenuSection";
-import { useCurrentUser } from "@/hooks/useAccount";
+import { useMyUser } from "@/hooks/useAccount";
+import { TOKEN } from "@/constants/upik";
 
 const MyPage = () => {
   const router = useRouter();
-  const { user, loading, error } = useCurrentUser();
+  const { user, loading, error } = useMyUser();
   void error;
 
   const menuItems: MenuItem[] = [

@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import color from "@/packages/design-system/src/color";
 import Header from "@/components/common/header";
 import AccountInfoBox from "@/components/my/info/AccountInfoBox";
-import { useCurrentUser } from "@/hooks/useAccount";
+import { useMyUser } from "@/hooks/useAccount";
 
 const AccountInfoPage = () => {
   const router = useRouter();
-  const { user, loading, error } = useCurrentUser();
+  const { user, loading, error } = useMyUser();
   void error;
 
   const handleClose = () => {
