@@ -45,8 +45,8 @@ export const ROUTES = {
 } as const;
 
 export const TOKEN = {
-  ACCESS: "accessToken",
-  REFRESH: "refreshToken",
+  ACCESS: "access-token",
+  REFRESH: "refresh-token",
 } as const;
 
 export const STORAGE_KEYS = {
