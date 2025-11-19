@@ -1,17 +1,11 @@
 "use client";
-import React from "react";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Bookmark } from "../../../public/svg/svg";
 import Image from "next/image";
-import * as guideApi from "@/services/guide/api";
 import type { Guide } from "@/types/api";
-
-type GuideItem = Guide & {
-  voteId?: string | null;
-};
 
 const getThumbnailImage = (category: string) => {
   switch (category) {
@@ -24,128 +18,55 @@ const getThumbnailImage = (category: string) => {
   }
 };
 
-interface GuideComponentProps {
-  searchQuery?: string;
-  onResultCountChange?: (count: number) => void;
-  sortBy?: "like" | "date";
-  limit?: number;
-  category?: string | null;
-}
+type GuideComponentProps = {
+  guides: Guide[];
+  onClick?: (guideId: string) => void;
+};
 
-const GuideComponent = ({
-  searchQuery = "",
-  onResultCountChange,
-  sortBy = "date",
-  limit = 50,
-  category = null,
-}: GuideComponentProps) => {
+const GuideComponent = ({ guides, onClick }: GuideComponentProps) => {
   const router = useRouter();
-  const [guides, setGuides] = React.useState<GuideItem[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | null>(null);
 
   const handleGuideClick = (guideId: string) => {
-    router.push(`/moreGuide/${guideId}`);
+    if (onClick) {
+      onClick(guideId);
+    } else {
+      router.push(`/moreGuide/${guideId}`);
+    }
   };
-
-  const fetchGuides = React.useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const sortField = sortBy === "like" ? "like" : "createdAt";
-      const requestedSize = sortBy === "like" ? Math.max(limit, 50) : limit;
-
-      const response = await guideApi.getPaginatedGuides(
-        0,
-        requestedSize,
-        `${sortField},desc`,
-      );
-
-      let content: GuideItem[] = response.content ?? [];
-
-      if (sortBy === "like") {
-        content = [...content]
-          .sort((a, b) => {
-            const aLike = a.like ?? a.likeCount ?? 0;
-            const bLike = b.like ?? b.likeCount ?? 0;
-            return bLike - aLike;
-          })
-          .slice(0, limit);
-      } else if (sortBy === "date") {
-        content = [...content]
-          .sort((a, b) => {
-            const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-            const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-            return bTime - aTime;
-          })
-          .slice(0, limit);
-      }
-
-      setGuides(content);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "가이드를 불러오지 못했어요";
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
-  }, [sortBy, limit]);
-
-  React.useEffect(() => {
-    fetchGuides();
-  }, [fetchGuides]);
-
-  const filteredGuides = React.useMemo(() => {
-    let filtered = guides.filter((guide) =>
-      (guide.title || "").toLowerCase().includes(searchQuery.toLowerCase()),
-    );
-
-    if (category) {
-      filtered = filtered.filter((guide) => guide.category === category);
-    }
-
-    return filtered;
-  }, [guides, searchQuery, category]);
-
-  React.useEffect(() => {
-    onResultCountChange?.(filteredGuides.length);
-  }, [filteredGuides.length, onResultCountChange]);
 
   return (
     <GuideBox>
       <Section>
         <SectionBody gap={"16px"}>
-          {loading && <LoadingMessage>불러오는 중...</LoadingMessage>}
-          {!loading && error && <NoResultsMessage>{error}</NoResultsMessage>}
-          {!loading && !error && filteredGuides.length > 0
-            ? filteredGuides.map((guide, index) => (
-                <GuideCard
-                  key={index}
-                  onClick={() => handleGuideClick(guide.id)}
-                >
-                  <Thumnail>
-                    <Image
-                      src={getThumbnailImage(guide.category ?? "전체") ?? ""}
-                      alt={guide.category ?? "전체"}
-                      width={20}
-                      height={20}
-                    />
-                  </Thumnail>
-                  <GuideText>
-                    <GuideTitle>{guide.title}</GuideTitle>
-                    <OtherInfo>
-                      <GuideTag>{guide.category}</GuideTag>
-                      <Bookmark width="12px" height="12px" />
-                      <MarkCount>
-                        {guide.like ?? guide.likeCount ?? 0}
-                      </MarkCount>
-                      <BookmarkIcon />
-                    </OtherInfo>
-                  </GuideText>
-                </GuideCard>
-              ))
-            : null}
-          {!loading && !error && filteredGuides.length === 0 && (
-            <NoResultsMessage>검색결과가 없어요</NoResultsMessage>
+          {guides.length === 0 ? (
+            <NoResultsMessage>진행중인 가이드가 없습니다.</NoResultsMessage>
+          ) : (
+            guides.map((guide) => (
+              <GuideCard
+                key={guide.id}
+                onClick={() => handleGuideClick(guide.id)}
+              >
+                <Thumnail>
+                  <Image
+                    src={getThumbnailImage(guide.category ?? "전체") ?? ""}
+                    alt={guide.category ?? "전체"}
+                    width={20}
+                    height={20}
+                  />
+                </Thumnail>
+                <GuideText>
+                  <GuideTitle>{guide.title}</GuideTitle>
+                  <OtherInfo>
+                    <GuideTag>{guide.category}</GuideTag>
+                    <Bookmark width="12px" height="12px" />
+                    <MarkCount>
+                      {guide.like ?? guide.likeCount ?? 0}
+                    </MarkCount>
+                    <BookmarkIcon />
+                  </OtherInfo>
+                </GuideText>
+              </GuideCard>
+            ))
           )}
         </SectionBody>
       </Section>
@@ -248,13 +169,4 @@ const NoResultsMessage = styled.div`
   color: ${color.gray500};
   font-family: ${font.D3};
   font-size: 16px;
-`;
-
-const LoadingMessage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 120px;
-  color: ${color.gray600};
-  font-family: ${font.caption};
 `;
