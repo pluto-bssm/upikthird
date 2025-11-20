@@ -48,6 +48,7 @@ import ProfileIcon from "./ProfileIcon";
 import Exclamation from "./Exclamation";
 import Question from "./Question";
 import GrayClose from "./GrayClose";
+import Vs from "./Vs";
 
 export {
   Back,
@@ -100,4 +101,5 @@ export {
   ValidationErrorIcon,
   ProfileIcon,
   GrayClose,
+  Vs,
 };
