@@ -8,6 +8,8 @@ import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import { useQuestionDetail, useQuestionComments } from "@/hooks/useBoard";
 import * as boardApi from "@/services/board/api";
+import {Bookmark} from "../../../../public/svg/svg";
+import font from "@/packages/design-system/src/font";
 
 const QuestionDetailPage = () => {
   const router = useRouter();
@@ -123,6 +125,7 @@ const QuestionDetailPage = () => {
                   {new Date(question.createdAt).toLocaleString("ko-KR")}
                 </MetaItem>
                 <BookmarkBox>
+                    <Bookmark width={14}/>
                   <BookmarkText>{question.likes}</BookmarkText>
                 </BookmarkBox>
               </MetaInfo>
@@ -262,7 +265,7 @@ export default QuestionDetailPage;
 const ErrorText = styled.p`
   text-align: center;
   font-size: 14px;
-  color: ${color.accent || "#ff4444"};
+  color: ${color.black};
   padding: 20px;
   margin: 0;
 `;
@@ -315,14 +318,14 @@ const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: ${color.gray600};
+    color: ${color.black};
   white-space: nowrap;
 
   &:not(:last-child)::after {
     content: "";
     width: 1px;
     height: 10px;
-    background-color: ${color.gray600};
+      color: ${color.black};
     margin-left: 6px;
   }
 `;
@@ -338,7 +341,7 @@ const BookmarkText = styled.span`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: ${color.gray600};
+    color: ${color.black};
 `;
 
 const Divider = styled.div`
@@ -351,14 +354,13 @@ const ContentSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+    color: ${color.black};
   padding: 20px;
 `;
 
 const Content = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  color: ${color.gray700};
+    ${font.P1}
+    color: ${color.black};
   line-height: 24px;
   margin: 0;
   word-break: break-word;
@@ -367,6 +369,7 @@ const Content = styled.p`
 
 const CommentsSection = styled.div`
   display: flex;
+    color: ${color.black};
   flex-direction: column;
   width: 100%;
 `;
@@ -375,7 +378,7 @@ const CommentCount = styled.p`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: ${color.gray600};
+    color: ${color.black};
   line-height: 1;
   margin: 0;
   padding: 20px;
@@ -414,9 +417,7 @@ const AuthorName = styled.p`
 `;
 
 const CommentContent = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+    ${font.P1}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -435,7 +436,7 @@ const FooterItem = styled.p`
   font-family: Pretendard, sans-serif;
   font-size: 10px;
   font-weight: 400;
-  color: ${color.gray300};
+  color: ${color.black};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
@@ -478,7 +479,7 @@ const FooterReportItem = styled.p`
   font-family: Pretendard, sans-serif;
   font-size: 10px;
   font-weight: 400;
-  color: ${color.primary};
+  color: ${color.black};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
@@ -511,7 +512,7 @@ const FooterReportItem = styled.p`
 const LoadingText = styled.p`
   text-align: center;
   font-size: 14px;
-  color: ${color.gray600};
+  color: ${color.black};
   padding: 20px;
   margin: 0;
 `;
@@ -519,7 +520,7 @@ const LoadingText = styled.p`
 const NoCommentText = styled.p`
   text-align: center;
   font-size: 14px;
-  color: ${color.gray600};
+  color: ${color.black};
   padding: 40px 20px;
   margin: 0;
 `;
@@ -549,7 +550,7 @@ const LoadingSection = styled.div`
   padding: 40px 20px;
   font-family: Pretendard, sans-serif;
   font-size: 14px;
-  color: ${color.gray600};
+  color: ${color.black};
 `;
 
 const ErrorSection = styled.div`
@@ -559,11 +560,11 @@ const ErrorSection = styled.div`
   padding: 40px 20px;
   font-family: Pretendard, sans-serif;
   font-size: 14px;
-  color: ${color.gray600};
+  color: ${color.black};
 `;
 
 const ReplyInputWrapper = styled.div`
-  padding: 0 20px 16px 40px;
+  padding: 16px;
 `;
 
 const ReplyInputBox = styled.div`
@@ -589,7 +590,7 @@ const ReplyInputField = styled.input`
   }
 
   &:focus {
-    border-color: ${color.primary};
+      color: ${color.black};
   }
 `;
 

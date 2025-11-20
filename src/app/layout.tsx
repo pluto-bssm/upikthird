@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "My App",
-  description: "Next.js + Emotion + React Query",
+  title: "upik",
 };
 
 const RootLayout = ({

@@ -1,6 +1,6 @@
 import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
-import { TOKEN, API } from "@/constants/common/constant";
+import { TOKEN, API } from "@/constants/upik";
 import { Storage } from "../storage/storage";
 
 export const upik = axios.create({
@@ -53,9 +53,11 @@ upik.interceptors.response.use(
           .then((res) => {
             const newToken = (res.data as { data: { accessToken: string } })
               .data.accessToken;
+
             if (!newToken) {
               return Promise.reject("No access token");
             }
+
             Storage.setItem(TOKEN.ACCESS, newToken);
             upik.defaults.headers.common.Authorization = `Bearer ${newToken}`;
             return newToken;
@@ -71,7 +73,9 @@ upik.interceptors.response.use(
       originalRequest._retry = true;
 
       const newToken = await refreshPromise;
-      if (!newToken) return Promise.reject(error);
+      if (!newToken) {
+        return Promise.reject(error);
+      }
 
       if (originalRequest.headers) {
         originalRequest.headers.Authorization = `Bearer ${newToken}`;

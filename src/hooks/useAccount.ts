@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import * as accountApi from "@/services/my/account/api";
 import type { User } from "@/types/graphql";
 
-export function useMyUser() {
+export const useMyUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +29,4 @@ export function useMyUser() {
   }, []);
 
   return { user, loading, error, refetch: fetchUser };
-}
-
-export const useCurrentUser = useMyUser;
+};

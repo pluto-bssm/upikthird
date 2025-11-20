@@ -31,7 +31,7 @@ export async function getMyVotes(): Promise<VotePayload[]> {
     {
       query: GET_MY_VOTES,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.vote?.getMyVotes || [];
@@ -44,7 +44,7 @@ export async function getVoteById(id: string): Promise<VotePayload> {
       query: GET_VOTE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const vote = response.data?.data?.vote?.getVoteById;
@@ -60,7 +60,7 @@ export async function getAllVotes(): Promise<VotePayload[]> {
     {
       query: GET_ALL_VOTES,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.vote?.getAllVotes || [];
@@ -75,7 +75,7 @@ export async function createVoteResponse(
       query: CREATE_VOTE_RESPONSE,
       variables: { input },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const result = response.data?.data?.voteResponse?.createVoteResponse;
@@ -96,7 +96,7 @@ export async function getVotes(): Promise<VotePayload[]> {
     {
       query: GET_VOTES,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.vote?.getAllVotes || [];
@@ -111,7 +111,7 @@ export async function getTodayVote(): Promise<VotePayload | null> {
     {
       query: TODAY_VOTE,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.vote?.getLeastPopularOpenVote || null;
@@ -133,7 +133,7 @@ export async function checkBadWord(text: string): Promise<CheckBadWordResult> {
       query: GET_CHECK_BADWORD,
       variables: { text },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const result = response.data?.data?.checkBadWord;
@@ -161,7 +161,7 @@ export async function generateAiOptions(
       query: AIOPTION_CREATE,
       variables: { count, title },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const result = response.data?.data?.optionGenerator?.generateOptions;
@@ -182,7 +182,7 @@ export async function createVote(input: CreateVoteInput): Promise<VotePayload> {
         query: CREATE_VOTE,
         variables: { input },
       } as GraphQLRequest,
-      authorization()
+      authorization(),
     );
 
     if (response.data?.errors && response.data.errors.length > 0) {
@@ -220,7 +220,7 @@ export async function createTailVote(
       query: CREATE_TAIL_VOTE,
       variables: { question, voteId },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const result = response.data?.data?.tail?.createTail;
@@ -251,7 +251,7 @@ export async function reportQuestion(
         query: REPORT_QUESTION,
         variables: { questionId, reason },
       } as GraphQLRequest,
-      authorization()
+      authorization(),
     );
 
     if (response.data?.errors && response.data.errors.length > 0) {
@@ -269,4 +269,3 @@ export async function reportQuestion(
     throw error;
   }
 }
-
