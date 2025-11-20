@@ -207,7 +207,7 @@ const OptionActionRow = styled.div`
 
 const OptionTitleText = styled.p`
   color: ${color.gray400};
-  ${font.caption};
+  ${font.P4};
 `;
 
 const OptionSubtitleText = styled.p`

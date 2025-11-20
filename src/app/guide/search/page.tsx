@@ -109,7 +109,7 @@ const ResultHeader = styled.div`
 
 const ResultCount = styled.div`
   color: ${color.gray600};
-  font-family: ${font.caption};
+  font-family: ${font.P1};
   font-size: 14px;
 `;
 
