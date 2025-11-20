@@ -225,7 +225,7 @@ const OtherInfo = styled.div`
 
 const GuideTag = styled.div`
   color: ${color.gray600};
-  font-family: ${font.caption};
+  font-family: ${font.P2};
 `;
 
 const BookmarkIcon = styled.span`
@@ -236,7 +236,7 @@ const BookmarkIcon = styled.span`
 
 const MarkCount = styled.div`
   color: ${color.gray600};
-  font-family: ${font.caption};
+  font-family: ${font.P2};
   margin-left: -4px;
 `;
 
@@ -256,5 +256,5 @@ const LoadingMessage = styled.div`
   align-items: center;
   height: 120px;
   color: ${color.gray600};
-  font-family: ${font.caption};
+  font-family: ${font.H1};
 `;

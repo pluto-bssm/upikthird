@@ -144,7 +144,7 @@ interface InfoTagProps {
 }
 
 const InfoTag = styled.span<InfoTagProps>`
-  ${font.caption};
+  ${font.P2};
   padding: 4px 8px;
   border-radius: 4px;
   background-color: ${(props) =>
@@ -154,7 +154,7 @@ const InfoTag = styled.span<InfoTagProps>`
 `;
 
 const InfoDate = styled.span`
-  ${font.caption};
+  ${font.P2};
   color: ${color.gray600};
 `;
 

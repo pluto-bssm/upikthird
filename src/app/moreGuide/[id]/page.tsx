@@ -145,7 +145,7 @@ const GuideTitle = styled.h1`
 
 const Date = styled.div`
   color: ${color.gray500};
-  font-family: ${font.caption};
+  font-family: ${font.P4};
 `;
 
 const CardWrap = styled.div`
@@ -173,7 +173,7 @@ const ResultButton = styled.button`
 const ContentText = styled.p`
   margin: 0;
   color: ${color.black};
-  font-family: ${font.content};
+  font-family: ${font.P1};
   line-height: 20px;
 `;
 
@@ -187,7 +187,7 @@ const ReportTextButton = styled.button`
   border: none;
   background: none;
   color: ${color.gray500};
-  font-family: ${font.caption};
+  font-family: ${font.P3};
   cursor: pointer;
   text-align: right;
   margin-top: 16px;

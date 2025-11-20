@@ -137,7 +137,7 @@ const Category = styled.div`
   height: 10px;
   padding: 7px 0;
   color: ${color.gray600};
-  font-family: ${font.caption};
+  ${font.P2};
 `;
 
 const BookmarkInfo = styled.div`
@@ -165,7 +165,7 @@ const BookmarkCount = styled.p`
 const DeadLine = styled.p`
   margin: 0;
   color: ${color.gray700};
-  font-family: ${font.caption};
+  ${font.P2};
   display: flex;
   align-items: center;
   justify-content: flex-end;

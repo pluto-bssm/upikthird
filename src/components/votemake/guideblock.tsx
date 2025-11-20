@@ -87,11 +87,11 @@ const Title = styled.p`
 `;
 
 const Category = styled.p`
-  ${font.caption};
+  ${font.P2};
   color: ${color.gray600};
 `;
 
 const ViewCount = styled.p`
-  ${font.caption};
+  ${font.P2};
   color: ${color.gray600};
 `;

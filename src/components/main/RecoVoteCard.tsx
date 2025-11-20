@@ -104,7 +104,7 @@ const VoteHeader = styled.div`
 const VoteLabel = styled.p`
   margin: 0;
   color: ${color.gray300};
-  font-family: ${font.caption};
+  font-family: ${font.P2};
 `;
 
 const VoteTitle = styled.p`
@@ -136,7 +136,7 @@ const VoteLink = styled.div`
   align-items: center;
   justify-content: center;
   color: ${color.primary};
-  font-family: ${font.caption};
+  font-family: ${font.P2};
   cursor: pointer;
 `;
 

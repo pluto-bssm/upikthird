@@ -99,7 +99,7 @@ const Accent = styled.span`
 `;
 
 const SubTitle = styled.p`
-  ${font.caption};
+  ${font.H2};
   color: ${color.gray500};
   white-space: pre-line;
   line-height: 12px;
