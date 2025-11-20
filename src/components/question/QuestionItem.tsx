@@ -4,6 +4,9 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import type { Board } from "@/types/graphql";
+import font from "@/packages/design-system/src/font";
+import Comments from "../../../public/svg/Comments";
+import {Bookmark} from "../../../public/svg";
 
 interface QuestionItemProps {
   question: Board;
@@ -23,17 +26,26 @@ export const QuestionItem = ({ question }: QuestionItemProps) => {
     <StyledLink href={`/question/${question.id}`}>
       <StyledQuestionItem>
         <QuestionContent>
-          <QuestionTitle>{question.title}</QuestionTitle>
+          <QuestionTitle>Q.{question.title}</QuestionTitle>
+            <QuestionInnerContent>{question.content}</QuestionInnerContent>
           <QuestionMeta>
-            <MetaItem>{question.author?.name || "작성자 미상"}</MetaItem>
             <MetaItem>{formatDate(question.createdAt)}</MetaItem>
-            <MetaItem>| {question.commentCount}</MetaItem>
+              <UnderIconWrapper>
+                  <UnderCommentWrapper>
+                      <Comments/>
+                      <MetaItem>
+                          {question.commentCount}
+                      </MetaItem>
+                  </UnderCommentWrapper>
+                  <UnderCommentWrapper>
+                      <Bookmark width={14}/>
+                      <MetaItem>
+                          {question.bookmarkCount}
+                      </MetaItem>
+                  </UnderCommentWrapper>
+              </UnderIconWrapper>
           </QuestionMeta>
         </QuestionContent>
-        <CommentBox>
-          <CommentNumber>{question.commentCount}</CommentNumber>
-          <CommentLabel>댓글</CommentLabel>
-        </CommentBox>
       </StyledQuestionItem>
     </StyledLink>
   );
@@ -50,7 +62,7 @@ const StyledQuestionItem = styled.div`
   display: flex;
   gap: 16px;
   padding: 20px;
-  border-bottom: 1px solid ${color.gray300};
+    border-radius: 10px;
   background-color: ${color.white};
 `;
 
@@ -60,10 +72,17 @@ const QuestionContent = styled.div`
   gap: 3px;
   flex: 1;
 `;
+const QuestionInnerContent = styled.div`
+    ${font.P4}
+    color: ${color.black};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+`;
 
 const QuestionTitle = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
+  ${font.H2}
   font-weight: 600;
   color: ${color.black};
   line-height: 1;
@@ -74,7 +93,9 @@ const QuestionTitle = styled.p`
 
 const QuestionMeta = styled.div`
   display: flex;
+    justify-content: space-between;
   gap: 6px;
+    color: ${color.black};
   align-items: center;
   flex-wrap: wrap;
 `;
@@ -83,7 +104,7 @@ const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
   font-size: 10px;
   font-weight: 400;
-  color: ${color.gray700};
+    color: ${color.black};
   white-space: nowrap;
 
   &:not(:last-child)::after {
@@ -91,33 +112,17 @@ const MetaItem = styled.span`
   }
 `;
 
-const CommentBox = styled.div`
+const UnderCommentWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
+    color: ${color.black};
+  gap: 4px;
+`;
+
+const UnderIconWrapper = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 51px;
-  height: 49px;
-  background-color: ${color.gray100};
-  border-radius: 8px;
-  cursor: pointer;
-  flex-shrink: 0;
-`;
-
-const CommentNumber = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: ${color.gray700};
-  line-height: 1;
-  margin: 0;
-`;
-
-const CommentLabel = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  color: ${color.gray700};
-  line-height: 1;
-  margin: 0;
+    color: ${color.black};
+    gap: 4px;
 `;

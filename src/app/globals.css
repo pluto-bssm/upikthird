@@ -14,7 +14,7 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: white;
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;

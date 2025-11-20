@@ -4,8 +4,6 @@ import color from "./color";
 const GlobalStyle = () => (
   <Global
     styles={css`
-      @import url('https:
-
       * {
         box-sizing: border-box;
         margin: 0;
@@ -55,6 +53,7 @@ const GlobalStyle = () => (
         width: 100%;
         height: 100%;
         overflow: auto;
+          background-color:#FCFCFC;
 
         ::-webkit-scrollbar {
           display: none;
