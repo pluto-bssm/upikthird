@@ -10,7 +10,7 @@ export const GET_ALL_VOTES = `query GetAllVotes { vote { getAllVotes(includeHasV
 
 export const GET_MY_VOTES = `query GetMyVotes { vote { getMyVotes { id title category status totalResponses finishedAt options { id content responseCount percentage } } } }`;
 
-export const GET_VOTE_BY_ID = `query GetVoteById($id: ID!) { vote { getVoteById(id: $id) { id title category status totalResponses finishedAt hasVoted options { id content responseCount percentage } } } }`;
+export const GET_VOTE_BY_ID = `query GetVoteById($id: String!) { vote { getVoteById(id: $id) { id title category status totalResponses finishedAt hasVoted options { id content responseCount percentage } } } }`;
 
 export const AIOPTION_CREATE = `query GenerateOptions($count: Int!, $title: String!) { optionGenerator { generateOptions(count: $count, title: $title) { options message } } }`;
 
