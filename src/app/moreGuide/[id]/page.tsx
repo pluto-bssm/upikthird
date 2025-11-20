@@ -4,6 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import Header from "@/components/common/header";
+import Footer from "@/components/common/footer";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
@@ -68,8 +69,21 @@ const MoreGuidePage = () => {
     if (guideId) fetchGuide();
   }, [guideId]);
 
+  const formattedDate = React.useMemo(() => {
+    if (!guide?.createdAt) return "-";
+    const parsed = new Date(guide.createdAt);
+    if (Number.isNaN(parsed.getTime())) {
+      return guide.createdAt.slice(0, 10);
+    }
+    return parsed.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }, [guide?.createdAt]);
+
   return (
-    <Root>
+    <PageWrapper>
       <Header
         types="bookmark"
         bookmarked={bookmarked}
@@ -83,38 +97,50 @@ const MoreGuidePage = () => {
         }}
       />
 
-      <Content>
-        <Thumbnail>
+      <MainContent>
+        <CategoryBadge>
           <Image
             src={getThumbnailImage(guide?.category ?? "")}
             alt={guide?.category ?? ""}
             width={24}
             height={24}
           />
-        </Thumbnail>
+        </CategoryBadge>
         <GuideTitle>{guide?.title ?? "가이드를 불러오는 중"}</GuideTitle>
-        <Date>{(guide?.createdAt ?? "").slice(0, 10)}</Date>
+        <GuideMeta>
+          <GuideMetaLabel>가이드 제작 날짜</GuideMetaLabel>
+          <GuideMetaValue>{formattedDate}</GuideMetaValue>
+        </GuideMeta>
 
-        <CardWrap>
-          <ResultButton>투표 결과 확인하기</ResultButton>
-          {guide?.voteId ? <VoteBarChart voteId={guide.voteId} /> : null}
-        </CardWrap>
+        <VoteSection>
+          <ResultButton type="button">투표 결과 확인하기</ResultButton>
+          <VoteChartWrapper>
+            {guide?.voteId ? (
+              <VoteBarChart voteId={guide.voteId} />
+            ) : (
+              <EmptyVote>등록된 투표 결과가 없습니다.</EmptyVote>
+            )}
+          </VoteChartWrapper>
+        </VoteSection>
 
-        <ContentText>{guide?.content}</ContentText>
-        <Line />
+        <SectionDivider />
+        <GuideBody>{guide?.content ?? "가이드 내용을 불러오는 중입니다."}</GuideBody>
+        <MutedDivider />
         <ReportTextButton
           onClick={() => router.push(`/revote?guideId=${guideId}`)}
         >
           가이드에 문제가 있다면?
         </ReportTextButton>
-      </Content>
-    </Root>
+      </MainContent>
+      <FooterSpacer />
+      <Footer />
+    </PageWrapper>
   );
 };
 
 export default MoreGuidePage;
 
-const Root = styled.div`
+const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,42 +148,72 @@ const Root = styled.div`
   width: 100%;
   min-height: 100vh;
   background-color: ${color.white};
+  margin: 0 auto;
+  padding-bottom: 160px;
 `;
 
-const Content = styled.main`
+const MainContent = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 90%;
-  margin-top: 96px;
-`;
-
-const Thumbnail = styled.div`
-  font-size: 20px;
+  gap: 20px;
+  width: 100%;
+  padding: 96px 20px 0;
+  box-sizing: border-box;
 `;
 
 const GuideTitle = styled.h1`
   margin: 0;
   color: ${color.black};
   font-family: ${font.D1};
-  line-height: 28px;
+  line-height: 1.3;
 `;
 
-const Date = styled.div`
-  color: ${color.gray500};
+const CategoryBadge = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: ${color.gray50};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const GuideMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const GuideMetaLabel = styled.span`
+  color: ${color.gray400};
   font-family: ${font.caption};
 `;
 
-const CardWrap = styled.div`
+const GuideMetaValue = styled.span`
+  color: ${color.black};
+  font-family: ${font.H1};
+`;
+
+const VoteSection = styled.section`
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
+`;
+
+const VoteChartWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const ResultButton = styled.button`
   position: absolute;
   top: 18px;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translate(-50%, -50%);
   border: none;
   width: 148px;
   height: 36px;
@@ -170,26 +226,50 @@ const ResultButton = styled.button`
   cursor: pointer;
 `;
 
-const ContentText = styled.p`
-  margin: 0;
-  color: ${color.black};
+const EmptyVote = styled.div`
+  margin-top: 18px;
+  width: 100%;
+  max-width: 350px;
+  border: 1px solid ${color.gray500};
+  border-radius: 8px;
+  padding: 60px 36px;
+  text-align: center;
+  color: ${color.gray500};
   font-family: ${font.content};
-  line-height: 20px;
 `;
 
-const Line = styled.div`
+const SectionDivider = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${color.gray300};
+`;
+
+const MutedDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${color.gray500};
+`;
+
+const GuideBody = styled.p`
+  margin: 0;
+  color: ${color.black};
+  font-family: ${font.content};
+  line-height: 24px;
+  white-space: pre-wrap;
 `;
 
 const ReportTextButton = styled.button`
   border: none;
   background: none;
   color: ${color.gray500};
-  font-family: ${font.caption};
+  font-family: "Pretendard", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
   cursor: pointer;
   text-align: right;
-  margin-top: 16px;
-  margin-bottom: 16px;
+`;
+
+const FooterSpacer = styled.div`
+  width: 100%;
+  height: 140px;
 `;
