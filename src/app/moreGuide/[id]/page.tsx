@@ -186,7 +186,7 @@ const GuideMeta = styled.div`
 
 const GuideMetaLabel = styled.span`
   color: ${color.gray400};
-  font-family: ${font.caption};
+  font-family: ${font.P4};
 `;
 
 const GuideMetaValue = styled.span`
@@ -235,7 +235,7 @@ const EmptyVote = styled.div`
   padding: 60px 36px;
   text-align: center;
   color: ${color.gray500};
-  font-family: ${font.content};
+   ${font.P1};
 `;
 
 const SectionDivider = styled.div`
@@ -253,7 +253,7 @@ const MutedDivider = styled.div`
 const GuideBody = styled.p`
   margin: 0;
   color: ${color.black};
-  font-family: ${font.content};
+  font-family: ${font.P1};
   line-height: 24px;
   white-space: pre-wrap;
 `;
@@ -262,9 +262,7 @@ const ReportTextButton = styled.button`
   border: none;
   background: none;
   color: ${color.gray500};
-  font-family: "Pretendard", sans-serif;
-  font-size: 12px;
-  font-weight: 400;
+  font-family: ${font.P3};
   cursor: pointer;
   text-align: right;
 `;

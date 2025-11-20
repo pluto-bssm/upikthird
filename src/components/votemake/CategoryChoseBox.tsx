@@ -93,6 +93,6 @@ const CategoryDescriptionArea = styled.div`
 `;
 
 const CategoryDescription = styled.p`
-  ${font.caption};
+  ${font.P4};
   color: ${color.gray400};
 `;

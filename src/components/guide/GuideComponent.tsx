@@ -146,7 +146,7 @@ const OtherInfo = styled.div`
 
 const GuideTag = styled.div`
   color: ${color.gray600};
-  font-family: ${font.caption};
+  font-family: ${font.P2};
 `;
 
 const BookmarkIcon = styled.span`
@@ -157,7 +157,7 @@ const BookmarkIcon = styled.span`
 
 const MarkCount = styled.div`
   color: ${color.gray600};
-  font-family: ${font.caption};
+  font-family: ${font.P2};
   margin-left: -4px;
 `;
 
