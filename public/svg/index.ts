@@ -39,6 +39,12 @@ import Vote from "./Vote";
 import Exclamation from "./Exclamation";
 import Question from "./Question";
 import CheckComplete from "./CheckComplete";
+import VoteBox from "./VoteBox";
+import Placard from "./Placard";
+import BookBox from "./BookBox";
+import CheckBox from "./CheckBox";
+import LogoBox from "./LogoBox";
+import SmileBox from "./SmileBox";
 
 export {
   Back,
@@ -82,4 +88,10 @@ export {
   Question,
   Exclamation,
   CheckComplete,
+  VoteBox,
+  Placard,
+  BookBox,
+  CheckBox,
+  LogoBox,
+  SmileBox,
 };
