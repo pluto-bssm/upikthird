@@ -106,7 +106,7 @@ const GuideDescription = styled.p`
 `;
 
 const GuideLink = styled.div`
-  color: ${color.gray300};\
+  color: ${color.gray300};
   ${font.P4};
   display: flex;
   justify-content: flex-end;
@@ -115,9 +115,5 @@ const GuideLink = styled.div`
   text-underline-offset: 2px;
   text-underline-color: ${color.gray300};
   cursor: pointer;
-  &:hover {
-    color: ${color.primary};
-  }
-
 `;
 
