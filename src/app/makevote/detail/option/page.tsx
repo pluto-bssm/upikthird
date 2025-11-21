@@ -128,7 +128,7 @@ const Options = () => {
           accentText="완료"
           rightText="했어요!"
           onClick={() => {
-            setIsOpen_3(false);
+            router.back();
           }}
         />
       )}
