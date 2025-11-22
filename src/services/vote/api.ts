@@ -14,6 +14,7 @@ import {
   CREATE_VOTE,
   CREATE_TAIL_VOTE,
   REPORT_QUESTION,
+  OPTION_GEERATOR_COUNT
 } from "./mutations";
 import { authorization } from "@/apis/token";
 import { CreateVoteInput } from "@/types/api";
@@ -268,4 +269,34 @@ export async function reportQuestion(
   } catch (error) {
     throw error;
   }
+}
+
+
+interface AiQuotaResult {
+  canUseNow: boolean;
+  lastResetDate: string;
+  maxUsageCount: number;
+  remainingCount: number;
+  usageCount: number;
+}
+
+export async function getAiQuota(): Promise<AiQuotaResult> {
+  const response = await upik.post(
+    "",
+    {
+      query: OPTION_GEERATOR_COUNT,
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+  console.log(response);
+
+  const quota = response.data?.data?.aiQuota;
+  if (!quota) {
+    throw new Error("Failed to get AI quota");
+  }
+
+  
+  
+  return quota;
 }

@@ -13,6 +13,8 @@ import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useVoteStore } from "@/store/useMakeVoteStore";
 import { useGenerateAiOptions } from "@/hooks/useVotes";
+import { getAiQuota } from "@/services/vote/api";
+
 
 const Options = () => {
   const router = useRouter();
@@ -37,7 +39,8 @@ const Options = () => {
 
       try {
         const result = await generateAiOptions(ballots.length || 4, title);
-
+        const AIcount = await getAiQuota();
+        console.log(AIcount);
         if (result && result.options.length > 0) {
           setBallots(result.options);
           setIsOpen_3(true);
@@ -128,6 +131,7 @@ const Options = () => {
           accentText="완료"
           rightText="했어요!"
           onClick={() => {
+            setIsOpen_3(false);
             router.back();
           }}
         />
