@@ -108,7 +108,6 @@ const MoreGuidePage = () => {
         </CategoryBadge>
         <GuideTitle>{guide?.title ?? "가이드를 불러오는 중"}</GuideTitle>
         <GuideMeta>
-          <GuideMetaLabel>가이드 제작 날짜</GuideMetaLabel>
           <GuideMetaValue>{formattedDate}</GuideMetaValue>
         </GuideMeta>
 
@@ -164,7 +163,7 @@ const MainContent = styled.main`
 const GuideTitle = styled.h1`
   margin: 0;
   color: ${color.black};
-  font-family: ${font.D1};
+  ${font.D2};
   line-height: 1.3;
 `;
 
@@ -183,15 +182,9 @@ const GuideMeta = styled.div`
   flex-direction: column;
   gap: 4px;
 `;
-
-const GuideMetaLabel = styled.span`
-  color: ${color.gray400};
-  font-family: ${font.P4};
-`;
-
 const GuideMetaValue = styled.span`
   color: ${color.black};
-  font-family: ${font.H1};
+  ${font.H1};
 `;
 
 const VoteSection = styled.section`

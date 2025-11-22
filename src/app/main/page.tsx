@@ -225,10 +225,10 @@ const HeroRightText = styled.div`
 
 const HeroButton = styled.button`
   position: absolute;
-  top: calc(49px + 94px + 8px);
+  top: 132px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: 12px;
   border: 1px solid rgba(240, 240, 240, 0.47);
   background: rgba(255, 255, 255, 0.18);
@@ -236,12 +236,9 @@ const HeroButton = styled.button`
   ${font.Btn3};
   font-weight: 700;
   font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.006px;
   backdrop-filter: blur(5px);
-  white-space: nowrap;
   cursor: pointer;
   z-index: 1;
-  margin: 0;
+  white-space: nowrap;
 `;
 

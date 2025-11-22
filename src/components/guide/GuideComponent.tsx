@@ -135,7 +135,7 @@ const GuideText = styled.div`
 
 const GuideTitle = styled.div`
   color: ${color.black};
-  font-family: ${font.D3};
+  ${font.H1};
 `;
 
 const OtherInfo = styled.div`
