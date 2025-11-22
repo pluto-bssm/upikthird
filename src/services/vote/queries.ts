@@ -12,7 +12,9 @@ export const GET_MY_VOTES = `query GetMyVotes { vote { getMyVotes { id title cat
 
 export const GET_VOTE_BY_ID = `query GetVoteById($id: String!) { vote { getVoteById(id: $id) { id title category status totalResponses finishedAt hasVoted options { id content responseCount percentage } } } }`;
 
-export const AIOPTION_CREATE = `query GenerateOptions($count: Int!, $title: String!) { optionGenerator { generateOptions(count: $count, title: $title) { options message } } }`;
+export const AIOPTION_CREATE = `query MyQuery($count: Int!, $title: String!) {optionGenerator { generateOptions(count: $count, title: $title) {message options success } } }`;
+
+export const GET_AIOPTION_COUNT = `query MyQuery { aiQuota { canUseAI getMyQuota { maxUsageCount remainingCount usageCount canUseNow lastResetDate } } }`;
 
 export const TODAY_VOTE = `query TodayVote { vote { getLeastPopularOpenVote { category finishedAt hasVoted id options { content id percentage responseCount } status title totalResponses } } }`;
 

@@ -1,3 +1,5 @@
+// Options.tsx
+
 "use client";
 
 import styled from "@emotion/styled";
@@ -13,8 +15,7 @@ import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useVoteStore } from "@/store/useMakeVoteStore";
 import { useGenerateAiOptions } from "@/hooks/useVotes";
-import { getAiQuota } from "@/services/vote/api";
-
+import { getAICOUNT,getAiQuota } from "@/services/vote/api";
 
 const Options = () => {
   const router = useRouter();
@@ -23,8 +24,11 @@ const Options = () => {
   const [IsOpen_2, setIsOpen_2] = useState(false);
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
-  const [aiUsageCount, setAiUsageCount] = useState(0);
+  
   const { ballots, title, setBallots } = useVoteStore();
+  const [maxUsageCount, setMaxUsageCount] = useState(0);
+  const [remainingCount, setRemainingCount] = useState(0);
+  const [usageCount, setUsageCount] = useState(0);
 
   const { generateAiOptions, loading, options, error } = useGenerateAiOptions();
   void loading;
@@ -32,15 +36,18 @@ const Options = () => {
   void error;
 
   async function MakeAiBallot() {
-    if (aiUsageCount < 3) {
-      setAiUsageCount(aiUsageCount + 1);
+    if (remainingCount > 0) {
       setIsOpen_1(false);
       setIsOpen_2(true);
 
       try {
         const result = await generateAiOptions(ballots.length || 4, title);
-        const AIcount = await getAiQuota();
-        console.log(AIcount);
+        
+        const updatedQuota = await getAiQuota();
+        setMaxUsageCount(updatedQuota.maxUsageCount);
+        setRemainingCount(updatedQuota.remainingCount);
+        setUsageCount(updatedQuota.usageCount);
+        
         if (result && result.options.length > 0) {
           setBallots(result.options);
           setIsOpen_3(true);
@@ -56,6 +63,19 @@ const Options = () => {
       setIsOpen_4(true);
     }
   }
+
+  const handleAiOptionClick = async () => {
+    try {
+      const AIcount = await getAICOUNT();
+      setMaxUsageCount(AIcount.maxUsageCount);
+      setRemainingCount(AIcount.remainingCount);
+      setUsageCount(AIcount.usageCount);
+      setIsOpen_1(true);
+    } catch (err) {
+      console.error("AI 쿼터 정보를 가져오는데 실패했습니다:", err);
+      alert("AI 쿼터 정보를 가져오는데 실패했습니다.");
+    }
+  };
 
   return (
     <OptionsLayout>
@@ -80,11 +100,7 @@ const Options = () => {
           </OptionCardContent>
         </OptionCard>
 
-        <OptionCard
-          onClick={() => {
-            setIsOpen_1(true);
-          }}
-        >
+        <OptionCard onClick={handleAiOptionClick}>
           <OptionCardContent>
             <OptionTitleRow>
               <OptionTitleText>선지 작성하기</OptionTitleText>
@@ -108,7 +124,7 @@ const Options = () => {
           title="AI 선지 추천 기능 사용하기"
           subtitle="투표를 제작할 때 선지 작성에 어려움을 겪는 경우 
 이 기능을 사용하여 AI가 선지를 작성하도록 할 수 있습니다."
-          primaryButtonText={`사용하기 ${aiUsageCount}/3`}
+          primaryButtonText={`사용하기 ${usageCount}/${maxUsageCount}`}
           secondaryButtonText="뒤로가기"
           onPrimaryClick={() => {
             MakeAiBallot();

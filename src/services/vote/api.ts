@@ -8,6 +8,7 @@ import {
   TODAY_VOTE,
   GET_CHECK_BADWORD,
   AIOPTION_CREATE,
+  GET_AIOPTION_COUNT
 } from "./queries";
 import {
   CREATE_VOTE_RESPONSE,
@@ -271,7 +272,6 @@ export async function reportQuestion(
   }
 }
 
-
 interface AiQuotaResult {
   canUseNow: boolean;
   lastResetDate: string;
@@ -284,19 +284,66 @@ export async function getAiQuota(): Promise<AiQuotaResult> {
   const response = await upik.post(
     "",
     {
-      query: OPTION_GEERATOR_COUNT,
+      query: OPTION_GEERATOR_COUNT, 
     } as GraphQLRequest,
     authorization(),
   );
 
   console.log(response);
 
-  const quota = response.data?.data?.aiQuota;
+  const quota = response.data?.data?.aiQuota?.useAIQuota; 
   if (!quota) {
     throw new Error("Failed to get AI quota");
   }
 
-  
-  
   return quota;
+}
+
+
+interface AiQuotaResult {
+  canUseNow: boolean;
+  lastResetDate: string;
+  maxUsageCount: number;
+  remainingCount: number;
+  usageCount: number;
+}
+
+interface AiQuotaResponse {
+  data: {
+    aiQuota: {
+      canUseAI: boolean;
+      getMyQuota: {
+        maxUsageCount: number;
+        remainingCount: number;
+        usageCount: number;
+        canUseNow: boolean;
+        lastResetDate: string;
+      };
+    };
+  };
+}
+
+export async function getAICOUNT(): Promise<AiQuotaResult> {
+  const response = await upik.post<AiQuotaResponse>(
+    "",
+    {
+      query: GET_AIOPTION_COUNT,
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+  console.log(response);
+
+  const quota = response.data?.data?.aiQuota?.getMyQuota;
+  if (!quota) {
+    throw new Error("Failed to get AI quota");
+  }
+
+  return {
+    canUseNow: quota.canUseNow,
+    lastResetDate: quota.lastResetDate,
+    maxUsageCount: quota.maxUsageCount,
+    remainingCount: quota.remainingCount,
+    usageCount: quota.usageCount,
+  };
 }
