@@ -9,8 +9,8 @@ import RecoVoteCard from "@/components/main/RecoVoteCard";
 import Header from "@/components/common/header";
 import NavigationBar from "@/components/common/navigationbar";
 import { Book, VoteMain } from "../../../public/svg/svg";
-
 export default function Main() {
+
   return (
     <GuideLayout>
       <Header types="default and no navi" />

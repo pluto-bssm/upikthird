@@ -149,6 +149,14 @@ export async function checkBadWord(text: string): Promise<CheckBadWordResult> {
 interface GenerateOptionsResult {
   options: string[];
   message: string;
+  success: boolean;
+  aiQuota: {
+    canUseAI: boolean;
+    maxUsageCount: number;
+    remainingCount: number;
+    usageCount: number;
+    canUseNow: boolean;
+  };
 }
 
 export async function generateAiOptions(
@@ -164,11 +172,30 @@ export async function generateAiOptions(
     authorization(),
   );
 
-  const result = response.data?.data?.optionGenerator?.generateOptions;
+  const data = response.data?.data;
+  const result = data?.optionGenerator?.generateOptions;
+  const quota = data?.aiQuota;
+
   if (!result) {
     throw new Error("Failed to generate options");
   }
-  return result;
+
+  if (!quota) {
+    throw new Error("AI quota information not available");
+  }
+
+    return {
+    options: result.options,
+    message: result.message,
+    success: result.success,
+    aiQuota: {
+      canUseAI: quota.canUseAI,
+      maxUsageCount: quota.getMyQuota.maxUsageCount,
+      remainingCount: quota.getMyQuota.remainingCount,
+      usageCount: quota.getMyQuota.usageCount,
+      canUseNow: quota.getMyQuota.canUseNow,
+    },
+  };
 }
 
 /**
