@@ -50,7 +50,7 @@ export async function getAllGuides(): Promise<Guide[]> {
     {
       query: GET_ALL_GUIDES,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.guide?.getAllGuides || [];
@@ -66,7 +66,7 @@ export async function getGuidesByCategory(category: string): Promise<Guide[]> {
       query: GET_GUIDES_BY_CATEGORY,
       variables: { category },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.guide?.getGuidesByCategory || [];
@@ -82,7 +82,7 @@ export async function getGuideById(id: string): Promise<GuideDetail> {
       query: GET_GUIDE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const guide = response.data?.data?.guideById;
@@ -102,7 +102,7 @@ export async function getGuideDetail(id: string): Promise<GuideDetail> {
       query: GET_GUIDE_BY_ID,
       variables: { id },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const guide = response.data?.data?.guideById;
@@ -124,7 +124,7 @@ export async function searchSimilarGuides(
       query: SEARCH_SIMILAR_GUIDES,
       variables: { title },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.keywordGuide?.searchSimilarByTitle || [];
@@ -144,7 +144,7 @@ export async function getPaginatedGuides(
       query: GET_ALL_GUIDES,
       variables: { page, size, sortBy },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const guides = response.data?.data?.getAllGuides;
@@ -163,7 +163,7 @@ export async function getLeastPopularOpenVote(): Promise<Vote> {
     {
       query: GET_LEAST_POPULAR_OPEN_VOTE,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const vote = response.data?.data?.vote?.getLeastPopularOpenVote;
@@ -182,7 +182,7 @@ export async function getMostPopularOpenVote(): Promise<Vote | Vote[]> {
     {
       query: GET_MOST_POPULAR_OPEN_VOTE,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const vote = response.data?.data?.vote?.getMostPopularOpenVote;
@@ -202,7 +202,7 @@ export async function toggleBookmark(guideId: string): Promise<boolean> {
       query: TOGGLE_BOOKMARK,
       variables: { guideId },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const result = response.data?.data?.bookmark?.toggleBookmark;
@@ -218,7 +218,7 @@ export async function isGuideBookmarked(guideId: string): Promise<boolean> {
     {
       query: GET_BOOKMARKS,
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   const bookmarks: Bookmark[] =
@@ -239,9 +239,8 @@ export async function createRevote(
       query: CREATE_REVOTE,
       variables: { input },
     } as GraphQLRequest,
-    authorization()
+    authorization(),
   );
 
   return response.data?.data?.revote?.createRevote;
 }
-

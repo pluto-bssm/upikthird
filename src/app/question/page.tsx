@@ -30,18 +30,6 @@ const QuestionPage = () => {
   return (
     <StyledQuestionPage>
       <Header types="question" text="질문 게시판" />
-      <TabContainer>
-        <Tab isActive={activeTab === "all"} onClick={() => setActiveTab("all")}>
-          전체
-        </Tab>
-        <Divider />
-        <Tab
-          isActive={activeTab === "popular"}
-          onClick={() => setActiveTab("popular")}
-        >
-          인기
-        </Tab>
-      </TabContainer>
       <QuestionPageContent>
         {loading ? (
           <LoadingText>로딩 중...</LoadingText>
@@ -60,6 +48,7 @@ export default QuestionPage;
 
 const StyledQuestionPage = styled.div`
   width: 100%;
+    background-color: #fff;
   max-width: 600px;
   margin: 0 auto;
   background-color: ${color.white};

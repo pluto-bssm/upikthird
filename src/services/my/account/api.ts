@@ -17,7 +17,7 @@ export async function getMyUser(): Promise<User> {
   const response = await upik.post(
     API.GRAPHQL_URL,
     requestBody,
-    authorization()
+    authorization(),
   );
 
   const data = response.data?.data?.iam?.getCurrentUser;
