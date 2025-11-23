@@ -97,7 +97,7 @@ const GuideSearch = () => {
               </ResultCount>
             </ResultHeader>
             <GuideContainer>
-              <GuideComponent guides={filteredGuides} />
+              <GuideComponent searchQuery={searchQuery} />
             </GuideContainer>
           </>
         )}

@@ -112,7 +112,7 @@ const MoreGuidePage = () => {
         </GuideMeta>
 
         <VoteSection>
-          <ResultButton type="button">투표 결과 확인하기</ResultButton>
+          <ResultButton>투표 결과 확인하기</ResultButton>
           <VoteChartWrapper>
             {guide?.voteId ? (
               <VoteBarChart voteId={guide.voteId} />
@@ -184,7 +184,7 @@ const GuideMeta = styled.div`
 `;
 const GuideMetaValue = styled.span`
   color: ${color.black};
-  ${font.H1};
+  ${font.P4};
 `;
 
 const VoteSection = styled.section`
@@ -214,7 +214,7 @@ const ResultButton = styled.button`
   border-radius: 30px;
   background: ${color.black};
   color: ${color.white};
-  font-family: ${font.D3};
+  ${font.H4};
   z-index: 10;
   cursor: pointer;
 `;
@@ -246,7 +246,7 @@ const MutedDivider = styled.div`
 const GuideBody = styled.p`
   margin: 0;
   color: ${color.black};
-  font-family: ${font.P1};
+  ${font.P1};
   line-height: 24px;
   white-space: pre-wrap;
 `;
@@ -255,7 +255,7 @@ const ReportTextButton = styled.button`
   border: none;
   background: none;
   color: ${color.gray500};
-  font-family: ${font.P3};
+  ${font.P3};
   cursor: pointer;
   text-align: right;
 `;

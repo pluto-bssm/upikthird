@@ -190,18 +190,18 @@ const Column = styled.div`
 `;
 
 const SmallHeader = styled.div`
-  ${font.H1};
+  ${font.H3};
   color: ${color.gray700};
 `;
 
 const Title = styled.h1`
   margin: 0;
   color: ${color.black};
-  ${font.D1};
+  ${font.D2};
 `;
 
 const SmallTitle = styled.div`
-  ${font.D3};
+  ${font.H2};
   color: ${color.gray700};
 `;
 
@@ -222,7 +222,7 @@ const SendBar = styled.div`
 `;
 
 const InnerText = styled.div`
-  ${font.H2};
+  ${font.P1};
   color: ${color.gray300};
   text-align: left;
   margin-top: 8px;

@@ -45,7 +45,7 @@ export const FAST_ROAD_CARDS: FastRoadCard[] = [
   {
     title: ["유픽 소개", "바로가기"],
     description: ["유픽에 대해서", "더 자세히 알고싶다면"],
-    href: "**",
+    href: "https://www.notion.so/2733ccc9b3dc803fb8dcc0c581403bff",
     Icon: LogoBox,
   },
   {

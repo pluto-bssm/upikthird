@@ -117,7 +117,7 @@ const CardBody = styled.div`
 
 const VoteTitle = styled.div`
   color: ${color.black};
-  font-family: ${font.D1};
+  ${font.D3};
   text-align: center;
   margin: 0;
   width: 100%;
@@ -125,7 +125,7 @@ const VoteTitle = styled.div`
 
 const Participant = styled.div`
   color: ${color.black};
-  font-family: ${font.H1};
+  ${font.P2};
   text-align: center;
   width: 100%;
 `;
@@ -186,7 +186,7 @@ const Dot = styled.span`
 `;
 
 const Option = styled.span`
-  font-family: ${font.H3};
+  ${font.P2};
   color: ${color.black};
 `;
 
@@ -195,8 +195,5 @@ const Note = styled.p`
   margin: 0;
   text-align: right;
   color: ${color.gray500};
-  font-family: "Pretendard", sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 1;
+  ${font.P3};
 `;
