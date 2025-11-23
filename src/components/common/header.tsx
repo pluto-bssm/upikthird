@@ -300,12 +300,10 @@ const Header = ({
                 onChange={(e) => {
                   setSearchInput(e.target.value);
                   onSearchChange?.(e.target.value);
+                  onSubmit;
                 }}
               />
             </CenterItemBox>
-            <RightItemBox>
-              <Button onClick={onSubmit}>검색</Button>
-            </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
       );

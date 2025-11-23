@@ -1,5 +1,3 @@
-// Options.tsx
-
 "use client";
 
 import styled from "@emotion/styled";
@@ -122,8 +120,7 @@ const Options = () => {
         <IconTwoOptionModal
           icon="exclamation"
           title="AI 선지 추천 기능 사용하기"
-          subtitle="투표를 제작할 때 선지 작성에 어려움을 겪는 경우 
-이 기능을 사용하여 AI가 선지를 작성하도록 할 수 있습니다."
+          subtitle="지금까지 작성한 내용은 저장되지않습니다."
           primaryButtonText={`사용하기 ${usageCount}/${maxUsageCount}`}
           secondaryButtonText="뒤로가기"
           onPrimaryClick={() => {
@@ -158,7 +155,7 @@ const Options = () => {
           leftText="오늘은 더 이상 AI 선지 추천기능을 "
           accentText="이용"
           rightText="할 수 없어요"
-          subText="AI 선지 추천 기능은 하루에 3번만 사용할 수 있고, 사용 기능 횟수는 매일밤 12시에 초기화 돼요."
+          subText={'하루 3번만 이용가능해요.\n매일 밤 12시에 초기화 됩니다.'}
           onClick={() => {
             setIsOpen_4(false);
           }}
@@ -227,10 +224,10 @@ const OptionActionRow = styled.div`
 
 const OptionTitleText = styled.p`
   color: ${color.gray400};
-  ${font.P4};
+  ${font.P2};
 `;
 
 const OptionSubtitleText = styled.p`
   color: ${color.black};
-  ${font.D3};
+  ${font.H1};
 `;

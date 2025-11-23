@@ -213,9 +213,8 @@ const OptionTitle = styled.p<{ isSelected?: boolean }>`
 `;
 
 const OptionDescription = styled.p`
-  font-size: 12px;
-  font-weight: 400;
-  color: #dadada;
+  ${font.P3};
+  color: ${color.gray600};
 `;
 
 const RadioInnerDot = styled.div`
@@ -283,7 +282,7 @@ const ResultBox = styled.div`
 `;
 
 const Result = styled.p`
-  ${font.H3};
+  ${font.P4};
   color: ${color.gray500};
   border-bottom: 0.5px solid ${color.gray500};
   cursor: pointer;
@@ -308,8 +307,7 @@ const ModalContentBox = styled.div<{ isAnimating: boolean }>`
 
 const ModalTitle = styled.div`
   text-align: center;
-  font-size: 18px;
-  font-weight: 700;
+  ${font.H2};
   color: #011627;
   margin-bottom: 32px;
   position: relative;

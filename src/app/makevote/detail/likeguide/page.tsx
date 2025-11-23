@@ -35,7 +35,6 @@ const LikeGuide = () => {
   } = useVoteStore();
 
   const { createVote, loading, error } = useCreateVote();
-  // mark unused vars as intentionally unused to satisfy linter
   void loading;
   void error;
 
@@ -154,7 +153,7 @@ const LikeGuide = () => {
         />
       </LikeGuideSection>
 
-      {/* 취소 확인 모달 */}
+
       {isOpen && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
@@ -165,7 +164,7 @@ const LikeGuide = () => {
         />
       )}
 
-      {/* 로딩 모달 */}
+
       {isLoadingOpen && (
         <LoadingModal
           title="투표를 제작하고 있어요."
@@ -173,7 +172,7 @@ const LikeGuide = () => {
         />
       )}
 
-      {/* 완료 모달 */}
+
       {isCompleteOpen && (
         <AccentModal
           icon={<Completevote />}
@@ -221,17 +220,17 @@ const LikeGuideInfoArea = styled.div`
 `;
 
 const LikeGuideMainText = styled.p`
-  ${font.H1};
+  ${font.H3};
   color: ${color.primary};
 `;
 
 const LikeGuideTitle = styled.p`
-  ${font.D1};
+  ${font.D2};
   color: ${color.black};
 `;
 
 const LikeGuideSubText = styled.p`
-  ${font.H2};
+  ${font.H3};
   color: ${color.gray400};
 `;
 

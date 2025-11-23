@@ -191,13 +191,6 @@ const Detail = () => {
         )}
       </DetailSection>
 
-      <Button
-        icon={<Plus width={24} height={24} />}
-        onCkick={() => {
-          CheckVote();
-        }}
-        text="투표 제작하기"
-      />
 
       {IsOpen_1 && (
         <TwoOptionModal
@@ -212,8 +205,7 @@ const Detail = () => {
         <IconTwoOptionModal
           icon="exclamation"
           title="제출하시겠어요?"
-          subtitle="투표 질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 경우
-투표가 사전고지 없이 삭제되거나, 불이익을 받을 수 있습니다."
+          subtitle={'투표 질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 경우\n 투표가 사전고지 없이 삭제되거나, 불이익을 받을 수 있습니다.'}
           primaryButtonText="제출하기"
           secondaryButtonText="투표 수정하기"
           onPrimaryClick={handleVoteSubmit}
@@ -247,6 +239,16 @@ const Detail = () => {
           info="유사한 내용의 가이드가 있다면, 기다리지 않아도 돼요"
         />
       )}
+
+
+      <Button
+        icon={<Plus width={24} height={24} />}
+        onCkick={() => {
+          CheckVote();
+        }}
+        text="투표 제작하기"
+      />
+
     </DetailLayout>
   );
 };
@@ -263,16 +265,17 @@ const DetailLayout = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10vh;
+
 `;
 
 const DetailSection = styled.div`
-  margin-top: 100px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 10px;
   flex-direction: column;
+  margin-bottom: 80px;
 `;
 
 const DetailInformation = styled.div`
@@ -284,13 +287,14 @@ const DetailInformation = styled.div`
   width: 90%;
 `;
 
-const Title = styled.input`
+const Title = styled.textarea`
   color: ${color.black};
-  ${font.D1};
+  ${font.D2};
   outline: none;
   background-color: ${color.white};
   border: none;
   width: 100%;
+  height: auto;
   ::placeholder {
     color: ${color.gray300};
   }
@@ -298,7 +302,7 @@ const Title = styled.input`
 
 const SubTitle = styled.div`
   color: ${color.primary};
-  ${font.H1};
+  ${font.H3};
 `;
 
 const BallotList = styled.div`

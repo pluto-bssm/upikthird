@@ -66,7 +66,7 @@ const CategorySelectSection = styled.div`
 `;
 
 const CategoryLabel = styled.p`
-  ${font.D3};
+  ${font.H2};
   color: ${color.gray600};
 `;
 
@@ -83,7 +83,7 @@ const CategorySelector = styled.div`
 `;
 
 const SelectedCategory = styled.p`
-  ${font.D3};
+  ${font.H3};
   color: ${color.black};
 `;
 
@@ -93,6 +93,6 @@ const CategoryDescriptionArea = styled.div`
 `;
 
 const CategoryDescription = styled.p`
-  ${font.P4};
+  ${font.P3};
   color: ${color.gray400};
 `;

@@ -6,14 +6,14 @@ export default function GuideCategoryImage({ category }: { category: string }) {
   if (category === "학교생활") {
     return (
       <ImageLayout>
-        <Domitory width="100%" height="100%" />
+        <MakeSchool width="100%" height="100%" />
       </ImageLayout>
     );
   }
   if (category === "기숙사") {
     return (
       <ImageLayout>
-        <MakeSchool width="100%" height="100%" />
+        <Domitory width="100%" height="100%" />
       </ImageLayout>
     );
   }

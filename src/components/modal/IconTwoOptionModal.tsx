@@ -7,7 +7,7 @@ import font from "@/packages/design-system/src/font";
 import { Question, Exclamation } from "../../../public/svg/svg";
 
 type IconTwoOptionModalProps = {
-  icon: "question" | "exclamation";
+  icon?: "question" | "exclamation";
   title: string;
   subtitle: string;
   primaryButtonText: string;
@@ -28,26 +28,18 @@ const IconTwoOptionModal = ({
   return (
     <Overlay>
       <IconTwoOptionModalLayout>
-        <IconBox>
-          {icon === "question" ? (
-            <Question width="80px" height="80px" />
-          ) : (
-            <Exclamation width="80px" height="80px" />
-          )}
-        </IconBox>
-
         <TextBox>
           <Title>{title}</Title>
           <SubTitle>{subtitle}</SubTitle>
         </TextBox>
 
         <ButtonBox>
-          <PrimaryButton onClick={onPrimaryClick}>
-            {primaryButtonText}
-          </PrimaryButton>
           <SecondaryButton onClick={onSecondaryClick}>
             {secondaryButtonText}
           </SecondaryButton>
+          <PrimaryButton onClick={onPrimaryClick}>
+            {primaryButtonText}
+          </PrimaryButton>
         </ButtonBox>
       </IconTwoOptionModalLayout>
     </Overlay>
@@ -83,11 +75,6 @@ const IconTwoOptionModalLayout = styled.div`
   gap: 20px;
 `;
 
-const IconBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const TextBox = styled.div`
   display: flex;
@@ -97,13 +84,12 @@ const TextBox = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D1};
+  ${font.D3};
   color: ${color.black};
-  line-height: 1.4;
 `;
 
 const SubTitle = styled.p`
-  ${font.H2};
+  ${font.P2};
   color: ${color.gray500};
   white-space: pre-line;
   line-height: 1.5;
@@ -112,7 +98,7 @@ const SubTitle = styled.p`
 const ButtonBox = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
   margin-top: 16px;
 `;
@@ -124,7 +110,7 @@ const PrimaryButton = styled.button`
   border-radius: 14px;
   background-color: ${color.primary};
   color: ${color.white};
-  ${font.H3};
+  ${font.Btn2};
   cursor: pointer;
 `;
 
@@ -135,6 +121,6 @@ const SecondaryButton = styled.button`
   border-radius: 14px;
   background-color: ${color.gray200};
   color: ${color.black};
-  ${font.H3};
+  ${font.Btn2};
   cursor: pointer;
 `;

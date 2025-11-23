@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Select } from "../../../public/svg/svg";
-
+import font from "@/packages/design-system/src/font";
 type Props = {
   category: string;
   setGuideCategory: (category: string) => void;
@@ -95,8 +95,7 @@ const BottomSheet = styled.div`
 
 const SheetTitle = styled.h2`
   text-align: center;
-  font-size: 18px;
-  font-weight: 700;
+  ${font.H2};
   color: #011627;
   margin-bottom: 32px;
   position: relative;
@@ -118,8 +117,7 @@ const CategoryList = styled.ul`
 `;
 
 const CategoryListItem = styled.li<{ selected?: boolean }>`
-  font-size: 16px;
-  font-weight: 700;
+  ${font.H2};
   color: ${({ selected }) => (selected ? "#FF9F1C" : "#011627")};
   margin-bottom: 24px;
   cursor: pointer;

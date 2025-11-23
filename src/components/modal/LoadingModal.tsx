@@ -4,7 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { Loading } from "../../../public/svg/svg";
-
+import font from "@/packages/design-system/src/font";
 type LoadingProps = {
   title: string;
   info: string;
@@ -81,17 +81,15 @@ const RotatingIcon = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: 20px;
-  font-weight: 600;
+  ${font.D3};
   color: ${color.black};
   text-align: center;
   width: 80%;
 `;
 
 const Description = styled.p`
-  font-size: 14px;
+  ${font.P2};
   color: ${color.gray600};
   text-align: center;
-  line-height: 1.5;
   width: 100%;
 `;
