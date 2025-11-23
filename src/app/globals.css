@@ -42,9 +42,11 @@ a {
 }
 
 @font-face {
-  font-family: "Pretendard";
-  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Thin.woff")
-    format("woff");
-  font-weight: 100;
-  font-display: swap;
+    font-family: 'Pretendard';
+    /* 가변 폰트이므로 웨이트 범위를 지정합니다 */
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+    /* public/font/PretendardVariable.ttf 경로를 가리킵니다 */
+    src: url('/font/PretendardVariable.ttf') format('truetype');
 }
