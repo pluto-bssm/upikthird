@@ -9,21 +9,8 @@ import PopularGuide from "@/components/main/PopularGuide";
 import FastRoad from "@/components/main/FastRoad";
 import Vs from "@/../public/svg/Vs";
 import Image from "next/image";
-
-const guideCards = [
-  {
-    title: "딴은 밤을 세워 우는 벌레는 부끄러운 이름을 슬퍼하는 까닭입니다.",
-    meta: ["기숙사", "저장 16", "제작 25.10.12."],
-    description:
-      "어머님, 그리고 당신은 멀리 북간도에 계십니다. 그러나, 겨울이 지나고 나의 별에도 봄이 오면, 무덤 위에 파란 잔디가 피어나듯이 내 이름자 묻힌 언덕 위에도 자랑처럼 풀이 무성할 거외다.",
-  },
-  {
-    title: "딴은 밤을 세워 우는 벌레는 부끄러운 이름을 슬퍼하는 까닭입니다.",
-    meta: ["기숙사", "저장 16", "제작 25.10.12."],
-    description:
-      "어머님, 그리고 당신은 멀리 북간도에 계십니다. 그러나, 겨울이 지나고 나의 별에도 봄이 오면, 무덤 위에 파란 잔디가 피어나듯이 내 이름자 묻힌 언덕 위에도 자랑처럼 풀이 무성할 거외다.",
-  },
-];
+import { useGuides } from "@/hooks/useGuides";
+import { useMemo } from "react";
 
 const mockData = [
   {
@@ -32,7 +19,48 @@ const mockData = [
     ]
   },
 ];
+
 export default function MainPage() {
+  const { guides, loading, error } = useGuides();
+  void error;
+
+  const popularGuides = useMemo(() => {
+    if (!guides || guides.length === 0) return [];
+
+    const sortedGuides = [...guides].sort((a, b) => {
+      const aLike = a.like ?? a.likeCount ?? 0;
+      const bLike = b.like ?? b.likeCount ?? 0;
+      return bLike - aLike;
+    });
+
+    return sortedGuides.slice(0, 3).map((guide) => {
+      const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear().toString().slice(-2);
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return `제작 ${year}.${month}.${day}.`;
+      };
+
+      return {
+        title: guide.title,
+        meta: [
+          guide.category || "",
+          formatDate(guide.createdAt),
+        ].filter(Boolean),
+        description: guide.content || "",
+      };
+    });
+  }, [guides]);
+
+  if (loading) {
+    return (
+      <LoadingLayout>
+        <div>Loading...</div>
+      </LoadingLayout>
+    );
+  }
+
   return (
     <GuideLayout>
       <Header types={"default and no navi"}/>
@@ -60,7 +88,7 @@ export default function MainPage() {
             <HeroButton>1분 만에 투표하기</HeroButton>
           </HeroCard>
 
-          <PopularGuide cards={guideCards} />
+          <PopularGuide cards={popularGuides} />
 
           <FastRoad />
         </MainSection>
@@ -240,5 +268,15 @@ const HeroButton = styled.button`
   cursor: pointer;
   z-index: 1;
   white-space: nowrap;
+`;
+
+const LoadingLayout = styled.div`
+  width: 100%;
+  max-width: 600px;
+  background-color: ${color.white};
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
