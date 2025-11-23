@@ -68,7 +68,7 @@ const Letter = styled.p`
 `;
 
 const LatterBox = styled.div<{ isSelected?: boolean }>`
-  width: 9vw;
+  width: 36px;
   border-radius: 50%;
   background-color: ${(props) => props.isSelected ? color.primary : color.gray100};
   display: flex;
