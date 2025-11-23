@@ -149,17 +149,17 @@ const VoteContent = styled.div`
 `;
 
 const MenuText = styled.p`
-  ${font.H1};
+  ${font.H3};
   color: ${color.primary};
 `;
 
 const Title = styled.p`
-  ${font.D1};
+  ${font.D2};
   color: ${color.black};
 `;
 
 const SubTitle = styled.p`
-  ${font.H2};
+  ${font.H3};
   color: ${color.gray400};
 `;
 

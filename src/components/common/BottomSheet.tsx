@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Select } from "../../../public/svg/svg";
+import font from "@/packages/design-system/src/font";
 
 type SelectorItem = {
   value: string;
@@ -112,8 +113,7 @@ const SelectorBox = styled.div<{ isAnimating: boolean }>`
 
 const Title = styled.div`
   text-align: center;
-  font-size: 18px;
-  font-weight: 700;
+  ${font.H2};
   color: #011627;
   margin-bottom: 32px;
   position: relative;
@@ -170,6 +170,7 @@ const ItemRow = styled.li<{ selected?: boolean }>`
 
 const ItemText = styled.span<{ selected?: boolean }>`
   color: ${({ selected }) => (selected ? "#FF9F1C" : "#011627")};
+  ${font.H2};
 `;
 
 const RightSection = styled.div`

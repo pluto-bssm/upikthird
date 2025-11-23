@@ -30,6 +30,6 @@ const ButtonLayout = styled.div<{ active: boolean }>`
 `;
 
 const ButtonText = styled.p`
-  ${font.D2};
+  ${font.H1};
   color: ${color.white};
 `;

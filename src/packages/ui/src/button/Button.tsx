@@ -32,7 +32,7 @@ const ButtonLayout = styled.div`
 `;
 
 const ButtonText = styled.p`
-  ${font.D2};
+  ${font.H1};
   color: ${color.white};
 `;
 
