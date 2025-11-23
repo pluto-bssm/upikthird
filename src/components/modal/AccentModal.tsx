@@ -6,7 +6,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
 type AccentModalProps = {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   leftText: string;
   accentText: string;
   rightText: string;
@@ -25,7 +25,6 @@ const AccentModal = ({
   return (
     <Overlay>
       <AccentModalLayout>
-        {icon && <IconBox>{icon}</IconBox>}
 
         <TextBox>
           <Title>
@@ -88,7 +87,7 @@ const TextBox = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D2};
+  ${font.D3};
   color: ${color.black};
   white-space: pre-line;
 `;
@@ -99,10 +98,9 @@ const Accent = styled.span`
 `;
 
 const SubTitle = styled.p`
-  ${font.H2};
+  ${font.P2};
   color: ${color.gray500};
   white-space: pre-line;
-  line-height: 12px;
 `;
 
 const ConfirmButton = styled.button`
@@ -112,7 +110,7 @@ const ConfirmButton = styled.button`
   border-radius: 18px;
   background-color: ${color.primary};
   color: white;
-  ${font.H3};
+  ${font.Btn2};
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 16px;
