@@ -6,7 +6,7 @@ import color from "@/packages/design-system/src/color";
 import type { Board } from "@/types/graphql";
 import font from "@/packages/design-system/src/font";
 import Comments from "../../../public/svg/Comments";
-import {Bookmark} from "../../../public/svg";
+import { Bookmark } from "../../../public/svg";
 
 interface QuestionItemProps {
   question: Board;
@@ -27,23 +27,19 @@ export const QuestionItem = ({ question }: QuestionItemProps) => {
       <StyledQuestionItem>
         <QuestionContent>
           <QuestionTitle>Q.{question.title}</QuestionTitle>
-            <QuestionInnerContent>{question.content}</QuestionInnerContent>
+          <QuestionInnerContent>{question.content}</QuestionInnerContent>
           <QuestionMeta>
             <MetaItem>{formatDate(question.createdAt)}</MetaItem>
-              <UnderIconWrapper>
-                  <UnderCommentWrapper>
-                      <Comments/>
-                      <MetaItem>
-                          {question.commentCount}
-                      </MetaItem>
-                  </UnderCommentWrapper>
-                  <UnderCommentWrapper>
-                      <Bookmark width={14}/>
-                      <MetaItem>
-                          {question.bookmarkCount}
-                      </MetaItem>
-                  </UnderCommentWrapper>
-              </UnderIconWrapper>
+            <UnderIconWrapper>
+              <UnderCommentWrapper>
+                <Comments />
+                <MetaItem>{question.commentCount}</MetaItem>
+              </UnderCommentWrapper>
+              <UnderCommentWrapper>
+                <Bookmark width={14} />
+                <MetaItem>{question.bookmarkCount}</MetaItem>
+              </UnderCommentWrapper>
+            </UnderIconWrapper>
           </QuestionMeta>
         </QuestionContent>
       </StyledQuestionItem>
@@ -62,7 +58,7 @@ const StyledQuestionItem = styled.div`
   display: flex;
   gap: 16px;
   padding: 20px;
-    border-radius: 10px;
+  border-radius: 10px;
   background-color: ${color.white};
 `;
 
@@ -73,12 +69,12 @@ const QuestionContent = styled.div`
   flex: 1;
 `;
 const QuestionInnerContent = styled.div`
-    ${font.P4}
-    color: ${color.black};
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 150px;
+  ${font.P4}
+  color: ${color.black};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
 `;
 
 const QuestionTitle = styled.p`
@@ -93,9 +89,9 @@ const QuestionTitle = styled.p`
 
 const QuestionMeta = styled.div`
   display: flex;
-    justify-content: space-between;
+  justify-content: space-between;
   gap: 6px;
-    color: ${color.black};
+  color: ${color.black};
   align-items: center;
   flex-wrap: wrap;
 `;
@@ -104,7 +100,7 @@ const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
   font-size: 10px;
   font-weight: 400;
-    color: ${color.black};
+  color: ${color.black};
   white-space: nowrap;
 
   &:not(:last-child)::after {
@@ -115,7 +111,7 @@ const MetaItem = styled.span`
 const UnderCommentWrapper = styled.div`
   display: flex;
   align-items: center;
-    color: ${color.black};
+  color: ${color.black};
   gap: 4px;
 `;
 
@@ -123,6 +119,6 @@ const UnderIconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-    color: ${color.black};
-    gap: 4px;
+  color: ${color.black};
+  gap: 4px;
 `;

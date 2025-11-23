@@ -10,8 +10,8 @@ const GlobalStyle = () => (
         padding: 0;
       }
 
-      input[type='checkbox'],
-      input[type='radio'] {
+      input[type="checkbox"],
+      input[type="radio"] {
         accent-color: ${color.primary};
         cursor: pointer;
       }
@@ -53,7 +53,7 @@ const GlobalStyle = () => (
         width: 100%;
         height: 100%;
         overflow: auto;
-          background-color:#FCFCFC;
+        background-color: #fcfcfc;
 
         ::-webkit-scrollbar {
           display: none;

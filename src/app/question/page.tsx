@@ -48,7 +48,7 @@ export default QuestionPage;
 
 const StyledQuestionPage = styled.div`
   width: 100%;
-    background-color: #fff;
+  background-color: #fff;
   max-width: 600px;
   margin: 0 auto;
   background-color: ${color.white};

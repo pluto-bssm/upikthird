@@ -55,4 +55,3 @@ export const FAST_ROAD_CARDS: FastRoadCard[] = [
     Icon: SmileBox,
   },
 ];
-

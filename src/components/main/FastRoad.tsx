@@ -132,4 +132,3 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-

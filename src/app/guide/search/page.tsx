@@ -177,4 +177,3 @@ const FeedbackBox = styled.div`
   font-family: ${font.D3};
   font-size: 16px;
 `;
-

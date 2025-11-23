@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Storage } from "@/apis/storage/storage";
 import { TOKEN } from "@/constants/common/constant";
 
-
 export default function OAuthCallbackPage() {
   const router = useRouter();
   const [status, setStatus] = useState("로그인 처리 중...");

@@ -4,8 +4,10 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Nexts from "../../../public/svg/Nexts";
+import { useRouter } from "next/navigation";
 
 type GuideCard = {
+  id: string;
   title: string;
   meta: string[];
   description: string;
@@ -16,6 +18,16 @@ interface PopularGuideProps {
 }
 
 const PopularGuide = ({ cards }: PopularGuideProps) => {
+  const router = useRouter();
+  if (!cards || cards.length === 0) {
+    return (
+      <Section>
+        <SectionTitle>인기가이드</SectionTitle>
+        <EmptyMessage>아직 가이드가 없습니다.</EmptyMessage>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <SectionTitle>인기가이드</SectionTitle>
@@ -31,7 +43,7 @@ const PopularGuide = ({ cards }: PopularGuideProps) => {
             </GuideMeta>
             <Divider />
             <GuideDescription>{guide.description}</GuideDescription>
-            <GuideLink>
+            <GuideLink onClick={() => router.push(`/moreGuide/${guide.id}`)}>
               자세히 보기 <Nexts width="12" height="12" />
             </GuideLink>
           </GuideCard>
@@ -117,3 +129,9 @@ const GuideLink = styled.div`
   cursor: pointer;
 `;
 
+const EmptyMessage = styled.div`
+  padding: 40px 20px;
+  text-align: center;
+  color: ${color.gray300};
+  ${font.P2};
+`;

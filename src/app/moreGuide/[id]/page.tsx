@@ -4,7 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import Header from "@/components/common/header";
-import Footer from "@/components/common/footer";
+import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
@@ -123,7 +123,9 @@ const MoreGuidePage = () => {
         </VoteSection>
 
         <SectionDivider />
-        <GuideBody>{guide?.content ?? "가이드 내용을 불러오는 중입니다."}</GuideBody>
+        <GuideBody>
+          {guide?.content ?? "가이드 내용을 불러오는 중입니다."}
+        </GuideBody>
         <MutedDivider />
         <ReportTextButton
           onClick={() => router.push(`/revote?guideId=${guideId}`)}
@@ -132,7 +134,7 @@ const MoreGuidePage = () => {
         </ReportTextButton>
       </MainContent>
       <FooterSpacer />
-      <Footer />
+      <NavigationBar />
     </PageWrapper>
   );
 };
@@ -228,7 +230,7 @@ const EmptyVote = styled.div`
   padding: 60px 36px;
   text-align: center;
   color: ${color.gray500};
-   ${font.P1};
+  ${font.P1};
 `;
 
 const SectionDivider = styled.div`
