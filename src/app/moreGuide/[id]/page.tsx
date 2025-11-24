@@ -13,20 +13,6 @@ import {
   toggleBookmark,
   isGuideBookmarked,
 } from "@/services/guide/api";
-import Image from "next/image";
-
-const getThumbnailImage = (category: string) => {
-  switch (category) {
-    case "학교생활":
-      return "/svg/images/School.png";
-    case "유머":
-      return "/svg/images/Humors.png";
-    case "기숙사생활":
-      return "/svg/images/MakeSchool.png";
-    default:
-      return "/svg/images/School.png";
-  }
-};
 
 const MoreGuidePage = () => {
   const params = useParams();
@@ -98,21 +84,12 @@ const MoreGuidePage = () => {
       />
 
       <MainContent>
-        <CategoryBadge>
-          <Image
-            src={getThumbnailImage(guide?.category ?? "")}
-            alt={guide?.category ?? ""}
-            width={24}
-            height={24}
-          />
-        </CategoryBadge>
         <GuideTitle>{guide?.title ?? "가이드를 불러오는 중"}</GuideTitle>
         <GuideMeta>
           <GuideMetaValue>{formattedDate}</GuideMetaValue>
         </GuideMeta>
 
         <VoteSection>
-          <ResultButton>투표 결과 확인하기</ResultButton>
           <VoteChartWrapper>
             {guide?.voteId ? (
               <VoteBarChart voteId={guide.voteId} />
@@ -169,16 +146,6 @@ const GuideTitle = styled.h1`
   line-height: 1.3;
 `;
 
-const CategoryBadge = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background-color: ${color.gray50};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const GuideMeta = styled.div`
   display: flex;
   flex-direction: column;
@@ -190,35 +157,16 @@ const GuideMetaValue = styled.span`
 `;
 
 const VoteSection = styled.section`
-  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 18px;
 `;
 
 const VoteChartWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const ResultButton = styled.button`
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: none;
-  width: 148px;
-  height: 36px;
-  padding: 0 16px;
-  border-radius: 30px;
-  background: ${color.black};
-  color: ${color.white};
-  ${font.H4};
-  z-index: 10;
-  cursor: pointer;
 `;
 
 const EmptyVote = styled.div`

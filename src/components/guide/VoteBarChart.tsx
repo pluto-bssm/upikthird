@@ -66,6 +66,7 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
 
   return (
     <ChartCard>
+      <ResultButton>투표 결과 확인하기</ResultButton>
       <CardBody>
         <VoteTitle>{title}</VoteTitle>
         <Participant>전체 참여자 수 {participant}명</Participant>
@@ -105,6 +106,23 @@ const ChartCard = styled.section`
   margin-top: 18px;
   width: 100%;
   max-width: 350px;
+`;
+
+const ResultButton = styled.button`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  width: 148px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 30px;
+  background: ${color.black};
+  color: ${color.white};
+  ${font.H4};
+  z-index: 10;
+  cursor: pointer;
 `;
 
 const CardBody = styled.div`

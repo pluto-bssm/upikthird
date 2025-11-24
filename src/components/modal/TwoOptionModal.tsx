@@ -81,12 +81,12 @@ const TwoOptionInfo = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D2};
+  ${font.D3};
   color: ${color.black};
 `;
 
 const Infomation = styled.p`
-  ${font.D3};
+  ${font.P2};
   color: ${color.gray600};
   padding-top: 4px;
 `;
@@ -98,11 +98,11 @@ const OptionBox = styled.div`
   width: 40%;
 `;
 const CancelOption = styled.p`
-  ${font.D3};
-  color: ${color.black};
+  ${font.Btn2};
+  color: ${color.gray700};
 `;
 
 const PasslOption = styled.p`
-  ${font.D3};
+  ${font.Btn2};
   color: ${color.primary};
 `;

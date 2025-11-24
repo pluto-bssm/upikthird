@@ -208,13 +208,17 @@ const GuideText = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   margin-left: 16px;
 `;
 
 const GuideTitle = styled.div`
   color: ${color.black};
   ${font.H1};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const OtherInfo = styled.div`
