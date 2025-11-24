@@ -6,7 +6,6 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
 type AccentModalProps = {
-  icon: React.ReactNode;
   leftText: string;
   accentText: string;
   rightText: string;
@@ -15,7 +14,6 @@ type AccentModalProps = {
 };
 
 const AccentModal = ({
-  icon,
   leftText,
   accentText,
   rightText,
@@ -25,8 +23,6 @@ const AccentModal = ({
   return (
     <Overlay>
       <AccentModalLayout>
-        {icon && <IconBox>{icon}</IconBox>}
-
         <TextBox>
           <Title>
             {leftText} <Accent>{accentText}</Accent> {rightText}
@@ -69,17 +65,6 @@ const AccentModalLayout = styled.div`
   gap: 12px;
 `;
 
-const IconBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  svg {
-    width: 64px;
-    height: 64px;
-  }
-`;
-
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,31 +73,31 @@ const TextBox = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D2};
+  ${font.D3};
   color: ${color.black};
   white-space: pre-line;
 `;
 
 const Accent = styled.span`
   color: ${color.primary};
-  font-weight: 600;
+  ${font.D3};
 `;
 
 const SubTitle = styled.p`
-  ${font.H2};
-  color: ${color.gray500};
+  ${font.P2};
+  color: ${color.gray600};
   white-space: pre-line;
-  line-height: 12px;
+  line-height: 20px;
 `;
 
 const ConfirmButton = styled.button`
   width: 100%;
   padding: 14px 10px;
   border: none;
-  border-radius: 18px;
+  border-radius: 10px;
   background-color: ${color.primary};
   color: white;
-  ${font.H3};
+  ${font.Btn2};
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 16px;

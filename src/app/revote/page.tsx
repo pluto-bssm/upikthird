@@ -10,7 +10,6 @@ import React, { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import RevoteSend from "@/components/button/RevoteSend";
 import AccentModal from "@/components/modal/AccentModal";
-import Completevote from "../../../public/svg/Completevote";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import { createRevote } from "@/services/guide/api";
 
@@ -48,13 +47,10 @@ const RevotePageContent = () => {
 
     try {
       setIsSubmitting(true);
-      const result = await createRevote({ guideId, reason, detailReason });
-      if (result?.id) {
-        setIsModalOpen(true);
-      } else {
-      }
+      await createRevote({ guideId, reason, detailReason });
+      setIsModalOpen(true);
     } catch (e) {
-      void e;
+      setIsModalOpen(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -107,11 +103,10 @@ const RevotePageContent = () => {
 
       {isModalOpen && (
         <AccentModal
-          icon={<Completevote width="60px" height="60px" />}
           leftText="요청이"
           accentText="성공적"
           rightText="으로 접수됐어요"
-          subText={`지속적으로 정상적인 가이드를 신고하는 경우\n제재의 대상이 될 수 있어요`}
+          subText={`지속적으로 정상적인 가이드를\n신고하는 경우 제재의 대상이 될 수 있어요`}
           onClick={() => setIsModalOpen(false)}
         />
       )}
