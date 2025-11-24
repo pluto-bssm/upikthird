@@ -49,11 +49,12 @@ export async function getAllGuides(): Promise<Guide[]> {
     "",
     {
       query: GET_ALL_GUIDES,
+      variables: { page: 0, size: 100, sortBy: "createdAt" },
     } as GraphQLRequest,
     authorization(),
   );
 
-  return response.data?.data?.guide?.getAllGuides || [];
+  return response.data?.data?.getAllGuides?.content || [];
 }
 
 /**

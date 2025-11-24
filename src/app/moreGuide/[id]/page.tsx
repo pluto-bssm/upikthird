@@ -4,6 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import Header from "@/components/common/header";
+import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteBarChart from "@/components/guide/VoteBarChart";
@@ -12,20 +13,6 @@ import {
   toggleBookmark,
   isGuideBookmarked,
 } from "@/services/guide/api";
-import Image from "next/image";
-
-const getThumbnailImage = (category: string) => {
-  switch (category) {
-    case "학교생활":
-      return "/svg/images/School.png";
-    case "유머":
-      return "/svg/images/Humors.png";
-    case "기숙사생활":
-      return "/svg/images/MakeSchool.png";
-    default:
-      return "/svg/images/School.png";
-  }
-};
 
 const MoreGuidePage = () => {
   const params = useParams();
@@ -68,8 +55,21 @@ const MoreGuidePage = () => {
     if (guideId) fetchGuide();
   }, [guideId]);
 
+  const formattedDate = React.useMemo(() => {
+    if (!guide?.createdAt) return "-";
+    const parsed = new Date(guide.createdAt);
+    if (Number.isNaN(parsed.getTime())) {
+      return guide.createdAt.slice(0, 10);
+    }
+    return parsed.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }, [guide?.createdAt]);
+
   return (
-    <Root>
+    <PageWrapper>
       <Header
         types="bookmark"
         bookmarked={bookmarked}
@@ -83,38 +83,42 @@ const MoreGuidePage = () => {
         }}
       />
 
-      <Content>
-        <Thumbnail>
-          <Image
-            src={getThumbnailImage(guide?.category ?? "")}
-            alt={guide?.category ?? ""}
-            width={24}
-            height={24}
-          />
-        </Thumbnail>
+      <MainContent>
         <GuideTitle>{guide?.title ?? "가이드를 불러오는 중"}</GuideTitle>
-        <Date>{(guide?.createdAt ?? "").slice(0, 10)}</Date>
+        <GuideMeta>
+          <GuideMetaValue>{formattedDate}</GuideMetaValue>
+        </GuideMeta>
 
-        <CardWrap>
-          <ResultButton>투표 결과 확인하기</ResultButton>
-          {guide?.voteId ? <VoteBarChart voteId={guide.voteId} /> : null}
-        </CardWrap>
+        <VoteSection>
+          <VoteChartWrapper>
+            {guide?.voteId ? (
+              <VoteBarChart voteId={guide.voteId} />
+            ) : (
+              <EmptyVote>등록된 투표 결과가 없습니다.</EmptyVote>
+            )}
+          </VoteChartWrapper>
+        </VoteSection>
 
-        <ContentText>{guide?.content}</ContentText>
-        <Line />
+        <SectionDivider />
+        <GuideBody>
+          {guide?.content ?? "가이드 내용을 불러오는 중입니다."}
+        </GuideBody>
+        <MutedDivider />
         <ReportTextButton
           onClick={() => router.push(`/revote?guideId=${guideId}`)}
         >
           가이드에 문제가 있다면?
         </ReportTextButton>
-      </Content>
-    </Root>
+      </MainContent>
+      <FooterSpacer />
+      <NavigationBar />
+    </PageWrapper>
   );
 };
 
 export default MoreGuidePage;
 
-const Root = styled.div`
+const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,74 +126,91 @@ const Root = styled.div`
   width: 100%;
   min-height: 100vh;
   background-color: ${color.white};
+  margin: 0 auto;
+  padding-bottom: 160px;
 `;
 
-const Content = styled.main`
+const MainContent = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 90%;
-  margin-top: 96px;
-`;
-
-const Thumbnail = styled.div`
-  font-size: 20px;
+  gap: 20px;
+  width: 100%;
+  padding: 96px 20px 0;
+  box-sizing: border-box;
 `;
 
 const GuideTitle = styled.h1`
   margin: 0;
   color: ${color.black};
-  font-family: ${font.D1};
-  line-height: 28px;
+  ${font.D2};
+  line-height: 1.3;
 `;
 
-const Date = styled.div`
-  color: ${color.gray500};
-  font-family: ${font.P4};
+const GuideMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
-
-const CardWrap = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const ResultButton = styled.button`
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  border: none;
-  width: 148px;
-  height: 36px;
-  padding: 0 16px;
-  border-radius: 30px;
-  background: ${color.black};
-  color: ${color.white};
-  font-family: ${font.D3};
-  z-index: 10;
-  cursor: pointer;
-`;
-
-const ContentText = styled.p`
-  margin: 0;
+const GuideMetaValue = styled.span`
   color: ${color.black};
-  font-family: ${font.P1};
-  line-height: 20px;
+  ${font.P4};
 `;
 
-const Line = styled.div`
+const VoteSection = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const VoteChartWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const EmptyVote = styled.div`
+  margin-top: 18px;
+  width: 100%;
+  max-width: 350px;
+  border: 1px solid ${color.gray500};
+  border-radius: 8px;
+  padding: 60px 36px;
+  text-align: center;
+  color: ${color.gray500};
+  ${font.P1};
+`;
+
+const SectionDivider = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${color.gray300};
+`;
+
+const MutedDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${color.gray500};
+`;
+
+const GuideBody = styled.p`
+  margin: 0;
+  color: ${color.black};
+  ${font.P1};
+  line-height: 24px;
+  white-space: pre-wrap;
 `;
 
 const ReportTextButton = styled.button`
   border: none;
   background: none;
   color: ${color.gray500};
-  font-family: ${font.P3};
+  ${font.P3};
   cursor: pointer;
   text-align: right;
-  margin-top: 16px;
-  margin-bottom: 16px;
+`;
+
+const FooterSpacer = styled.div`
+  width: 100%;
+  height: 140px;
 `;

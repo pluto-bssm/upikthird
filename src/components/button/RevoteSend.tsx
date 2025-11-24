@@ -2,6 +2,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
 
 interface ButtonProps {
   disabled?: boolean;
@@ -28,10 +29,9 @@ const Button = styled.button<{ disabled?: boolean }>`
   width: 100%;
   border: none;
   outline: none;
+  ${font.H1};
   background-color: ${({ disabled }) =>
     disabled ? color.gray200 : color.primary};
-  font-size: 20px;
   color: ${color.white};
-  font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;

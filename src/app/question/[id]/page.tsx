@@ -8,7 +8,7 @@ import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import { useQuestionDetail, useQuestionComments } from "@/hooks/useBoard";
 import * as boardApi from "@/services/board/api";
-import {Bookmark} from "../../../../public/svg/svg";
+import { Bookmark } from "../../../../public/svg/svg";
 import font from "@/packages/design-system/src/font";
 
 const QuestionDetailPage = () => {
@@ -125,7 +125,7 @@ const QuestionDetailPage = () => {
                   {new Date(question.createdAt).toLocaleString("ko-KR")}
                 </MetaItem>
                 <BookmarkBox>
-                    <Bookmark width={14}/>
+                  <Bookmark width={14} />
                   <BookmarkText>{question.likes}</BookmarkText>
                 </BookmarkBox>
               </MetaInfo>
@@ -318,14 +318,14 @@ const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-    color: ${color.black};
+  color: ${color.black};
   white-space: nowrap;
 
   &:not(:last-child)::after {
     content: "";
     width: 1px;
     height: 10px;
-      color: ${color.black};
+    color: ${color.black};
     margin-left: 6px;
   }
 `;
@@ -341,7 +341,7 @@ const BookmarkText = styled.span`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-    color: ${color.black};
+  color: ${color.black};
 `;
 
 const Divider = styled.div`
@@ -354,13 +354,13 @@ const ContentSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-    color: ${color.black};
+  color: ${color.black};
   padding: 20px;
 `;
 
 const Content = styled.p`
-    ${font.P1}
-    color: ${color.black};
+  ${font.P1}
+  color: ${color.black};
   line-height: 24px;
   margin: 0;
   word-break: break-word;
@@ -369,7 +369,7 @@ const Content = styled.p`
 
 const CommentsSection = styled.div`
   display: flex;
-    color: ${color.black};
+  color: ${color.black};
   flex-direction: column;
   width: 100%;
 `;
@@ -378,7 +378,7 @@ const CommentCount = styled.p`
   font-family: Pretendard, sans-serif;
   font-size: 14px;
   font-weight: 400;
-    color: ${color.black};
+  color: ${color.black};
   line-height: 1;
   margin: 0;
   padding: 20px;
@@ -417,7 +417,7 @@ const AuthorName = styled.p`
 `;
 
 const CommentContent = styled.p`
-    ${font.P1}
+  ${font.P1}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -590,7 +590,7 @@ const ReplyInputField = styled.input`
   }
 
   &:focus {
-      color: ${color.black};
+    color: ${color.black};
   }
 `;
 

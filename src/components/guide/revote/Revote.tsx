@@ -77,6 +77,6 @@ const GuideTextWrap = styled.div`
 
 const GuideTitle = styled.div`
   color: ${color.gray600};
-  font-family: ${font.D3};
+  ${font.P1};
   text-align: center;
 `;

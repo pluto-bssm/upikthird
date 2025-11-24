@@ -15,7 +15,6 @@ type AccentModalProps = {
 };
 
 const AccentModal = ({
-  icon,
   leftText,
   accentText,
   rightText,
@@ -25,7 +24,6 @@ const AccentModal = ({
   return (
     <Overlay>
       <AccentModalLayout>
-
         <TextBox>
           <Title>
             {leftText} <Accent>{accentText}</Accent> {rightText}
@@ -68,17 +66,6 @@ const AccentModalLayout = styled.div`
   gap: 12px;
 `;
 
-const IconBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  svg {
-    width: 64px;
-    height: 64px;
-  }
-`;
-
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -94,7 +81,7 @@ const Title = styled.p`
 
 const Accent = styled.span`
   color: ${color.primary};
-  font-weight: 600;
+  ${font.D3};
 `;
 
 const SubTitle = styled.p`
@@ -107,7 +94,7 @@ const ConfirmButton = styled.button`
   width: 100%;
   padding: 14px 10px;
   border: none;
-  border-radius: 18px;
+  border-radius: 10px;
   background-color: ${color.primary};
   color: white;
   ${font.Btn2};
