@@ -109,7 +109,7 @@ const CancelOption = styled.button`
   border-radius: 8px;
   padding: 12px 24px;
   min-width: 140px;
-  height:44px;
+  height: 44px;
   cursor: pointer;
 `;
 
@@ -121,6 +121,6 @@ const PassOption = styled.button`
   border-radius: 8px;
   padding: 12px 24px;
   min-width: 140px;
-  height:44px;
+  height: 44px;
   cursor: pointer;
 `;
