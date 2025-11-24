@@ -68,7 +68,7 @@ export default function MainPage() {
               <p>
                 {todayVote
                   ? voteOptions[0]?.content
-                  : "오늘의 투표 준비 중입니다"}
+                  : ""}
               </p>
             </HeroRightText>
           </HeroHighlight>
