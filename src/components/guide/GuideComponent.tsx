@@ -208,13 +208,17 @@ const GuideText = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   margin-left: 16px;
 `;
 
 const GuideTitle = styled.div`
   color: ${color.black};
-  font-family: ${font.D3};
+  ${font.H1};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const OtherInfo = styled.div`
@@ -225,7 +229,7 @@ const OtherInfo = styled.div`
 
 const GuideTag = styled.div`
   color: ${color.gray600};
-  font-family: ${font.P2};
+  ${font.P2};
 `;
 
 const BookmarkIcon = styled.span`
@@ -236,7 +240,7 @@ const BookmarkIcon = styled.span`
 
 const MarkCount = styled.div`
   color: ${color.gray600};
-  font-family: ${font.P2};
+  ${font.P2};
   margin-left: -4px;
 `;
 
@@ -246,7 +250,7 @@ const NoResultsMessage = styled.div`
   align-items: center;
   height: 200px;
   color: ${color.gray500};
-  font-family: ${font.D3};
+  ${font.P1};
   font-size: 16px;
 `;
 
@@ -256,5 +260,5 @@ const LoadingMessage = styled.div`
   align-items: center;
   height: 120px;
   color: ${color.gray600};
-  font-family: ${font.H1};
+  ${font.H1};
 `;

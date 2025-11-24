@@ -184,7 +184,7 @@ export async function generateAiOptions(
     throw new Error("AI quota information not available");
   }
 
-    return {
+  return {
     options: result.options,
     message: result.message,
     success: result.success,

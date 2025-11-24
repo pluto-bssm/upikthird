@@ -36,7 +36,7 @@ const TwoOptionModal = ({
           >
             취소
           </CancelOption>
-          <PasslOption onClick={passfunction}>확인</PasslOption>
+          <PassOption onClick={passfunction}>확인</PassOption>
         </OptionBox>
       </TwoOptionModalLayout>
     </Overlay>
@@ -81,12 +81,12 @@ const TwoOptionInfo = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D2};
+  ${font.D3};
   color: ${color.black};
 `;
 
 const Infomation = styled.p`
-  ${font.D3};
+  ${font.P2};
   color: ${color.gray600};
   padding-top: 4px;
 `;
@@ -94,15 +94,33 @@ const Infomation = styled.p`
 const OptionBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 40%;
-`;
-const CancelOption = styled.p`
-  ${font.D3};
-  color: ${color.black};
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 0 20px;
 `;
 
-const PasslOption = styled.p`
-  ${font.D3};
-  color: ${color.primary};
+const CancelOption = styled.button`
+  ${font.Btn2};
+  color: ${color.gray700};
+  background-color: ${color.gray200};
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  min-width: 140px;
+  height: 44px;
+  cursor: pointer;
+`;
+
+const PassOption = styled.button`
+  ${font.Btn2};
+  color: ${color.white};
+  background-color: ${color.primary};
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  min-width: 140px;
+  height: 44px;
+  cursor: pointer;
 `;

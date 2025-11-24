@@ -47,7 +47,7 @@ const GuideCard = styled.textarea`
     4px 4px 10px 0 rgba(0, 0, 0, 0.03);
   resize: none;
   outline: none;
-  ${font.H4};
+  ${font.P1};
   line-height: 20px;
   color: ${color.gray700};
   ::placeholder {

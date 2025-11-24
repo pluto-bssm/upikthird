@@ -77,7 +77,7 @@ const Header = ({
                 width="50"
                 height="50"
                 onClick={() => {
-                  router.replace("/");
+                  router.replace("/main");
                 }}
               />
             </LeftItemBox>
@@ -112,7 +112,7 @@ const Header = ({
                 width="50"
                 height="50"
                 onClick={() => {
-                  router.replace("/");
+                  router.replace("/main");
                 }}
               />
             </LeftItemBox>
@@ -319,7 +319,7 @@ const Header = ({
                 width="50"
                 height="50"
                 onClick={() => {
-                  router.replace("/");
+                  router.replace("/main");
                 }}
               />
             </LeftItemBox>

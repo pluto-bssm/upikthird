@@ -10,7 +10,6 @@ import React, { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import RevoteSend from "@/components/button/RevoteSend";
 import AccentModal from "@/components/modal/AccentModal";
-import Completevote from "../../../public/svg/Completevote";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import { createRevote } from "@/services/guide/api";
 
@@ -35,6 +34,8 @@ const RevotePageContent = () => {
     "기타",
   ];
 
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+
   const handleSubmit = async () => {
     if (selectedReasonIndex === null) return;
     if (!detailText.trim()) return;
@@ -48,13 +49,10 @@ const RevotePageContent = () => {
 
     try {
       setIsSubmitting(true);
-      const result = await createRevote({ guideId, reason, detailReason });
-      if (result?.id) {
-        setIsModalOpen(true);
-      } else {
-      }
+      await createRevote({ guideId, reason, detailReason });
+      setIsModalOpen(true);
     } catch (e) {
-      void e;
+      setIsErrorModalOpen(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -107,11 +105,10 @@ const RevotePageContent = () => {
 
       {isModalOpen && (
         <AccentModal
-          icon={<Completevote width="60px" height="60px" />}
           leftText="요청이"
           accentText="성공적"
           rightText="으로 접수됐어요"
-          subText={`지속적으로 정상적인 가이드를 신고하는 경우\n제재의 대상이 될 수 있어요`}
+          subText={`지속적으로 정상적인 가이드를\n신고하는 경우 제재의 대상이 될 수 있어요`}
           onClick={() => setIsModalOpen(false)}
         />
       )}
@@ -123,6 +120,16 @@ const RevotePageContent = () => {
           passfunction={() => router.back()}
           isOpen={isBackModalOpen}
           setIsOpen={setIsBackModalOpen}
+        />
+      )}
+
+      {isErrorModalOpen && (
+        <AccentModal
+          leftText="요청"
+          accentText="실패"
+          rightText="했습니다"
+          subText="잠시 후 다시 시도해주세요"
+          onClick={() => setIsErrorModalOpen(false)}
         />
       )}
     </Root>
@@ -190,18 +197,18 @@ const Column = styled.div`
 `;
 
 const SmallHeader = styled.div`
-  ${font.H1};
+  ${font.H3};
   color: ${color.gray700};
 `;
 
 const Title = styled.h1`
   margin: 0;
   color: ${color.black};
-  ${font.D1};
+  ${font.D2};
 `;
 
 const SmallTitle = styled.div`
-  ${font.D3};
+  ${font.H2};
   color: ${color.gray700};
 `;
 
@@ -222,7 +229,7 @@ const SendBar = styled.div`
 `;
 
 const InnerText = styled.div`
-  ${font.H2};
+  ${font.P1};
   color: ${color.gray300};
   text-align: left;
   margin-top: 8px;

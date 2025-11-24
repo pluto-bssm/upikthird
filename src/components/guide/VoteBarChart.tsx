@@ -28,26 +28,24 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
       try {
         setError(null);
         const data = await getVoteById(voteId);
-        if (data) {
-          setTitle(data.title ?? "");
-          setParticipant(data.totalResponses ?? 0);
-          const palette = [
-            "#FF3B3B",
-            "#FF9F1C",
-            "#FFBE3C",
-            "#58CCFF",
-            "#7C5CFF",
-            "#00C896",
-          ];
-          const mapped = (data.options ?? []).map(
-            (opt: VoteOption, idx: number) => ({
-              label: opt.content,
-              value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
-              fill: palette[idx % palette.length],
-            }),
-          );
-          setBars(mapped);
-        }
+        if (!data) return;
+
+        setTitle(data.title ?? "");
+        setParticipant(data.totalResponses ?? 0);
+
+        const sorted = [...(data.options ?? [])]
+          .map((opt: VoteOption) => ({
+            label: opt.content,
+            value: Math.max(0, Math.min(100, opt.percentage ?? 0)),
+          }))
+          .sort((a, b) => b.value - a.value);
+
+        const styledBars = sorted.map((bar, idx) => ({
+          ...bar,
+          fill: idx === 0 ? color.primary : color.gray200,
+        }));
+
+        setBars(styledBars);
       } catch (err) {
         setError("투표 데이터를 불러오는데 실패했습니다.");
         console.error("Error fetching vote data:", err);
@@ -68,6 +66,7 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
 
   return (
     <ChartCard>
+      <ResultButton>투표 결과 확인하기</ResultButton>
       <CardBody>
         <VoteTitle>{title}</VoteTitle>
         <Participant>전체 참여자 수 {participant}명</Participant>
@@ -90,6 +89,7 @@ const VoteBarChart = ({ voteId }: { voteId: string }) => {
             ))}
           </Legend>
         </LegendBox>
+        <Note>득표율이 높은 순으로 나열되어 있습니다</Note>
       </CardBody>
     </ChartCard>
   );
@@ -104,19 +104,38 @@ const ChartCard = styled.section`
   background: ${color.white};
   overflow: visible;
   margin-top: 18px;
+  width: 100%;
+  max-width: 350px;
+`;
+
+const ResultButton = styled.button`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  width: 148px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 30px;
+  background: ${color.black};
+  color: ${color.white};
+  ${font.H4};
+  z-index: 10;
+  cursor: pointer;
 `;
 
 const CardBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-  padding: 40px 16px 16px;
+  gap: 20px;
+  padding: 60px 36px 40px;
 `;
 
 const VoteTitle = styled.div`
   color: ${color.black};
-  font-family: ${font.D1};
+  ${font.D3};
   text-align: center;
   margin: 0;
   width: 100%;
@@ -124,30 +143,27 @@ const VoteTitle = styled.div`
 
 const Participant = styled.div`
   color: ${color.black};
-  font-family: ${font.H1};
+  ${font.P2};
   text-align: center;
-  margin: 20px 0 0 0;
   width: 100%;
 `;
 
 const Bars = styled.div`
   display: flex;
   justify-content: center;
-  align-items: end;
-  width: 100%;
-  height: 180px;
-  gap: 12px;
-  padding: 16px 0 20px;
-  margin: 20px 0 0 0;
+  align-items: flex-end;
+  width: 255px;
+  height: 168px;
+  gap: 16px;
 `;
 
 const BarTrack = styled.div`
   height: 100%;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   background: ${color.gray50};
   border-radius: 8px;
-  width: 36px;
+  width: 43px;
 `;
 
 const BarFill = styled.div<{ value: number; fill: string }>`
@@ -161,15 +177,14 @@ const Legend = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 314px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 40px;
 `;
 
 const LegendBox = styled.div`
-  width: 314px;
-  margin-top: 16px;
+  width: 100%;
   border-radius: 8px;
   background: ${color.gray50};
   padding: 16px;
@@ -182,13 +197,21 @@ const LegendItem = styled.li`
 `;
 
 const Dot = styled.span`
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
   display: inline-block;
 `;
 
 const Option = styled.span`
-  font-family: ${font.H3};
+  ${font.P2};
   color: ${color.black};
+`;
+
+const Note = styled.p`
+  width: 100%;
+  margin: 0;
+  text-align: right;
+  color: ${color.gray500};
+  ${font.P3};
 `;

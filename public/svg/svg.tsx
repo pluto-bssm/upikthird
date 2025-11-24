@@ -48,6 +48,13 @@ import ProfileIcon from "./ProfileIcon";
 import Exclamation from "./Exclamation";
 import Question from "./Question";
 import GrayClose from "./GrayClose";
+import Vs from "./Vs";
+import VoteBox from "./VoteBox";
+import Placard from "./Placard";
+import BookBox from "./BookBox";
+import CheckBox from "./CheckBox";
+import LogoBox from "./LogoBox";
+import SmileBox from "./SmileBox";
 
 export {
   Back,
@@ -100,4 +107,11 @@ export {
   ValidationErrorIcon,
   ProfileIcon,
   GrayClose,
+  Vs,
+  VoteBox,
+  Placard,
+  BookBox,
+  CheckBox,
+  LogoBox,
+  SmileBox,
 };
