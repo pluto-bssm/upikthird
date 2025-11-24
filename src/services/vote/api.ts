@@ -289,7 +289,6 @@ export async function getAiQuota(): Promise<AiQuotaResult> {
     authorization(),
   );
 
-  console.log(response);
 
   const quota = response.data?.data?.aiQuota?.useAIQuota; 
   if (!quota) {
@@ -331,8 +330,6 @@ export async function getAICOUNT(): Promise<AiQuotaResult> {
     } as GraphQLRequest,
     authorization(),
   );
-
-  console.log(response);
 
   const quota = response.data?.data?.aiQuota?.getMyQuota;
   if (!quota) {

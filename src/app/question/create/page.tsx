@@ -20,12 +20,6 @@ const QuestionCreatePage = () => {
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 
   const handleSubmit = async () => {
-    console.log(
-      "Submitting question with title:",
-      title,
-      "and content:",
-      content,
-    );
     const result = validateQuestionCreate({ title, content });
 
     if (!result.success) {
@@ -39,11 +33,9 @@ const QuestionCreatePage = () => {
         title,
         content,
       });
-      console.log("Question created successfully:", newQuestion);
       setShowSuccessModal(true);
     } catch (error) {
-      setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요.");
-      console.log(error);
+      setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요." + error);
     }
   };
 

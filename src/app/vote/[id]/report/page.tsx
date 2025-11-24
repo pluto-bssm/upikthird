@@ -62,7 +62,6 @@ const Report = () => {
 
     try {
       const result = await reportQuestion(voteId, fullReason);
-      console.log(result);
 
       if (result.success) {
         setDetail("");

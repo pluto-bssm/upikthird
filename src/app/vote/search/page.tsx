@@ -25,12 +25,11 @@ const Search = () => {
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
     setSearchQuery(searchValue.trim());
-    console.log("Search submitted:", searchValue);
+
   };
 
   const handleSearchSubmit = () => {
     setSearchQuery(searchValue.trim());
-    console.log("Search submitted:", searchValue);
   };
 
   if (loading) {
