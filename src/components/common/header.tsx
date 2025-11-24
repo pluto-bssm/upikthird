@@ -300,12 +300,10 @@ const Header = ({
                 onChange={(e) => {
                   setSearchInput(e.target.value);
                   onSearchChange?.(e.target.value);
+                  onSubmit;
                 }}
               />
             </CenterItemBox>
-            <RightItemBox>
-              <Button onClick={onSubmit}>검색</Button>
-            </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
       );
@@ -361,17 +359,17 @@ const SearchInput = styled.input`
   border-radius: 32px;
   background-color: ${color.gray50};
   padding-left: 20px;
-  ${font.H1};
+  ${font.H2};
   color: ${color.gray500};
   outline: none;
   ::placeholder {
-    ${font.H1};
+    ${font.H2};
     color: ${color.gray500};
   }
 `;
 
 const Title = styled.p`
-  ${font.D3};
+  ${font.H2};
   color: ${color.black};
 `;
 

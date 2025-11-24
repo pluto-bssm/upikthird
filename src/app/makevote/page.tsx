@@ -105,6 +105,7 @@ const MakeVoteInfo = styled.div`
   justify-content: center;
   gap: 8px;
   flex-direction: column;
+  margin-top: 24px;
 `;
 const MakeVoteSection = styled.section`
   width: 100%;
@@ -126,12 +127,12 @@ const MakeVoteInfomation = styled.div`
 
 const Title = styled.p`
   color: ${color.black};
-  ${font.D1};
+  ${font.D3};
 `;
 
 const Category = styled.div`
   color: ${color.primary};
-  ${font.D3};
+  ${font.H2};
 `;
 
 const SubTitle = styled.div`

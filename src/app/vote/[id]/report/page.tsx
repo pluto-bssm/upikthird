@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import SelectButton from "@/packages/ui/src/button/SelectButton";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import AccentModal from "@/components/modal/AccentModal";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 import { Completevote } from "../../../../../public/svg/svg";
 import { useReportQuestion } from "@/hooks/useReportQuestion";
 
@@ -25,8 +25,11 @@ const Report = () => {
   const [detail, setDetail] = useState<string>("");
   const [isActive, setIsActive] = useState(false);
   const router = useRouter();
+  let path = usePathname();
+  path = path.replace("/report", "");
+  path = path.replace("/vote/", "");
 
-  const voteId = sessionStorage.getItem("voteId") || "";
+  const voteId = path;
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen_1, setIsOpen_1] = useState(false);
 
@@ -59,7 +62,6 @@ const Report = () => {
 
     try {
       const result = await reportQuestion(voteId, fullReason);
-      console.log(result);
 
       if (result.success) {
         setDetail("");
@@ -197,12 +199,12 @@ const ReportInfoBox = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D1};
+  ${font.D2};
   color: ${color.black};
 `;
 
 const SubTitle = styled.p`
-  ${font.H1};
+  ${font.H3};
   color: ${color.gray700};
 `;
 
@@ -223,7 +225,7 @@ const ReportBallotBox = styled.div`
 `;
 
 const ReportReasonChoiceText = styled.p`
-  ${font.D3};
+  ${font.H2};
   color: ${color.gray700};
 `;
 
@@ -257,7 +259,7 @@ const TextArea = styled.textarea`
   border-radius: 12px;
   border: 1px solid ${color.gray200};
   padding: 16px;
-  ${font.H3};
+  ${font.P1};
   background-color: ${color.white};
   color: ${color.gray700};
   resize: none;
@@ -274,6 +276,6 @@ const TextArea = styled.textarea`
 `;
 
 const TextMaxAlertText = styled.p`
-  ${font.H2};
+  ${font.P1};
   color: ${color.gray300};
 `;

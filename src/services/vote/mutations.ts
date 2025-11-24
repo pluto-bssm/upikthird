@@ -172,3 +172,18 @@ export const OPTION_GENERATOR = `
     }
   }
 `;
+
+export const OPTION_GEERATOR_COUNT =`
+
+mutation MyMutation {
+  aiQuota {
+    useAIQuota {
+      canUseNow
+      lastResetDate
+      maxUsageCount
+      usageCount
+      remainingCount
+    }
+  }
+}
+`

@@ -8,12 +8,14 @@ import {
   TODAY_VOTE,
   GET_CHECK_BADWORD,
   AIOPTION_CREATE,
+  GET_AIOPTION_COUNT
 } from "./queries";
 import {
   CREATE_VOTE_RESPONSE,
   CREATE_VOTE,
   CREATE_TAIL_VOTE,
   REPORT_QUESTION,
+  OPTION_GEERATOR_COUNT
 } from "./mutations";
 import { authorization } from "@/apis/token";
 import { CreateVoteInput } from "@/types/api";
@@ -23,7 +25,6 @@ interface GraphQLRequest {
   variables?: Record<string, unknown>;
 }
 
-// ===================== 기존 함수들 =====================
 
 export async function getMyVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
@@ -85,7 +86,7 @@ export async function createVoteResponse(
   return true;
 }
 
-// ===================== 새로 추가된 함수들 =====================
+
 
 /**
  * 모든 투표 목록 조회 (필터링 포함)
@@ -295,4 +296,77 @@ export async function reportQuestion(
   } catch (error) {
     throw error;
   }
+}
+
+interface AiQuotaResult {
+  canUseNow: boolean;
+  lastResetDate: string;
+  maxUsageCount: number;
+  remainingCount: number;
+  usageCount: number;
+}
+
+export async function getAiQuota(): Promise<AiQuotaResult> {
+  const response = await upik.post(
+    "",
+    {
+      query: OPTION_GEERATOR_COUNT, 
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+
+  const quota = response.data?.data?.aiQuota?.useAIQuota; 
+  if (!quota) {
+    throw new Error("Failed to get AI quota");
+  }
+
+  return quota;
+}
+
+
+interface AiQuotaResult {
+  canUseNow: boolean;
+  lastResetDate: string;
+  maxUsageCount: number;
+  remainingCount: number;
+  usageCount: number;
+}
+
+interface AiQuotaResponse {
+  data: {
+    aiQuota: {
+      canUseAI: boolean;
+      getMyQuota: {
+        maxUsageCount: number;
+        remainingCount: number;
+        usageCount: number;
+        canUseNow: boolean;
+        lastResetDate: string;
+      };
+    };
+  };
+}
+
+export async function getAICOUNT(): Promise<AiQuotaResult> {
+  const response = await upik.post<AiQuotaResponse>(
+    "",
+    {
+      query: GET_AIOPTION_COUNT,
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+  const quota = response.data?.data?.aiQuota?.getMyQuota;
+  if (!quota) {
+    throw new Error("Failed to get AI quota");
+  }
+
+  return {
+    canUseNow: quota.canUseNow,
+    lastResetDate: quota.lastResetDate,
+    maxUsageCount: quota.maxUsageCount,
+    remainingCount: quota.remainingCount,
+    usageCount: quota.usageCount,
+  };
 }

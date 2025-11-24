@@ -73,7 +73,7 @@ const SortMenuBox = styled.div`
 `;
 
 const SortMenuText = styled.p<{ active?: boolean }>`
-  ${({ active }) => (active ? font.D3 : font.H2)};
+  ${({ active }) => (active ? font.H2 : font.P1)};
   color: ${({ active }) => (active ? color.primary : color.black)};
   cursor: pointer;
   transition: all 0.3s ease;

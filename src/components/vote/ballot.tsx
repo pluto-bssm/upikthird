@@ -24,7 +24,7 @@ const Ballot = ({
         {letter && (
           <LatterBox isSelected={isSelected}>
             <Letter>
-              {isSelected && <Check width="20px" height="20px" />}
+              {isSelected && <Check width="50%" height="50%" />}
               {!isSelected && letter}
             </Letter>
           </LatterBox>
@@ -60,21 +60,24 @@ const BallotInfo = styled.div<{ type?: string }>`
 
 const Letter = styled.p`
   color: ${color.gray600};
-  ${font.D3};
-`;
-
-const LatterBox = styled.div<{ isSelected?: boolean }>`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: ${(props) =>
-    props.isSelected ? color.primary : color.gray100};
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  ${font.H2};
+`;
+
+const LatterBox = styled.div<{ isSelected?: boolean }>`
+  width: 36px;
+  border-radius: 50%;
+  background-color: ${(props) => props.isSelected ? color.primary : color.gray100};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
 `;
 
 const Label = styled.span`
-  ${font.D3};
+  ${font.P1};
   color: ${color.gray600};
 `;

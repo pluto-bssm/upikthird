@@ -53,13 +53,13 @@ const BallotRow = styled.div`
 
 const BallotIndexCircle = styled.div`
   background-color: ${color.gray100};
-  width: 40px;
-  height: 40px;
+  width: 36px;
   border-radius: 50%;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 1 / 1;
 `;
 
 const BallotIndexText = styled.span`

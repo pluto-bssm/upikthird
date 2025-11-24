@@ -24,6 +24,7 @@ export function useMyVoteResponses(options: UseMyVoteResponsesOptions = {}) {
       const message =
         err instanceof Error ? err.message : "Failed to fetch vote responses";
       setError(message);
+      
     } finally {
       setLoading(false);
     }

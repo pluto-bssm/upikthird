@@ -44,7 +44,7 @@ const GuideBlockLayout = styled.div`
   width: 100%;
   border: 1px solid ${color.gray50};
   border-radius: 12px;
-  height: 70px;
+  height: 12vh;
   display: flex;
   align-items: center;
   gap: 4%;
@@ -54,7 +54,7 @@ const GuideBlockLayout = styled.div`
 `;
 
 const GuideContentLayout = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -82,7 +82,7 @@ const GuideViewsBox = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D3};
+  ${font.H1};
   color: ${color.black};
 `;
 

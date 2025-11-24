@@ -24,6 +24,8 @@ const Search = () => {
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
+    setSearchQuery(searchValue.trim());
+
   };
 
   const handleSearchSubmit = () => {

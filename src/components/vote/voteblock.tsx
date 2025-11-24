@@ -28,7 +28,7 @@ const VoteBlock = ({
           <VoteInfoUpperBox>
             <Category>{category}</Category>
             <VoteViewsBox>
-              <Views width="12" height="12" />
+              <Views width="15" height="15" />
               <ViewCount>{viewCount}</ViewCount>
             </VoteViewsBox>
           </VoteInfoUpperBox>
@@ -45,7 +45,7 @@ const VoteBlockLayout = styled.div`
   width: 100%;
   border: 1px solid ${color.gray50};
   border-radius: 12px;
-  height: 70px;
+  height: 12vh;
   display: flex;
   align-items: center;
   gap: 4%;
@@ -64,15 +64,15 @@ const VoteInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   flex-direction: row;
-  width: 94%;
+  width: 95%;
 `;
 
 const VoteInfoUpperBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap : 12px;
 `;
 
 const VoteViewsBox = styled.div`
@@ -82,7 +82,7 @@ const VoteViewsBox = styled.div`
 `;
 
 const Title = styled.p`
-  ${font.D3};
+  ${font.H1};
   color: ${color.black};
 `;
 

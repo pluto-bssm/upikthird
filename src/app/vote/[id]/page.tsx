@@ -118,11 +118,12 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
           ))}
         </VoteContent>
 
-        <Button
+      </VoteBlock>
+
+      <Button
           text={responseLoading ? "투표 중..." : "투표 완료하기"}
           onCkick={handleVoteSubmit}
         />
-      </VoteBlock>
     </DesVoteLayout>
   );
 };
@@ -149,17 +150,17 @@ const VoteContent = styled.div`
 `;
 
 const MenuText = styled.p`
-  ${font.H1};
+  ${font.H3};
   color: ${color.primary};
 `;
 
 const Title = styled.p`
-  ${font.D1};
+  ${font.D2};
   color: ${color.black};
 `;
 
 const SubTitle = styled.p`
-  ${font.H2};
+  ${font.H3};
   color: ${color.gray400};
 `;
 
@@ -177,6 +178,7 @@ const VoteBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 100px;
+  gap: 40px;
   margin-top: 100px;
+  height: 60%;
 `;

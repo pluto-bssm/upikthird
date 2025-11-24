@@ -6,6 +6,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
 type AccentModalProps = {
+  icon?: React.ReactNode;
   leftText: string;
   accentText: string;
   rightText: string;
@@ -85,9 +86,8 @@ const Accent = styled.span`
 
 const SubTitle = styled.p`
   ${font.P2};
-  color: ${color.gray600};
+  color: ${color.gray500};
   white-space: pre-line;
-  line-height: 20px;
 `;
 
 const ConfirmButton = styled.button`
