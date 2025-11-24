@@ -19,6 +19,7 @@ import { searchSimilarGuides as apiSearchSimilarGuides } from "@/services/guide/
 import { useCheckBadWord } from "@/hooks/useVotes";
 import { useCreateVote } from "@/hooks/useVotes";
 import { VoteClosureType } from "@/types/api";
+import { useBottomSheetStore } from "@/store/useBottomSheetStore";
 
 const Latterlist = ["A", "B", "C", "D", "E"];
 
@@ -34,6 +35,7 @@ const Detail = () => {
     customDays,
     participantThreshold,
   } = useVoteStore();
+  const {reset} = useBottomSheetStore();
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
@@ -71,6 +73,7 @@ const Detail = () => {
 
   function CanCelMakeVote() {
     resetVoteData();
+    reset();
     router.replace("/vote");
   }
 

@@ -17,6 +17,7 @@ import { useVoteStore } from "@/store/useMakeVoteStore";
 import { useCreateVote } from "@/hooks/useVotes";
 import type { SimilarGuide } from "@/types/api";
 import { VoteClosureType } from "@/types/api";
+import { useBottomSheetStore } from "@/store/useBottomSheetStore";
 
 const LikeGuide = () => {
   const router = useRouter();
@@ -33,6 +34,8 @@ const LikeGuide = () => {
     customDays,
     participantThreshold,
   } = useVoteStore();
+
+  const {reset} = useBottomSheetStore();
 
   const { createVote, loading, error } = useCreateVote();
   void loading;
@@ -82,11 +85,13 @@ const LikeGuide = () => {
 
   const handleCancelConfirm = () => {
     resetVoteData();
+    reset();
     router.replace("/vote");
   };
 
   const handleCompleteConfirm = () => {
     setIsCompleteOpen(false);
+    reset();
     router.push("/vote");
   };
 

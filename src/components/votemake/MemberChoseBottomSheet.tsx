@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 import font from "@/packages/design-system/src/font";
 import color from "@/packages/design-system/src/color";
@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import IconTwoOptionModal from "../modal/IconTwoOptionModal";
 import BottomSheetSelector from "../common/BottomSheet";
 import { useVoteStore } from "@/store/useMakeVoteStore";
+import { useBottomSheetStore } from "@/store/useBottomSheetStore";
 import { VoteClosureType } from "@/types/api";
 
 type Props = {
@@ -14,31 +15,36 @@ type Props = {
 };
 
 const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const router = useRouter();
 
-  const [OpenModal, setOpenModal] = useState(false);
-  const [isTimeOpen, setIsTimeOpen] = useState(false);
-  const [isMemberOpen, setIsMemberOpen] = useState(false);
-
-  const [selectedTime, setSelectedTime] = useState("7");
-  const [selectedMembers, setSelectedMembers] = useState("13");
-
-  const [isVisible, setIsVisible] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const {
+    selectedOption,
+    selectedTime,
+    selectedMembers,
+    isTimeOpen,
+    isMemberOpen,
+    isQuestionModalOpen,
+    setSelectedOption,
+    setSelectedTime,
+    setSelectedMembers,
+    setTimeOpen,
+    setMemberOpen,
+    setQuestionModalOpen,
+  } = useBottomSheetStore();
 
   const { setClosureType } = useVoteStore();
+  
+  const [isVisible, setIsVisible] = React.useState(false);
+  const [isAnimating, setIsAnimating] = React.useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-
       requestAnimationFrame(() => {
         setIsAnimating(true);
       });
     } else {
       setIsAnimating(false);
-
       const timer = setTimeout(() => {
         setIsVisible(false);
       }, 350);
@@ -95,11 +101,11 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
     switch (index) {
       case 1:
         setClosureType(VoteClosureType.CUSTOM_DAYS);
-        setTimeout(() => setIsTimeOpen(true), 300);
+        setTimeout(() => setTimeOpen(true), 300);
         break;
       case 2:
         setClosureType(VoteClosureType.PARTICIPANT_COUNT);
-        setTimeout(() => setIsMemberOpen(true), 300);
+        setTimeout(() => setMemberOpen(true), 300);
         break;
       default:
         setClosureType(VoteClosureType.DEFAULT);
@@ -157,17 +163,14 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
           </OptionList>
 
           <ResultBox>
-            <Result
-              onClick={() => {
-                setOpenModal(true);
-              }}
-            >
+            <Result onClick={() => setQuestionModalOpen(true)}>
               더욱 빠르게 답변을 받고 싶다면?
             </Result>
           </ResultBox>
         </ModalContentBox>
       </ModalBackground>
-      {OpenModal && (
+
+      {isQuestionModalOpen && (
         <IconTwoOptionModal
           icon={"question"}
           title="질문 게시판으로 이동할까요?"
@@ -176,19 +179,21 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
           secondaryButtonText={"뒤로가기"}
           onPrimaryClick={() => {
             router.push("/");
+            setQuestionModalOpen(false);
           }}
           onSecondaryClick={() => {
-            router.back();
+            setQuestionModalOpen(false);
           }}
         />
       )}
+
       <BottomSheetSelector
         title="시간 선택하기"
         selectedValue={selectedTime}
         setSelect={setSelectedTime}
         items={timeOptions}
         isOpen={isTimeOpen}
-        setIsOpen={setIsTimeOpen}
+        setIsOpen={setTimeOpen}
       />
 
       <BottomSheetSelector
@@ -197,7 +202,7 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
         setSelect={setSelectedMembers}
         items={memberOptions}
         isOpen={isMemberOpen}
-        setIsOpen={setIsMemberOpen}
+        setIsOpen={setMemberOpen}
       />
     </>
   );
@@ -205,6 +210,7 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
 export default MemberChoseBottomSheet;
 
+// ... 스타일 컴포넌트는 동일 ...
 const OptionTitle = styled.p<{ isSelected?: boolean }>`
   font-size: 18px;
   font-weight: 600;
