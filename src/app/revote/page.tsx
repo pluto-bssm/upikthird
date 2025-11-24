@@ -34,6 +34,8 @@ const RevotePageContent = () => {
     "기타",
   ];
 
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+
   const handleSubmit = async () => {
     if (selectedReasonIndex === null) return;
     if (!detailText.trim()) return;
@@ -50,7 +52,7 @@ const RevotePageContent = () => {
       await createRevote({ guideId, reason, detailReason });
       setIsModalOpen(true);
     } catch (e) {
-      setIsModalOpen(true);
+      setIsErrorModalOpen(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -120,6 +122,17 @@ const RevotePageContent = () => {
           setIsOpen={setIsBackModalOpen}
         />
       )}
+
+      {isErrorModalOpen && (
+      <AccentModal
+        leftText="요청"
+        accentText="실패"
+        rightText="했습니다"
+        subText="잠시 후 다시 시도해주세요"
+        onClick={() => setIsErrorModalOpen(false)}
+      />
+    )}
+
     </Root>
   );
 };

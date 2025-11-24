@@ -43,7 +43,10 @@ const PopularGuide = ({ cards }: PopularGuideProps) => {
             </GuideMeta>
             <Divider />
             <GuideDescription>{guide.description}</GuideDescription>
-            <GuideLink onClick={() => router.push(`/moreGuide/${guide.id}`)}>
+            <GuideLink
+              type="button"
+              onClick={() => router.push(`/moreGuide/${guide.id}`)}
+            >
               자세히 보기 <Nexts width="12" height="12" />
             </GuideLink>
           </GuideCard>
@@ -117,7 +120,7 @@ const GuideDescription = styled.p`
   text-overflow: ellipsis;
 `;
 
-const GuideLink = styled.div`
+const GuideLink = styled.button`
   color: ${color.gray300};
   ${font.P4};
   display: flex;
@@ -127,6 +130,9 @@ const GuideLink = styled.div`
   text-underline-offset: 2px;
   text-underline-color: ${color.gray300};
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 `;
 
 const EmptyMessage = styled.div`

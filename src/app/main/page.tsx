@@ -65,7 +65,7 @@ export default function MainPage() {
               <Vs />
             </VsWrapper>
             <HeroRightText>
-              <p>{voteOptions[1]?.content || ""}</p>
+              <p>{todayVote ? voteOptions[0]?.content : "오늘의 투표 준비 중입니다"}</p>
             </HeroRightText>
           </HeroHighlight>
           <HeroButton
@@ -198,10 +198,10 @@ const HeroLeftText = styled.p`
   line-height: normal;
   color: ${color.white};
   margin: 0;
-  padding-left: 10px;
+  padding: 0 10px;
   flex: 1;
   min-width: 0;
-  text-align: left;
+  text-align: center;
   word-break: break-word;
   overflow-wrap: break-word;
 `;
@@ -220,7 +220,7 @@ const VsWrapper = styled.div`
 const HeroRightText = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex: 1;
   min-width: 0;
 
@@ -231,8 +231,8 @@ const HeroRightText = styled.div`
     font-size: 14px;
     line-height: normal;
     color: ${color.white};
-    text-align: left;
-    padding-right: 10px;
+    text-align: center;
+    padding: 0 10px;
     word-break: break-word;
     overflow-wrap: break-word;
   }
