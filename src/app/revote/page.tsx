@@ -124,15 +124,14 @@ const RevotePageContent = () => {
       )}
 
       {isErrorModalOpen && (
-      <AccentModal
-        leftText="요청"
-        accentText="실패"
-        rightText="했습니다"
-        subText="잠시 후 다시 시도해주세요"
-        onClick={() => setIsErrorModalOpen(false)}
-      />
-    )}
-
+        <AccentModal
+          leftText="요청"
+          accentText="실패"
+          rightText="했습니다"
+          subText="잠시 후 다시 시도해주세요"
+          onClick={() => setIsErrorModalOpen(false)}
+        />
+      )}
     </Root>
   );
 };
