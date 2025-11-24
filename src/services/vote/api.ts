@@ -25,7 +25,6 @@ interface GraphQLRequest {
   variables?: Record<string, unknown>;
 }
 
-// ===================== 기존 함수들 =====================
 
 export async function getMyVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
@@ -87,7 +86,7 @@ export async function createVoteResponse(
   return true;
 }
 
-// ===================== 새로 추가된 함수들 =====================
+
 
 /**
  * 모든 투표 목록 조회 (필터링 포함)

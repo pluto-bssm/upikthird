@@ -209,8 +209,6 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 };
 
 export default MemberChoseBottomSheet;
-
-// ... 스타일 컴포넌트는 동일 ...
 const OptionTitle = styled.p<{ isSelected?: boolean }>`
   font-size: 18px;
   font-weight: 600;
