@@ -32,7 +32,7 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
     setQuestionModalOpen,
   } = useBottomSheetStore();
 
-  const { setClosureType } = useVoteStore();
+  const { setClosureType ,setCustomDays , setParticipantThreshold , customDays, participantThreshold} = useVoteStore();
   
   const [isVisible, setIsVisible] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
@@ -100,7 +100,7 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
     switch (index) {
       case 1:
-        setClosureType(VoteClosureType.CUSTOM_DAYS);
+        setClosureType(VoteClosureType.CUSTOM_DAYS);        
         setTimeout(() => setTimeOpen(true), 300);
         break;
       case 2:
@@ -189,8 +189,8 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
       <BottomSheetSelector
         title="시간 선택하기"
-        selectedValue={selectedTime}
-        setSelect={setSelectedTime}
+        selectedValue={customDays}
+        setSelect={setCustomDays}
         items={timeOptions}
         isOpen={isTimeOpen}
         setIsOpen={setTimeOpen}
@@ -198,8 +198,8 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
       <BottomSheetSelector
         title="인원수 선택하기"
-        selectedValue={selectedMembers}
-        setSelect={setSelectedMembers}
+        selectedValue={participantThreshold}
+        setSelect={setParticipantThreshold}
         items={memberOptions}
         isOpen={isMemberOpen}
         setIsOpen={setMemberOpen}

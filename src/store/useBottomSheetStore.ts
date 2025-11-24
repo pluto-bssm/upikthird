@@ -26,7 +26,7 @@ interface BottomSheetState {
   reset: () => void;
 }
 
-const initialState = {
+export const initialState = {
   isMemberChoseOpen: false,
   isTimeOpen: false,
   isMemberOpen: false,

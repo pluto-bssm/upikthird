@@ -11,14 +11,14 @@ type SelectorItem = {
 
 type Props = {
   title: string;
-  selectedValue: string;
+  selectedValue: number;
   setSelectedValue?: (value: string) => void;
   items: SelectorItem[];
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
   showArrowIcon?: boolean;
   arrowIconSrc?: string;
-  setSelect: (value: string) => void;
+  setSelect: (value: number) => void;
 };
 
 export default function BottomSheetSelector({
@@ -68,18 +68,18 @@ export default function BottomSheetSelector({
           {items.map((item) => (
             <ItemContainer key={item.value}>
               <ItemRow
-                selected={item.value === selectedValue}
+                selected={parseInt(item.value) === selectedValue}
                 onClick={() => {
-                  setSelect(item.value);
+                  setSelect(parseInt(item.value));
                 }}
               >
-                <ItemText selected={item.value === selectedValue}>
+                <ItemText selected={parseInt(item.value) === selectedValue}>
                   {item.label}
                 </ItemText>
 
                 <RightSection>
                   {item.badge && <Badge>{item.badge}</Badge>}
-                  {item.value === selectedValue && showArrowIcon && (
+                  {parseInt(item.value) === selectedValue && showArrowIcon && (
                     <ArrowIcon>
                       <Select width={25} height={25} />
                     </ArrowIcon>

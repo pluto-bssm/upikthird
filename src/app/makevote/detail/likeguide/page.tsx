@@ -24,7 +24,6 @@ const LikeGuide = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoadingOpen, setIsLoadingOpen] = useState(false);
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
-
   const {
     title,
     ballots,
@@ -36,7 +35,6 @@ const LikeGuide = () => {
   } = useVoteStore();
 
   const {reset} = useBottomSheetStore();
-
   const { createVote, loading, error } = useCreateVote();
   void loading;
   void error;
@@ -71,11 +69,13 @@ const LikeGuide = () => {
         resetVoteData();
       } else {
         alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
+        console.error("Vote creation failed:", result);
       }
     } catch (err) {
       setIsLoadingOpen(false);
       void err;
       alert("투표 생성 중 오류가 발생했습니다.");
+      console.error("Error creating vote:", err);
     }
   };
 
