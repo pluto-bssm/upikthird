@@ -12,251 +12,269 @@ import { Bookmark } from "../../../../public/svg/svg";
 import font from "@/packages/design-system/src/font";
 
 const QuestionDetailPage = () => {
-  const router = useRouter();
-  const params = useParams();
-  const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+    const router = useRouter();
+    const params = useParams();
+    const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
-  const { question, loading: questionLoading } = useQuestionDetail(
-    boardId as string,
-  );
-
-  const {
-    comments,
-    loading: commentsLoading,
-    error: commentsError,
-    refetch: refetchComments,
-  } = useQuestionComments(boardId as string, { page: 0, size: 10 });
-
-  const [comment, setComment] = React.useState("");
-  const [submitting, setSubmitting] = React.useState(false);
-  const [replyingTo, setReplyingTo] = React.useState<string | null>(null);
-  const [replyContent, setReplyContent] = React.useState("");
-
-  React.useEffect(() => {
-    if (!boardId) {
-      console.error("Board ID is missing");
-      return;
-    }
-  }, [boardId]);
-
-  const handleReportClick = () => {
-    router.push(`/question/${boardId}/report`);
-  };
-
-  const handleReplyClick = (commentId: string) => {
-    setReplyingTo(replyingTo === commentId ? null : commentId);
-    setReplyContent("");
-  };
-
-  const handleCommentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!comment.trim() || !boardId) return;
-
-    try {
-      setSubmitting(true);
-      await boardApi.createComment({
-        boardId: boardId as string,
-        content: comment,
-      });
-      setComment("");
-      await refetchComments();
-    } catch (error) {
-      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
-      console.error("Comment submission error:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleReplySubmit = async (
-    e: React.FormEvent,
-    parentCommentId: string,
-  ) => {
-    e.preventDefault();
-    if (!replyContent.trim() || !boardId) return;
-
-    try {
-      setSubmitting(true);
-      await boardApi.createComment({
-        boardId: boardId as string,
-        content: replyContent,
-        parentId: parentCommentId,
-      });
-      setReplyContent("");
-      setReplyingTo(null);
-      await refetchComments();
-    } catch (error) {
-      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
-      console.error("Reply submission error:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (!boardId) {
-    return (
-      <StyledPage>
-        <Header
-          types="report and bookmark"
-          text=""
-          onClose={() => router.back()}
-        />
-        <Container>
-          <ErrorSection>잘못된 접근입니다.</ErrorSection>
-        </Container>
-        <NavigationBar />
-      </StyledPage>
+    const { question, loading: questionLoading, refetch: refetchQuestion } = useQuestionDetail(
+        boardId as string,
     );
-  }
 
-  return (
-    <StyledPage>
-      <Header types="report and close" text="" onClose={handleReportClick} />
-      <Container>
-        {questionLoading ? (
-          <LoadingSection>로딩 중...</LoadingSection>
-        ) : question ? (
-          <>
-            <Section>
-              <Title>{question.title}</Title>
-              <MetaInfo>
-                <MetaItem>{question.author?.name || "작성자 미상"}</MetaItem>
-                <MetaItem>
-                  {new Date(question.createdAt).toLocaleString("ko-KR")}
-                </MetaItem>
-                <BookmarkBox>
-                  <Bookmark width={20} />
-                  <BookmarkText>{question.likes}</BookmarkText>
-                </BookmarkBox>
-              </MetaInfo>
-            </Section>
+    const {
+        comments,
+        loading: commentsLoading,
+        error: commentsError,
+        refetch: refetchComments,
+    } = useQuestionComments(boardId as string, { page: 0, size: 10 });
 
-            <Divider />
+    const [comment, setComment] = React.useState("");
+    const [submitting, setSubmitting] = React.useState(false);
+    const [replyingTo, setReplyingTo] = React.useState<string | null>(null);
+    const [replyContent, setReplyContent] = React.useState("");
+    const [bookmarking, setBookmarking] = React.useState(false);
 
-            <ContentSection>
-              <Content>{question.content}</Content>
-            </ContentSection>
-          </>
-        ) : (
-          <ErrorSection>질문을 찾을 수 없습니다.</ErrorSection>
-        )}
+    React.useEffect(() => {
+        if (!boardId) {
+            console.error("Board ID is missing");
+            return;
+        }
+    }, [boardId]);
 
-        <Divider />
+    const handleReportClick = () => {
+        router.push(`/question/${boardId}/report`);
+    };
 
-        <CommentsSection>
-          <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
+    const handleBookmarkClick = async () => {
+        if (!boardId) return;
 
-          {commentsError ? (
-            <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
-          ) : commentsLoading ? (
-            <LoadingText>댓글 로딩 중...</LoadingText>
-          ) : comments?.content && comments.content.length > 0 ? (
-            comments.content.map((comment) => (
-              <React.Fragment key={comment.id}>
-                <CommentItemWrapper isReply={false}>
-                  <CommentBox>
-                    <CommentHeader>
-                      <AuthorName>
-                        {comment.author?.name || "작성자 미상"}
-                      </AuthorName>
-                    </CommentHeader>
-                    <CommentContent>{comment.content}</CommentContent>
-                    <CommentFooter>
-                      <FooterItem>
-                        {new Date(comment.createdAt).toLocaleString("ko-KR")}
-                      </FooterItem>
-                      <FooterReportItem
-                        onClick={() =>
-                          router.push(
-                            `/question/${boardId}/comment-report?commentId=${comment.id}`,
-                          )
-                        }
-                      >
-                        신고하기
-                      </FooterReportItem>
-                      <FooterItem onClick={() => handleReplyClick(comment.id)}>
-                        답글쓰기
-                      </FooterItem>
-                    </CommentFooter>
-                  </CommentBox>
-                </CommentItemWrapper>
+        try {
+            await boardApi.toggleBoardBookmark(boardId);
+        } catch (error) {
+            alert("북마크 처리에 실패했습니다.");
+            console.error("Bookmark error:", error);
+        }
+    };
 
-                {replyingTo === comment.id && (
-                  <ReplyInputWrapper>
-                    <ReplyInputBox>
-                      <ReplyInputField
-                        placeholder="답글을 입력해주세요"
-                        value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
-                      />
-                      <ReplySubmitButton
-                        onClick={(e) => handleReplySubmit(e, comment.id)}
-                        disabled={
-                          submitting || !replyContent.trim() || !boardId
-                        }
-                      >
-                        등록
-                      </ReplySubmitButton>
-                    </ReplyInputBox>
-                  </ReplyInputWrapper>
+    const handleReplyClick = (commentId: string) => {
+        setReplyingTo(replyingTo === commentId ? null : commentId);
+        setReplyContent("");
+    };
+
+    const handleCommentSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!comment.trim() || !boardId) return;
+
+        try {
+            setSubmitting(true);
+            await boardApi.createComment({
+                boardId: boardId as string,
+                content: comment,
+            });
+            setComment("");
+            await refetchComments();
+        } catch (error) {
+            alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+            console.error("Comment submission error:", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleReplySubmit = async (
+        e: React.FormEvent,
+        parentCommentId: string,
+    ) => {
+        e.preventDefault();
+        if (!replyContent.trim() || !boardId) return;
+
+        try {
+            setSubmitting(true);
+            await boardApi.createComment({
+                boardId: boardId as string,
+                content: replyContent,
+                parentId: parentCommentId,
+            });
+            setReplyContent("");
+            setReplyingTo(null);
+            await refetchComments();
+        } catch (error) {
+            alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+            console.error("Reply submission error:", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    if (!boardId) {
+        return (
+            <StyledPage>
+                <Header
+                    types="report and bookmark"
+                    text=""
+                    onClose={() => router.back()}
+                />
+                <Container>
+                    <ErrorSection>잘못된 접근입니다.</ErrorSection>
+                </Container>
+                <NavigationBar />
+            </StyledPage>
+        );
+    }
+
+    return (
+        <StyledPage>
+            <Header
+                types="report and bookmark"
+                text=""
+                onClose={handleReportClick}
+                onToggleBookmark={handleBookmarkClick}
+            />
+            <Container>
+                {questionLoading ? (
+                    <LoadingSection>로딩 중...</LoadingSection>
+                ) : question ? (
+                    <>
+                        <Section>
+                            <Title>{question.title}</Title>
+                            <MetaInfo>
+                                <MetaItem>{question.author?.name || "작성자 미상"}</MetaItem>
+                                <MetaItem>
+                                    {new Date(question.createdAt).toLocaleString("ko-KR")}
+                                </MetaItem>
+                                <BookmarkBox>
+                                    <Bookmark width={20} />
+                                    <BookmarkText>{question.likes}</BookmarkText>
+                                </BookmarkBox>
+                            </MetaInfo>
+                        </Section>
+
+                        <Divider />
+
+                        <ContentSection>
+                            <Content>{question.content}</Content>
+                        </ContentSection>
+                    </>
+                ) : (
+                    <ErrorSection>질문을 찾을 수 없습니다.</ErrorSection>
                 )}
 
-                {comment.replies &&
-                  comment.replies.length > 0 &&
-                  comment.replies.map((reply) => (
-                    <CommentItemWrapper key={reply.id} isReply={true}>
-                      <CommentBox>
-                        <CommentHeader>
-                          <AuthorName>
-                            {reply.author?.name || "작성자 미상"}
-                          </AuthorName>
-                        </CommentHeader>
-                        <CommentContent>{reply.content}</CommentContent>
-                        <CommentFooter>
-                          <FooterItem>
-                            {new Date(reply.createdAt).toLocaleString("ko-KR")}
-                          </FooterItem>
-                          <FooterReportItem
-                            onClick={() =>
-                              router.push(
-                                `/question/${boardId}/comment-report?commentId=${reply.id}`,
-                              )
-                            }
-                          >
-                            신고하기
-                          </FooterReportItem>
-                        </CommentFooter>
-                      </CommentBox>
-                    </CommentItemWrapper>
-                  ))}
-              </React.Fragment>
-            ))
-          ) : (
-            <NoCommentText>댓글이 없습니다.</NoCommentText>
-          )}
+                <Divider />
 
-          <CommentInputBox>
-            <CommentInputField
-              placeholder="댓글을 입력해주세요"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <CommentSubmitButton
-              onClick={handleCommentSubmit}
-              disabled={submitting || !comment.trim() || !boardId}
-            >
-              등록
-            </CommentSubmitButton>
-          </CommentInputBox>
-        </CommentsSection>
-      </Container>
+                <CommentsSection>
+                    <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
 
-      <NavigationBar />
-    </StyledPage>
-  );
+                    {commentsError ? (
+                        <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
+                    ) : commentsLoading ? (
+                        <LoadingText>댓글 로딩 중...</LoadingText>
+                    ) : comments?.content && comments.content.length > 0 ? (
+                        comments.content.map((comment) => (
+                            <React.Fragment key={comment.id}>
+                                <CommentItemWrapper isReply={false}>
+                                    <CommentBox>
+                                        <CommentHeader>
+                                            <AuthorName>
+                                                {comment.author?.name || "작성자 미상"}
+                                            </AuthorName>
+                                        </CommentHeader>
+                                        <CommentContent>{comment.content}</CommentContent>
+                                        <CommentFooter>
+                                            <FooterItem>
+                                                {new Date(comment.createdAt).toLocaleString("ko-KR")}
+                                            </FooterItem>
+                                            <FooterReportItem
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/question/${boardId}/comment-report?commentId=${comment.id}`,
+                                                    )
+                                                }
+                                            >
+                                                신고하기
+                                            </FooterReportItem>
+                                            <FooterItem onClick={() => handleReplyClick(comment.id)}>
+                                                답글쓰기
+                                            </FooterItem>
+                                        </CommentFooter>
+                                    </CommentBox>
+                                </CommentItemWrapper>
+
+                                {replyingTo === comment.id && (
+                                    <ReplyInputWrapper>
+                                        <ReplyInputBox>
+                                            <ReplyInputField
+                                                placeholder="답글을 입력해주세요"
+                                                value={replyContent}
+                                                onChange={(e) => setReplyContent(e.target.value)}
+                                            />
+                                            <ReplySubmitButton
+                                                onClick={(e) => handleReplySubmit(e, comment.id)}
+                                                disabled={
+                                                    submitting || !replyContent.trim() || !boardId
+                                                }
+                                            >
+                                                등록
+                                            </ReplySubmitButton>
+                                        </ReplyInputBox>
+                                    </ReplyInputWrapper>
+                                )}
+
+                                {comment.replies &&
+                                    comment.replies.length > 0 &&
+                                    comment.replies.map((reply) => (
+                                        <CommentItemWrapper key={reply.id} isReply={true}>
+                                            <CommentBox>
+                                                <CommentHeader>
+                                                    <AuthorName>
+                                                        {reply.author?.name || "작성자 미상"}
+                                                    </AuthorName>
+                                                </CommentHeader>
+                                                <CommentContent>{reply.content}</CommentContent>
+                                                <CommentFooter>
+                                                    <FooterItem>
+                                                        {new Date(reply.createdAt).toLocaleString("ko-KR")}
+                                                    </FooterItem>
+                                                    <FooterReportItem
+                                                        onClick={() =>
+                                                            router.push(
+                                                                `/question/${boardId}/comment-report?commentId=${reply.id}`,
+                                                            )
+                                                        }
+                                                    >
+                                                        신고하기
+                                                    </FooterReportItem>
+                                                </CommentFooter>
+                                            </CommentBox>
+                                        </CommentItemWrapper>
+                                    ))}
+                            </React.Fragment>
+                        ))
+                    ) : (
+                        <NoCommentText>댓글이 없습니다.</NoCommentText>
+                    )}
+
+                    <CommentInputBox>
+                        <CommentInputField
+                            placeholder="댓글을 입력해주세요"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                        <CommentSubmitButton
+                            onClick={handleCommentSubmit}
+                            disabled={submitting || !comment.trim() || !boardId}
+                        >
+                            등록
+                        </CommentSubmitButton>
+                    </CommentInputBox>
+                </CommentsSection>
+            </Container>
+
+            <NavigationBar />
+        </StyledPage>
+    );
 };
 
 export default QuestionDetailPage;
+
 
 const ErrorText = styled.p`
   text-align: center;

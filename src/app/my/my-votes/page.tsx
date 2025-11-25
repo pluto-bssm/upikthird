@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import { useMyVotes } from "@/hooks/useVotes";
-import VoteLists from "@/components/my/my-votes/VoteLists";
 import VoteBlock from "@/components/vote/voteblock";
 
 const MyVotesPage = () => {
