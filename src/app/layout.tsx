@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: "upik",
@@ -15,6 +16,7 @@ const RootLayout = ({
     <html lang="ko">
       <body style={{ backgroundColor: "#FAFAFA", margin: 0, padding: 0 }}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
