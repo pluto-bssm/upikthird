@@ -198,6 +198,9 @@ const GuideText = styled.div`
 const GuideTitle = styled.p`
   ${font.H1};
   color: ${color.black};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const OtherInfo = styled.div`
