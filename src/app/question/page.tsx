@@ -7,7 +7,7 @@ import Header from "@/components/common/header";
 import { QuestionList } from "@/components/question/QuestionList";
 import color from "@/packages/design-system/src/color";
 import { useQuestions } from "@/hooks/useBoard";
-import VotemakeButton from "@/../public/svg/VotemakeButton";
+import VoteMakeButton from "@/components/vote/votemakebutton";
 
 const QuestionPage = () => {
   const router = useRouter();
@@ -37,8 +37,8 @@ const QuestionPage = () => {
           <QuestionList questions={questions} />
         )}
       </QuestionPageContent>
-      <FloatingButton onClick={handleCreateQuestion}>
-        <VotemakeButton width="24" height="24" />
+      <FloatingButton>
+        <VoteMakeButton onClick={handleCreateQuestion}/>
       </FloatingButton>
     </StyledQuestionPage>
   );
@@ -53,6 +53,9 @@ const StyledQuestionPage = styled.div`
   margin: 20px;
   min-height: 100vh;
   padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const QuestionPageContent = styled.div`
@@ -118,29 +121,12 @@ const ErrorText = styled.p`
   margin: 0;
 `;
 
-const FloatingButton = styled.button`
+const FloatingButton = styled.div`
   position: fixed;
-  bottom: 30px;
-  right: 20px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: ${color.primary};
-  border: none;
+  z-index: 10;
+  bottom: 80px;
+  width: 90%;
+  max-width: 500px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  z-index: 100;
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
+  justify-content: flex-end;
 `;

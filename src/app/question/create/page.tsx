@@ -74,19 +74,18 @@ const QuestionCreatePage = () => {
             <Required>*</Required>
           </LabelWithRequired>
           <QuestionTextarea
-            placeholder="제목을 입력해주세요"
+            placeholder="질문제목을 입력해주세요 (2자이상)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </DetailSection>
-
         <DetailSection>
           <LabelWithRequired>
             <Label>자세한 내용</Label>
             <Required>*</Required>
           </LabelWithRequired>
           <DetailTextarea
-            placeholder="자세한 내용을 적어주세요"
+            placeholder="자세한 내용을 적어주세요(10자 이상)"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
