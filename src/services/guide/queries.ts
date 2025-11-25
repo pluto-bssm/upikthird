@@ -164,3 +164,11 @@ query GetMostPopularOpenVote {
   }
 }
 `;
+
+export const IS_BOOKMARKED = `
+  query IsBookmarked($guideId: ID!) {
+    bookmark {
+      isBookmarked(guideId: $guideId)
+    }
+  }
+`;
