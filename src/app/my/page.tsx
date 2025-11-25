@@ -9,6 +9,7 @@ import TabBar from "@/components/my/TabBar";
 import MenuSection, { type MenuItem } from "@/components/my/MenuSection";
 import { useMyUser } from "@/hooks/useAccount";
 import NavigationBar from "@/components/common/navigationbar";
+import React from "react";
 
 const MyPage = () => {
   const router = useRouter();
@@ -122,7 +123,7 @@ const MyPage = () => {
           <MenuSection items={menuItems} onItemClick={handleMenuItemClick} />
         </MenuSectionWrapper>
       </MyPageContent>
-      <NavigationBar />
+        <NavigationBar />
     </StyledMyPage>
   );
 };
