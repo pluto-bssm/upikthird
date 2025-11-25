@@ -7,7 +7,6 @@ export const GET_MY_VOTE_RESPONSES = `
         finishedAt
         id
         hasVoted
-        participantThresxhold
         status
         title
         totalResponses
