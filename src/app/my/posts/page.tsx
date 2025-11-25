@@ -54,7 +54,7 @@ const StyledUserPostsPage = styled.div`
   max-width: 600px;
   margin: 0 auto;
   padding-top: 80px;
-  background-color: ${color.gray50};
+  background-color: ${color.white};
   min-height: 100vh;
 `;
 
