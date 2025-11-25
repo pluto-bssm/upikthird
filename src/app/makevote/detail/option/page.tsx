@@ -13,7 +13,7 @@ import LoadingModal from "@/components/modal/LoadingModal";
 import AccentModal from "@/components/modal/AccentModal";
 import { useVoteStore } from "@/store/useMakeVoteStore";
 import { useGenerateAiOptions } from "@/hooks/useVotes";
-import { getAICOUNT,getAiQuota } from "@/services/vote/api";
+import { getAICOUNT, getAiQuota } from "@/services/vote/api";
 
 const Options = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const Options = () => {
   const [IsOpen_2, setIsOpen_2] = useState(false);
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
-  
+
   const { ballots, title, setBallots } = useVoteStore();
   const [maxUsageCount, setMaxUsageCount] = useState(0);
   const [remainingCount, setRemainingCount] = useState(0);
@@ -40,12 +40,12 @@ const Options = () => {
 
       try {
         const result = await generateAiOptions(ballots.length || 4, title);
-        
+
         const updatedQuota = await getAiQuota();
         setMaxUsageCount(updatedQuota.maxUsageCount);
         setRemainingCount(updatedQuota.remainingCount);
         setUsageCount(updatedQuota.usageCount);
-        
+
         if (result && result.options.length > 0) {
           setBallots(result.options);
           setIsOpen_3(true);
@@ -155,7 +155,7 @@ const Options = () => {
           leftText="오늘은 더 이상 AI 선지 추천기능을 "
           accentText="이용"
           rightText="할 수 없어요"
-          subText={'하루 3번만 이용가능해요.\n매일 밤 12시에 초기화 됩니다.'}
+          subText={"하루 3번만 이용가능해요.\n매일 밤 12시에 초기화 됩니다."}
           onClick={() => {
             setIsOpen_4(false);
           }}

@@ -57,11 +57,7 @@ export default function MainPage() {
               <Vs />
             </VsWrapper>
             <HeroRightText>
-              <p>
-                {todayVote
-                  ? voteOptions[1]?.content
-                  : ""}
-              </p>
+              <p>{todayVote ? voteOptions[1]?.content : ""}</p>
             </HeroRightText>
           </HeroHighlight>
           <HeroButton

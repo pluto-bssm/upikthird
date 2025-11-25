@@ -34,7 +34,7 @@ const LikeGuide = () => {
     participantThreshold,
   } = useVoteStore();
 
-  const {reset} = useBottomSheetStore();
+  const { reset } = useBottomSheetStore();
   const { createVote, loading, error } = useCreateVote();
   void loading;
   void error;
@@ -158,7 +158,6 @@ const LikeGuide = () => {
         />
       </LikeGuideSection>
 
-
       {isOpen && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
@@ -169,14 +168,12 @@ const LikeGuide = () => {
         />
       )}
 
-
       {isLoadingOpen && (
         <LoadingModal
           title="투표를 제작하고 있어요."
           info="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요."
         />
       )}
-
 
       {isCompleteOpen && (
         <AccentModal

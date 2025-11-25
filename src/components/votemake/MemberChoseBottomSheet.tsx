@@ -32,8 +32,14 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
     setQuestionModalOpen,
   } = useBottomSheetStore();
 
-  const { setClosureType ,setCustomDays , setParticipantThreshold , customDays, participantThreshold} = useVoteStore();
-  
+  const {
+    setClosureType,
+    setCustomDays,
+    setParticipantThreshold,
+    customDays,
+    participantThreshold,
+  } = useVoteStore();
+
   const [isVisible, setIsVisible] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
 
@@ -100,7 +106,7 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
     switch (index) {
       case 1:
-        setClosureType(VoteClosureType.CUSTOM_DAYS);        
+        setClosureType(VoteClosureType.CUSTOM_DAYS);
         setTimeout(() => setTimeOpen(true), 300);
         break;
       case 2:

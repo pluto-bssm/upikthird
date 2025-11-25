@@ -64,13 +64,11 @@ const TailVote = () => {
             value={content}
           />
         </TextAreaContainer>
-
-        
       </TailVoteBlock>
       <Button
-          text={loading ? "투표 중..." : "투표 완료하기"}
-          onCkick={HandleTailVoteMake}
-        />
+        text={loading ? "투표 중..." : "투표 완료하기"}
+        onCkick={HandleTailVoteMake}
+      />
 
       {isOpen && (
         <AccentModal
@@ -78,7 +76,7 @@ const TailVote = () => {
           leftText="투표를"
           accentText="완료"
           rightText="했어요!"
-          subText={'마이페이지에서 투표 참여내역\n을확인할 수 있습니다.'}
+          subText={"마이페이지에서 투표 참여내역\n을확인할 수 있습니다."}
           onClick={() => {
             router.push("/vote");
           }}

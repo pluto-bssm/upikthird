@@ -13,7 +13,7 @@ const color = {
   primary: "#FF9F1C",
   secondary: "#58CCFF",
   accent: "#FF8B37",
-    background: "#FDE2D6",
+  background: "#FDE2D6",
 };
 
 export default color;
