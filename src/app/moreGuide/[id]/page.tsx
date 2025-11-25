@@ -126,7 +126,8 @@ const MoreGuidePage = () => {
                 await decrementGuideLike(guideId);
               }
             }
-          } catch (error) {}
+          } catch (error) {
+          }
         }}
       />
 
@@ -263,3 +264,6 @@ const FooterSpacer = styled.div`
   width: 100%;
   height: 140px;
 `;
+
+
+
