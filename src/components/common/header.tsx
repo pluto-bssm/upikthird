@@ -83,7 +83,6 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bell width="25" height="25" />
               <Search
                 width="25"
                 height="25"
@@ -124,7 +123,6 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bell width="25" height="25" />
               <Search
                 width="25"
                 height="25"
@@ -329,7 +327,6 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bell width="25" height="25" />
               <Search
                 width="25"
                 height="25"
