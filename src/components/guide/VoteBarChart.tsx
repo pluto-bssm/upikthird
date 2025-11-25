@@ -178,9 +178,9 @@ const Legend = styled.ul`
   margin: 0;
   padding: 0;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const LegendBox = styled.div`

@@ -55,6 +55,7 @@ import BookBox from "./BookBox";
 import CheckBox from "./CheckBox";
 import LogoBox from "./LogoBox";
 import SmileBox from "./SmileBox";
+import Main from "./Main";
 
 export {
   Back,
@@ -114,4 +115,5 @@ export {
   CheckBox,
   LogoBox,
   SmileBox,
+  Main,
 };

@@ -45,6 +45,8 @@ import BookBox from "./BookBox";
 import CheckBox from "./CheckBox";
 import LogoBox from "./LogoBox";
 import SmileBox from "./SmileBox";
+import Main from "./Main";
+import Vs from "./Vs";
 
 export {
   Back,
@@ -94,4 +96,6 @@ export {
   CheckBox,
   LogoBox,
   SmileBox,
+  Main,
+  Vs,
 };
