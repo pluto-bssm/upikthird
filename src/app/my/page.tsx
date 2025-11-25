@@ -8,127 +8,134 @@ import ProfileBox from "@/components/my/ProfileBox";
 import TabBar from "@/components/my/TabBar";
 import MenuSection, { type MenuItem } from "@/components/my/MenuSection";
 import { useMyUser } from "@/hooks/useAccount";
+import { useSavedGuides } from "@/hooks/useSaved";
+import { useLikedQuestions } from "@/hooks/useSaved";
 import NavigationBar from "@/components/common/navigationbar";
 import React from "react";
 
 const MyPage = () => {
-  const router = useRouter();
-  const { user, loading, error } = useMyUser();
-  void error;
+    const router = useRouter();
+    const { user, loading, error } = useMyUser();
+    const { guides: savedGuides } = useSavedGuides(0, 100);
+    const { questions: likedQuestions } = useLikedQuestions(0, 100);
+    void error;
 
-  const menuItems: MenuItem[] = [
-    {
-      id: "1",
-      label: "내가 만든 투표",
-      category: "기록",
-      onClick: () => router.push("/my/my-votes"),
-    },
-    {
-      id: "2",
-      label: "투표 응답 내역",
-      category: "기록",
-      onClick: () => router.push("/my/vote-responses"),
-    },
-    {
-      id: "3",
-      label: "질문 게시판 글 작성 내역",
-      category: "기록",
-      onClick: () => router.push("/my/posts"),
-    },
-    {
-      id: "4",
-      label: "계정 정보",
-      category: "설정",
-      onClick: () => router.push("/my/info"),
-    },
-    {
-      id: "5",
-      label: "서비스 소개",
-      category: "도움말 & 지원",
-      onClick: () =>
-        router.push(
-          "https://quilt-honey-c52.notion.site/2733ccc9b3dc803fb8dcc0c581403bff",
-        ),
-    },
-    {
-      id: "6",
-      label: "문의하기",
-      category: "도움말 & 지원",
-      onClick: () => router.push("/my/inquiry"),
-    },
-  ];
+    const menuItems: MenuItem[] = [
+        {
+            id: "1",
+            label: "내가 만든 투표",
+            category: "기록",
+            onClick: () => router.push("/my/my-votes"),
+        },
+        {
+            id: "2",
+            label: "투표 응답 내역",
+            category: "기록",
+            onClick: () => router.push("/my/vote-responses"),
+        },
+        {
+            id: "3",
+            label: "질문 게시판 글 작성 내역",
+            category: "기록",
+            onClick: () => router.push("/my/posts"),
+        },
+        {
+            id: "4",
+            label: "계정 정보",
+            category: "설정",
+            onClick: () => router.push("/my/info"),
+        },
+        {
+            id: "5",
+            label: "서비스 소개",
+            category: "도움말 & 지원",
+            onClick: () =>
+                router.push(
+                    "https://quilt-honey-c52.notion.site/2733ccc9b3dc803fb8dcc0c581403bff",
+                ),
+        },
+        {
+            id: "6",
+            label: "문의하기",
+            category: "도움말 & 지원",
+            onClick: () => router.push("/my/inquiry"),
+        },
+    ];
 
-  const handleMenuItemClick = (item: MenuItem) => {
-    item.onClick?.();
-  };
+    const handleMenuItemClick = (item: MenuItem) => {
+        item.onClick?.();
+    };
 
-  const handleTabChange = (tab: "saved" | "like") => {
-    if (tab === "saved") {
-      router.push("/my/saved/guide");
-    } else {
-      router.push("/my/likes");
+    const handleTabChange = (tab: "saved" | "like") => {
+        if (tab === "saved") {
+            router.push("/my/saved/guide");
+        } else {
+            router.push("/my/likes");
+        }
+    };
+
+    const getQualification = (role: string) => {
+        switch (role) {
+            case "ROLE_BSM":
+                return "재학생";
+            default:
+                return "외부인";
+        }
+    };
+
+    if (loading) {
+        return (
+            <StyledMyPage>
+                <Header types="close" text="" />
+                <LoadingText>로딩 중...</LoadingText>
+            </StyledMyPage>
+        );
     }
-  };
 
-  const getQualification = (role: string) => {
-    switch (role) {
-      case "ROLE_BSM":
-        return "재학생";
-      default:
-        return "외부인";
+    if (error || !user) {
+        return (
+            <StyledMyPage>
+                <Header types="close" text="" />
+                <ErrorText>사용자 정보를 불러올 수 없습니다.</ErrorText>
+            </StyledMyPage>
+        );
     }
-  };
 
-  if (loading) {
+    const handleClose = () => {
+        router.back();
+    };
+
     return (
-      <StyledMyPage>
-        <Header types="close" text="" />
-        <LoadingText>로딩 중...</LoadingText>
-      </StyledMyPage>
+        <StyledMyPage>
+            <Header types="close" text="마이 페이지" onClose={handleClose} />
+            <MyPageContent>
+                <ProfileBox
+                    name={user.name}
+                    status={getQualification(user.role)}
+                    email={user.email}
+                    role={user.role}
+                />
+
+                <TabBarWrapper>
+                    <TabBar
+                        savedGuideCount={savedGuides?.length ?? 0}
+                        likeQuestionCount={likedQuestions?.length ?? 0}
+                        onTabChange={handleTabChange}
+                    />
+                </TabBarWrapper>
+
+                <MenuSectionWrapper>
+                    <MenuSection items={menuItems} onItemClick={handleMenuItemClick} />
+                </MenuSectionWrapper>
+            </MyPageContent>
+            <NavigationBar />
+        </StyledMyPage>
     );
-  }
-
-  if (error || !user) {
-    return (
-      <StyledMyPage>
-        <Header types="close" text="" />
-        <ErrorText>사용자 정보를 불러올 수 없습니다.</ErrorText>
-      </StyledMyPage>
-    );
-  }
-  const handleClose = () => {
-    router.back();
-  };
-
-  return (
-    <StyledMyPage>
-      <Header types="close" text="마이 페이지" onClose={handleClose} />
-      <MyPageContent>
-        <ProfileBox
-          name={user.name}
-          status={getQualification(user.role)}
-          email={user.email}
-          role={user.role}
-        />
-
-        <TabBarWrapper>
-          <TabBar
-            savedGuideCount={0}
-            likeQuestionCount={0}
-            onTabChange={handleTabChange}
-          />
-        </TabBarWrapper>
-
-        <MenuSectionWrapper>
-          <MenuSection items={menuItems} onItemClick={handleMenuItemClick} />
-        </MenuSectionWrapper>
-      </MyPageContent>
-        <NavigationBar />
-    </StyledMyPage>
-  );
 };
 
 export default MyPage;
+
+// ... styled components 동일
 
 const StyledMyPage = styled.div`
   max-width: 600px;

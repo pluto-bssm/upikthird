@@ -97,7 +97,7 @@ const QuestionDetailPage = () => {
     return (
       <StyledPage>
         <Header
-          types="report and close"
+          types="report and bookmark"
           text=""
           onClose={() => router.back()}
         />
