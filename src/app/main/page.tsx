@@ -11,12 +11,14 @@ import { Vs, Main } from "../../../public/svg";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useGuides } from "@/hooks/useGuides";
-import { useTodayVote } from "@/hooks/useVotes";
+import { useVote } from "@/hooks/useVotes";
 
 export default function MainPage() {
   const router = useRouter();
   const { guides } = useGuides();
-  const { vote: todayVote } = useTodayVote();
+  
+  const todayVoteId = process.env.NEXT_PUBLIC_TODAY_VOTE_ID || "239840kdsjkfda";
+  const { vote: todayVote } = useVote(todayVoteId);
 
   const popularGuides = useMemo(() => {
     if (!guides?.length) return [];
