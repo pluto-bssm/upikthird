@@ -91,7 +91,7 @@ const QuestionCreatePage = () => {
           />
         </DetailSection>
         <WarringText>
-          질문 게시판에는 굼금한 내용을 질문하기 위해 이용해주세요.
+          질문 게시판에는 궁금한 내용을<br /> 질문하기 위해 이용해주세요.
           <br /> 질문이 아닌 글은 삭제될 수 있어요.
         </WarringText>
       </Container>
