@@ -82,7 +82,7 @@ const Content = styled.div`
 const VotesList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+    gap:8px;
 `;
 
 const LoadingText = styled.p`

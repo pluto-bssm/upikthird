@@ -88,7 +88,7 @@ const MenuListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-    margin: 16px 0;
+    margin: 20px 0;
 `;
 
 const MenuItemButton = styled.button`
@@ -96,15 +96,13 @@ const MenuItemButton = styled.button`
   align-items: flex-start;
   justify-content: space-between;
   gap: 4px;
-  padding: 0 20px;
+  padding: 16px 20px;
   height: auto;
   border: none;
   background-color: transparent;
   cursor: pointer;
   transition: background-color 0.2s;
   width: 100%;
-  padding-top: 13px;
-  padding-bottom: 13px;
 
   &:hover {
     background-color: ${color.gray50};

@@ -52,14 +52,14 @@ const TabButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 0;
+    height: 56px;
 
   &:last-child {
     border-right: none;
   }
 
   &:hover {
-    background-color: ${color.white};
+    background-color: ${color.gray50};
   }
 `;
 

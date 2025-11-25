@@ -81,6 +81,7 @@ const StyledSavedGuidePage = styled.div`
   margin: 0 auto;
     background-color: ${color.white};
   padding-top: 80px;
+    min-height: 100vh;
 `;
 
 const SavedGuidePageContent = styled.div`
