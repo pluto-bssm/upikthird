@@ -58,7 +58,7 @@ const InfoGroup = styled.div`
 `;
 
 const InfoLabel = styled.p`
-    ${font.P3}
+  ${font.P3}
   color: ${color.gray500};
   margin: 0;
   padding: 0;
@@ -66,7 +66,7 @@ const InfoLabel = styled.p`
 `;
 
 const InfoValue = styled.p`
-    ${font.P1}
+  ${font.P1}
   color: ${color.black};
   margin: 0;
   padding: 0;

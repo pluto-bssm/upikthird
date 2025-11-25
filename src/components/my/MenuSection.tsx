@@ -117,6 +117,7 @@ const MenuItemLabel = styled.p`
   color: ${color.black};
   margin: 0;
   padding: 0;
+  text-align: start;
   line-height: 1;
   white-space: nowrap;
   flex: 1;

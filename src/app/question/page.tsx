@@ -39,9 +39,9 @@ const QuestionPage = () => {
         )}
       </QuestionPageContent>
       <FloatingButton>
-        <VoteMakeButton onClick={handleCreateQuestion}/>
+        <VoteMakeButton onClick={handleCreateQuestion} />
       </FloatingButton>
-        <Footer/>
+      <Footer />
     </StyledQuestionPage>
   );
 };

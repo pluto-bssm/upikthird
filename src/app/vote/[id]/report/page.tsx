@@ -214,8 +214,8 @@ const ReportBlock = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 32px;
-  margin-top : 100px;
-  margin-bottom : 40px;
+  margin-top: 100px;
+  margin-bottom: 40px;
 `;
 
 const ReportBallotBox = styled.div`

@@ -32,7 +32,6 @@ const Ballot = ({ info, value, onChange, onRemove }: BallotInputProps) => {
 
 export default Ballot;
 
-
 const BallotLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -67,9 +66,9 @@ const BallotIndexText = styled.span`
   color: ${color.gray400};
   width: 20px;
   height: 20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const BallotTextInput = styled.input`

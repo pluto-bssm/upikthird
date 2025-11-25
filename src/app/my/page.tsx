@@ -122,7 +122,7 @@ const MyPage = () => {
           <MenuSection items={menuItems} onItemClick={handleMenuItemClick} />
         </MenuSectionWrapper>
       </MyPageContent>
-        <NavigationBar />
+      <NavigationBar />
     </StyledMyPage>
   );
 };
