@@ -77,6 +77,7 @@ export default SavedGuidePage;
 const StyledSavedGuidePage = styled.div`
   width: 100%;
   max-width: 600px;
+    height: 100%;
   margin: 0 auto;
     background-color: ${color.white};
   padding-top: 80px;
