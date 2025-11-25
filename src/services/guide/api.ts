@@ -8,6 +8,7 @@ import {
   GET_MOST_POPULAR_OPEN_VOTE,
   TOGGLE_BOOKMARK,
   GET_BOOKMARKS,
+  IS_BOOKMARKED,
 } from "@/services/guide/queries";
 import {
   CREATE_REVOTE,
@@ -215,9 +216,9 @@ export async function toggleBookmark(guideId: string): Promise<boolean> {
 }
 
 /**
- * 북마크 목록 조회 후 특정 가이드가 북마크되었는지 확인
+ * 북마크 목록 조회
  */
-export async function isGuideBookmarked(guideId: string): Promise<boolean> {
+export async function getBookmarks(): Promise<Bookmark[]> {
   const response = await upik.post(
     "",
     {
@@ -226,10 +227,24 @@ export async function isGuideBookmarked(guideId: string): Promise<boolean> {
     authorization(),
   );
 
-  const bookmarks: Bookmark[] =
-    response.data?.data?.bookmark?.getBookmarks ?? [];
+  return response.data?.data?.bookmark?.getBookmarks ?? [];
+}
 
-  return bookmarks.some((b) => b.guideId === guideId);
+/**
+ * 특정 가이드가 북마크되었는지 확인
+ */
+export async function isGuideBookmarked(guideId: string): Promise<boolean> {
+  const response = await upik.post(
+    "",
+    {
+      query: IS_BOOKMARKED,
+      variables: { guideId },
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+  const result = response.data?.data?.bookmark?.isBookmarked;
+  return result ?? false;
 }
 
 /**

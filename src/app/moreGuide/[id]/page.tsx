@@ -40,20 +40,16 @@ const MoreGuidePage = () => {
     content?: string;
     voteId?: string | null;
   } | null>(null);
-  const [bookmarked, setBookmarked] = React.useState(false);
+  const [bookmarked, setBookmarked] = React.useState<boolean | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [bookmarkLoading, setBookmarkLoading] = React.useState(true);
 
   const fetchBookmarkStatus = React.useCallback(async () => {
     if (!guideId) return;
     try {
-      setBookmarkLoading(true);
       const isBookmarked = await isGuideBookmarked(guideId);
       setBookmarked(isBookmarked);
     } catch (error) {
       setBookmarked(false);
-    } finally {
-      setBookmarkLoading(false);
     }
   }, [guideId]);
 
@@ -114,7 +110,7 @@ const MoreGuidePage = () => {
     <PageWrapper>
       <Header
         types="bookmark"
-        bookmarked={bookmarked}
+        bookmarked={bookmarked ?? false}
         onToggleBookmark={async () => {
           try {
             const next = await toggleBookmark(guideId);
