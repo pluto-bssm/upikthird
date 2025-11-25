@@ -113,6 +113,7 @@ const Divider = styled.div`
 const GuideDescription = styled.p`
   ${font.P2};
   color: ${color.gray600};
+  line-height:20px;
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
