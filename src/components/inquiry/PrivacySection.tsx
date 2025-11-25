@@ -4,6 +4,8 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { CheckIcon } from "../../../public/svg/CheckIcon";
 import { ChevronRightIcon } from "../../../public/svg/ChevronRight";
+import font from "@/packages/design-system/src/font";
+import { useRouter } from "next/navigation";
 
 interface PrivacySectionProps {
   isChecked: boolean;
@@ -16,6 +18,12 @@ const PrivacySection = ({
   onToggle,
   error,
 }: PrivacySectionProps) => {
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    router.push("/my/inquiry/info");
+  };
+
   return (
     <Container>
       <SectionContainer onClick={onToggle}>
@@ -24,7 +32,9 @@ const PrivacySection = ({
         </Checkbox>
         <Text>개인정보 수집 및 이용 동의</Text>
       </SectionContainer>
-      <ChevronRightIcon width={16} height={16} />
+      <IconWrapper onClick={handleNavigate}>
+        <ChevronRightIcon width={16} height={16} />
+      </IconWrapper>
       {error && <ErrorText>{error}</ErrorText>}
     </Container>
   );
@@ -48,6 +58,18 @@ const SectionContainer = styled.div`
   flex: 1;
 `;
 
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
 const Checkbox = styled.div<{ isChecked: boolean }>`
   width: 16px;
   height: 16px;
@@ -64,9 +86,7 @@ const Checkbox = styled.div<{ isChecked: boolean }>`
 `;
 
 const Text = styled.span`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  ${font.H2}
   color: ${color.gray600};
 `;
 

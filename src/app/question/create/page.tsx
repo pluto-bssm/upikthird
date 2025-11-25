@@ -7,8 +7,9 @@ import Header from "@/components/common/header";
 import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import { validateQuestionCreate } from "@/schemas/question";
-import { ValidationErrorIcon, CheckComplete } from "../../../../public/svg/svg";
+import { CheckComplete } from "../../../../public/svg/svg";
 import { createQuestion } from "@/services/board/api";
+import font from "@/packages/design-system/src/font";
 
 const QuestionCreatePage = () => {
   const router = useRouter();
@@ -18,24 +19,34 @@ const QuestionCreatePage = () => {
     null,
   );
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleSubmit = async () => {
+    console.log("title:", title, "length:", title.length);
+    console.log("content:", content, "length:", content.length);
+    console.log("Data to validate:", { title, content });
+
     const result = validateQuestionCreate({ title, content });
+    console.log("Validation result:", result);
 
     if (!result.success) {
       const firstError = result.error.issues[0];
+      console.log("First error:", firstError);
       setValidationError(firstError.message);
       return;
     }
 
+    setIsSubmitting(true);
     try {
-      const newQuestion = await createQuestion({
+      await createQuestion({
         title,
         content,
       });
       setShowSuccessModal(true);
     } catch (error) {
-      setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요." + error);
+      setValidationError("질문 생성에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -50,37 +61,53 @@ const QuestionCreatePage = () => {
 
   return (
     <StyledPage>
-      <Header types="register" text="" onSubmit={handleSubmit} />
+      <Header types="close" text="" onSubmit={handleSubmit} />
       <Container>
-        <Divider />
-
         <Section>
-          <TitleInput
-            placeholder="질문 제목을 입력하세요"
+          <Title>질문하기</Title>
+          <SubTitle>궁금한 내용에 대해서 질문해주세요</SubTitle>
+        </Section>
+
+        <DetailSection>
+          <LabelWithRequired>
+            <Label>제목</Label>
+            <Required>*</Required>
+          </LabelWithRequired>
+          <QuestionTextarea
+            placeholder="제목을 입력해주세요"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-        </Section>
+        </DetailSection>
 
-        <Divider />
-
-        <Section>
-          <ContentTextarea
-            placeholder="질문 내용을 입력하세요"
+        <DetailSection>
+          <LabelWithRequired>
+            <Label>자세한 내용</Label>
+            <Required>*</Required>
+          </LabelWithRequired>
+          <DetailTextarea
+            placeholder="자세한 내용을 적어주세요"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
-        </Section>
+        </DetailSection>
+        <WarringText>
+          질문 게시판에는 굼금한 내용을 질문하기 위해 이용해주세요.
+          <br /> 질문이 아닌 글은 삭제될 수 있어요.
+        </WarringText>
       </Container>
+      <SubmitButton
+        onClick={handleSubmit}
+        disabled={!title.trim() || !content.trim() || isSubmitting}
+      >
+        {isSubmitting ? "등록 중..." : "질문 등록하기"}
+      </SubmitButton>
 
       {validationError && (
         <>
           <ModalOverlay onClick={handleValidationClose} />
           <ModalContainer>
             <ModalContent>
-              <ModalIconContainer>
-                <ValidationErrorIcon width="83" height="83" />
-              </ModalIconContainer>
               <ModalTitle>
                 {validationError.includes("제목") ? (
                   <>
@@ -142,11 +169,19 @@ const StyledPage = styled.div`
   flex-direction: column;
 `;
 
+const WarringText = styled.p`
+  ${font.P1}
+  color: ${color.gray200};
+  margin: 0;
+  text-align: center;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   flex: 1;
+  padding-bottom: 20px;
 `;
 
 const Section = styled.div`
@@ -156,44 +191,112 @@ const Section = styled.div`
   padding: 20px;
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  background-color: ${color.gray200};
-  width: 100%;
+const SubTitle = styled.p`
+  ${font.H3}
+  color: ${color.gray700};
+  line-height: 1;
+  margin: 0;
 `;
 
-const TitleInput = styled.input`
-  border: none;
-  background: transparent;
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+const Title = styled.h1`
+  ${font.D2}
   color: ${color.black};
-  outline: none;
-  padding: 10px 0;
   line-height: 1;
-  width: 100%;
+  margin: 0;
+`;
+
+const DetailSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 20px 20px;
+`;
+
+const DetailTextarea = styled.textarea`
+  border: 1px solid ${color.gray100};
+  border-radius: 16px;
+  padding: 20px;
+  min-height: 200px;
+  ${font.P1}
+  font-weight: 400;
+  color: ${color.black};
+  background-color: ${color.white};
+  resize: none;
+  outline: none;
 
   &::placeholder {
     color: ${color.gray300};
   }
+
+  &:focus {
+    border-color: ${color.primary};
+  }
 `;
-const ContentTextarea = styled.textarea`
-  border: none;
-  background: transparent;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 400;
+
+const QuestionTextarea = styled.textarea`
+  border: 1px solid ${color.gray100};
+  border-radius: 16px;
+  height: 60px;
+  padding: 20px;
+  ${font.P1}
   color: ${color.black};
-  outline: none;
+  background-color: ${color.white};
   resize: none;
-  min-height: 200px;
-  padding: 10px 0;
-  line-height: 24px;
-  width: 100%;
+  outline: none;
 
   &::placeholder {
     color: ${color.gray300};
+  }
+
+  &:focus {
+    border-color: ${color.primary};
+  }
+`;
+
+const CharCount = styled.p`
+  ${font.P1}
+  color: ${color.gray300};
+  line-height: 1;
+  margin: 0;
+  text-align: right;
+`;
+
+const LabelWithRequired = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
+const Label = styled.p`
+  ${font.H2}
+  color: ${color.gray700};
+  margin: 0;
+`;
+
+const Required = styled.span`
+  ${font.P1}
+  margin: 0;
+  color: ${color.accent};
+`;
+
+const SubmitButton = styled.button`
+  background-color: ${color.primary};
+  border: none;
+  border-radius: 16px;
+  padding: 16px 20px;
+  ${font.H2}
+  color: ${color.white};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 20px;
+
+  &:disabled {
+    background-color: ${color.gray200};
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    opacity: 0.9;
   }
 `;
 
@@ -240,10 +343,8 @@ const ModalIconContainer = styled.div`
   color: ${color.primary};
 `;
 
-const ModalTitle = styled.h2`
-  font-family: Pretendard, sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+const ModalTitle = styled.p`
+  ${font.D3}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -255,9 +356,7 @@ const HighlightText = styled.span`
 `;
 
 const ModalSubtitle = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
+  ${font.P3}
   color: ${color.gray600};
   line-height: 1;
   margin: 0;
