@@ -64,7 +64,7 @@ const QuestionCreatePage = () => {
 
   return (
     <StyledPage>
-      <Header types="close" text="" onSubmit={handleClose} />
+      <Header types="close" text="" onClose={handleClose} />
       <Container>
         <Section>
           <Title>질문하기</Title>
