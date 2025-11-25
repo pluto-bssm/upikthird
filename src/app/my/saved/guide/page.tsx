@@ -80,7 +80,6 @@ const StyledSavedGuidePage = styled.div`
 const SavedGuidePageContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
   width: 90%;
   max-width: 600px;
   margin: 0 auto;

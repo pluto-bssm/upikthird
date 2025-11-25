@@ -63,9 +63,6 @@ const GuideCard = styled.div<{ isSelected: boolean }>`
   background-color: ${({ isSelected }) =>
     isSelected ? `${color.primary}33` : color.white};
   padding: 0 16px;
-  box-shadow:
-    -4px -4px 10px 0 rgba(0, 0, 0, 0.03),
-    4px 4px 10px 0 rgba(0, 0, 0, 0.03);
 `;
 
 const GuideTextWrap = styled.div`
