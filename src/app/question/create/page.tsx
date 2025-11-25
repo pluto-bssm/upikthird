@@ -56,7 +56,7 @@ const QuestionCreatePage = () => {
 
         <Section>
           <TitleInput
-            placeholder="질문 제목을 입력하세요"
+            placeholder="질문 제목을 입력하세요(2자이상)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -66,7 +66,7 @@ const QuestionCreatePage = () => {
 
         <Section>
           <ContentTextarea
-            placeholder="질문 내용을 입력하세요"
+            placeholder="질문 내용을 입력하세요(10자이상)"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
