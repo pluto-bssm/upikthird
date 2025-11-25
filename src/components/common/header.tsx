@@ -83,7 +83,6 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bell width="25" height="25" />
               <Search
                 width="25"
                 height="25"
@@ -91,7 +90,12 @@ const Header = ({
                   router.push(`${path}/search`);
                 }}
               />
-              <User width="25" height="25" />
+              <User
+                width="25" 
+                height="25"
+                onClick={() => {
+                  router.push(`/my`)
+                }} />
             </RightItemBox>
           </HeaderItemBox>
           <Headernavigationbar
@@ -323,7 +327,6 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <Bell width="25" height="25" />
               <Search
                 width="25"
                 height="25"
@@ -331,7 +334,12 @@ const Header = ({
                   router.push(`${path}/search`);
                 }}
               />
-              <User width="25" height="25" />
+              <User
+                width="25" 
+                height="25"
+                onClick={() => {
+                  router.push(`/my`)
+                }} />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>
