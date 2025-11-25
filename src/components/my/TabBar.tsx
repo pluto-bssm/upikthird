@@ -52,7 +52,7 @@ const TabButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-    height: 56px;
+    margin: 16px 12px 4px 4px;
 
   &:last-child {
     border-right: none;
