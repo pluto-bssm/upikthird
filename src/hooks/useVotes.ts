@@ -10,6 +10,93 @@ interface UseVotesOptions {
   autoFetch?: boolean;
 }
 
+
+/* ===================== 내 투표 응답 내역 ===================== */
+export function useMyVoteResponses(options: UseVotesOptions = {}) {
+    const { autoFetch = true } = options;
+    const [responses, setResponses] = useState<VotePayload[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchMyVoteResponses = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const allVotes = await voteApi.getAllVotes();
+            // hasVoted가 true인 것만 필터링
+            const votedResponses = allVotes.filter((vote) => vote.hasVoted === true);
+            setResponses(votedResponses);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Failed to fetch vote responses";
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const refetch = async () => {
+        await fetchMyVoteResponses();
+    };
+
+    useEffect(() => {
+        if (autoFetch) {
+            fetchMyVoteResponses();
+        }
+    }, [autoFetch, fetchMyVoteResponses]);
+
+    return {
+        responses,
+        loading,
+        error,
+        fetchMyVoteResponses,
+        refetch,
+    };
+}
+
+/* ===================== 단일 투표 응답 상세 ===================== */
+export function useVoteResponseDetail(voteId: string) {
+    const [vote, setVote] = useState<VotePayload | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchVoteDetail = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const allVotes = await voteApi.getAllVotes();
+            const voteData = allVotes.find(
+                (v) => v.id === voteId && v.hasVoted === true
+            );
+
+            if (!voteData) {
+                throw new Error("Vote detail not found");
+            }
+
+            setVote(voteData);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Failed to fetch vote detail";
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
+    }, [voteId]);
+
+    useEffect(() => {
+        if (voteId) {
+            fetchVoteDetail();
+        }
+    }, [voteId, fetchVoteDetail]);
+
+    return {
+        vote,
+        loading,
+        error,
+        refetch: fetchVoteDetail,
+    };
+}
+
 /* ===================== 내 투표 목록 ===================== */
 export function useMyVotes(options: UseVotesOptions = {}) {
   const { autoFetch = true } = options;

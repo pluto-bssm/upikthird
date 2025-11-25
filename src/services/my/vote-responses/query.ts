@@ -1,25 +1,18 @@
 export const GET_MY_VOTE_RESPONSES = `
-query MyQuery {
-  vote {
-    getMyVotes {
-      category
-      closureType
-      hasVoted
-      id
-      finishedAt
-      totalResponses
-      status
-      title
-      participantThreshold
-      options {
+  query MyQuery {
+    vote {
+      getAllVotes {
         id
-        content
-        responseCount
-        percentage
+        hasVoted
+        title
+        status
+        totalResponses
+        finishedAt
+        closureType
+        category
       }
     }
   }
-}
 `;
 
 export const GET_VOTE_RESPONSE_DETAIL = `

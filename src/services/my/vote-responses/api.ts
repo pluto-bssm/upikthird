@@ -23,23 +23,22 @@ export interface GetVoteDetailResponse {
 }
 
 export async function getMyVoteResponses(): Promise<VotePayload[]> {
-  const token = Storage.getItem(TOKEN.ACCESS);
+    const token = Storage.getItem(TOKEN.ACCESS);
 
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: GET_MY_VOTE_RESPONSES,
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+    const response = await upik.post(
+        API.GRAPHQL_URL,
+        {
+            query: GET_MY_VOTE_RESPONSES,
+        } as GraphQLRequest,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
 
-  return response.data?.data?.vote?.getMyVotes || [];
+    return response.data?.data?.vote?.getAllVotes || [];
 }
-
 export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
 
