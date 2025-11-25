@@ -58,10 +58,13 @@ const QuestionCreatePage = () => {
     setShowSuccessModal(false);
     router.back();
   };
+  const handleClose = () => {
+    router.push('/question');
+  }
 
   return (
     <StyledPage>
-      <Header types="close" text="" onSubmit={handleSubmit} />
+      <Header types="close" text="" onSubmit={handleClose} />
       <Container>
         <Section>
           <Title>질문하기</Title>
