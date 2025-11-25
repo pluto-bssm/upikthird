@@ -22,7 +22,7 @@ const Options = () => {
   const [IsOpen_2, setIsOpen_2] = useState(false);
   const [IsOpen_3, setIsOpen_3] = useState(false);
   const [IsOpen_4, setIsOpen_4] = useState(false);
-  
+
   const { ballots, title, setBallots } = useVoteStore();
   const [maxUsageCount, setMaxUsageCount] = useState(0);
   const [remainingCount, setRemainingCount] = useState(0);
@@ -58,8 +58,7 @@ const Options = () => {
       } catch (quotaError) {
         console.warn("Quota 정보 업데이트 실패:", quotaError);
       }
-      
-      // 결과 확인 및 적용
+
       if (result && result.options && result.options.length > 0) {
         setBallots(result.options);
         setIsOpen_2(false);
@@ -84,10 +83,9 @@ const Options = () => {
 
   const handleAiOptionClick = async () => {
     try {
-      // AI quota 정보 조회
+
       const AIcount = await getAICOUNT();
       
-      // quota 정보 유효성 검사
       if (!AIcount || typeof AIcount.remainingCount !== 'number') {
         throw new Error("AI quota 정보를 확인할 수 없습니다.");
       }
@@ -96,7 +94,7 @@ const Options = () => {
       setRemainingCount(AIcount.remainingCount);
       setUsageCount(AIcount.usageCount || 0);
       
-      // 남은 횟수가 0이면 바로 제한 모달 표시
+
       if (AIcount.remainingCount <= 0) {
         setIsOpen_4(true);
       } else {
@@ -105,7 +103,7 @@ const Options = () => {
     } catch (err) {
       console.error("AI 쿼터 정보를 가져오는데 실패했습니다:", err);
       
-      // 사용자 친화적인 에러 메시지
+
       const errorMessage = err instanceof Error 
         ? err.message 
         : "AI 기능을 사용할 수 없습니다. 잠시 후 다시 시도해주세요.";
@@ -194,7 +192,7 @@ const Options = () => {
           leftText="오늘은 더 이상 AI 선지 추천기능을 "
           accentText="이용"
           rightText="할 수 없어요"
-          subText={'하루 3번만 이용가능해요.\n매일 밤 12시에 초기화 됩니다.'}
+          subText={"하루 3번만 이용가능해요.\n매일 밤 12시에 초기화 됩니다."}
           onClick={() => {
             setIsOpen_4(false);
           }}

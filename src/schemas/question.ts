@@ -8,7 +8,7 @@ export const QuestionCreateSchema = z.object({
   content: z
     .string()
     .min(1, "내용을 작성해주세요")
-    .min(10, "내용은 10자 이상이어야 해요"),
+    .min(5, "내용은 10자 이상이어야 해요"),
 });
 
 export type QuestionCreateInput = z.infer<typeof QuestionCreateSchema>;

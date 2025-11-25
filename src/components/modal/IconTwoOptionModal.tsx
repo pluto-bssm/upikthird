@@ -75,7 +75,6 @@ const IconTwoOptionModalLayout = styled.div`
   gap: 20px;
 `;
 
-
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;

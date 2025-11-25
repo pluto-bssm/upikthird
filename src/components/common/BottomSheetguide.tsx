@@ -11,7 +11,7 @@ type SelectorItem = {
 
 type Props = {
   title: string;
-  selectedValue:  string;
+  selectedValue: string;
   setSelectedValue?: (value: string) => void;
   items: SelectorItem[];
   isOpen?: boolean;
@@ -68,18 +68,18 @@ export default function BottomSheetSelector_guide({
           {items.map((item) => (
             <ItemContainer key={item.value}>
               <ItemRow
-                selected={(item.value) === selectedValue}
+                selected={item.value === selectedValue}
                 onClick={() => {
-                  setSelect((item.value));
+                  setSelect(item.value);
                 }}
               >
-                <ItemText selected={(item.value) === selectedValue}>
+                <ItemText selected={item.value === selectedValue}>
                   {item.label}
                 </ItemText>
 
                 <RightSection>
                   {item.badge && <Badge>{item.badge}</Badge>}
-                  {(item.value) === selectedValue && showArrowIcon && (
+                  {item.value === selectedValue && showArrowIcon && (
                     <ArrowIcon>
                       <Select width={25} height={25} />
                     </ArrowIcon>

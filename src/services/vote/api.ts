@@ -1,21 +1,20 @@
 import { upik } from "@/apis";
 import type { VotePayload, CreateVoteResponseInput } from "@/types/graphql";
 import {
-  GET_MY_VOTES,
-  GET_VOTE_BY_ID,
-  GET_ALL_VOTES,
-  GET_VOTES,
-  TODAY_VOTE,
-  GET_CHECK_BADWORD,
-  AIOPTION_CREATE,
-  GET_AIOPTION_COUNT
+    GET_VOTE_BY_ID,
+    GET_ALL_VOTES,
+    GET_VOTES,
+    TODAY_VOTE,
+    GET_CHECK_BADWORD,
+    AIOPTION_CREATE,
+    GET_AIOPTION_COUNT, GET_ALL_MY_VOTES,
 } from "./queries";
 import {
   CREATE_VOTE_RESPONSE,
   CREATE_VOTE,
   CREATE_TAIL_VOTE,
   REPORT_QUESTION,
-  OPTION_GEERATOR_COUNT
+  OPTION_GEERATOR_COUNT,
 } from "./mutations";
 import { authorization } from "@/apis/token";
 import { CreateVoteInput } from "@/types/api";
@@ -25,12 +24,11 @@ interface GraphQLRequest {
   variables?: Record<string, unknown>;
 }
 
-
 export async function getMyVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
     "",
     {
-      query: GET_MY_VOTES,
+      query: GET_ALL_MY_VOTES,
     } as GraphQLRequest,
     authorization(),
   );
@@ -85,8 +83,6 @@ export async function createVoteResponse(
   }
   return true;
 }
-
-
 
 /**
  * 모든 투표 목록 조회 (필터링 포함)
@@ -292,21 +288,18 @@ export async function getAiQuota(): Promise<AiQuotaResult> {
   const response = await upik.post(
     "",
     {
-      query: OPTION_GEERATOR_COUNT, 
+      query: OPTION_GEERATOR_COUNT,
     } as GraphQLRequest,
     authorization(),
   );
 
-
-  const quota = response.data?.data?.aiQuota?.useAIQuota; 
-  console.log("AI Quota Response:", quota);
+  const quota = response.data?.data?.aiQuota?.useAIQuota;
   if (!quota) {
     throw new Error("Failed to get AI quota");
   }
 
   return quota;
 }
-
 
 interface AiQuotaResult {
   canUseNow: boolean;

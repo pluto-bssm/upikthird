@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import SelectButton from "@/packages/ui/src/button/SelectButton";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import AccentModal from "@/components/modal/AccentModal";
-import { useRouter,usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Completevote } from "../../../../../public/svg/svg";
 import { useReportQuestion } from "@/hooks/useReportQuestion";
 
@@ -214,8 +214,8 @@ const ReportBlock = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 32px;
-  margin-top : 100px;
-  margin-bottom : 40px;
+  margin-top: 100px;
+  margin-bottom: 40px;
 `;
 
 const ReportBallotBox = styled.div`

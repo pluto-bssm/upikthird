@@ -3,6 +3,7 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { ChevronRightIcon } from "../../../public/svg/ChevronRight";
+import font from "@/packages/design-system/src/font";
 
 export type MenuCategory = "기록" | "설정" | "도움말 & 지원";
 export type MenuItem = {
@@ -112,12 +113,11 @@ const MenuItemButton = styled.button`
 `;
 
 const MenuItemLabel = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.H4}
   color: ${color.black};
   margin: 0;
   padding: 0;
+  text-align: start;
   line-height: 1;
   white-space: nowrap;
   flex: 1;

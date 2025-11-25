@@ -3,14 +3,19 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { ProfileIcon } from "../../../public/svg/svg";
+import IconPerson from "../../../public/svg/IconPerson";
+import IconDoor from "../../../public/svg/IconDoor";
 
 interface ProfileBoxProps {
   name: string;
   status: string;
   email: string;
+  role?: string;
 }
 
-const ProfileBox = ({ name, status, email }: ProfileBoxProps) => {
+const ProfileBox = ({ name, status, email, role }: ProfileBoxProps) => {
+  const isExternal = role === "외부인" || status === "외부인";
+
   return (
     <ProfileBoxWrapper>
       <ProfileBoxContent>
@@ -21,7 +26,11 @@ const ProfileBox = ({ name, status, email }: ProfileBoxProps) => {
           <NameWithStatusRow>
             <ProfileName>{name}</ProfileName>
             <StatusBadge>
-              <StatusIcon>🧑‍💻</StatusIcon>
+              {isExternal ? (
+                <IconDoor width="10" height="10" />
+              ) : (
+                <IconPerson width="10" height="10" />
+              )}
               <StatusLabel>{status}</StatusLabel>
             </StatusBadge>
           </NameWithStatusRow>
@@ -93,11 +102,6 @@ const StatusBadge = styled.div`
   background-color: ${color.gray50};
   border-radius: 4px;
   flex-shrink: 0;
-`;
-
-const StatusIcon = styled.span`
-  font-size: 10px;
-  line-height: 1;
 `;
 
 const StatusLabel = styled.p`

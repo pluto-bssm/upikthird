@@ -40,7 +40,7 @@ export default Ballot;
 const BallotLayout = styled.div<{ isSelected?: boolean }>`
   width: 100%;
   height: 67px;
-  padding : 0px 16px;
+  padding: 0px 16px;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -71,7 +71,8 @@ const Letter = styled.p`
 const LatterBox = styled.div<{ isSelected?: boolean }>`
   width: 36px;
   border-radius: 50%;
-  background-color: ${(props) => props.isSelected ? color.primary : color.gray100};
+  background-color: ${(props) =>
+    props.isSelected ? color.primary : color.gray100};
   display: flex;
   justify-content: center;
   align-items: center;

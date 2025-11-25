@@ -1,0 +1,102 @@
+import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
+import styled from "@emotion/styled";
+import {Views} from "../../../../public/svg";
+import VoteBlockImage from "@/components/vote/voteblockimage";
+
+type VoteListsProps = {
+    category: string;
+    title: string;
+    viewCount: number;
+    finishDate: number;
+    onClick?: () => void;
+};
+
+const VoteLists = ({
+                       category,
+                       title,
+                       viewCount,
+                       finishDate,
+                       onClick,
+                   }: VoteListsProps) => {
+    return (
+        <VoteBlockLayout onClick={onClick}>
+            <VoteBlockImage category={category} />
+            <VoteContentLayout>
+                <Title>{title}</Title>
+                <VoteInfoBox>
+                    <VoteInfoUpperBox>
+                        <Category>{category}</Category>
+                        <VoteViewsBox>
+                            <Views width="15" height="15" />
+                            <ViewCount>{viewCount}</ViewCount>
+                        </VoteViewsBox>
+                    </VoteInfoUpperBox>
+                    <FinishDate>{finishDate}</FinishDate>
+                </VoteInfoBox>
+            </VoteContentLayout>
+        </VoteBlockLayout>
+    );
+};
+
+export default VoteLists;
+
+const VoteBlockLayout = styled.div`
+  width: 100%;
+  border: 1px solid ${color.gray50};
+  border-radius: 12px;
+  height: 12vh;
+  display: flex;
+  align-items: center;
+  gap: 4%;
+  padding: 0px 10px 0px 10px;
+  margin-bottom: 20px;
+`;
+
+const VoteContentLayout = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+`;
+const VoteInfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 95%;
+`;
+
+const VoteInfoUpperBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+`;
+
+const VoteViewsBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styled.p`
+  ${font.H1};
+  color: ${color.black};
+`;
+
+const Category = styled.p`
+  ${font.P2};
+  color: ${color.gray600};
+`;
+
+const ViewCount = styled.p`
+  ${font.P2};
+  color: ${color.gray600};
+`;
+
+const FinishDate = styled.p`
+  ${font.P2};
+  color: ${color.gray500};
+`;

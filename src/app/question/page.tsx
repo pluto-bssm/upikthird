@@ -8,6 +8,7 @@ import { QuestionList } from "@/components/question/QuestionList";
 import color from "@/packages/design-system/src/color";
 import { useQuestions } from "@/hooks/useBoard";
 import VoteMakeButton from "@/components/vote/votemakebutton";
+import Footer from "@/components/common/footer";
 
 const QuestionPage = () => {
   const router = useRouter();
@@ -32,14 +33,15 @@ const QuestionPage = () => {
       <Header types="question" text="질문 게시판" />
       <QuestionPageContent>
         {loading ? (
-          <LoadingText>로딩 중...</LoadingText>
+          <LoadingText> </LoadingText>
         ) : (
           <QuestionList questions={questions} />
         )}
       </QuestionPageContent>
       <FloatingButton>
-        <VoteMakeButton onClick={handleCreateQuestion}/>
+        <VoteMakeButton onClick={handleCreateQuestion} />
       </FloatingButton>
+      <Footer />
     </StyledQuestionPage>
   );
 };
@@ -48,10 +50,9 @@ export default QuestionPage;
 
 const StyledQuestionPage = styled.div`
   width: 100%;
-  background-color: #fff;
+  background-color: #fcfcfc;
   max-width: 600px;
-  margin: 0 auto;
-  background-color: ${color.white};
+  margin: 20px;
   min-height: 100vh;
   padding-top: 80px;
   display: flex;
@@ -62,6 +63,7 @@ const StyledQuestionPage = styled.div`
 const QuestionPageContent = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
 `;
 

@@ -7,6 +7,7 @@ import { BackArrow } from "../../../../public/svg/svg";
 import { QuestionList } from "@/components/question/QuestionList";
 import * as boardApi from "@/services/board/api";
 import type { Board } from "@/types/graphql";
+import font from "@/packages/design-system/src/font";
 
 const SearchPage = () => {
   const [searchInput, setSearchInput] = React.useState("");
@@ -66,7 +67,6 @@ const SearchPage = () => {
         </SearchInputWrapper>
       </SearchHeader>
       <SearchContent>
-        {loading && <EmptyMessage>검색 중...</EmptyMessage>}
         {!loading && !hasSearched && (
           <EmptyMessage>검색어를 입력해주세요</EmptyMessage>
         )}
@@ -101,7 +101,6 @@ const SearchHeader = styled.div`
   justify-content: center;
   padding: 10px 20px;
   background-color: ${color.white};
-  border-bottom: 1px solid ${color.gray300};
   position: sticky;
   top: 0;
   z-index: 100;
@@ -141,8 +140,7 @@ const SearchInput = styled.input`
   background: none;
   border: none;
   font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.H2}
   color: ${color.black};
   outline: none;
 
@@ -161,8 +159,7 @@ const SearchContent = styled.div`
 
 const EmptyMessage = styled.p`
   font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.H2}
   color: ${color.gray600};
   line-height: 1;
   margin: 40px 0;

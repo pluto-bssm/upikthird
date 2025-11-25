@@ -72,7 +72,7 @@ const VoteInfoUpperBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap : 12px;
+  gap: 12px;
 `;
 
 const VoteViewsBox = styled.div`

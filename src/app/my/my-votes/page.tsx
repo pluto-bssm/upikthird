@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import { useMyVotes } from "@/hooks/useVotes";
-import VoteBlock from "@/components/vote/voteblock";
+import VoteLists from "@/components/my/my-votes/VoteLists";
 
 const MyVotesPage = () => {
   const router = useRouter();
@@ -41,13 +41,13 @@ const MyVotesPage = () => {
           <IsNotFound>만든 투표가 없습니다.</IsNotFound>
         ) : (
           myVotes.map((vote) => (
-            <VoteBlock
+            <VoteLists
               key={vote.id}
               category={vote.category}
               title={vote.title}
               viewCount={vote.totalResponses || 0}
               finishDate={vote.finishedAt}
-              onClick={() => router.push(`/vote/${vote.id}`)}
+              onClick={() => router.push(`/my-vote/${vote.id}`)}
             />
           ))
         )}
