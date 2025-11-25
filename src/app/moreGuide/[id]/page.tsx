@@ -115,12 +115,12 @@ const MoreGuidePage = () => {
           try {
             const next = await toggleBookmark(guideId);
             if (typeof next === "boolean") {
-              setBookmarked(next);
               if (next) {
                 await incrementGuideLike(guideId);
               } else {
                 await decrementGuideLike(guideId);
               }
+              setBookmarked(next);
             }
           } catch (error) {
           }

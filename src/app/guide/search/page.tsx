@@ -5,26 +5,19 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { useState } from "react";
 import { useGuides } from "@/hooks/useGuides";
-import { useRouter } from "next/navigation";
 import GuideComponent from "@/components/guide/GuideComponent";
 
 const GuideSearch = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [resultCount, setResultCount] = useState(0);
   const { guides, loading, error } = useGuides();
   void error;
-  const router = useRouter();
-
-  const filteredGuides =
-    searchQuery.trim() === ""
-      ? []
-      : guides.filter((guide) =>
-          guide.title.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
+  void guides;
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
-    setSearchQuery(searchValue.trim());
+    setSearchQuery(value.trim());
   };
 
   const handleSearchSubmit = () => {
@@ -77,10 +70,11 @@ const GuideSearch = () => {
       <GuideContent>
         {searchQuery.trim() === "" ? (
           <IsNotFound>검색어를 입력해주세요.</IsNotFound>
-        ) : filteredGuides.length === 0 ? (
-          <IsNotFound>검색 결과가 없습니다.</IsNotFound>
         ) : (
-          <GuideComponent searchQuery={searchQuery} />
+          <GuideComponent
+            searchQuery={searchQuery}
+            onResultCountChange={setResultCount}
+          />
         )}
       </GuideContent>
     </GuideLayout>
