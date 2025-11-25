@@ -7,8 +7,7 @@ import Header from "@/components/common/header";
 import NavigationBar from "@/components/common/navigationbar";
 import PopularGuide from "@/components/main/PopularGuide";
 import FastRoad from "@/components/main/FastRoad";
-import Vs from "@/../public/svg/Vs";
-import Image from "next/image";
+import { Vs, Main } from "../../../public/svg";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useGuides } from "@/hooks/useGuides";
@@ -50,14 +49,7 @@ export default function MainPage() {
 
       <MainSection>
         <HeroCard>
-          <HeroBackgroundImage
-            src="/svg/images/Main.png"
-            alt="Main background"
-            fill
-            priority
-            sizes="100vw"
-          />
-          <HeroGradient />
+          <Main preserveAspectRatio="xMidYMid slice" />
           <HeroTitle>오늘의 투표</HeroTitle>
           <HeroHighlight>
             <HeroLeftText>{voteOptions[0]?.content || ""}</HeroLeftText>
@@ -110,28 +102,16 @@ const MainSection = styled.section`
 
 const HeroCard = styled.div`
   position: relative;
-  min-height: 192px;
+  height: 192px;
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
-  background-color: ${color.white};
-`;
 
-const HeroBackgroundImage = styled(Image)`
-  object-fit: cover;
-  object-position: center;
-  z-index: 0;
-`;
-
-const HeroGradient = styled.div`
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(75, 32, 0, 0) 2.523%,
-    rgba(114, 51, 6, 0.2) 32.047%
-  );
-  z-index: 0;
+  svg {
+    display: block;
+    width: 100%;
+    height: 192px;
+  }
 `;
 
 const HeroTitle = styled.p`
@@ -159,7 +139,7 @@ const HeroHighlight = styled.div`
   max-width: 310px;
   min-height: 94px;
   border-radius: 12px;
-  border: none;
+  border: 1px solid rgba(249, 249, 249, 0.45);
   background:
     linear-gradient(
       -75deg,
