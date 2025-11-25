@@ -6,6 +6,7 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import { useMyVotes } from "@/hooks/useVotes";
 import VoteLists from "@/components/my/my-votes/VoteLists";
+import VoteBlock from "@/components/vote/voteblock";
 
 const MyVotesPage = () => {
   const router = useRouter();
@@ -41,12 +42,12 @@ const MyVotesPage = () => {
           <IsNotFound>만든 투표가 없습니다.</IsNotFound>
         ) : (
           myVotes.map((vote) => (
-            <VoteLists
-              key={vote.id}
-              category={vote.category}
-              title={vote.title}
-              viewCount={vote.totalResponses || 0}
-              finishDate={vote.finishedAt}
+              <VoteBlock
+                  key={vote.id}
+                  category={vote.category}
+                  title={vote.title}
+                  viewCount={vote.totalResponses}
+                  finishDate={vote.finishedAt}
               onClick={() => router.push(`/my-vote/${vote.id}`)}
             />
           ))
