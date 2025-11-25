@@ -35,14 +35,13 @@ const SavedGuidePage = () => {
   };
 
   const handleClose = () => {
-    router.push("/guide");
+    router.push("/my");
   };
 
   return (
     <StyledSavedGuidePage>
-      <Header types="close" text="저장한 가이드" onClose={handleClose} />
+        <Header types="close" text="저장한가이드" onClose={handleClose} />
       <SavedGuidePageContent>
-        {loading && <LoadingMessage>불러오는 중...</LoadingMessage>}
         {!loading && error && (
           <NoResultsMessage>가이드를 불러올 수 없습니다.</NoResultsMessage>
         )}
@@ -79,6 +78,7 @@ const StyledSavedGuidePage = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+    background-color: ${color.white};
   padding-top: 80px;
 `;
 
