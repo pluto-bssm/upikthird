@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import SelectButton from "@/packages/ui/src/button/SelectButton";
 import TwoOptionModal from "@/components/modal/TwoOptionModal";
 import AccentModal from "@/components/modal/AccentModal";
-import { useRouter,usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Completevote } from "../../../../../public/svg/svg";
 import { useReportQuestion } from "@/hooks/useReportQuestion";
 

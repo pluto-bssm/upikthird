@@ -158,6 +158,7 @@ const GuideBox = styled.div`
   flex-direction: column;
   gap: 24px;
   width: 100%;
+  background-color: ${color.white};
 `;
 
 const Section = styled.section`
@@ -184,8 +185,6 @@ const GuideCard = styled.div`
   margin-bottom: 20px;
   cursor: pointer;
 `;
-
-
 
 const GuideText = styled.div`
   width: 90%;

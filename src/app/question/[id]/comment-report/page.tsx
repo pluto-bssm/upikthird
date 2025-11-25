@@ -7,6 +7,7 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import { CheckComplete } from "@/../public/svg/svg";
 import { reportComment } from "@/services/board/api";
+import font from "@/packages/design-system/src/font";
 
 type ReportReason =
   | "유해한 내용을 포함하고 있어요"
@@ -113,7 +114,7 @@ const CommentReportContent = () => {
           onClick={handleSubmit}
           disabled={!selectedReason || !detailText.trim() || isSubmitting}
         >
-          {isSubmitting ? "신고 중..." : "신고 접수하기"}
+          신고 접수하기
         </SubmitButton>
       </Container>
 
@@ -124,18 +125,18 @@ const CommentReportContent = () => {
             <ModalContent>
               <ModalTextContainer>
                 <ModalTitle>
-                  신고 작성을 <CancelText>취소</CancelText>하시겠어요?
+                  신고를 <CancelText>취소</CancelText>하시겠어요?
                 </ModalTitle>
                 <ModalSubtitle>
-                  이전으로 돌아가며 작성 내용이 저장되지 않습니다.
+                  지금까지 작성한 내용은 저장되지 않습니다.
                 </ModalSubtitle>
               </ModalTextContainer>
               <ModalButtonContainer>
                 <ModalCancelButton onClick={handleCancelModal}>
-                  계속 작성
+                  취소
                 </ModalCancelButton>
                 <ModalConfirmButton onClick={handleConfirmCancel}>
-                  나가기
+                  확인
                 </ModalConfirmButton>
               </ModalButtonContainer>
             </ModalContent>
@@ -148,14 +149,14 @@ const CommentReportContent = () => {
           <ModalOverlay onClick={handleCompleteClose} />
           <ModalContainer>
             <CompleteModalContent>
-              <CheckComplete />
+              <CheckComplete width="83" height="83" />
               <CompleteModalTextContainer>
                 <CompleteModalTitle>
-                  신고가 <SuccessText>접수</SuccessText>되었습니다!
+                  신고가 <SuccessText>성공적</SuccessText>으로 접수됐어요
                 </CompleteModalTitle>
                 <CompleteModalSubtitle>
-                  <p>신고 내용을 검토하여</p>
-                  <p>빠른 시일 내 조치하겠습니다.</p>
+                  <p>지속적으로 정상적인 투표를 신고하는 경우</p>
+                  <p>제재의 대상이 될 수 있어요</p>
                 </CompleteModalSubtitle>
               </CompleteModalTextContainer>
               <CompleteModalButton onClick={handleCompleteClose}>
@@ -214,18 +215,14 @@ const Section = styled.div`
 `;
 
 const SubTitle = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.H3}
   color: ${color.gray700};
   line-height: 1;
   margin: 0;
 `;
 
 const Title = styled.h1`
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+  ${font.D2}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -245,28 +242,22 @@ const LabelWithRequired = styled.div`
 `;
 
 const Label = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  ${font.H2}
   color: ${color.gray700};
-  line-height: 1;
   margin: 0;
 `;
 
 const Required = styled.span`
   font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: #e71d36;
-  line-height: 1;
+  ${font.P1}
   margin: 0;
+  color: ${color.accent};
 `;
 
 const ReasonList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0 20px;
 `;
 
 const ReasonButton = styled.button<{ isSelected: boolean }>`
@@ -275,13 +266,13 @@ const ReasonButton = styled.button<{ isSelected: boolean }>`
   border-radius: 16px;
   padding: 19px 20px;
   background-color: ${(props) =>
-    props.isSelected ? color.primary : color.white};
+    props.isSelected ? color.background : color.white};
   font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${(props) => (props.isSelected ? color.white : color.gray600)};
+  ${font.P1}
+  color: ${color.gray700};
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
 
   &:hover {
     opacity: 0.8;
@@ -300,8 +291,7 @@ const DetailTextarea = styled.textarea`
   border-radius: 16px;
   padding: 20px;
   min-height: 120px;
-  font-family: Pretendard, sans-serif;
-  font-size: 12px;
+  ${font.P1}
   font-weight: 400;
   color: ${color.black};
   background-color: ${color.white};
@@ -314,13 +304,10 @@ const DetailTextarea = styled.textarea`
 `;
 
 const CharCount = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.P1}
   color: ${color.gray300};
   line-height: 1;
   margin: 0;
-  padding: 0 20px;
 `;
 
 const SubmitButton = styled.button`
@@ -330,9 +317,7 @@ const SubmitButton = styled.button`
   border-radius: 100px;
   padding: 16px 20px;
   margin: 0 20px;
-  font-family: Pretendard, sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+  ${font.H1}
   color: ${color.white};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
@@ -408,19 +393,22 @@ const ModalSubtitle = styled.p`
 
 const ModalButtonContainer = styled.div`
   display: flex;
-  gap: 84px;
   align-items: center;
   justify-content: center;
   width: 100%;
+  gap: 8px;
+  height: 44px;
 `;
 
 const ModalCancelButton = styled.button`
   background-color: transparent;
   border: none;
+  width: 100%;
   padding: 0;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 10px;
+  height: 100%;
+  ${font.Btn2}
+  background-color: ${color.gray50};
   color: ${color.black};
   cursor: pointer;
   transition: all 0.2s ease;
@@ -435,13 +423,14 @@ const ModalCancelButton = styled.button`
 `;
 
 const ModalConfirmButton = styled.button`
-  background-color: transparent;
   border: none;
   padding: 0;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${color.primary};
+  border-radius: 10px;
+  height: 100%;
+  ${font.Btn2}
+  width: 100%;
+  background-color: ${color.primary};
+  color: ${color.white};
   cursor: pointer;
   transition: all 0.2s ease;
 

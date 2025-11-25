@@ -8,6 +8,7 @@ import NavigationBar from "@/components/common/navigationbar";
 import color from "@/packages/design-system/src/color";
 import { CheckComplete } from "@/../public/svg/svg";
 import { reportBoard } from "@/services/board/api";
+import font from "@/packages/design-system/src/font";
 
 type ReportReason =
   | "유해한 내용을 포함하고 있어요"
@@ -45,7 +46,6 @@ const ReportPage = () => {
       setShowCompleteModal(true);
     } catch (error) {
       alert("신고 접수에 실패했습니다. 다시 시도해주세요." + error);
-
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +114,7 @@ const ReportPage = () => {
           onClick={handleSubmit}
           disabled={!selectedReason || !detailText.trim() || isSubmitting}
         >
-          {isSubmitting ? "신고 중..." : "신고 접수하기"}
+          신고 접수하기
         </SubmitButton>
       </Container>
 
@@ -178,7 +178,7 @@ const StyledPage = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  background-color: ${color.white};
+  background-color: #fcfcfc;
   min-height: 100vh;
   padding-top: 80px;
   padding-bottom: 80px;
@@ -203,18 +203,14 @@ const Section = styled.div`
 `;
 
 const SubTitle = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.H3}
   color: ${color.gray700};
   line-height: 1;
   margin: 0;
 `;
 
 const Title = styled.h1`
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+  ${font.D2}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -234,28 +230,22 @@ const LabelWithRequired = styled.div`
 `;
 
 const Label = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  ${font.H2}
   color: ${color.gray700};
-  line-height: 1;
   margin: 0;
 `;
 
 const Required = styled.span`
   font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: #e71d36;
-  line-height: 1;
+  ${font.P1}
   margin: 0;
+  color: ${color.accent};
 `;
 
 const ReasonList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0 20px;
 `;
 
 const ReasonButton = styled.button<{ isSelected: boolean }>`
@@ -264,14 +254,13 @@ const ReasonButton = styled.button<{ isSelected: boolean }>`
   border-radius: 16px;
   padding: 19px 20px;
   background-color: ${(props) =>
-    props.isSelected ? color.primary : color.white};
+    props.isSelected ? color.background : color.white};
   font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${(props) => (props.isSelected ? color.white : color.gray600)};
+  ${font.P1}
+  color: ${color.gray700};
   cursor: pointer;
   transition: all 0.2s ease;
-
+  width: 100%;
   &:hover {
     opacity: 0.8;
   }
@@ -289,8 +278,7 @@ const DetailTextarea = styled.textarea`
   border-radius: 16px;
   padding: 20px;
   min-height: 120px;
-  font-family: Pretendard, sans-serif;
-  font-size: 12px;
+  ${font.P1}
   font-weight: 400;
   color: ${color.black};
   background-color: ${color.white};
@@ -303,13 +291,10 @@ const DetailTextarea = styled.textarea`
 `;
 
 const CharCount = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.P1}
   color: ${color.gray300};
   line-height: 1;
   margin: 0;
-  padding: 0 20px;
 `;
 
 const SubmitButton = styled.button`
@@ -319,9 +304,7 @@ const SubmitButton = styled.button`
   border-radius: 100px;
   padding: 16px 20px;
   margin: 0 20px;
-  font-family: Pretendard, sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+  ${font.H1}
   color: ${color.white};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
@@ -397,19 +380,22 @@ const ModalSubtitle = styled.p`
 
 const ModalButtonContainer = styled.div`
   display: flex;
-  gap: 84px;
   align-items: center;
   justify-content: center;
   width: 100%;
+  gap: 8px;
+  height: 44px;
 `;
 
 const ModalCancelButton = styled.button`
   background-color: transparent;
   border: none;
+  width: 100%;
   padding: 0;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 10px;
+  height: 100%;
+  ${font.Btn2}
+  background-color: ${color.gray50};
   color: ${color.black};
   cursor: pointer;
   transition: all 0.2s ease;
@@ -424,13 +410,14 @@ const ModalCancelButton = styled.button`
 `;
 
 const ModalConfirmButton = styled.button`
-  background-color: transparent;
   border: none;
   padding: 0;
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: ${color.primary};
+  border-radius: 10px;
+  height: 100%;
+  ${font.Btn2}
+  width: 100%;
+  background-color: ${color.primary};
+  color: ${color.white};
   cursor: pointer;
   transition: all 0.2s ease;
 

@@ -21,6 +21,6 @@ export const QuestionList = ({ questions }: QuestionListProps) => {
 const StyledQuestionList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  width: 100%;
+  gap: 12px;
+  width: 95%;
 `;

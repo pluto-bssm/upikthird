@@ -6,7 +6,12 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useSavedGuides } from "@/hooks/useSaved";
-import { Bookmark, School, Domitorys, Humors } from "../../../../../public/svg/svg";
+import {
+  Bookmark,
+  School,
+  Domitorys,
+  Humors,
+} from "../../../../../public/svg/svg";
 
 const GuideBlockImage = ({ category }: { category: string }) => {
   switch (category) {

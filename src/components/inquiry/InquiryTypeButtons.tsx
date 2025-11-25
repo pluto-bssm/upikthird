@@ -2,6 +2,7 @@
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
 
 type InquiryType = "오류" | "건의사항" | "신고" | "기타";
 
@@ -49,9 +50,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  ${font.Btn1}
   color: ${color.gray600};
   margin: 0;
 `;

@@ -6,6 +6,7 @@ import { z } from "zod";
 import color from "@/packages/design-system/src/color";
 import { InquiryTypeButtons, type InquiryType } from "./InquiryTypeButtons";
 import { PrivacySection } from "./PrivacySection";
+import font from "@/packages/design-system/src/font";
 
 const inquirySchema = z
   .object({
@@ -201,18 +202,14 @@ const TitleSection = styled.div`
 `;
 
 const MainTitle = styled.h2`
-  font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+  ${font.D2}
   color: ${color.black};
   margin: 0;
   line-height: 1;
 `;
 
 const Subtitle = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.H3}
   color: ${color.gray600};
   margin: 0;
   line-height: 1;
@@ -225,9 +222,7 @@ const Section = styled.div`
 `;
 
 const Label = styled.label`
-  font-family: Pretendard, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  ${font.H2}
   color: ${color.gray600};
   margin: 0;
 `;
@@ -243,9 +238,7 @@ const ContentTextarea = styled.textarea<{ hasError?: boolean }>`
     ${(props) => (props.hasError ? color.accent : color.gray100)};
   border-radius: 16px;
   background-color: ${color.white};
-  font-family: Pretendard, sans-serif;
-  font-size: 12px;
-  font-weight: 400;
+  ${font.P1}
   color: ${color.black};
   resize: none;
   outline: none;
@@ -260,9 +253,7 @@ const ContentTextarea = styled.textarea<{ hasError?: boolean }>`
 `;
 
 const CharacterCount = styled.p<{ hasError?: boolean }>`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.P1}
   color: ${(props) => (props.hasError ? color.accent : color.gray300)};
   margin: 0;
 `;
@@ -294,9 +285,7 @@ const NoticeSection = styled.div`
 `;
 
 const NoticeText = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.P1}
   color: ${color.gray300};
   margin: 0;
   line-height: 1.4;
@@ -314,9 +303,7 @@ const SubmitButton = styled.button<{ isEnabled: boolean }>`
   background-color: ${(props) =>
     props.isEnabled ? color.primary : color.gray200};
   color: ${color.white};
-  font-family: Pretendard, sans-serif;
-  font-size: 20px;
-  font-weight: 700;
+  ${font.H2}
   cursor: ${(props) => (props.isEnabled ? "pointer" : "not-allowed")};
   transition: all 0.2s;
 

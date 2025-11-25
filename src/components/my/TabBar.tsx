@@ -2,6 +2,7 @@
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
 
 interface TabBarProps {
   savedGuideCount: number;
@@ -63,9 +64,7 @@ const TabButton = styled.button`
 `;
 
 const TabButtonText = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.H3}
   color: ${color.black};
   margin: 0;
   line-height: 1;

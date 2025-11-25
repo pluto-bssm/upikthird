@@ -125,7 +125,7 @@ const QuestionDetailPage = () => {
                   {new Date(question.createdAt).toLocaleString("ko-KR")}
                 </MetaItem>
                 <BookmarkBox>
-                  <Bookmark width={14} />
+                  <Bookmark width={20} />
                   <BookmarkText>{question.likes}</BookmarkText>
                 </BookmarkBox>
               </MetaInfo>
@@ -165,22 +165,18 @@ const QuestionDetailPage = () => {
                       <FooterItem>
                         {new Date(comment.createdAt).toLocaleString("ko-KR")}
                       </FooterItem>
-                      <FooterInnerItem>
-                        <FooterReportItem
-                          onClick={() =>
-                            router.push(
-                              `/question/${boardId}/comment-report?commentId=${comment.id}`,
-                            )
-                          }
-                        >
-                          신고하기
-                        </FooterReportItem>
-                        <FooterItem
-                          onClick={() => handleReplyClick(comment.id)}
-                        >
-                          답글쓰기
-                        </FooterItem>
-                      </FooterInnerItem>
+                      <FooterReportItem
+                        onClick={() =>
+                          router.push(
+                            `/question/${boardId}/comment-report?commentId=${comment.id}`,
+                          )
+                        }
+                      >
+                        신고하기
+                      </FooterReportItem>
+                      <FooterItem onClick={() => handleReplyClick(comment.id)}>
+                        답글쓰기
+                      </FooterItem>
                     </CommentFooter>
                   </CommentBox>
                 </CommentItemWrapper>
@@ -299,8 +295,7 @@ const Section = styled.div`
 
 const Title = styled.h1`
   font-family: Pretendard, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+  ${font.D2}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -316,8 +311,7 @@ const MetaInfo = styled.div`
 
 const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.P1}
   color: ${color.black};
   white-space: nowrap;
 
@@ -333,14 +327,13 @@ const MetaItem = styled.span`
 const BookmarkBox = styled.div`
   display: flex;
   gap: 2px;
+  justify-content: center;
   align-items: center;
-  margin-left: 6px;
 `;
 
 const BookmarkText = styled.span`
   font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.P1}
   color: ${color.black};
 `;
 
@@ -375,8 +368,7 @@ const CommentsSection = styled.div`
 `;
 
 const CommentCount = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
+  ${font.H2}
   font-weight: 400;
   color: ${color.black};
   line-height: 1;
@@ -409,15 +401,13 @@ const CommentHeader = styled.div`
 
 const AuthorName = styled.p`
   font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  ${font.H2}
   color: ${color.black};
-  line-height: 1;
   margin: 0;
 `;
 
 const CommentContent = styled.p`
-  ${font.P1}
+  ${font.H2}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -429,25 +419,14 @@ const CommentFooter = styled.div`
   display: flex;
   gap: 6px;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const FooterItem = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
+  ${font.P2}
   color: ${color.black};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
-
-  &:not(:last-child)::after {
-    content: "";
-    width: 1px;
-    height: 10px;
-    background-color: ${color.gray300};
-    margin-left: 6px;
-  }
 `;
 
 const CommentInputBox = styled.div`
@@ -463,8 +442,7 @@ const CommentInputField = styled.textarea`
   background: none;
   border: none;
   font-family: Pretendard, sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+  ${font.H2}
   color: ${color.black};
   outline: none;
   resize: none;
@@ -476,15 +454,12 @@ const CommentInputField = styled.textarea`
 `;
 
 const FooterReportItem = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
+  ${font.P2}
   color: ${color.black};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.2s ease;
 
   &:hover {
     opacity: 0.8;
@@ -494,7 +469,6 @@ const FooterReportItem = styled.p`
     content: "";
     width: 1px;
     height: 10px;
-    background-color: ${color.gray300};
     margin-right: 6px;
     display: inline-block;
   }
@@ -503,7 +477,6 @@ const FooterReportItem = styled.p`
     content: "";
     width: 1px;
     height: 10px;
-    background-color: ${color.gray300};
     margin-left: 6px;
     display: inline-block;
   }
