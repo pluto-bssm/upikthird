@@ -117,13 +117,12 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
             />
           ))}
         </VoteContent>
-
       </VoteBlock>
 
       <Button
-          text={responseLoading ? "투표 중..." : "투표 완료하기"}
-          onCkick={handleVoteSubmit}
-        />
+        text={responseLoading ? "투표 중..." : "투표 완료하기"}
+        onCkick={handleVoteSubmit}
+      />
     </DesVoteLayout>
   );
 };

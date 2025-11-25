@@ -35,7 +35,7 @@ const Detail = () => {
     customDays,
     participantThreshold,
   } = useVoteStore();
-  const {reset} = useBottomSheetStore();
+  const { reset } = useBottomSheetStore();
   const maxPossibleBallots = Latterlist.length;
   const router = useRouter();
   const path = usePathname();
@@ -194,7 +194,6 @@ const Detail = () => {
         )}
       </DetailSection>
 
-
       {IsOpen_1 && (
         <TwoOptionModal
           title="투표 제작을 취소하시겠어요?"
@@ -208,7 +207,9 @@ const Detail = () => {
         <IconTwoOptionModal
           icon="exclamation"
           title="제출하시겠어요?"
-          subtitle={'투표 질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 경우\n 투표가 사전고지 없이 삭제되거나, 불이익을 받을 수 있습니다.'}
+          subtitle={
+            "투표 질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 경우\n 투표가 사전고지 없이 삭제되거나, 불이익을 받을 수 있습니다."
+          }
           primaryButtonText="제출하기"
           secondaryButtonText="투표 수정하기"
           onPrimaryClick={handleVoteSubmit}
@@ -243,7 +244,6 @@ const Detail = () => {
         />
       )}
 
-
       <Button
         icon={<Plus width={24} height={24} />}
         onCkick={() => {
@@ -251,7 +251,6 @@ const Detail = () => {
         }}
         text="투표 제작하기"
       />
-
     </DetailLayout>
   );
 };
@@ -268,7 +267,6 @@ const DetailLayout = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10vh;
-
 `;
 
 const DetailSection = styled.div`

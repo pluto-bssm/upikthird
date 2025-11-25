@@ -96,15 +96,15 @@ const OptionBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 90%;
-  gap : 12px;
+  gap: 12px;
 `;
 const CancelOption = styled.p`
   ${font.Btn2};
   color: ${color.black};
   background-color: ${color.gray200};
-  width : 90%;
+  width: 90%;
   text-align: center;
-  padding : 16px 0px;
+  padding: 16px 0px;
   border-radius: 12px;
 `;
 
@@ -112,8 +112,8 @@ const PasslOption = styled.p`
   ${font.Btn2};
   color: ${color.white};
   background-color: ${color.primary};
-  width : 90%;
+  width: 90%;
   text-align: center;
-  padding : 16px 0px;
+  padding: 16px 0px;
   border-radius: 12px;
 `;

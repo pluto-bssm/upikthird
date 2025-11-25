@@ -19,7 +19,7 @@ export const useAiStore = create<State>((set) => ({
   setMaxUsageCount: (m: number) => set({ maxUsageCount: m }),
   setRemainingCount: (m: number) => set({ remainingCount: m }),
   setUsageCount: (m: number) => set({ usageCount: m }),
-  
+
   resetUseAiStore: () =>
     set({
       maxUsageCount: 0,

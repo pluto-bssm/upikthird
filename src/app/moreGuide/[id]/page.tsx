@@ -42,14 +42,18 @@ const MoreGuidePage = () => {
   } | null>(null);
   const [bookmarked, setBookmarked] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [bookmarkLoading, setBookmarkLoading] = React.useState(true);
 
   const fetchBookmarkStatus = React.useCallback(async () => {
     if (!guideId) return;
     try {
+      setBookmarkLoading(true);
       const isBookmarked = await isGuideBookmarked(guideId);
       setBookmarked(isBookmarked);
     } catch (error) {
       setBookmarked(false);
+    } finally {
+      setBookmarkLoading(false);
     }
   }, [guideId]);
 
@@ -122,8 +126,7 @@ const MoreGuidePage = () => {
                 await decrementGuideLike(guideId);
               }
             }
-          } catch (error) {
-          }
+          } catch (error) {}
         }}
       />
 

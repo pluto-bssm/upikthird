@@ -184,8 +184,6 @@ const GuideCard = styled.div`
   cursor: pointer;
 `;
 
-
-
 const GuideText = styled.div`
   width: 90%;
   display: flex;

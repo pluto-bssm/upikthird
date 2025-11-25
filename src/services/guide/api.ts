@@ -9,7 +9,11 @@ import {
   TOGGLE_BOOKMARK,
   GET_BOOKMARKS,
 } from "@/services/guide/queries";
-import { CREATE_REVOTE, INCREMENT_GUIDE_LIKE, DECREMENT_GUIDE_LIKE } from "@/services/guide/mutations";
+import {
+  CREATE_REVOTE,
+  INCREMENT_GUIDE_LIKE,
+  DECREMENT_GUIDE_LIKE,
+} from "@/services/guide/mutations";
 import { authorization } from "@/apis/token";
 import type {
   Guide,
