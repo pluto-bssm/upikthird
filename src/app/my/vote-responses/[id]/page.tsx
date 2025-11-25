@@ -230,6 +230,6 @@ const DateTimeLabel = styled.p`
 `;
 
 const DateTimeValue = styled.p`
-  ${font.D3};
+  ${font.H2};
   color: ${color.black};
 `;
