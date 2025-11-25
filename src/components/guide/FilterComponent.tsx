@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import styled from "@emotion/styled";
-import BottomSheetSelector from "../common/BottomSheet";
+import BottomSheetSelector_guide from "../common/BottomSheetguide";
 
 type Props = {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function FilterComponent({
 
   return (
     <Container>
-      <BottomSheetSelector
+      <BottomSheetSelector_guide
         title="가이드 정렬하기"
         selectedValue={
           selectedValue === "가이드 제작일 기준" ? "DATE" : "SAVED"
