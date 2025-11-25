@@ -26,17 +26,17 @@ export const QuestionItem = ({ question }: QuestionItemProps) => {
     <StyledLink href={`/question/${question.id}`}>
       <StyledQuestionItem>
         <QuestionContent>
-          <QuestionTitle>Q.{question.title}</QuestionTitle>
+          <QuestionTitle>Q. {question.title}</QuestionTitle>
           <QuestionInnerContent>{question.content}</QuestionInnerContent>
           <QuestionMeta>
             <MetaItem>{formatDate(question.createdAt)}</MetaItem>
             <UnderIconWrapper>
               <UnderCommentWrapper>
-                <Comments />
+                <Comments width={20} />
                 <MetaItem>{question.commentCount}</MetaItem>
               </UnderCommentWrapper>
               <UnderCommentWrapper>
-                <Bookmark width={14} />
+                <Bookmark width={20} />
                 <MetaItem>{question.bookmarkCount}</MetaItem>
               </UnderCommentWrapper>
             </UnderIconWrapper>
@@ -65,11 +65,11 @@ const StyledQuestionItem = styled.div`
 const QuestionContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 8px;
   flex: 1;
 `;
 const QuestionInnerContent = styled.div`
-  ${font.P4}
+  ${font.P2}
   color: ${color.black};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,7 +79,6 @@ const QuestionInnerContent = styled.div`
 
 const QuestionTitle = styled.p`
   ${font.H2}
-  font-weight: 600;
   color: ${color.black};
   line-height: 1;
   word-break: break-word;
@@ -98,7 +97,7 @@ const QuestionMeta = styled.div`
 
 const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
-  font-size: 10px;
+  ${font.P4}
   font-weight: 400;
   color: ${color.black};
   white-space: nowrap;

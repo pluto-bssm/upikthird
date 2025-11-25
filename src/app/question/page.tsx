@@ -32,7 +32,7 @@ const QuestionPage = () => {
       <Header types="question" text="질문 게시판" />
       <QuestionPageContent>
         {loading ? (
-          <LoadingText>로딩 중...</LoadingText>
+          <LoadingText> </LoadingText>
         ) : (
           <QuestionList questions={questions} />
         )}
@@ -48,10 +48,9 @@ export default QuestionPage;
 
 const StyledQuestionPage = styled.div`
   width: 100%;
-  background-color: #fff;
+  background-color: #fcfcfc;
   max-width: 600px;
-  margin: 0 auto;
-  background-color: ${color.white};
+  margin: 20px;
   min-height: 100vh;
   padding-top: 80px;
 `;
@@ -59,6 +58,7 @@ const StyledQuestionPage = styled.div`
 const QuestionPageContent = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
 `;
 
