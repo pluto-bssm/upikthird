@@ -8,8 +8,7 @@ import ProfileBox from "@/components/my/ProfileBox";
 import TabBar from "@/components/my/TabBar";
 import MenuSection, { type MenuItem } from "@/components/my/MenuSection";
 import { useMyUser } from "@/hooks/useAccount";
-import { TOKEN } from "@/constants/upik";
-import Footer from "@/components/common/footer";
+import NavigationBar from "@/components/common/navigationbar";
 
 const MyPage = () => {
   const router = useRouter();
@@ -123,7 +122,7 @@ const MyPage = () => {
           <MenuSection items={menuItems} onItemClick={handleMenuItemClick} />
         </MenuSectionWrapper>
       </MyPageContent>
-        <Footer/>
+        <NavigationBar />
     </StyledMyPage>
   );
 };
