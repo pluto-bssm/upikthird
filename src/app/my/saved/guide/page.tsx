@@ -6,19 +6,18 @@ import Header from "@/components/common/header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useSavedGuides } from "@/hooks/useSaved";
-import { Bookmark } from "../../../../../public/svg/svg";
-import Image from "next/image";
+import { Bookmark, School, Domitorys, Humors } from "../../../../../public/svg/svg";
 
-const getThumbnailImage = (category: string) => {
+const GuideBlockImage = ({ category }: { category: string }) => {
   switch (category) {
     case "학교생활":
-      return "/svg/images/School.png";
-    case "유머":
-      return "/svg/images/Humors.png";
+      return <School width="100%" height="100%" />;
     case "기숙사":
-      return "/svg/images/MakeSchool.png";
+      return <Domitorys width="100%" height="100%" />;
+    case "유머":
+      return <Humors width="100%" height="100%" />;
     default:
-      return "/svg/images/School.png";
+      return <School width="100%" height="100%" />;
   }
 };
 
@@ -31,7 +30,7 @@ const SavedGuidePage = () => {
   };
 
   const handleClose = () => {
-    router.back();
+    router.push("/guide");
   };
 
   return (
@@ -45,20 +44,17 @@ const SavedGuidePage = () => {
         {!loading && !error && boardGuides && boardGuides.length > 0
           ? boardGuides.map((guide, index) => (
               <GuideCard key={index} onClick={() => handleGuideClick(guide.id)}>
-                <Thumnail>
-                  <Image
-                    src={getThumbnailImage(guide.category ?? "전체")}
-                    alt={guide.category ?? "전체"}
-                    width={20}
-                    height={20}
-                  />
-                </Thumnail>
+                <GuideBlockImage category={guide.category ?? "전체"} />
                 <GuideText>
                   <GuideTitle>{guide.title}</GuideTitle>
                   <OtherInfo>
-                    <GuideTag>{guide.category}</GuideTag>
-                    <Bookmark width="12px" height="12px" />
-                    <MarkCount>{guide.like ?? 0}</MarkCount>
+                    <GuideInfoUpperBox>
+                      <GuideTag>{guide.category}</GuideTag>
+                      <GuideMarkBox>
+                        <Bookmark width="12px" height="12px" />
+                        <MarkCount>{guide.like ?? 0}</MarkCount>
+                      </GuideMarkBox>
+                    </GuideInfoUpperBox>
                   </OtherInfo>
                 </GuideText>
               </GuideCard>
@@ -92,63 +88,60 @@ const SavedGuidePageContent = styled.div`
 `;
 
 const GuideCard = styled.div`
+  width: 100%;
+  border: 1px solid ${color.gray50};
+  border-radius: 12px;
+  height: 12vh;
   display: flex;
   align-items: center;
-  gap: 14px;
-  height: 69px;
-  border: 1px solid ${color.gray50};
-  border-radius: 8px;
-  background: ${color.white};
-  padding: 0 16px;
-  box-shadow:
-    -4px -4px 10px 0 rgba(0, 0, 0, 0.03),
-    4px 4px 10px 0 rgba(0, 0, 0, 0.03);
+  gap: 4%;
+  padding: 0px 10px 0px 10px;
+  margin-bottom: 20px;
   cursor: pointer;
 `;
 
-const Thumnail = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -12px;
-  margin-left: 12px;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-`;
-
 const GuideText = styled.div`
+  width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  margin-left: 16px;
+  justify-content: center;
+  gap: 6px;
 `;
 
-const GuideTitle = styled.div`
+const GuideTitle = styled.p`
+  ${font.H1};
   color: ${color.black};
-  font-family: ${font.D3};
 `;
 
 const OtherInfo = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
+  flex-direction: row;
+  width: 95%;
 `;
 
-const GuideTag = styled.div`
-  color: ${color.gray600};
-  font-family: ${font.P2};
+const GuideInfoUpperBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 `;
 
-const MarkCount = styled.div`
+const GuideMarkBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const GuideTag = styled.p`
+  ${font.P2};
   color: ${color.gray600};
-  font-family: ${font.P2};
-  margin-left: -4px;
+`;
+
+const MarkCount = styled.p`
+  ${font.P2};
+  color: ${color.gray600};
 `;
 
 const NoResultsMessage = styled.div`

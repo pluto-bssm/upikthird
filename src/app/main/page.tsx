@@ -59,7 +59,7 @@ export default function MainPage() {
             <HeroRightText>
               <p>
                 {todayVote
-                  ? voteOptions[0]?.content
+                  ? voteOptions[1]?.content
                   : ""}
               </p>
             </HeroRightText>
