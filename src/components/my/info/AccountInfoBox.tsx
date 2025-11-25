@@ -2,6 +2,7 @@
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
 
 type AccountInfoBoxProps = {
   name: string;
@@ -57,8 +58,7 @@ const InfoGroup = styled.div`
 `;
 
 const InfoLabel = styled.p`
-  font-size: 10px;
-  font-weight: 600;
+    ${font.P3}
   color: ${color.gray500};
   margin: 0;
   padding: 0;
@@ -66,8 +66,7 @@ const InfoLabel = styled.p`
 `;
 
 const InfoValue = styled.p`
-  font-size: 13px;
-  font-weight: 400;
+    ${font.P1}
   color: ${color.black};
   margin: 0;
   padding: 0;

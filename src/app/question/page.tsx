@@ -8,6 +8,7 @@ import { QuestionList } from "@/components/question/QuestionList";
 import color from "@/packages/design-system/src/color";
 import { useQuestions } from "@/hooks/useBoard";
 import VoteMakeButton from "@/components/vote/votemakebutton";
+import Footer from "@/components/common/footer";
 
 const QuestionPage = () => {
   const router = useRouter();
@@ -40,6 +41,7 @@ const QuestionPage = () => {
       <FloatingButton>
         <VoteMakeButton onClick={handleCreateQuestion}/>
       </FloatingButton>
+        <Footer/>
     </StyledQuestionPage>
   );
 };
