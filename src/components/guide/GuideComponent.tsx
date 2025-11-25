@@ -158,6 +158,7 @@ const GuideBox = styled.div`
   flex-direction: column;
   gap: 24px;
   width: 100%;
+  background-color: ${color.white};
 `;
 
 const Section = styled.section`

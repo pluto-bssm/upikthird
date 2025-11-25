@@ -276,7 +276,8 @@ const DetailSection = styled.div`
   justify-content: center;
   gap: 10px;
   flex-direction: column;
-  margin-bottom: 80px;
+  margin-top: 90px;
+  margin-bottom: 20px;
 `;
 
 const DetailInformation = styled.div`

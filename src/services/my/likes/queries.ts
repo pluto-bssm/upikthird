@@ -1,17 +1,22 @@
 export const GET_LIKED_QUESTIONS = `query MyQuery {
   board {
-    getQuestionList(page: 0, size: 100) {
+    getMyQuestions(page: 10, size: 10) {
       content {
-        id
-        createdAt
-        content
-        title
-        updatedAt
-        userId
-        userName
         userProfileImage
+        viewCount
+        userName
+        userId
+        updatedAt
+        title
         isBookmarked
+        createdAt
+        id
+        content
+        commentCount
+        bookmarkCount
       }
+      totalElements
+      totalPages
     }
   }
 }`;

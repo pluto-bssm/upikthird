@@ -26,7 +26,8 @@ const TailVote = () => {
       const voteId = newPath.split("/").filter(Boolean).pop() || "";
 
       if (!content.trim()) {
-        alert("응답을 작성해주세요!");
+        const result = createTailVote("선지가 마음에 들어서", voteId);
+        setIsOpen(true);
         return;
       }
 

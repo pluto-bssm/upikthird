@@ -1,14 +1,14 @@
 import { upik } from "@/apis";
 import type { VotePayload, CreateVoteResponseInput } from "@/types/graphql";
 import {
-  GET_MY_VOTES,
-  GET_VOTE_BY_ID,
-  GET_ALL_VOTES,
-  GET_VOTES,
-  TODAY_VOTE,
-  GET_CHECK_BADWORD,
-  AIOPTION_CREATE,
-  GET_AIOPTION_COUNT,
+    GET_VOTE_BY_ID,
+    GET_ALL_VOTES,
+    GET_VOTES,
+    TODAY_VOTE,
+    GET_CHECK_BADWORD,
+    AIOPTION_CREATE,
+    GET_AIOPTION_COUNT, 
+    GET_ALL_MY_VOTES,
 } from "./queries";
 import {
   CREATE_VOTE_RESPONSE,
@@ -29,7 +29,7 @@ export async function getMyVotes(): Promise<VotePayload[]> {
   const response = await upik.post(
     "",
     {
-      query: GET_MY_VOTES,
+      query: GET_ALL_MY_VOTES,
     } as GraphQLRequest,
     authorization(),
   );
