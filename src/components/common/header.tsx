@@ -157,11 +157,11 @@ const Header = ({
             </LeftItemBox>
 
             <RightItemBox>
-              <StyledBookmark
+              <Bookmark
                 width="25"
                 height="25"
                 onClick={onToggleBookmark}
-                bookmarked={bookmarked}
+                filled={bookmarked}
               />
             </RightItemBox>
           </HeaderItemBox>
@@ -352,14 +352,6 @@ const Header = ({
 };
 
 export default Header;
-
-const StyledBookmark = styled(Bookmark, {
-  shouldForwardProp: (prop) => prop !== "bookmarked",
-})<{ bookmarked?: boolean }>`
-  path {
-    fill: ${(p) => (p.bookmarked ? color.black : color.gray300)};
-  }
-`;
 
 const SearchInput = styled.input`
   width: 100%;

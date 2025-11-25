@@ -19,16 +19,16 @@ export type FastRoadCard = {
 
 export const FAST_ROAD_CARDS: FastRoadCard[] = [
   {
-    title: ["질문게시판", "바로가기"],
-    description: ["빠르게 답변을", "받고 싶다면"],
-    href: "/question",
-    Icon: Placard,
-  },
-  {
     title: ["투표 제작", "바로가기"],
     description: ["더 많은 사람들의", "의견이 궁금하다면"],
     href: "/makevote",
     Icon: VoteBox,
+  },
+  {
+    title: ["투표 참여", "바로가기"],
+    description: ["재학생이라면", "직접 투표에 참여하기"],
+    href: "/vote",
+    Icon: CheckBox,
   },
   {
     title: ["가이드", "보러가기"],
@@ -37,10 +37,10 @@ export const FAST_ROAD_CARDS: FastRoadCard[] = [
     Icon: BookBox,
   },
   {
-    title: ["투표 참여", "바로가기"],
-    description: ["재학생이라면", "직접 투표에 참여하기"],
-    href: "/vote",
-    Icon: CheckBox,
+    title: ["질문게시판", "바로가기"],
+    description: ["빠르게 답변을", "받고 싶다면"],
+    href: "/question",
+    Icon: Placard,
   },
   {
     title: ["유픽 소개", "바로가기"],

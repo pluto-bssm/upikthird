@@ -7,7 +7,8 @@ import {
     TODAY_VOTE,
     GET_CHECK_BADWORD,
     AIOPTION_CREATE,
-    GET_AIOPTION_COUNT, GET_ALL_MY_VOTES,
+    GET_AIOPTION_COUNT, 
+    GET_ALL_MY_VOTES,
 } from "./queries";
 import {
   CREATE_VOTE_RESPONSE,

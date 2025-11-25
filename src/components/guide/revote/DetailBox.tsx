@@ -42,9 +42,6 @@ const GuideCard = styled.textarea`
   border-radius: 16px;
   padding: 16px;
   background-color: ${color.white};
-  box-shadow:
-    -4px -4px 10px 0 rgba(0, 0, 0, 0.03),
-    4px 4px 10px 0 rgba(0, 0, 0, 0.03);
   resize: none;
   outline: none;
   ${font.P1};
@@ -55,6 +52,5 @@ const GuideCard = styled.textarea`
   }
   &:focus {
     border-color: ${color.gray200};
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
   }
 `;

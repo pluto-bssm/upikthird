@@ -170,7 +170,6 @@ const Section = styled.section`
 const SectionBody = styled.div<{ gap: string }>`
   display: flex;
   flex-direction: column;
-  gap: ${(props) => props.gap};
 `;
 
 const GuideCard = styled.div`

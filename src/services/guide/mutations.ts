@@ -17,3 +17,19 @@ mutation CreateRevote($input: CreateRevoteInput!) {
   }
 }
 `;
+
+export const INCREMENT_GUIDE_LIKE = `
+mutation IncrementGuideLike($id: ID!) {
+  guide {
+    incrementGuideLike(id: $id)
+  }
+}
+`;
+
+export const DECREMENT_GUIDE_LIKE = `
+mutation DecrementGuideLike($id: ID!) {
+  guide {
+    decrementGuideLike(id: $id)
+  }
+}
+`;
