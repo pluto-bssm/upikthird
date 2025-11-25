@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { Bookmark } from "../../../public/svg/svg";
-import Image from "next/image";
+import { Bookmark, School, Domitorys, Humors } from "../../../public/svg/svg";
 import * as guideApi from "@/services/guide/api";
 import type { Guide } from "@/types/api";
 
@@ -13,14 +12,16 @@ type GuideItem = Guide & {
   voteId?: string | null;
 };
 
-const getThumbnailImage = (category: string) => {
+const GuideBlockImage = ({ category }: { category: string }) => {
   switch (category) {
     case "학교생활":
-      return "/svg/images/School.png";
-    case "유머":
-      return "/svg/images/Humors.png";
+      return <School width="100%" height="100%" />;
     case "기숙사":
-      return "/svg/images/MakeSchool.png";
+      return <Domitorys width="100%" height="100%" />;
+    case "유머":
+      return <Humors width="100%" height="100%" />;
+    default:
+      return <School width="100%" height="100%" />;
   }
 };
 
@@ -122,22 +123,19 @@ const GuideComponent = ({
                   key={index}
                   onClick={() => handleGuideClick(guide.id)}
                 >
-                  <Thumnail>
-                    <Image
-                      src={getThumbnailImage(guide.category ?? "전체") ?? ""}
-                      alt={guide.category ?? "전체"}
-                      width={20}
-                      height={20}
-                    />
-                  </Thumnail>
+                  <GuideBlockImage category={guide.category ?? "전체"} />
                   <GuideText>
                     <GuideTitle>{guide.title}</GuideTitle>
                     <OtherInfo>
-                      <GuideTag>{guide.category}</GuideTag>
-                      <Bookmark width="12px" height="12px" />
-                      <MarkCount>
-                        {guide.like ?? guide.likeCount ?? 0}
-                      </MarkCount>
+                      <GuideInfoUpperBox>
+                        <GuideTag>{guide.category}</GuideTag>
+                        <GuideMarkBox>
+                          <Bookmark width="12px" height="12px" />
+                          <MarkCount>
+                            {guide.like ?? guide.likeCount ?? 0}
+                          </MarkCount>
+                        </GuideMarkBox>
+                      </GuideInfoUpperBox>
                       <BookmarkIcon />
                     </OtherInfo>
                   </GuideText>
@@ -175,47 +173,31 @@ const SectionBody = styled.div<{ gap: string }>`
 `;
 
 const GuideCard = styled.div`
+  width: 100%;
+  border: 1px solid ${color.gray50};
+  border-radius: 12px;
+  height: 12vh;
   display: flex;
   align-items: center;
-  gap: 14px;
-  height: 69px;
-  border: 1px solid ${color.gray50};
-  border-radius: 8px;
-  background: ${color.white};
-  padding: 0 16px;
-  box-shadow:
-    -4px -4px 10px 0 rgba(0, 0, 0, 0.03),
-    4px 4px 10px 0 rgba(0, 0, 0, 0.03);
+  gap: 4%;
+  padding: 0px 10px 0px 10px;
+  margin-bottom: 20px;
   cursor: pointer;
 `;
 
-const Thumnail = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -12px;
-  margin-left: 12px;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-`;
+
 
 const GuideText = styled.div`
+  width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  flex: 1;
-  min-width: 0;
-  margin-left: 16px;
+  justify-content: center;
+  gap: 6px;
 `;
 
-const GuideTitle = styled.div`
-  color: ${color.black};
+const GuideTitle = styled.p`
   ${font.H1};
+  color: ${color.black};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -223,25 +205,37 @@ const GuideTitle = styled.div`
 
 const OtherInfo = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
+  flex-direction: row;
+  width: 95%;
 `;
 
-const GuideTag = styled.div`
-  color: ${color.gray600};
+const GuideTag = styled.p`
   ${font.P2};
+  color: ${color.gray600};
+`;
+
+const GuideInfoUpperBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+`;
+
+const GuideMarkBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const BookmarkIcon = styled.span`
-  background-color: ${color.gray500};
   display: inline-block;
-  margin-left: 8px;
 `;
 
-const MarkCount = styled.div`
-  color: ${color.gray600};
+const MarkCount = styled.p`
   ${font.P2};
-  margin-left: -4px;
+  color: ${color.gray600};
 `;
 
 const NoResultsMessage = styled.div`
