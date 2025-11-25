@@ -40,11 +40,11 @@ const TabBarWrapper = styled.div`
   border-radius: 8px;
   width: 100%;
   overflow: hidden;
+    border-bottom: 8px solid ${color.gray50};
 `;
 
 const TabButton = styled.button`
   flex: 1;
-  height: 38px;
   border: none;
   border-right: 1px solid ${color.gray100};
   background-color: transparent;
@@ -52,7 +52,7 @@ const TabButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 16px 0;
 
   &:last-child {
     border-right: none;

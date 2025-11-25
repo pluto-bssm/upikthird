@@ -75,9 +75,7 @@ const MenuCategoryGroup = styled.div<{ isLast?: boolean }>`
 `;
 
 const MenuCategoryLabel = styled.p`
-  font-family: Pretendard, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
+    ${font.P3}
   color: ${color.gray500};
   margin: 0;
   padding: 0 20px;
@@ -90,6 +88,7 @@ const MenuListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+    margin: 16px 0;
 `;
 
 const MenuItemButton = styled.button`
@@ -113,7 +112,7 @@ const MenuItemButton = styled.button`
 `;
 
 const MenuItemLabel = styled.p`
-  ${font.H4}
+  ${font.P1}
   color: ${color.black};
   margin: 0;
   padding: 0;

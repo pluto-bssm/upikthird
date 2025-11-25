@@ -50,7 +50,6 @@ const ProfileBoxWrapper = styled.div`
   padding: 0;
   width: 100%;
   padding-bottom: 10px;
-  border-bottom: 8px solid ${color.gray50};
 `;
 
 const ProfileBoxContent = styled.div`
