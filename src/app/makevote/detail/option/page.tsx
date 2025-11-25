@@ -34,44 +34,81 @@ const Options = () => {
   void error;
 
   async function MakeAiBallot() {
-    if (remainingCount > 0) {
-      setIsOpen_1(false);
-      setIsOpen_2(true);
 
-      try {
-        const result = await generateAiOptions(ballots.length || 4, title);
-
-        const updatedQuota = await getAiQuota();
-        setMaxUsageCount(updatedQuota.maxUsageCount);
-        setRemainingCount(updatedQuota.remainingCount);
-        setUsageCount(updatedQuota.usageCount);
-
-        if (result && result.options.length > 0) {
-          setBallots(result.options);
-          setIsOpen_3(true);
-        }
-      } catch (err) {
-        void err;
-        alert("AI 선지 생성에 실패했습니다. 다시 시도해주세요.");
-      } finally {
-        setIsOpen_2(false);
-      }
-    } else {
+    if (remainingCount <= 0) {
       setIsOpen_1(false);
       setIsOpen_4(true);
+      return;
+    }
+
+    setIsOpen_1(false);
+    setIsOpen_2(true);
+
+    try {
+
+      const result = await generateAiOptions(ballots.length || 4, title);
+
+      try {
+        const updatedQuota = await getAiQuota();
+        if (updatedQuota) {
+          setMaxUsageCount(updatedQuota.maxUsageCount);
+          setRemainingCount(updatedQuota.remainingCount);
+          setUsageCount(updatedQuota.usageCount);
+        }
+      } catch (quotaError) {
+        console.warn("Quota 정보 업데이트 실패:", quotaError);
+      }
+
+      if (result && result.options && result.options.length > 0) {
+        setBallots(result.options);
+        setIsOpen_2(false);
+        setIsOpen_3(true);
+      } else {
+        console.error("AI가 생성한 선지 데이터가 올바르지 않습니다:", result);
+        throw new Error("AI가 선지를 생성하지 못했습니다.");
+      }
+    } 
+    catch (err) {
+      
+      console.error("AI 선지 생성에 실패했습니다:", err);
+      setIsOpen_2(false);
+      
+      const errorMessage = err instanceof Error 
+        ? err.message 
+        : "AI 선지 생성에 실패했습니다. 잠시 후 다시 시도해주세요.";
+      
+      alert(errorMessage);
     }
   }
 
   const handleAiOptionClick = async () => {
     try {
+
       const AIcount = await getAICOUNT();
-      setMaxUsageCount(AIcount.maxUsageCount);
+      
+      if (!AIcount || typeof AIcount.remainingCount !== 'number') {
+        throw new Error("AI quota 정보를 확인할 수 없습니다.");
+      }
+
+      setMaxUsageCount(AIcount.maxUsageCount || 3);
       setRemainingCount(AIcount.remainingCount);
-      setUsageCount(AIcount.usageCount);
-      setIsOpen_1(true);
+      setUsageCount(AIcount.usageCount || 0);
+      
+
+      if (AIcount.remainingCount <= 0) {
+        setIsOpen_4(true);
+      } else {
+        setIsOpen_1(true);
+      }
     } catch (err) {
       console.error("AI 쿼터 정보를 가져오는데 실패했습니다:", err);
-      alert("AI 쿼터 정보를 가져오는데 실패했습니다.");
+      
+
+      const errorMessage = err instanceof Error 
+        ? err.message 
+        : "AI 기능을 사용할 수 없습니다. 잠시 후 다시 시도해주세요.";
+      
+      alert(errorMessage);
     }
   };
 
