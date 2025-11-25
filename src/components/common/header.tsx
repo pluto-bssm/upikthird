@@ -91,7 +91,13 @@ const Header = ({
                   router.push(`${path}/search`);
                 }}
               />
-              <User width="25" height="25" />
+              <User
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`/my`);
+                }}
+              />
             </RightItemBox>
           </HeaderItemBox>
           <Headernavigationbar
@@ -331,7 +337,13 @@ const Header = ({
                   router.push(`${path}/search`);
                 }}
               />
-              <User width="25" height="25" />
+              <User
+                width="25"
+                height="25"
+                onClick={() => {
+                  router.push(`/my`);
+                }}
+              />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>

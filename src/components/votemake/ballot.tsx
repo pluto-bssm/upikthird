@@ -53,22 +53,26 @@ const BallotRow = styled.div`
 
 const BallotIndexCircle = styled.div`
   background-color: ${color.gray100};
-  width: 36px;
-  border-radius: 50%;
-
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1;
+  border-radius: 50%;
 `;
 
 const BallotIndexText = styled.span`
   font-weight: 500;
   color: ${color.gray400};
+  width: 20px;
+  height: 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 `;
 
 const BallotTextInput = styled.input`
-  flex: 1;
+  width: 80%;
   background-color: ${color.white};
   border: none;
   outline: none;

@@ -181,4 +181,5 @@ const VoteBlock = styled.div`
   gap: 40px;
   margin-top: 100px;
   height: 60%;
+  margin-bottom: 40px;
 `;

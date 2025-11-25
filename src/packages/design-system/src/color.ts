@@ -10,7 +10,7 @@ const color = {
   gray100: "#E6E6E6",
   gray50: "#F1F1F1",
 
-  primary: "#FF9F1C",
+  primary: "#FF8B37",
   secondary: "#58CCFF",
   accent: "#E71D36",
 };
