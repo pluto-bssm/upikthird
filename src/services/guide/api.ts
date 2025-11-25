@@ -9,7 +9,7 @@ import {
   TOGGLE_BOOKMARK,
   GET_BOOKMARKS,
 } from "@/services/guide/queries";
-import { CREATE_REVOTE } from "@/services/guide/mutations";
+import { CREATE_REVOTE, INCREMENT_GUIDE_LIKE, DECREMENT_GUIDE_LIKE } from "@/services/guide/mutations";
 import { authorization } from "@/apis/token";
 import type {
   Guide,
@@ -244,4 +244,38 @@ export async function createRevote(
   );
 
   return response.data?.data?.revote?.createRevote;
+}
+
+/**
+ * 가이드 좋아요 증가
+ */
+export async function incrementGuideLike(id: string): Promise<boolean> {
+  const response = await upik.post(
+    "",
+    {
+      query: INCREMENT_GUIDE_LIKE,
+      variables: { id },
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+  const result = response.data?.data?.guide?.incrementGuideLike;
+  return result ?? false;
+}
+
+/**
+ * 가이드 좋아요 감소
+ */
+export async function decrementGuideLike(id: string): Promise<boolean> {
+  const response = await upik.post(
+    "",
+    {
+      query: DECREMENT_GUIDE_LIKE,
+      variables: { id },
+    } as GraphQLRequest,
+    authorization(),
+  );
+
+  const result = response.data?.data?.guide?.decrementGuideLike;
+  return result ?? false;
 }

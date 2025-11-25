@@ -12,7 +12,20 @@ import {
   getGuideById,
   toggleBookmark,
   isGuideBookmarked,
+  incrementGuideLike,
+  decrementGuideLike,
 } from "@/services/guide/api";
+
+const parseContentWithBold = (text: string) => {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      const content = part.slice(2, -2);
+      return <strong key={index}>{content}</strong>;
+    }
+    return <React.Fragment key={index}>{part}</React.Fragment>;
+  });
+};
 
 const MoreGuidePage = () => {
   const params = useParams();
@@ -28,32 +41,57 @@ const MoreGuidePage = () => {
     voteId?: string | null;
   } | null>(null);
   const [bookmarked, setBookmarked] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const fetchBookmarkStatus = React.useCallback(async () => {
+    if (!guideId) return;
+    try {
+      const isBookmarked = await isGuideBookmarked(guideId);
+      setBookmarked(isBookmarked);
+    } catch (error) {
+      setBookmarked(false);
+    }
+  }, [guideId]);
 
   React.useEffect(() => {
     const fetchGuide = async () => {
-      const data = await getGuideById(guideId);
-      if (data) {
-        setGuide({
-          id: data.id,
-          title: data.title,
-          createdAt: data.createdAt,
-          category: data.category,
-          content: data.content,
-          voteId: data.voteId ?? null,
-        });
-        try {
-          const isBookmarked = await isGuideBookmarked(guideId);
-          setBookmarked(isBookmarked);
-        } catch (_error) {
-          setBookmarked(false);
-          console.error(
-            "북마크 상태를 불러오는 중 오류가 발생했습니다." + _error,
-          );
+      try {
+        const data = await getGuideById(guideId);
+        if (data) {
+          setGuide({
+            id: data.id,
+            title: data.title,
+            createdAt: data.createdAt,
+            category: data.category,
+            content: data.content,
+            voteId: data.voteId ?? null,
+          });
         }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
       }
     };
-    if (guideId) fetchGuide();
-  }, [guideId]);
+
+    if (guideId) {
+      setIsLoading(true);
+      fetchGuide();
+      fetchBookmarkStatus();
+    }
+  }, [guideId, fetchBookmarkStatus]);
+
+  React.useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && guideId) {
+        fetchBookmarkStatus();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [guideId, fetchBookmarkStatus]);
 
   const formattedDate = React.useMemo(() => {
     if (!guide?.createdAt) return "-";
@@ -76,9 +114,15 @@ const MoreGuidePage = () => {
         onToggleBookmark={async () => {
           try {
             const next = await toggleBookmark(guideId);
-            setBookmarked((prev) => (typeof next === "boolean" ? next : prev));
-          } catch (_error) {
-            console.error("북마크 토글 중 오류가 발생했습니다." + _error);
+            if (typeof next === "boolean") {
+              setBookmarked(next);
+              if (next) {
+                await incrementGuideLike(guideId);
+              } else {
+                await decrementGuideLike(guideId);
+              }
+            }
+          } catch (error) {
           }
         }}
       />
@@ -101,7 +145,9 @@ const MoreGuidePage = () => {
 
         <SectionDivider />
         <GuideBody>
-          {guide?.content ?? "가이드 내용을 불러오는 중입니다."}
+          {guide?.content
+            ? parseContentWithBold(guide.content)
+            : "가이드 내용을 불러오는 중입니다."}
         </GuideBody>
         <MutedDivider />
         <ReportTextButton
@@ -153,7 +199,7 @@ const GuideMeta = styled.div`
 `;
 const GuideMetaValue = styled.span`
   color: ${color.black};
-  ${font.P4};
+  ${font.P3};
 `;
 
 const VoteSection = styled.section`
