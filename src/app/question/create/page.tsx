@@ -65,6 +65,7 @@ const QuestionCreatePage = () => {
   return (
     <StyledPage>
       <Header types="close" text=" " onClose={handleClose} />
+        <StyleQue>
       <Container>
         <Section>
           <Title>질문하기</Title>
@@ -104,6 +105,8 @@ const QuestionCreatePage = () => {
         >
             {isSubmitting ? "등록 중..." : "질문 등록하기"}
         </SubmitButton>
+        </StyleQue>
+
 
       {validationError && (
         <>
@@ -158,6 +161,14 @@ const QuestionCreatePage = () => {
 };
 
 export default QuestionCreatePage;
+
+const StyleQue =styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 20%
+`;
+
 
 
 const StyledPage = styled.div`

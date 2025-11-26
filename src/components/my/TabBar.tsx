@@ -24,7 +24,7 @@ const TabBar = ({
       </TabButton>
       <TabButton onClick={() => onTabChange?.("like")}>
         <TabButtonText>
-          좋아요한 질문 <TabCountBadge>{likeQuestionCount}</TabCountBadge>
+          저장한 질문 <TabCountBadge>{likeQuestionCount}</TabCountBadge>
         </TabButtonText>
       </TabButton>
     </TabBarWrapper>
