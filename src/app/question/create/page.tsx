@@ -98,12 +98,12 @@ const QuestionCreatePage = () => {
           <br /> 질문이 아닌 글은 삭제될 수 있어요.
         </WarringText>
       </Container>
-      <SubmitButton
-        onClick={handleSubmit}
-        disabled={!title.trim() || !content.trim() || isSubmitting}
-      >
-        {isSubmitting ? "등록 중..." : "질문 등록하기"}
-      </SubmitButton>
+        <SubmitButton
+            onClick={handleSubmit}
+            disabled={title.trim().length < 2 || content.trim().length < 20 || isSubmitting}
+        >
+            {isSubmitting ? "등록 중..." : "질문 등록하기"}
+        </SubmitButton>
 
       {validationError && (
         <>
@@ -165,8 +165,7 @@ const StyledPage = styled.div`
   margin: 0 auto;
   background-color: ${color.white};
   min-height: 100vh;
-  padding-top: 72px;
-  padding-bottom: 80px;
+  padding-bottom: 8b0px;
   display: flex;
   flex-direction: column;
 `;
@@ -183,6 +182,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   flex: 1;
+    margin-top: 72px;
   padding-bottom: 20px;
 `;
 
