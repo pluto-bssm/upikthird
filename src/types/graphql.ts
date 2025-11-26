@@ -24,7 +24,9 @@ export interface VotePayload {
   finishedAt: number;
   options: OptionWithStats[];
   hasVoted: boolean;
-  closureType?: VoteClosureType;
+    myOptionId?: string;           // 추가
+    myOptionContent?: string;      // 추가
+    closureType?: VoteClosureType;
   participantThreshold?: number;
   mySelectedOptionId?: string;
   myTailResponse?: string;

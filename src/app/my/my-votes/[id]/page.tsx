@@ -3,108 +3,124 @@
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import styled from "@emotion/styled";
-import Vote from "@/app/vote/page";
+import { useState } from "react";
+import AccentModal from "@/components/modal/AccentModal";
+import {Completevote} from "../../../../../public/svg";
 
 type VoteOption = {
-  id: string;
-  content: string;
-  percentage?: number;
-  responseCount?: number;
+    id: string;
+    content: string;
+    percentage?: number;
+    responseCount?: number;
 };
 
 type VoteResponseCardProps = {
-  title: string;
-  category: string;
-  options: VoteOption[];
-  selectedOptionId: string;
-  followUpQuestion?: string;
-  followUpAnswer?: string;
-  respondedAt: string; // ISO date string "2025-07-19"
-  respondedTime: string; // "12:34"
-  onClick?: () => void;
+    voteId: string;
+    title: string;
+    category: string;
+    options: VoteOption[];
+    selectedOptionId: string;
+    respondedAt: number;
+    respondedTime: number;
+    onClick?: () => void;
 };
 
-const VoteResponseCard = ({
-  title,
-  category,
-  options,
-  selectedOptionId,
-  followUpQuestion,
-  followUpAnswer,
-  respondedAt,
-  respondedTime,
-  onClick,
-}: VoteResponseCardProps) => {
-  const formatDate = (dateStr: string) => {
-    return dateStr;
-  };
+const MyVoteResponseCard = ({
+                              voteId,
+                              title,
+                              category,
+                              options,
+                              selectedOptionId,
+                              respondedAt,
+                              respondedTime,
+                              onClick,
+                          }: VoteResponseCardProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const getOptionLabel = (index: number) => {
-    const labels = ["A", "B", "C", "D", "E", "F", "G", "H"];
-    return labels[index] || String(index + 1);
-  };
+    const formatDate = (dateStr: string) => {
+        return dateStr;
+    };
 
-  return (
-    <CardContainer onClick={onClick}>
-      <VoteSection>
-        <SectionLabel>투표하기</SectionLabel>
-        <QuestionTitle>{title}</QuestionTitle>
-        <HelperText>부적절한 투표는 신고버튼을 이용해 신고해주세요</HelperText>
+    const getOptionLabel = (index: number) => {
+        const labels = ["A", "B", "C", "D", "E", "F", "G", "H"];
+        return labels[index] || String(index + 1);
+    };
 
-        <OptionsContainer>
-          {options.map((option, index) => {
-            const isSelected = option.id === selectedOptionId;
-            return (
-              <OptionItem key={option.id} isSelected={isSelected}>
-                {isSelected ? (
-                  <SelectedIndicator>
-                    <Vote />
-                  </SelectedIndicator>
-                ) : (
-                  <OptionLabel>{getOptionLabel(index)}</OptionLabel>
-                )}
-                <OptionContent>{option.content}</OptionContent>
-              </OptionItem>
-            );
-          })}
-        </OptionsContainer>
-      </VoteSection>
+    const handleCardClick = () => {
+        if (onClick) {
+            onClick();
+        } else {
+            setIsModalOpen(true);
+        }
+    };
 
-      {(followUpQuestion || followUpAnswer) && (
-        <FollowUpSection>
-          <SectionLabel color="orange">꼬리질문 응답하기</SectionLabel>
-          <FollowUpTitle>
-            {followUpQuestion || "선지를 고른 이유는 무엇인가요?"}
-          </FollowUpTitle>
-          <FollowUpHelper>
-            꼬리질문은 응답하지 않고 넘어갈 수 있어요
-          </FollowUpHelper>
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
 
-          {followUpAnswer && (
-            <FollowUpAnswerBox>
-              <FollowUpAnswerText>{followUpAnswer}</FollowUpAnswerText>
-            </FollowUpAnswerBox>
-          )}
-        </FollowUpSection>
-      )}
+    return (
+        <>
+            <CardContainer onClick={handleCardClick}>
+                <VoteSection>
+                    <SectionLabel>투표하기</SectionLabel>
+                    <QuestionTitle>{title}</QuestionTitle>
+                    <HelperText>부적절한 투표는 신고버튼을 이용해 신고해주세요</HelperText>
 
-      <Divider />
+                    <OptionsContainer>
+                        {options.map((option, index) => {
+                            const isSelected = option.id === selectedOptionId;
+                            return (
+                                <OptionItem key={option.id} isSelected={isSelected}>
+                                    {isSelected ? (
+                                        <SelectedIndicator>
+                                            <CheckIcon>✓</CheckIcon>
+                                        </SelectedIndicator>
+                                    ) : (
+                                        <OptionLabel>{getOptionLabel(index)}</OptionLabel>
+                                    )}
+                                    <OptionContent>{option.content}</OptionContent>
+                                </OptionItem>
+                            );
+                        })}
+                    </OptionsContainer>
+                </VoteSection>
 
-      <ResponseInfoSection>
-        <InfoRow>
-          <InfoLabel>응답일자</InfoLabel>
-          <InfoValue>{formatDate(respondedAt)}</InfoValue>
-        </InfoRow>
-        <InfoRow>
-          <InfoLabel>응답시간</InfoLabel>
-          <InfoValue>{respondedTime}</InfoValue>
-        </InfoRow>
-      </ResponseInfoSection>
-    </CardContainer>
-  );
+                <Divider />
+
+                <ResponseInfoSection>
+                    <InfoRow>
+                        <InfoLabel>응답일자</InfoLabel>
+                        <InfoValue>{respondedAt}</InfoValue>
+                    </InfoRow>
+                    <InfoRow>
+                        <InfoLabel>응답시간</InfoLabel>
+                        <InfoValue>{respondedTime}</InfoValue>
+                    </InfoRow>
+                </ResponseInfoSection>
+            </CardContainer>
+
+            {isModalOpen && (
+                <AccentModal
+                    icon={<Completevote width="30" height="30" />}
+                    leftText="투표를"
+                    accentText="완료"
+                    rightText="했어요!"
+                    subText={"마이페이지에서 투표 참여내역\n을 확인할 수 있습니다."}
+                    onClick={handleModalClose}
+                    voteId={voteId}
+                />
+            )}
+        </>
+    );
 };
 
-export default VoteResponseCard;
+export default MyVoteResponseCard;
+
+const CheckIcon = styled.span`
+  color: ${color.white};
+  font-size: 16px;
+  font-weight: bold;
+`;
 
 const CardContainer = styled.div`
   width: 100%;
@@ -126,7 +142,7 @@ const VoteSection = styled.div`
   margin-top: 20px;
 `;
 
-const SectionLabel = styled.span<{ color?: string }>`
+const SectionLabel = styled.span`
   ${font.P2};
   color: ${color.primary};
   font-weight: 600;
@@ -193,35 +209,6 @@ const SelectedIndicator = styled.div`
 const OptionContent = styled.span`
   ${font.P1};
   color: ${color.black};
-`;
-
-const FollowUpSection = styled.div`
-  margin-bottom: 24px;
-`;
-
-const FollowUpTitle = styled.h3`
-  ${font.H2};
-  color: ${color.black};
-  margin-bottom: 6px;
-`;
-
-const FollowUpHelper = styled.p`
-  ${font.P3};
-  color: ${color.gray400};
-  margin-bottom: 16px;
-`;
-
-const FollowUpAnswerBox = styled.div`
-  background-color: ${color.gray50};
-  border-radius: 12px;
-  padding: 16px;
-  min-height: 80px;
-`;
-
-const FollowUpAnswerText = styled.p`
-  ${font.P1};
-  color: ${color.gray700};
-  line-height: 1.6;
 `;
 
 const Divider = styled.div`
