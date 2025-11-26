@@ -16,9 +16,9 @@ export const GET_MY_VOTE_RESPONSES = `
 `;
 
 export const GET_VOTE_RESPONSE_DETAIL = `
-  query GetVoteDetail {
+  query GetVoteDetail($voteId: ID!) {
     vote {
-      getMyVotes {
+      getVoteById(id: $voteId) {
         id
         title
         category
@@ -28,6 +28,7 @@ export const GET_VOTE_RESPONSE_DETAIL = `
         finishedAt
         totalResponses
         hasVoted
+        createdBy
         options {
           id
           content
@@ -35,6 +36,9 @@ export const GET_VOTE_RESPONSE_DETAIL = `
           percentage
         }
       }
+    }
+    voteResponse {
+      hasUserVoted(voteId: $voteId)
     }
   }
 `;
