@@ -403,10 +403,10 @@ const CommentCount = styled.p`
   background-color: ${color.gray50};
   color: ${color.black};
   line-height: 1;
-  margin: 20px 5px;
+  margin: 40px 0;
     border-radius: 8px;
     width: fit-content;
-  padding: 10px 8px;
+  padding: 10px 10px;
 `;
 
 const CommentCountNumber = styled.span`
