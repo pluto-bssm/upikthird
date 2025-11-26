@@ -38,18 +38,8 @@ const AccountInfoPage = () => {
     switch (role) {
       case "ROLE_BSM":
         return "재학생";
-      case "ROLE_GRADUATED":
-        return "졸업생";
-      case "ROLE_STAFF":
-        return "직원";
-      case "STUDENT":
-        return "재학생";
-      case "GRADUATED":
-        return "졸업생";
-      case "STAFF":
-        return "직원";
       default:
-        return role;
+        return "외부인";
     }
   };
 
