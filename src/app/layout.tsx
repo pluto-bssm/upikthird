@@ -5,6 +5,9 @@ import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: "upik",
+  icons: {
+		icon: "/favicon.ico",
+	},
 };
 
 const RootLayout = ({
