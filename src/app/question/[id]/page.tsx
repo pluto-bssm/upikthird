@@ -403,7 +403,7 @@ const CommentCount = styled.p`
   background-color: ${color.gray50};
   color: ${color.black};
   line-height: 1;
-  margin: 0 40px;
+  margin: 10px 40px;
     border-radius: 8px;
     width: fit-content;
   padding: 10px 10px;
