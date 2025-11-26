@@ -10,17 +10,16 @@ import { useQuestionDetail, useQuestionComments } from "@/hooks/useBoard";
 import * as boardApi from "@/services/board/api";
 import { Bookmark } from "../../../../public/svg/svg";
 import font from "@/packages/design-system/src/font";
+import { usePathname } from "next/navigation";
 
 const QuestionDetailPage = () => {
   const router = useRouter();
   const params = useParams();
   const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
-
-  const {
-    question,
-    loading: questionLoading,
-    refetch: refetchQuestion,
-  } = useQuestionDetail(boardId as string);
+  const path = usePathname();
+   const { question, loading: questionLoading } = useQuestionDetail(
+      boardId as string,
+    );
 
   const {
     comments,
@@ -134,12 +133,14 @@ const QuestionDetailPage = () => {
 
   return (
     <StyledPage>
+
       <Header
         types="report and bookmark"
         text=""
         onClose={handleReportClick}
         onToggleBookmark={handleBookmarkClick}
         bookmarked={isBookmarked}
+        onSubmit={() => {router.push(`${path}/report`);}}
       />
       <Container>
         {questionLoading ? (
