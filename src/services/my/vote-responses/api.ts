@@ -37,8 +37,10 @@ export async function getMyVoteResponses(): Promise<VotePayload[]> {
         },
     );
 
-    return response.data?.data?.vote?.getAllVotes || [];
+    const allVotes = response.data?.data?.vote?.getAllVotes || [];
+    return allVotes.filter((vote: VotePayload) => vote.hasVoted === true);
 }
+
 export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
   const token = Storage.getItem(TOKEN.ACCESS);
 
