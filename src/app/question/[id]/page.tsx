@@ -16,9 +16,9 @@ const QuestionDetailPage = () => {
   const router = useRouter();
   const params = useParams();
   const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
-  const path = usePathname();
-   const { question, loading: questionLoading } = useQuestionDetail(
-      boardId as string,
+    const path = usePathname();
+    const { question, loading: questionLoading } = useQuestionDetail(
+        boardId as string,
     );
 
   const {
@@ -58,7 +58,6 @@ const QuestionDetailPage = () => {
     try {
       await boardApi.toggleBoardBookmark(boardId);
       setIsBookmarked(!isBookmarked);
-      await refetchQuestion();
     } catch (error) {
       alert("북마크 처리에 실패했습니다.");
       console.error("Bookmark error:", error);
