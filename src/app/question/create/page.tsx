@@ -166,7 +166,7 @@ const StyledPage = styled.div`
   margin: 0 auto;
   background-color: ${color.white};
   min-height: 100vh;
-  padding-bottom: 8b0px;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
 `;
@@ -183,7 +183,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   flex: 1;
-    margin-top: 52px;
+    margin-top: 30px;
   padding-bottom: 20px;
 `;
 
@@ -291,7 +291,7 @@ const SubmitButton = styled.button`
   color: ${color.white};
   cursor: pointer;
   transition: all 0.2s ease;
-  margin: 20px;
+  margin: 0 20px;
 
   &:disabled {
     background-color: ${color.gray200};
