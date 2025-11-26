@@ -3,10 +3,17 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { Home, Vote, Guide, Dashboard } from "@/../public/svg";
-import { useRouter } from "next/navigation";
+import { useRouter,usePathname } from "next/navigation";
 
 const NavigationBar = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
+
+  const isActive = (path: string) => {
+    const result = pathname.includes(path);
+    return result;
+  };
 
   return (
     <NavigationBarLayout>
@@ -17,6 +24,7 @@ const NavigationBar = () => {
           onClick={() => {
             router.push("/main");
           }}
+          color={isActive("main") ? color.black : color.gray300}
         />
         <Vote
           width="40"
@@ -24,6 +32,7 @@ const NavigationBar = () => {
           onClick={() => {
             router.push("/vote");
           }}
+          color={isActive("vote") ? color.black : color.gray300}
         />
         <Guide
           width="40"
@@ -31,6 +40,7 @@ const NavigationBar = () => {
           onClick={() => {
             router.push("/guide");
           }}
+          color={isActive("guide") ? color.black : color.gray300}
         />
         <Dashboard
           width="40"
@@ -38,6 +48,7 @@ const NavigationBar = () => {
           onClick={() => {
             router.push("/question");
           }}
+          color={isActive("question") ? color.black : color.gray300}
         />
       </NavigationBarItem>
     </NavigationBarLayout>

@@ -11,6 +11,7 @@ import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../public/svg/svg";
 import { useCreateTailVote } from "@/hooks/useVotes";
 
+
 const TailVote = () => {
   const router = useRouter();
   const path = usePathname();
@@ -20,11 +21,11 @@ const TailVote = () => {
 
   const { createTailVote, loading, error } = useCreateTailVote();
   void error;
+  const voteId = newPath.split("/").filter(Boolean).pop() || "";
 
   const HandleTailVoteMake = async () => {
     try {
-      const voteId = newPath.split("/").filter(Boolean).pop() || "";
-
+    
       if (!content.trim()) {
         const result = createTailVote("선지가 마음에 들어서", voteId);
         setIsOpen(true);
@@ -81,6 +82,7 @@ const TailVote = () => {
           onClick={() => {
             router.push("/vote");
           }}
+          voteId={voteId}
         />
       )}
     </TailVoteLayout>
