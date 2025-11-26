@@ -17,9 +17,9 @@ const QuestionDetailPage = () => {
   const params = useParams();
   const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const path = usePathname();
-  const { question, loading: questionLoading } = useQuestionDetail(
-    boardId as string,
-  );
+   const { question, loading: questionLoading } = useQuestionDetail(
+      boardId as string,
+    );
 
   const {
     comments,
@@ -32,6 +32,7 @@ const QuestionDetailPage = () => {
   const [submitting, setSubmitting] = React.useState(false);
   const [replyingTo, setReplyingTo] = React.useState<string | null>(null);
   const [replyContent, setReplyContent] = React.useState("");
+  const [isBookmarked, setIsBookmarked] = React.useState(false);
 
   React.useEffect(() => {
     if (!boardId) {
@@ -40,8 +41,28 @@ const QuestionDetailPage = () => {
     }
   }, [boardId]);
 
+  // question이 로드되면 북마크 상태 초기화
+  React.useEffect(() => {
+    if (question) {
+      setIsBookmarked(question.isBookmarked || false);
+    }
+  }, [question]);
+
   const handleReportClick = () => {
     router.push(`/question/${boardId}/report`);
+  };
+
+  const handleBookmarkClick = async () => {
+    if (!boardId) return;
+
+    try {
+      await boardApi.toggleBoardBookmark(boardId);
+      setIsBookmarked(!isBookmarked);
+      await refetchQuestion();
+    } catch (error) {
+      alert("북마크 처리에 실패했습니다.");
+      console.error("Bookmark error:", error);
+    }
   };
 
   const handleReplyClick = (commentId: string) => {
@@ -112,7 +133,15 @@ const QuestionDetailPage = () => {
 
   return (
     <StyledPage>
-      <Header types="report and close" text="" onClose={handleReportClick} onSubmit={() => {router.push(`${path}/report`);}} />
+
+      <Header
+        types="report and bookmark"
+        text=""
+        onClose={handleReportClick}
+        onToggleBookmark={handleBookmarkClick}
+        bookmarked={isBookmarked}
+        onSubmit={() => {router.push(`${path}/report`);}}
+      />
       <Container>
         {questionLoading ? (
           <LoadingSection>로딩 중...</LoadingSection>
@@ -126,8 +155,8 @@ const QuestionDetailPage = () => {
                   {new Date(question.createdAt).toLocaleString("ko-KR")}
                 </MetaItem>
                 <BookmarkBox>
-                  <Bookmark width={20} />
-                  <BookmarkText>{question.likes}</BookmarkText>
+                  <Bookmark width={20} filled={isBookmarked} />
+                  <BookmarkText>{question.bookmarkCount}</BookmarkText>
                 </BookmarkBox>
               </MetaInfo>
             </Section>
@@ -585,9 +614,4 @@ const ReplySubmitButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
-`;
-
-const FooterInnerItem = styled.div`
-  display: flex;
-  gap: 12px;
 `;

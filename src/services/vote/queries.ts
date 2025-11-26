@@ -8,19 +8,30 @@ export const GET_CHECK_BADWORD = `query MyQuery($text: String!) { checkBadWord(t
 
 export const GET_ALL_VOTES = `query GetAllVotes { vote { getAllVotes(includeHasVoted: true, includeExpired: false) { id title hasVoted category status totalResponses finishedAt options { id content responseCount percentage } } } }`;
 
-export const GET_ALL_MY_VOTES = `query MyQuery {
-  vote {
-    getMyVotes {
-      category
-      closureType
-      hasVoted
-      id
-      finishedAt
-      status
-      title
+export const GET_ALL_MY_VOTES = `
+  query MyQuery {
+    vote {
+      getMyVotes {
+        id
+        title
+        category
+        status
+        closureType
+        participantThreshold
+        finishedAt
+        totalResponses
+        hasVoted
+        myOptionId
+        myOptionContent
+        options {
+          id
+          content
+          responseCount
+          percentage
+        }
+      }
     }
-  }
-}`;
+  }`;
 
 export const GET_MY_VOTES = `query GetMyVotes { vote { getMyVotes { id title category status totalResponses finishedAt options { id content responseCount percentage } } } }`;
 

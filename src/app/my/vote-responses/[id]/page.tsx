@@ -18,7 +18,6 @@ const VoteResponseDetailPage = ({
   const { id } = use(params);
 
   const { detail, loading, error } = useVoteResponseDetail({ id });
-  void error;
 
   const handleClose = () => {
     router.back();
@@ -49,29 +48,23 @@ const VoteResponseDetailPage = ({
     );
   }
 
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toISOString().split("T")[0];
+  const formatDate = (timestamp: string) => {
+    return timestamp; // 이미 "YYYY-MM-DD" 형식
   };
 
-  const formatTime = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toTimeString().split(" ")[0].substring(0, 5);
+  const formatTime = (timestamp: string) => {
+    // finishedAt이 "YYYY-MM-DD" 형식이면 시간 정보가 없을 수 있습니다
+    // 필요시 백엔드에서 timestamp를 받아오거나 기본값 설정
+    return "23:59"; // 기본 종료 시간
   };
 
-  const selectedOptionId =
-    detail.mySelectedOptionId ||
-    (detail.hasVoted && detail.options.length > 0
-      ? detail.options.reduce((prev, current) =>
-          prev.percentage > current.percentage ? prev : current,
-        ).id
-      : null);
+  // hasVoted가 true이고 myOptionId가 있으면 해당 옵션을 선택된 것으로 표시
+  const selectedOptionId = detail.hasVoted ? detail.myOptionId : null;
+  const selectedOptionContent = detail.hasVoted ? detail.myOptionContent : null;
 
   const tailResponse =
     detail.myTailResponse ||
-    (detail.hasVoted
-      ? "네!!!! 꼬리 질문에! 무조건 응답합니다에!!!!!!!!!!!!!"
-      : "응답하지 않았습니다.");
+    "네!!!! 꼬리 질문에! 무조건 응답합니다에!!!!!!!!!!!!!";
 
   return (
     <VoteResponseLayout>
@@ -80,6 +73,9 @@ const VoteResponseDetailPage = ({
         <VoteInfo>
           <MenuText>투표하기</MenuText>
           <Title>{detail.title}</Title>
+          {selectedOptionContent && (
+            <SubTitle>선택한 답변: {selectedOptionContent}</SubTitle>
+          )}
         </VoteInfo>
 
         <VoteContent>
@@ -98,7 +94,7 @@ const VoteResponseDetailPage = ({
         <TailQuestionSection>
           <TailQuestionTitle>꼬리질문 응답하기</TailQuestionTitle>
           <TailQuestionSubtitle>
-            해당 선지를 고른 이유는 무엇인가요?
+            선지를 고른 이유는 무엇인가요?
           </TailQuestionSubtitle>
 
           <TailResponseBox>
@@ -108,13 +104,13 @@ const VoteResponseDetailPage = ({
 
         <DateTimeSection>
           <DateTimeItem>
-            <DateTimeLabel>종료일자</DateTimeLabel>
-            <DateTimeValue>{formatDate(detail.finishedAt)}</DateTimeValue>
+            <DateTimeLabel>응답일자</DateTimeLabel>
+            <DateTimeValue>{detail.finishedAt}</DateTimeValue>
           </DateTimeItem>
 
           <DateTimeItem>
-            <DateTimeLabel>종료시간</DateTimeLabel>
-            <DateTimeValue>{formatTime(detail.finishedAt)}</DateTimeValue>
+            <DateTimeLabel>응답시간</DateTimeLabel>
+            <DateTimeValue>{detail.finishedAt}</DateTimeValue>
           </DateTimeItem>
         </DateTimeSection>
       </VoteBlock>
@@ -144,17 +140,17 @@ const VoteContent = styled.div`
 `;
 
 const MenuText = styled.p`
-  ${font.H1};
+  ${font.H3};
   color: ${color.primary};
 `;
 
 const Title = styled.p`
-  ${font.D1};
+  ${font.D2};
   color: ${color.black};
 `;
 
 const SubTitle = styled.p`
-  ${font.H2};
+  ${font.H3};
   color: ${color.gray400};
 `;
 

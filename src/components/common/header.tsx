@@ -36,6 +36,7 @@ type HeaderProps = {
   types: variant;
   text?: string;
   placeholers?: string;
+  onBookmark?: () => void;
   onSubmit?: () => void;
   onClose?: () => void;
   onSecondSubmit?: () => void;
@@ -246,8 +247,13 @@ const Header = ({
               />
             </LeftItemBox>
             <RightItemBox>
-              <Report width="25" height="25" />
-              <Bookmark width="25" height="25" onClick={onClose} />
+              <Report width="25" height="25" onClick={onClose} />
+              <Bookmark
+                width="25"
+                height="25"
+                onClick={onToggleBookmark}
+                filled={bookmarked} // 추가
+              />
             </RightItemBox>
           </HeaderItemBox>
         </HeaderLayout>

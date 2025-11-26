@@ -37,7 +37,8 @@ export async function getMyVoteResponses(): Promise<VotePayload[]> {
     },
   );
 
-  return response.data?.data?.vote?.getMyVotes || [];
+  const allVotes = response.data?.data?.vote?.getAllVotes || [];
+  return allVotes.filter((vote: VotePayload) => vote.hasVoted === true);
 }
 
 export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
@@ -47,6 +48,7 @@ export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
     API.GRAPHQL_URL,
     {
       query: GET_VOTE_RESPONSE_DETAIL,
+      variables: { voteId: id }, // variables 추가
     } as GraphQLRequest,
     {
       headers: {
@@ -55,8 +57,7 @@ export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
     },
   );
 
-  const myVotes = response.data?.data?.vote?.getMyVotes || [];
-  const voteData = myVotes.find((vote: VotePayload) => vote.id === id);
+  const voteData = response.data?.data?.vote?.getVoteById;
 
   if (!voteData) {
     throw new Error("Vote detail not found");

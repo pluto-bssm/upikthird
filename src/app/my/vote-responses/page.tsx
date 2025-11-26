@@ -8,58 +8,58 @@ import { useMyVoteResponses } from "@/hooks/useVoteResponses";
 import VoteBlock from "@/components/vote/voteblock";
 
 const VoteResponsesListPage = () => {
-    const router = useRouter();
-    const { responses, loading, error } = useMyVoteResponses();
+  const router = useRouter();
+  const { responses, loading, error } = useMyVoteResponses();
 
-    const handleClose = () => {
-        router.back();
-    };
+  const handleClose = () => {
+    router.back();
+  };
 
-    const handleVoteClick = (voteId: string) => {
-        router.push(`/my/vote-responses/${voteId}`);
-    };
+  const handleVoteClick = (voteId: string) => {
+    router.push(`/my/vote-responses/${voteId}`);
+  };
 
-    if (loading) {
-        return (
-            <StyledPage>
-                <Header types="close" text="투표 응답 내역" onClose={handleClose} />
-                <LoadingText>로딩 중...</LoadingText>
-            </StyledPage>
-        );
-    }
-
-    if (error) {
-        return (
-            <StyledPage>
-                <Header types="close" text="투표 응답 내역" onClose={handleClose} />
-                <ErrorText>투표 응답을 불러올 수 없습니다.</ErrorText>
-            </StyledPage>
-        );
-    }
-
+  if (loading) {
     return (
-        <StyledPage>
-            <Header types="close" text="투표 응답 내역" onClose={handleClose} />
-            <Content>
-                <VotesList>
-                    {responses.length === 0 ? (
-                        <EmptyText>응답한 투표가 없습니다.</EmptyText>
-                    ) : (
-                        responses.map((vote) => (
-                            <VoteBlock
-                                key={vote.id}
-                                category={vote.category}
-                                title={vote.title || "제목 없음"}
-                                viewCount={vote.totalResponses || 0}
-                                finishDate={vote.finishedAt}
-                                onClick={() => handleVoteClick(vote.id)}
-                            />
-                        ))
-                    )}
-                </VotesList>
-            </Content>
-        </StyledPage>
+      <StyledPage>
+        <Header types="close" text="투표 응답 내역" onClose={handleClose} />
+        <LoadingText>로딩 중...</LoadingText>
+      </StyledPage>
     );
+  }
+
+  if (error) {
+    return (
+      <StyledPage>
+        <Header types="close" text="투표 응답 내역" onClose={handleClose} />
+        <ErrorText>투표 응답을 불러올 수 없습니다.</ErrorText>
+      </StyledPage>
+    );
+  }
+
+  return (
+    <StyledPage>
+      <Header types="close" text="투표 응답 내역" onClose={handleClose} />
+      <Content>
+        <VotesList>
+          {responses.length === 0 ? (
+            <EmptyText>응답한 투표가 없습니다.</EmptyText>
+          ) : (
+            responses.map((vote) => (
+              <VoteBlock
+                key={vote.id}
+                category={vote.category}
+                title={vote.title || "제목 없음"}
+                viewCount={vote.totalResponses || 0}
+                finishDate={vote.finishedAt}
+                onClick={() => handleVoteClick(vote.id)}
+              />
+            ))
+          )}
+        </VotesList>
+      </Content>
+    </StyledPage>
+  );
 };
 
 export default VoteResponsesListPage;
@@ -82,7 +82,7 @@ const Content = styled.div`
 const VotesList = styled.div`
   display: flex;
   flex-direction: column;
-    gap:8px;
+  gap: 8px;
 `;
 
 const LoadingText = styled.p`

@@ -1,31 +1,24 @@
 export const GET_MY_VOTE_RESPONSES = `
-query MyQuery {
-  vote {
-    getMyVotes {
-      category
-      closureType
-      hasVoted
-      id
-      finishedAt
-      totalResponses
-      status
-      title
-      participantThreshold
-      options {
+  query MyQuery {
+    vote {
+      getAllVotes {
         id
-        content
-        responseCount
-        percentage
+        hasVoted
+        title
+        status
+        totalResponses
+        finishedAt
+        closureType
+        category
       }
     }
   }
-}
 `;
 
 export const GET_VOTE_RESPONSE_DETAIL = `
-  query GetVoteDetail {
+  query GetVoteDetail($voteId: String!) {
     vote {
-      getMyVotes {
+      getVoteById(id: $voteId) {
         id
         title
         category
@@ -35,6 +28,9 @@ export const GET_VOTE_RESPONSE_DETAIL = `
         finishedAt
         totalResponses
         hasVoted
+        createdBy
+        myOptionId
+        myOptionContent
         options {
           id
           content
@@ -42,6 +38,9 @@ export const GET_VOTE_RESPONSE_DETAIL = `
           percentage
         }
       }
+    }
+    voteResponse {
+      hasUserVoted(voteId: $voteId)
     }
   }
 `;

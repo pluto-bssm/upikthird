@@ -75,7 +75,7 @@ const MenuCategoryGroup = styled.div<{ isLast?: boolean }>`
 `;
 
 const MenuCategoryLabel = styled.p`
-    ${font.P3}
+  ${font.P3}
   color: ${color.gray500};
   margin: 0;
   padding: 0 20px;
@@ -88,7 +88,7 @@ const MenuListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-    margin: 20px 0;
+  margin: 20px 0;
 `;
 
 const MenuItemButton = styled.button`
