@@ -7,7 +7,7 @@ import { TOKEN } from "@/constants/common/constant";
 
 export default function OAuthCallbackPage() {
   const router = useRouter();
-  const [status, setStatus] = useState("로그인 처리 중...");
+  const [status, setStatus] = useState("부산소마고로 이동중...");
 
   useEffect(() => {
     const handleCallback = async () => {
@@ -71,7 +71,6 @@ export default function OAuthCallbackPage() {
       }}
     >
       <div style={{ textAlign: "center" }}>
-        <h2>로그인 처리 중...</h2>
         <p>{status}</p>
       </div>
     </div>
