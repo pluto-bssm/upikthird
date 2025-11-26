@@ -385,7 +385,7 @@ const Content = styled.p`
   color: ${color.black};
   line-height: 24px;
   margin: 0;
-    min-height: 200px;
+    min-height: 150px;
   word-break: break-word;
   white-space: pre-wrap;
 `;
@@ -403,9 +403,10 @@ const CommentCount = styled.p`
   background-color: ${color.gray50};
   color: ${color.black};
   line-height: 1;
-  margin: 20px;
+  margin: 20px 5px;
+    border-radius: 8px;
     width: fit-content;
-  padding: 20px;
+  padding: 10px 8px;
 `;
 
 const CommentCountNumber = styled.span`
@@ -534,7 +535,7 @@ const ErrorSection = styled.div`
 /* 하단 고정 댓글 입력 영역 */
 const CommentInputWrapper = styled.div`
   position: fixed;
-  bottom: 80px; 
+  bottom: 50px; 
   left: 0;
   right: 0;
   max-width: 600px;
