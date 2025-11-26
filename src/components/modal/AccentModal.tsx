@@ -36,7 +36,7 @@ const AccentModal = ({
           {subText && <SubTitle>{subText}</SubTitle>}
         </TextBox>
 
-        {voteId && <VoteBarChart voteId={voteId} />}
+        {voteId && <VoteBarChart voteId={voteId}/>}
 
         <ConfirmButton onClick={onClick}>확인</ConfirmButton>
       </AccentModalLayout>
@@ -66,12 +66,13 @@ const AccentModalLayout = styled.div<{type?: string}>`
   padding: 50px 20px;
   width: ${props => props.type === "wide" ? "100%" : "80%"};
   max-width: 600px;
-  height: ${props => props.type === "wide" ? "100%" : "auto"};
+  height: ${props => props.type === "wide" ? "100vh" : "auto"};
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  
+  gap: 24px;
+  overflow : scroll;
+
 `;
 
 const TextBox = styled.div`
@@ -108,7 +109,6 @@ const ConfirmButton = styled.button`
   ${font.Btn2};
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-top: 16px;
 
   &:hover {
     background-color: #e07600;

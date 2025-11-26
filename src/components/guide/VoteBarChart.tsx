@@ -103,10 +103,8 @@ const ChartCard = styled.section`
   border-radius: 8px;
   background: ${color.white};
   overflow: visible;
-  margin-top: 18px;
   width: 100%;
   max-width: 350px;
-  margin-bottom : 20px;
 `;
 
 const ResultButton = styled.button`
