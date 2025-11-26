@@ -106,6 +106,7 @@ const ChartCard = styled.section`
   margin-top: 18px;
   width: 100%;
   max-width: 350px;
+  margin-bottom : 20px;
 `;
 
 const ResultButton = styled.button`
