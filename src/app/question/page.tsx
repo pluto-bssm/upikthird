@@ -8,7 +8,6 @@ import { QuestionList } from "@/components/question/QuestionList";
 import color from "@/packages/design-system/src/color";
 import { useQuestions } from "@/hooks/useBoard";
 import VoteMakeButton from "@/components/vote/votemakebutton";
-import Footer from "@/components/common/footer";
 import NavigationBar from "@/components/common/navigationbar";
 
 const QuestionPage = () => {

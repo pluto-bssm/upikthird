@@ -9,7 +9,7 @@ const IconDoor = (props: SVGProps<SVGSVGElement>) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_3455_7204)">
+      <g clipPath="url(#clip0_3455_7204)">
         <path
           d="M7.00225 0.406006H2.99775C2.44671 0.406006 2 0.852714 2 1.40376V8.59651C2 9.14755 2.44671 9.59426 2.99775 9.59426H7.00225C7.55329 9.59426 8 9.14755 8 8.59651V1.40376C8 0.852714 7.55329 0.406006 7.00225 0.406006Z"
           fill="#FFB47F"

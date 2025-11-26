@@ -14,42 +14,58 @@ const Footer = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname?.includes(path);
+  const isActive = (path: string) => {
+    const result = pathname.includes(path);
+    console.log(`경로: ${pathname}, 체크: ${path}, 결과: ${result}`);
+    return result;
+  };
+
+  console.log("현재 pathname:", pathname);
 
   return (
     <StyledFooter>
-      <FooterItem onClick={() => router.push("/")} isActive={isActive("/")}>
+      <FooterItem onClick={() => router.push("/main")}>
         <IconWrapper>
-          <HomeIcon width="24" height="24" />
+          <HomeIcon 
+            width="24" 
+            height="24"
+            fill={isActive("main") ? color.black : color.gray300}
+          />
         </IconWrapper>
-        <Label>메인</Label>
+        <Label isActive={isActive("main")}>메인</Label>
       </FooterItem>
-      <FooterItem
-        onClick={() => router.push("/vote")}
-        isActive={isActive("vote")}
-      >
+      
+      <FooterItem onClick={() => router.push("/vote")}>
         <IconWrapper>
-          <VoteIcon width="24" height="24" />
+          <VoteIcon 
+            width="24" 
+            height="24"
+            fill={isActive("vote") ? color.black : color.gray300}
+          />
         </IconWrapper>
-        <Label>투표</Label>
+        <Label isActive={isActive("vote")}>투표</Label>
       </FooterItem>
-      <FooterItem
-        onClick={() => router.push("/guide")}
-        isActive={isActive("guide")}
-      >
+      
+      <FooterItem onClick={() => router.push("/guide")}>
         <IconWrapper>
-          <GuideIcon width="24" height="24" />
+          <GuideIcon 
+            width="24" 
+            height="24"
+            fill={isActive("guide") ? color.black : color.gray300}
+          />
         </IconWrapper>
-        <Label>가이드</Label>
+        <Label isActive={isActive("guide")}>가이드</Label>
       </FooterItem>
-      <FooterItem
-        onClick={() => router.push("/question")}
-        isActive={isActive("question")}
-      >
+      
+      <FooterItem onClick={() => router.push("/question")}>
         <IconWrapper>
-          <DashboardIcon width="24" height="24" />
+          <DashboardIcon 
+            width="24" 
+            height="24"
+            fill={isActive("question") ? color.black : color.gray300}
+          />
         </IconWrapper>
-        <Label>질문게시판</Label>
+        <Label isActive={isActive("question")}>질문게시판</Label>
       </FooterItem>
     </StyledFooter>
   );
@@ -77,7 +93,7 @@ const StyledFooter = styled.div`
   border-top: 1px solid ${color.gray300};
 `;
 
-const FooterItem = styled.button<{ isActive: boolean }>`
+const FooterItem = styled.button`
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -102,11 +118,11 @@ const IconWrapper = styled.div`
   }
 `;
 
-const Label = styled.p`
+const Label = styled.p<{ isActive?: boolean }>`
   font-family: Pretendard, sans-serif;
   font-size: 10px;
   font-weight: 400;
-  color: ${color.gray300};
+  color: ${({ isActive }) => (isActive ? color.black : color.gray300)};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
