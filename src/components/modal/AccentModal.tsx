@@ -71,6 +71,7 @@ const AccentModalLayout = styled.div<{type?: string}>`
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  
 `;
 
 const TextBox = styled.div`
