@@ -182,7 +182,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   flex: 1;
-    margin-top: 72px;
+    margin-top: 52px;
   padding-bottom: 20px;
 `;
 
