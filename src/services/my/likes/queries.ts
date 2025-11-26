@@ -1,22 +1,22 @@
 export const GET_LIKED_QUESTIONS = `query MyQuery {
   board {
-    getMyQuestions(page: 10, size: 10) {
+    getBookmarkedQuestions {
       content {
-        userProfileImage
+        bookmarkCount
+        content
+        commentCount
         viewCount
+        userProfileImage
         userName
         userId
         updatedAt
         title
         isBookmarked
-        createdAt
         id
-        content
-        commentCount
-        bookmarkCount
+        createdAt
       }
-      totalElements
       totalPages
+      totalElements
     }
   }
 }`;
