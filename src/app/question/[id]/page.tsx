@@ -173,7 +173,7 @@ const QuestionDetailPage = () => {
                 <Divider />
 
                 <CommentsSection>
-                    <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
+                    <CommentCount>댓글 <CommentCountNumber>{comments?.totalElements || 0}</CommentCountNumber></CommentCount>
 
                     {commentsError ? (
                         <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
@@ -254,8 +254,6 @@ const QuestionDetailPage = () => {
                     )}
                 </CommentsSection>
             </Container>
-
-            {/* 하단 고정 댓글/답글 입력창 */}
             <CommentInputWrapper>
                 {replyingTo && (
                     <ReplyingToBar>
@@ -395,17 +393,22 @@ const CommentsSection = styled.div`
   display: flex;
   color: ${color.black};
   flex-direction: column;
+    border-radius: 4px;
   width: 100%;
 `;
 
 const CommentCount = styled.p`
-  ${font.H2}
-  font-weight: 400;
+  ${font.P1}
   color: ${color.black};
   line-height: 1;
   margin: 0;
   padding: 20px;
   padding-bottom: 0;
+`;
+
+const CommentCountNumber = styled.span`
+    ${font.P1}
+    color: ${color.primary};
 `;
 
 const CommentItemWrapper = styled.div<{ isReply?: boolean }>`
@@ -432,13 +435,13 @@ const CommentHeader = styled.div`
 
 const AuthorName = styled.p`
   font-family: Pretendard, sans-serif;
-  ${font.H2}
+  ${font.H1}
   color: ${color.black};
   margin: 0;
 `;
 
 const CommentContent = styled.p`
-  ${font.H2}
+  ${font.P1}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -578,7 +581,7 @@ const CommentInputField = styled.textarea`
   background: ${color.gray100};
   border: none;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 10px 4px 12px 12px;
   font-family: Pretendard, sans-serif;
   ${font.H2}
   color: ${color.black};
@@ -598,9 +601,7 @@ const CommentSubmitButton = styled.button`
   border: none;
   border-radius: 6px;
   padding: 10px 16px;
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+    ${font.P1}
   color: ${color.white};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
