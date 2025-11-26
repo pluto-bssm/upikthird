@@ -168,7 +168,6 @@ const StyledPage = styled.div`
   min-height: 100vh;
   padding-bottom: 80px;
   display: flex;
-    gap: 20%;
   flex-direction: column;
 `;
 
@@ -183,8 +182,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-    
-    margin-top: 50px;
+    gap:20%;
+    margin-top: 70px;
   padding-bottom: 20px;
 `;
 
