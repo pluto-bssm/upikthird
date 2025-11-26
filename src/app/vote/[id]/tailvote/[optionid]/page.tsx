@@ -21,8 +21,6 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const newPath = path.replace(`/tailvote/${id}`, "");
 
   const urls =  [] = newPath.split("/").filter(Boolean);
-  console.log(`${urls[0]}/${urls[1]}/report`);
-
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
 
