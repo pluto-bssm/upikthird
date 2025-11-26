@@ -143,7 +143,7 @@ const QuestionDetailPage = () => {
                                 </MetaItem>
                                 <BookmarkBox>
                                     <Bookmark width={20} />
-                                    <BookmarkText>{question.likes}</BookmarkText>
+                                    <BookmarkText>{question.bookmarkCount}</BookmarkText>
                                 </BookmarkBox>
                             </MetaInfo>
                         </Section>
