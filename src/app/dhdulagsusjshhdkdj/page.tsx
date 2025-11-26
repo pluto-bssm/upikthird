@@ -55,7 +55,7 @@ const Dashboard = () => {
   }, []);
 
   const handleReportClick = (id: string) => {
-    router.push(`/dashboard/${id}`);
+    router.push(`/dhdulagsusjshhdkdj/${id}`);
   };
 
   return (
@@ -89,7 +89,7 @@ const Dashboard = () => {
                   <ReportContent>
                     <ReportReason>{report.reason}</ReportReason>
                     <ReportDetails>
-                      신고자: {report.authorName} &nbsp;&nbsp;신고 대상:{" "}
+                       &nbsp;&nbsp;신고 대상:{" "}
                       {report.targetType}
                     </ReportDetails>
                   </ReportContent>
@@ -177,17 +177,21 @@ const ReportContent = styled.div`
   gap: 6px;
   flex: 1;
   padding: 0 16px;
+  min-width: 0;
 `;
 
 const ReportReason = styled.h3`
-  font-family: ${font.D3};
+  ${font.D3};
   color: ${color.black};
   margin: 0;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ReportDetails = styled.p`
-  font-family: ${font.H3};
+  ${font.H3};
   color: ${color.black};
   margin: 0;
   font-size: 14px;

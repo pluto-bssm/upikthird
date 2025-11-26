@@ -10,7 +10,7 @@ import { useState , use } from "react";
 import AccentModal from "@/components/modal/AccentModal";
 import { Completevote } from "../../../../../../public/svg/svg";
 import { useCreateTailVote } from "@/hooks/useVotes";
-import {  useCreateVoteResponse } from "@/hooks/useVotes";
+import {  useCreateVoteResponse, useVote } from "@/hooks/useVotes";
 
 
 const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -30,12 +30,20 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
     error: responseError,
   } = useCreateVoteResponse();
 
+  const {
+    vote
+  } = useVote(id);
+
 
   const { createTailVote, loading, error } = useCreateTailVote();
   void error;
   const voteId = newPath.split("/").filter(Boolean).pop() || "";
   
   const HandleTailVoteMake = async () => {
+
+
+
+    if (vote?.status === "OPEN") {
 
     await createVoteResponse(id,voteId );
 
@@ -55,6 +63,10 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
     } catch (err) {
       void err;
       alert("투표 생성에 실패했습니다. 다시 시도해주세요.");
+    }
+  }
+    else {
+      alert("투표가 종료되어 꼬리 질문에 응답할 수 없습니다.");
     }
   };
 
