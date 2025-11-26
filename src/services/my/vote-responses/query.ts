@@ -16,7 +16,7 @@ export const GET_MY_VOTE_RESPONSES = `
 `;
 
 export const GET_VOTE_RESPONSE_DETAIL = `
-  query GetVoteDetail($voteId: ID!) {
+  query GetVoteDetail($voteId: String!) {
     vote {
       getVoteById(id: $voteId) {
         id
