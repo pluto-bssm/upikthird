@@ -460,7 +460,7 @@ const CommentFooter = styled.div`
 
 const FooterItem = styled.p`
   ${font.P2}
-  color: ${color.black};
+  color: ${color.gray300};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
@@ -469,7 +469,7 @@ const FooterItem = styled.p`
 
 const FooterReportItem = styled.p`
   ${font.P2}
-  color: ${color.black};
+  color: ${color.gray300};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
