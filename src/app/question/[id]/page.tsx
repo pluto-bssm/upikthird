@@ -403,9 +403,9 @@ const CommentCount = styled.p`
   background-color: ${color.gray50};
   color: ${color.black};
   line-height: 1;
-  margin: 0;
+  margin: 20px;
+    width: fit-content;
   padding: 20px;
-  padding-bottom: 0;
 `;
 
 const CommentCountNumber = styled.span`
@@ -574,6 +574,7 @@ const CancelReplyButton = styled.button`
 const CommentInputBox = styled.div`
   display: flex;
   gap: 10px;
+    background-color: ${color.white};
   align-items: center;
   padding: 12px 20px;
 `;
@@ -582,11 +583,12 @@ const CommentInputField = styled.textarea`
   flex: 1;
   border: none;
   border-radius: 8px;
-  padding: 10px 4px 12px 12px;
+  padding: 10px;
   ${font.H2}
   line-height: 22px;
   color: ${color.gray50};
   outline: none;
+    background-color: ${color.white};
   resize: none;
     max-height: 100px;
     
