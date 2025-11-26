@@ -52,7 +52,7 @@ export default function MainPage() {
       <MainSection>
         <HeroCard>
           <Main preserveAspectRatio="xMidYMid slice" />
-          <HeroTitle>오늘의 투표</HeroTitle>
+          <HeroTitle>{todayVote?.title || "오늘의 투표"}</HeroTitle>
           <HeroHighlight>
             <HeroLeftText>{voteOptions[0]?.content || ""}</HeroLeftText>
             <VsWrapper>
