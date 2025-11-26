@@ -159,6 +159,7 @@ const QuestionCreatePage = () => {
 
 export default QuestionCreatePage;
 
+
 const StyledPage = styled.div`
   width: 100%;
   max-width: 600px;
@@ -309,7 +310,7 @@ const ModalOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 10000;
 `;
 
 const ModalContainer = styled.div`
