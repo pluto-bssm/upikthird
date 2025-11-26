@@ -166,7 +166,8 @@ const StyleQue =styled.div`
     display: flex;
     width: 100%;
     height: 100%;
-    gap: 20%
+    gap: 20%;
+    flex-direction: column;
 `;
 
 
