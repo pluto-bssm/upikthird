@@ -126,6 +126,7 @@ const VoteResponseLayout = styled.div`
   width: 100%;
   max-width: 600px;
   display: flex;
+    margin-top: 10%;
   justify-content: center;
   background-color: ${color.white};
   min-height: 100vh;
