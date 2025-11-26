@@ -158,10 +158,10 @@ const MemberChoseBottomSheet = ({ isOpen, setIsOpen }: Props) => {
 
                     {index === 1 &&
                       selectedOption === 1 &&
-                      ` (${selectedTime}일)`}
+                      ` (${customDays}일)`}
                     {index === 2 &&
                       selectedOption === 2 &&
-                      ` (${selectedMembers}명)`}
+                      ` (${participantThreshold}명)`}
                   </OptionTitle>
                 </OptionContent>
               </OptionItem>
