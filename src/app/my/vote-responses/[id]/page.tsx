@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import { useVoteResponseDetail } from "@/hooks/useVoteResponses";
 import Ballot from "@/components/vote/ballot";
+import VoteBarChart from "@/components/guide/VoteBarChart";
 
 const VoteResponseDetailPage = ({
   params,
@@ -101,6 +102,7 @@ const VoteResponseDetailPage = ({
             <TailResponseText>{tailResponse}</TailResponseText>
           </TailResponseBox>
         </TailQuestionSection>
+          <VoteBarChart voteId={detail.id}/>
 
         <DateTimeSection>
           <DateTimeItem>
