@@ -445,6 +445,7 @@ const CommentContent = styled.p`
   color: ${color.black};
   line-height: 1;
   margin: 0;
+    min-height: 200px;
   word-break: break-word;
   white-space: normal;
 `;
@@ -578,21 +579,15 @@ const CommentInputBox = styled.div`
 
 const CommentInputField = styled.textarea`
   flex: 1;
-  background: ${color.gray100};
   border: none;
   border-radius: 8px;
   padding: 10px 4px 12px 12px;
-  font-family: Pretendard, sans-serif;
   ${font.H2}
   color: ${color.black};
   outline: none;
   resize: none;
-  min-height: 30px;
-  max-height: 100px;
-
-  &::placeholder {
-    color: ${color.gray500};
-  }
+    max-height: 40px;
+    
 `;
 
 const CommentSubmitButton = styled.button`
