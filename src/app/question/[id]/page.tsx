@@ -529,7 +529,7 @@ const ErrorSection = styled.div`
 /* 하단 고정 댓글 입력 영역 */
 const CommentInputWrapper = styled.div`
   position: fixed;
-  bottom: 80px; /* NavigationBar 높이 */
+  bottom: 80px; 
   left: 0;
   right: 0;
   max-width: 600px;
@@ -584,7 +584,7 @@ const CommentInputField = styled.textarea`
   color: ${color.black};
   outline: none;
   resize: none;
-  min-height: 40px;
+  min-height: 30px;
   max-height: 100px;
 
   &::placeholder {
