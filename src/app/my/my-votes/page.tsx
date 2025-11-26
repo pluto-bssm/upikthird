@@ -64,7 +64,7 @@ const MyVotesPage = () => {
                                 title={vote.title}
                                 viewCount={vote.totalResponses}
                                 finishDate={vote.finishedAt}
-                                onClick={() => router.push(`/my/my-votes/${vote.id}`)}
+                                onClick={() => router.push(`/vote/${vote.id}`)}
                             />
                         );
                     })
