@@ -8,7 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Button from "@/packages/ui/src/button/Button";
 import Ballot from "@/components/vote/ballot";
 import { useState, useEffect, use } from "react";
-import { useVote, useCreateVoteResponse } from "@/hooks/useVotes";
+import { useVote } from "@/hooks/useVotes";
 
 const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
@@ -17,22 +17,10 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const { id } = use(params);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("voteId", String(id));
-    }
-  }, [id]);
 
   const { vote, loading, error, refetch } = useVote(id);
   void refetch;
   void error;
-
-  const {
-    createVoteResponse,
-    loading: responseLoading,
-    error: responseError,
-  } = useCreateVoteResponse();
-  void responseError;
 
   const labels = ["A", "B", "C", "D", "E"];
 
@@ -46,17 +34,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
       alert("투표 정보를 불러올 수 없습니다.");
       return;
     }
-
-    try {
-      const result = await createVoteResponse(id, selectedOption);
-
-      if (result) {
-        router.push(`${path}/tailvote`);
-      }
-    } catch (err) {
-      void err;
-      alert("투표 참여 중 오류가 발생했습니다.");
-    }
+    router.push(`${path}/tailvote/${selectedOption}`);
   };
 
   if (loading) {
@@ -120,7 +98,7 @@ const DesVote = ({ params }: { params: Promise<{ id: string }> }) => {
       </VoteBlock>
 
       <Button
-        text={responseLoading ? "투표 중..." : "투표 완료하기"}
+        text={"투표 완료하기"}
         onCkick={handleVoteSubmit}
       />
     </DesVoteLayout>

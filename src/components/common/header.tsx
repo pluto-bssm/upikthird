@@ -225,9 +225,7 @@ const Header = ({
               <Report
                 width="25"
                 height="25"
-                onClick={() => {
-                  router.push(`${path}/report`);
-                }}
+                onClick={onSubmit}
               />
               <Close width="25" height="25" onClick={onClose} />
             </RightItemBox>
