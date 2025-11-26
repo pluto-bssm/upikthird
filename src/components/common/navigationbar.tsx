@@ -24,7 +24,7 @@ const NavigationBar = () => {
           onClick={() => {
             router.push("/main");
           }}
-          color={isActive("/main") ? color.black : color.gray300}
+          color={isActive("main") ? color.black : color.gray300}
         />
         <Vote
           width="40"
