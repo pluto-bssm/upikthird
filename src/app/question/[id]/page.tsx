@@ -445,7 +445,7 @@ const CommentContent = styled.p`
   color: ${color.black};
   line-height: 1;
   margin: 0;
-    min-height: 200px;
+    min-height: 300px;
   word-break: break-word;
   white-space: normal;
 `;
@@ -583,6 +583,7 @@ const CommentInputField = styled.textarea`
   border-radius: 8px;
   padding: 10px 4px 12px 12px;
   ${font.H2}
+  line-height: 18px;
   color: ${color.black};
   outline: none;
   resize: none;
