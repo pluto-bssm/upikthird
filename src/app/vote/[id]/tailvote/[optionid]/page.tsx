@@ -6,33 +6,50 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Button from "@/packages/ui/src/button/Button";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState , use } from "react";
 import AccentModal from "@/components/modal/AccentModal";
-import { Completevote } from "../../../../../public/svg/svg";
+import { Completevote } from "../../../../../../public/svg/svg";
 import { useCreateTailVote } from "@/hooks/useVotes";
+import {  useCreateVoteResponse } from "@/hooks/useVotes";
 
 
-const TailVote = () => {
+const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
+
+  const { id } = use(params);
   const router = useRouter();
   const path = usePathname();
-  const newPath = path.replace("tailvote", "");
+  const newPath = path.replace(`tailvote/${id}`, "");
+
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
+
+  const {
+    createVoteResponse,
+    loading: responseLoading,
+    error: responseError,
+  } = useCreateVoteResponse();
+
 
   const { createTailVote, loading, error } = useCreateTailVote();
   void error;
   const voteId = newPath.split("/").filter(Boolean).pop() || "";
 
+      console.log(id,voteId);
+
+  
   const HandleTailVoteMake = async () => {
+
+    await createVoteResponse(id,voteId );
+
     try {
     
       if (!content.trim()) {
-        const result = createTailVote("선지가 마음에 들어서", voteId);
+        const result = createTailVote("선지가 마음에 들어서", id);
         setIsOpen(true);
         return;
       }
 
-      const result = await createTailVote(content, voteId);
+      const result = await createTailVote(content, id);
 
       if (result) {
         setIsOpen(true);
@@ -82,7 +99,7 @@ const TailVote = () => {
           onClick={() => {
             router.push("/vote");
           }}
-          voteId={voteId}
+          voteId={id}
         />
       )}
     </TailVoteLayout>
