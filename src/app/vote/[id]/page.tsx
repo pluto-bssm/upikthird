@@ -116,6 +116,7 @@ const DesVoteLayout = styled.div`
   min-height: 100vh;
   flex-direction: column;
   align-items: center;
+  margin-bottom : 40px;
 `;
 
 const VoteContent = styled.div`
@@ -157,6 +158,5 @@ const VoteBlock = styled.div`
   align-items: center;
   gap: 40px;
   margin-top: 100px;
-  height: 60%;
-  margin-bottom: 40px;
+  height: 72%;
 `;
