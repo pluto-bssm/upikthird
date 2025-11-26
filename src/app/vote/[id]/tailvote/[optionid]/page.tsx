@@ -18,7 +18,10 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const router = useRouter();
   const path = usePathname();
-  const newPath = path.replace(`tailvote/${id}`, "");
+  const newPath = path.replace(`/tailvote/${id}`, "");
+
+  const urls =  [] = newPath.split("/").filter(Boolean);
+  console.log(`${urls[0]}/${urls[1]}/report`);
 
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
@@ -33,9 +36,6 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
   const { createTailVote, loading, error } = useCreateTailVote();
   void error;
   const voteId = newPath.split("/").filter(Boolean).pop() || "";
-
-      console.log(id,voteId);
-
   
   const HandleTailVoteMake = async () => {
 
@@ -65,7 +65,7 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
       <Header
         types={"report and close"}
         onSubmit={() => {
-          router.push(`${newPath}/report`);
+          window.location.href = (`/${urls[0]}/${urls[1]}/report`);
         }}
       />
 

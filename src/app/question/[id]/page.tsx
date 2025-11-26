@@ -10,12 +10,13 @@ import { useQuestionDetail, useQuestionComments } from "@/hooks/useBoard";
 import * as boardApi from "@/services/board/api";
 import { Bookmark } from "../../../../public/svg/svg";
 import font from "@/packages/design-system/src/font";
+import { usePathname } from "next/navigation";
 
 const QuestionDetailPage = () => {
   const router = useRouter();
   const params = useParams();
   const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
-
+  const path = usePathname();
   const { question, loading: questionLoading } = useQuestionDetail(
     boardId as string,
   );
@@ -111,7 +112,7 @@ const QuestionDetailPage = () => {
 
   return (
     <StyledPage>
-      <Header types="report and close" text="" onClose={handleReportClick} />
+      <Header types="report and close" text="" onClose={handleReportClick} onSubmit={() => {router.push(`${path}/report`);}} />
       <Container>
         {questionLoading ? (
           <LoadingSection>로딩 중...</LoadingSection>
