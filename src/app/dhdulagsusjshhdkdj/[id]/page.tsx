@@ -13,7 +13,7 @@ import {
   rejectReport,
 } from "@/services/dashboard/api";
 
-type ReportItem = {
+type ReportItemType = {
   authorId: string;
   authorName: string;
   category: string;
@@ -34,8 +34,8 @@ const DashboardDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
-  const [allReports, setAllReports] = useState<ReportItem[]>([]);
-  const [items, setItems] = useState<ReportItem[]>([]);
+  const [allReports, setAllReports] = useState<ReportItemType[]>([]);
+  const [items, setItems] = useState<ReportItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingAll, setLoadingAll] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -88,6 +88,21 @@ const DashboardDetailPage = () => {
 
   const report = useMemo(() => items[0], [items]);
 
+  const parsedReason = useMemo(() => {
+    if (!report?.reason) return { main: "-", detail: "-" };
+    const parts = report.reason.split("\n\n");
+    const detailPart = parts[1] || "-";
+    return {
+      main: parts[0] || "-",
+      detail: detailPart.replace(/^상세\s*내용\s*:\s*/i, "").trim() || "-",
+    };
+  }, [report]);
+
+  const getTargetTypeInKorean = (targetType: string) => {
+    if (targetType.toLowerCase() === "vote") return "투표";
+    return targetType;
+  };
+
   if (!loading && !report) {
     return (
       <PageContainer>
@@ -129,7 +144,7 @@ const DashboardDetailPage = () => {
       const allData = await getAllReports();
       setAllReports(allData);
 
-      router.push("/dashboard");
+      router.push("/dhdulagsusjshhdkdj");
     } catch (e) {
       alert(
         e instanceof Error ? e.message : "신고 반려 중 오류가 발생했습니다.",
@@ -140,7 +155,7 @@ const DashboardDetailPage = () => {
   };
 
   const handleReportClick = (targetId: string) => {
-    router.push(`/dashboard/${targetId}`);
+    router.push(`/dhdulagsusjshhdkdj/${targetId}`);
   };
 
   return (
@@ -167,24 +182,22 @@ const DashboardDetailPage = () => {
               {errorAll && <ReportDetails>{errorAll}</ReportDetails>}
               {!loadingAll &&
                 !errorAll &&
-                allReports.map((r: ReportItem, idx: number) => (
+                allReports.map((r: ReportItemType, idx: number) => (
                   <ReportItem
                     key={`${r.targetType}-${r.targetId}-${r.createdAt}-${idx}`}
                     onClick={() => handleReportClick(String(r.targetId))}
                     isSelected={String(r.targetId) === id}
                   >
                     <ReportContent>
-                      <ReportReason>{r.reason}</ReportReason>
+                      <ReportReason>
+                        {r.reason.split("\n\n")[1]?.replace(/^상세\s*내용\s*:\s*/i, "").trim() || r.reason}
+                      </ReportReason>
                       <ReportDetails>
-                        신고자: {r.authorName} &nbsp;&nbsp;신고 대상:{" "}
-                        {r.targetType}
+                        신고 대상: {getTargetTypeInKorean(r.targetType)}
                       </ReportDetails>
                     </ReportContent>
 
                     <ReportMeta>
-                      <Timestamp>
-                        {new Date(r.createdAt).toLocaleString("ko-KR")}
-                      </Timestamp>
                       <ArrowIcon>
                         <Nexts width="24" height="24" />
                       </ArrowIcon>
@@ -204,12 +217,12 @@ const DashboardDetailPage = () => {
           >
             <DetailSection>
               <DetailLabel>신고 사유</DetailLabel>
-              <DetailContentBox>{report?.reason || "-"}</DetailContentBox>
+              <DetailContentBox>{parsedReason.main}</DetailContentBox>
             </DetailSection>
 
             <DetailSection>
               <DetailLabel>상세 내용</DetailLabel>
-              <DetailContentBox>{report?.content || "-"}</DetailContentBox>
+              <DetailContentBox>{parsedReason.detail}</DetailContentBox>
             </DetailSection>
 
             <DetailSection>
@@ -220,15 +233,15 @@ const DashboardDetailPage = () => {
             </DetailSection>
 
             <DetailSection>
-              <DetailOtherLabel>신고 대상자 아이디/이름</DetailOtherLabel>
+              <DetailOtherLabel>신고 대상자 아이디</DetailOtherLabel>
               <DetailOtherText>
-                {report?.targetId}/{report?.targetTitle}
+                {report?.targetId}
               </DetailOtherText>
             </DetailSection>
 
             <DetailSection>
               <DetailOtherLabel>신고 대상</DetailOtherLabel>
-              <DetailOtherText>{report?.targetType}</DetailOtherText>
+              <DetailOtherText>{getTargetTypeInKorean(report?.targetType || "")}</DetailOtherText>
             </DetailSection>
 
             <ButtonContainer>
@@ -347,12 +360,6 @@ const ReportMeta = styled.div`
   gap: 12px;
 `;
 
-const Timestamp = styled.span`
-  ${font.H3};
-  color: #999;
-  font-size: 14px;
-`;
-
 const ArrowIcon = styled.div`
   display: flex;
   align-items: center;
@@ -368,7 +375,7 @@ const DetailSection = styled.div`
 `;
 
 const DetailLabel = styled.p`
-  font-family: ${font.D3};
+  ${font.D3};
   color: ${color.black};
   margin: 0;
 `;
@@ -377,7 +384,7 @@ const DetailContentBox = styled.div`
   border-radius: 16px;
   border: 1px solid ${color.gray200};
   padding: 12px 16px;
-  font-family: ${font.H1};
+  ${font.H1};
   color: ${color.gray700};
 `;
 
@@ -393,7 +400,7 @@ const ActionButton = styled.button<{ buttonType: "reject" | "addWarning" }>`
   padding: 12px 20px;
   border-radius: 100px;
   border: none;
-  font-family: ${font.D3};
+  ${font.D3};
   cursor: pointer;
   transition: background-color 0.2s;
   background-color: ${color.gray200};
@@ -418,13 +425,13 @@ const ErrorMessage = styled.div`
 `;
 
 const DetailOtherLabel = styled.p`
-  font-family: ${font.D3};
+  ${font.D3};
   color: ${color.gray500};
   margin: 0;
 `;
 
 const DetailOtherText = styled.p`
-  font-family: ${font.H1};
+  ${font.H1};
   color: ${color.black};
   background-color: transparent;
   margin: 0;
