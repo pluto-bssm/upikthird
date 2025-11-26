@@ -98,6 +98,7 @@ const TailVote = ({ params }: { params: Promise<{ id: string }> }) => {
             router.push("/vote");
           }}
           voteId={id}
+          type="wide"
         />
       )}
     </TailVoteLayout>

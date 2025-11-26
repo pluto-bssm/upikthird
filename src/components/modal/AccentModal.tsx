@@ -14,6 +14,7 @@ type AccentModalProps = {
   subText?: string;
   onClick: () => void;
   voteId?: string;
+  type? : string;
 };
 
 const AccentModal = ({
@@ -23,10 +24,11 @@ const AccentModal = ({
   subText,
   voteId,
   onClick,
+  type
 }: AccentModalProps) => {
   return (
     <Overlay>
-      <AccentModalLayout>
+      <AccentModalLayout type={type}>
         <TextBox>
           <Title>
             {leftText} <Accent>{accentText}</Accent> {rightText}
@@ -57,14 +59,14 @@ const Overlay = styled.div`
   top: 0;
 `;
 
-const AccentModalLayout = styled.div`
+const AccentModalLayout = styled.div<{type?: string}>`
   background-color: ${color.white};
   border: 2px solid ${color.gray200};
-  border-radius: 24px;
+  border-radius: ${props => props.type === "wide" ? "0px" : "24px"};
   padding: 50px 20px;
-  width: 80%;
-  max-width: 400px;
-
+  width: ${props => props.type === "wide" ? "100%" : "80%"};
+  max-width: 600px;
+  height: ${props => props.type === "wide" ? "100%" : "auto"};
   display: flex;
   flex-direction: column;
   align-items: center;
