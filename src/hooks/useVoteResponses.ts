@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import * as voteResponsesApi from "@/services/my/vote-responses/api";
-import type {MyVotePayload, VotePayload} from "@/types/graphql";
+import type { MyVotePayload, VotePayload } from "@/types/graphql";
 
 interface UseMyVoteResponsesOptions {
   autoFetch?: boolean;

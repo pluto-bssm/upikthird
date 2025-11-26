@@ -40,7 +40,7 @@ const SavedGuidePage = () => {
 
   return (
     <StyledSavedGuidePage>
-        <Header types="close" text="저장한가이드" onClose={handleClose} />
+      <Header types="close" text="저장한가이드" onClose={handleClose} />
       <SavedGuidePageContent>
         {!loading && error && (
           <NoResultsMessage>가이드를 불러올 수 없습니다.</NoResultsMessage>
@@ -77,11 +77,11 @@ export default SavedGuidePage;
 const StyledSavedGuidePage = styled.div`
   width: 100%;
   max-width: 600px;
-    height: 100%;
+  height: 100%;
   margin: 0 auto;
-    background-color: ${color.white};
+  background-color: ${color.white};
   padding-top: 80px;
-    min-height: 100vh;
+  min-height: 100vh;
 `;
 
 const SavedGuidePageContent = styled.div`

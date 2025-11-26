@@ -235,26 +235,31 @@ const Header = ({
         </HeaderLayout>
       );
 
-      case "report and bookmark":
-          return (
-              <HeaderLayout>
-                  <HeaderItemBox>
-                      <LeftItemBox>
-                          <Back
-                              width="22"
-                              height="22"
-                              onClick={() => {
-                                  router.back();
-                              }}
-                          />
-                      </LeftItemBox>
-                      <RightItemBox>
-                          <Report width="25" height="25" onClick={onClose} />
-                          <Bookmark width="25" height="25" onClick={onToggleBookmark} />
-                      </RightItemBox>
-                  </HeaderItemBox>
-              </HeaderLayout>
-          );
+    case "report and bookmark":
+      return (
+        <HeaderLayout>
+          <HeaderItemBox>
+            <LeftItemBox>
+              <Back
+                width="22"
+                height="22"
+                onClick={() => {
+                  router.back();
+                }}
+              />
+            </LeftItemBox>
+            <RightItemBox>
+              <Report width="25" height="25" onClick={onClose} />
+              <Bookmark
+                width="25"
+                height="25"
+                onClick={onToggleBookmark}
+                filled={bookmarked} // 추가
+              />
+            </RightItemBox>
+          </HeaderItemBox>
+        </HeaderLayout>
+      );
 
     case "title":
       return (

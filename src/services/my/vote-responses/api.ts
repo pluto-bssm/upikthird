@@ -23,45 +23,45 @@ export interface GetVoteDetailResponse {
 }
 
 export async function getMyVoteResponses(): Promise<VotePayload[]> {
-    const token = Storage.getItem(TOKEN.ACCESS);
+  const token = Storage.getItem(TOKEN.ACCESS);
 
-    const response = await upik.post(
-        API.GRAPHQL_URL,
-        {
-            query: GET_MY_VOTE_RESPONSES,
-        } as GraphQLRequest,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
+  const response = await upik.post(
+    API.GRAPHQL_URL,
+    {
+      query: GET_MY_VOTE_RESPONSES,
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    const allVotes = response.data?.data?.vote?.getAllVotes || [];
-    return allVotes.filter((vote: VotePayload) => vote.hasVoted === true);
+  const allVotes = response.data?.data?.vote?.getAllVotes || [];
+  return allVotes.filter((vote: VotePayload) => vote.hasVoted === true);
 }
 
 export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
-    const token = Storage.getItem(TOKEN.ACCESS);
+  const token = Storage.getItem(TOKEN.ACCESS);
 
-    const response = await upik.post(
-        API.GRAPHQL_URL,
-        {
-            query: GET_VOTE_RESPONSE_DETAIL,
-            variables: { voteId: id }, // variables 추가
-        } as GraphQLRequest,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
+  const response = await upik.post(
+    API.GRAPHQL_URL,
+    {
+      query: GET_VOTE_RESPONSE_DETAIL,
+      variables: { voteId: id }, // variables 추가
+    } as GraphQLRequest,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    const voteData = response.data?.data?.vote?.getVoteById;
+  const voteData = response.data?.data?.vote?.getVoteById;
 
-    if (!voteData) {
-        throw new Error("Vote detail not found");
-    }
+  if (!voteData) {
+    throw new Error("Vote detail not found");
+  }
 
-    return voteData;
+  return voteData;
 }

@@ -123,7 +123,7 @@ const CardContainer = styled.div`
 
 const VoteSection = styled.div`
   margin-bottom: 24px;
-    margin-top: 20px;
+  margin-top: 20px;
 `;
 
 const SectionLabel = styled.span<{ color?: string }>`

@@ -1,0 +1,15 @@
+import { SVGProps } from "react";
+
+const BlackBookmark = (props: SVGProps<SVGSVGElement>) => {
+  <svg
+    {...props}
+    xmlns="
+http://www.w3.org/2000/svg"
+    viewBox="0 -960 960 960"
+    fill="#e3e3e3"
+  >
+    <path d="m480-240-168 72q-40 17-76-6.5T200-241v-519q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v519q0 43-36 66.5t-76 6.5l-168-72Z" />
+  </svg>;
+};
+
+export default BlackBookmark;

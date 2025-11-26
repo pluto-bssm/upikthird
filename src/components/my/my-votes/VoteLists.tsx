@@ -1,42 +1,42 @@
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import styled from "@emotion/styled";
-import {Views} from "../../../../public/svg";
+import { Views } from "../../../../public/svg";
 import VoteBlockImage from "@/components/vote/voteblockimage";
 
 type VoteListsProps = {
-    category: string;
-    title: string;
-    viewCount: number;
-    finishDate: number;
-    onClick?: () => void;
+  category: string;
+  title: string;
+  viewCount: number;
+  finishDate: number;
+  onClick?: () => void;
 };
 
 const VoteLists = ({
-                       category,
-                       title,
-                       viewCount,
-                       finishDate,
-                       onClick,
-                   }: VoteListsProps) => {
-    return (
-        <VoteBlockLayout onClick={onClick}>
-            <VoteBlockImage category={category} />
-            <VoteContentLayout>
-                <Title>{title}</Title>
-                <VoteInfoBox>
-                    <VoteInfoUpperBox>
-                        <Category>{category}</Category>
-                        <VoteViewsBox>
-                            <Views width="15" height="15" />
-                            <ViewCount>{viewCount}</ViewCount>
-                        </VoteViewsBox>
-                    </VoteInfoUpperBox>
-                    <FinishDate>{finishDate}</FinishDate>
-                </VoteInfoBox>
-            </VoteContentLayout>
-        </VoteBlockLayout>
-    );
+  category,
+  title,
+  viewCount,
+  finishDate,
+  onClick,
+}: VoteListsProps) => {
+  return (
+    <VoteBlockLayout onClick={onClick}>
+      <VoteBlockImage category={category} />
+      <VoteContentLayout>
+        <Title>{title}</Title>
+        <VoteInfoBox>
+          <VoteInfoUpperBox>
+            <Category>{category}</Category>
+            <VoteViewsBox>
+              <Views width="15" height="15" />
+              <ViewCount>{viewCount}</ViewCount>
+            </VoteViewsBox>
+          </VoteInfoUpperBox>
+          <FinishDate>{finishDate}</FinishDate>
+        </VoteInfoBox>
+      </VoteContentLayout>
+    </VoteBlockLayout>
+  );
 };
 
 export default VoteLists;

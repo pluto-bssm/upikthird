@@ -41,12 +41,12 @@ const MyVotesPage = () => {
           <IsNotFound>만든 투표가 없습니다.</IsNotFound>
         ) : (
           myVotes.map((vote) => (
-              <VoteBlock
-                  key={vote.id}
-                  category={vote.category}
-                  title={vote.title}
-                  viewCount={vote.totalResponses}
-                  finishDate={vote.finishedAt}
+            <VoteBlock
+              key={vote.id}
+              category={vote.category}
+              title={vote.title}
+              viewCount={vote.totalResponses}
+              finishDate={vote.finishedAt}
               onClick={() => router.push(`/my-vote/${vote.id}`)}
             />
           ))

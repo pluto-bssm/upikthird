@@ -23,29 +23,30 @@ import {
   REPORT_BOARD,
   REPORT_COMMENT,
 } from "./mutations";
-import {API, TOKEN} from "@/constants/upik";
+import { API, TOKEN } from "@/constants/upik";
 import { Storage } from "@/apis/storage/storage";
 
 export async function toggleBoardBookmark(boardId: string): Promise<boolean> {
-    const token= Storage.getItem(TOKEN.ACCESS);
-    const response = await upik.post(
-        API.GRAPHQL_URL,
-        {
-            query: `
+  const token = Storage.getItem(TOKEN.ACCESS);
+  const response = await upik.post(
+    API.GRAPHQL_URL,
+    {
+      query: `
         mutation MyMutation {
           board {
             toggleBoardBookmark(boardId: "${boardId}")
           }
         }
       `,
-        },   {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    );
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    return response.data?.data?.board?.toggleBoardBookmark ?? false;
+  return response.data?.data?.board?.toggleBoardBookmark ?? false;
 }
 
 interface GraphQLRequest {
