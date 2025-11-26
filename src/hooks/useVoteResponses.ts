@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import * as voteResponsesApi from "@/services/my/vote-responses/api";
-import type { VotePayload } from "@/types/graphql";
+import type {MyVotePayload, VotePayload} from "@/types/graphql";
 
 interface UseMyVoteResponsesOptions {
   autoFetch?: boolean;
@@ -51,7 +51,7 @@ export function useVoteResponseDetail(
   options: UseVoteResponseDetailOptions = {},
 ) {
   const { id } = options;
-  const [detail, setDetail] = useState<VotePayload | null>(null);
+  const [detail, setDetail] = useState<MyVotePayload | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

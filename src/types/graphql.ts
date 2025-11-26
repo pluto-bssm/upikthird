@@ -30,6 +30,25 @@ export interface VotePayload {
   myTailResponse?: string;
 }
 
+
+export interface MyVotePayload {
+    id: string;
+    title: string;
+    category: string;
+    status: string;
+    totalResponses: number;
+    finishedAt: number;
+    options: OptionWithStats[];
+    hasVoted: boolean;
+    closureType?: VoteClosureType;
+    participantThreshold?: number;
+    mySelectedOptionId?: string;
+    myTailResponse?: string;
+    myOptionContent?: string;
+    myOptionId?: string;
+
+}
+
 export interface MyVote {
   id: string;
   title: string;

@@ -29,6 +29,8 @@ export const GET_VOTE_RESPONSE_DETAIL = `
         totalResponses
         hasVoted
         createdBy
+        myOptionId
+        myOptionContent
         options {
           id
           content

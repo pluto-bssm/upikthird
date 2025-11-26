@@ -42,26 +42,26 @@ export async function getMyVoteResponses(): Promise<VotePayload[]> {
 }
 
 export async function getVoteResponseDetail(id: string): Promise<VotePayload> {
-  const token = Storage.getItem(TOKEN.ACCESS);
+    const token = Storage.getItem(TOKEN.ACCESS);
 
-  const response = await upik.post(
-    API.GRAPHQL_URL,
-    {
-      query: GET_VOTE_RESPONSE_DETAIL,
-    } as GraphQLRequest,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+    const response = await upik.post(
+        API.GRAPHQL_URL,
+        {
+            query: GET_VOTE_RESPONSE_DETAIL,
+            variables: { voteId: id }, // variables 추가
+        } as GraphQLRequest,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
 
-  const myVotes = response.data?.data?.vote?.getMyVotes || [];
-  const voteData = myVotes.find((vote: VotePayload) => vote.id === id);
+    const voteData = response.data?.data?.vote?.getVoteById;
 
-  if (!voteData) {
-    throw new Error("Vote detail not found");
-  }
+    if (!voteData) {
+        throw new Error("Vote detail not found");
+    }
 
-  return voteData;
+    return voteData;
 }
