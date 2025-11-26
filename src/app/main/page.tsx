@@ -46,7 +46,7 @@ export default function MainPage() {
   const voteOptions = todayVote?.options?.slice(0, 2) || [];
 
   return (
-    <GuideLayout>
+    <MainLayout>
       <Header types={"default and no navi"} />
 
       <MainSection>
@@ -75,11 +75,11 @@ export default function MainPage() {
       </MainSection>
 
       <NavigationBar />
-    </GuideLayout>
+    </MainLayout>
   );
 }
 
-const GuideLayout = styled.div`
+const MainLayout = styled.div`
   width: 100%;
   max-width: 600px;
   display: flex;

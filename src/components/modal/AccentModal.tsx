@@ -4,6 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import VoteBarChart from "@/components/guide/VoteBarChart";
 
 type AccentModalProps = {
   icon?: React.ReactNode;
@@ -12,6 +13,7 @@ type AccentModalProps = {
   rightText: string;
   subText?: string;
   onClick: () => void;
+  voteId?: string;
 };
 
 const AccentModal = ({
@@ -19,6 +21,7 @@ const AccentModal = ({
   accentText,
   rightText,
   subText,
+  voteId,
   onClick,
 }: AccentModalProps) => {
   return (
@@ -30,6 +33,8 @@ const AccentModal = ({
           </Title>
           {subText && <SubTitle>{subText}</SubTitle>}
         </TextBox>
+
+        {voteId && <VoteBarChart voteId={voteId} />}
 
         <ConfirmButton onClick={onClick}>확인</ConfirmButton>
       </AccentModalLayout>
