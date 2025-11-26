@@ -173,7 +173,7 @@ const QuestionDetailPage = () => {
                 <Divider />
 
                 <CommentsSection>
-                    <CommentCount>댓글 <CommentCountNumber>{comments?.totalElements || 0}</CommentCountNumber></CommentCount>
+                    <CommentCount>댓글 <CommentCountNumber>{question?.commentCount || 0}</CommentCountNumber></CommentCount>
 
                     {commentsError ? (
                         <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
