@@ -341,14 +341,14 @@ const MetaInfo = styled.div`
 const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
   ${font.P1}
-  color: ${color.black};
+  color: ${color.gray600};
   white-space: nowrap;
 
   &:not(:last-child)::after {
     content: "";
     width: 1px;
     height: 10px;
-    color: ${color.black};
+    color: ${color.gray600};
     margin-left: 6px;
   }
 `;
@@ -363,7 +363,7 @@ const BookmarkBox = styled.div`
 const BookmarkText = styled.span`
   font-family: Pretendard, sans-serif;
   ${font.P1}
-  color: ${color.black};
+  color: ${color.gray600};
 `;
 
 const Divider = styled.div`
@@ -385,6 +385,7 @@ const Content = styled.p`
   color: ${color.black};
   line-height: 24px;
   margin: 0;
+    min-height: 200px;
   word-break: break-word;
   white-space: pre-wrap;
 `;
@@ -399,6 +400,7 @@ const CommentsSection = styled.div`
 
 const CommentCount = styled.p`
   ${font.P1}
+  background-color: ${color.gray50};
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -445,7 +447,6 @@ const CommentContent = styled.p`
   color: ${color.black};
   line-height: 1;
   margin: 0;
-    min-height: 300px;
   word-break: break-word;
   white-space: normal;
 `;
@@ -583,11 +584,11 @@ const CommentInputField = styled.textarea`
   border-radius: 8px;
   padding: 10px 4px 12px 12px;
   ${font.H2}
-  line-height: 18px;
-  color: ${color.black};
+  line-height: 22px;
+  color: ${color.gray50};
   outline: none;
   resize: none;
-    max-height: 40px;
+    max-height: 100px;
     
 `;
 
