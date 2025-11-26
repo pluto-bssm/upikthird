@@ -61,7 +61,7 @@ const Overlay = styled.div`
 
 const AccentModalLayout = styled.div<{type?: string}>`
   background-color: ${color.white};
-  border: 2px solid ${color.gray200};
+  border:  ${props => props.type === "wide" ? "none" : `2px solid ${color.gray200}`};
   border-radius: ${props => props.type === "wide" ? "0px" : "24px"};
   padding: 50px 20px;
   width: ${props => props.type === "wide" ? "100%" : "80%"};
