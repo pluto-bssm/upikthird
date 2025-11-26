@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 import { useVoteResponseDetail } from "@/hooks/useVoteResponses";
 import Ballot from "@/components/vote/ballot";
+import VoteBarChart from "@/components/guide/VoteBarChart";
 
 const VoteResponseDetailPage = ({
   params,
@@ -101,6 +102,7 @@ const VoteResponseDetailPage = ({
             <TailResponseText>{tailResponse}</TailResponseText>
           </TailResponseBox>
         </TailQuestionSection>
+          <VoteBarChart voteId={detail.id}/>
 
         <DateTimeSection>
           <DateTimeItem>
@@ -124,6 +126,7 @@ const VoteResponseLayout = styled.div`
   width: 100%;
   max-width: 600px;
   display: flex;
+    margin-top: 10%;
   justify-content: center;
   background-color: ${color.white};
   min-height: 100vh;

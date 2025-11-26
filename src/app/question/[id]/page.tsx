@@ -13,276 +13,276 @@ import font from "@/packages/design-system/src/font";
 import { usePathname } from "next/navigation";
 
 const QuestionDetailPage = () => {
-  const router = useRouter();
-  const params = useParams();
-  const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+    const router = useRouter();
+    const params = useParams();
+    const boardId = Array.isArray(params?.id) ? params.id[0] : params?.id;
     const path = usePathname();
     const { question, loading: questionLoading } = useQuestionDetail(
-        boardId as string,
+        boardId as string
     );
 
-  const {
-    comments,
-    loading: commentsLoading,
-    error: commentsError,
-    refetch: refetchComments,
-  } = useQuestionComments(boardId as string, { page: 0, size: 10 });
+    const {
+        comments,
+        loading: commentsLoading,
+        error: commentsError,
+        refetch: refetchComments,
+    } = useQuestionComments(boardId as string, { page: 0, size: 10 });
 
-  const [comment, setComment] = React.useState("");
-  const [submitting, setSubmitting] = React.useState(false);
-  const [replyingTo, setReplyingTo] = React.useState<string | null>(null);
-  const [replyContent, setReplyContent] = React.useState("");
-  const [isBookmarked, setIsBookmarked] = React.useState(false);
+    const [comment, setComment] = React.useState("");
+    const [submitting, setSubmitting] = React.useState(false);
+    const [replyingTo, setReplyingTo] = React.useState<{
+        id: string;
+        name: string;
+    } | null>(null);
+    const [isBookmarked, setIsBookmarked] = React.useState(false);
 
-  React.useEffect(() => {
+    React.useEffect(() => {
+        if (!boardId) {
+            console.error("Board ID is missing");
+            return;
+        }
+    }, [boardId]);
+
+    React.useEffect(() => {
+        if (question) {
+            setIsBookmarked(question.isBookmarked || false);
+        }
+    }, [question]);
+
+    const handleReportClick = () => {
+        router.push(`/question/${boardId}/report`);
+    };
+
+    const handleBookmarkClick = async () => {
+        if (!boardId) return;
+
+        try {
+            await boardApi.toggleBoardBookmark(boardId);
+            setIsBookmarked(!isBookmarked);
+        } catch (error) {
+            alert("북마크 처리에 실패했습니다.");
+            console.error("Bookmark error:", error);
+        }
+    };
+
+    const handleReplyClick = (commentId: string, authorName: string) => {
+        if (replyingTo?.id === commentId) {
+            setReplyingTo(null);
+            setComment("");
+        } else {
+            setReplyingTo({ id: commentId, name: authorName });
+            setComment("");
+        }
+    };
+
+    const handleCancelReply = () => {
+        setReplyingTo(null);
+        setComment("");
+    };
+
+    const handleCommentSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!comment.trim() || !boardId) return;
+
+        try {
+            setSubmitting(true);
+
+            if (replyingTo) {
+                // 답글 작성
+                await boardApi.createComment({
+                    boardId: boardId as string,
+                    content: comment,
+                    parentId: replyingTo.id,
+                });
+                setReplyingTo(null);
+            } else {
+                // 일반 댓글 작성
+                await boardApi.createComment({
+                    boardId: boardId as string,
+                    content: comment,
+                });
+            }
+
+            setComment("");
+            await refetchComments();
+        } catch (error) {
+            alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+            console.error("Comment submission error:", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     if (!boardId) {
-      console.error("Board ID is missing");
-      return;
+        return (
+            <StyledPage>
+                <Header
+                    types="report and bookmark"
+                    text=""
+                    onClose={() => router.back()}
+                />
+                <Container>
+                    <ErrorSection>잘못된 접근입니다.</ErrorSection>
+                </Container>
+                <NavigationBar />
+            </StyledPage>
+        );
     }
-  }, [boardId]);
 
-  // question이 로드되면 북마크 상태 초기화
-  React.useEffect(() => {
-    if (question) {
-      setIsBookmarked(question.isBookmarked || false);
-    }
-  }, [question]);
-
-  const handleReportClick = () => {
-    router.push(`/question/${boardId}/report`);
-  };
-
-  const handleBookmarkClick = async () => {
-    if (!boardId) return;
-
-    try {
-      await boardApi.toggleBoardBookmark(boardId);
-      setIsBookmarked(!isBookmarked);
-    } catch (error) {
-      alert("북마크 처리에 실패했습니다.");
-      console.error("Bookmark error:", error);
-    }
-  };
-
-  const handleReplyClick = (commentId: string) => {
-    setReplyingTo(replyingTo === commentId ? null : commentId);
-    setReplyContent("");
-  };
-
-  const handleCommentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!comment.trim() || !boardId) return;
-
-    try {
-      setSubmitting(true);
-      await boardApi.createComment({
-        boardId: boardId as string,
-        content: comment,
-      });
-      setComment("");
-      await refetchComments();
-    } catch (error) {
-      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
-      console.error("Comment submission error:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleReplySubmit = async (
-    e: React.FormEvent,
-    parentCommentId: string,
-  ) => {
-    e.preventDefault();
-    if (!replyContent.trim() || !boardId) return;
-
-    try {
-      setSubmitting(true);
-      await boardApi.createComment({
-        boardId: boardId as string,
-        content: replyContent,
-        parentId: parentCommentId,
-      });
-      setReplyContent("");
-      setReplyingTo(null);
-      await refetchComments();
-    } catch (error) {
-      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
-      console.error("Reply submission error:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (!boardId) {
     return (
-      <StyledPage>
-        <Header
-          types="report and bookmark"
-          text=""
-          onClose={() => router.back()}
-        />
-        <Container>
-          <ErrorSection>잘못된 접근입니다.</ErrorSection>
-        </Container>
-        <NavigationBar />
-      </StyledPage>
-    );
-  }
+        <StyledPage>
+            <Header
+                types="report and bookmark"
+                text=""
+                onClose={handleReportClick}
+                onToggleBookmark={handleBookmarkClick}
+                bookmarked={isBookmarked}
+                onSubmit={() => {
+                    router.push(`${path}/report`);
+                }}
+            />
+            <Container>
+                {questionLoading ? (
+                    <LoadingSection>로딩 중...</LoadingSection>
+                ) : question ? (
+                    <>
+                        <Section>
+                            <Title>{question.title}</Title>
+                            <MetaInfo>
+                                <MetaItem>{question.author?.name || "작성자 미상"}</MetaItem>
+                                <MetaItem>
+                                    {new Date(question.createdAt).toLocaleString("ko-KR")}
+                                </MetaItem>
+                                <BookmarkBox>
+                                    <Bookmark width={20} filled={isBookmarked} />
+                                    <BookmarkText>{question.bookmarkCount}</BookmarkText>
+                                </BookmarkBox>
+                            </MetaInfo>
+                        </Section>
 
-  return (
-    <StyledPage>
+                        <Divider />
 
-      <Header
-        types="report and bookmark"
-        text=""
-        onClose={handleReportClick}
-        onToggleBookmark={handleBookmarkClick}
-        bookmarked={isBookmarked}
-        onSubmit={() => {router.push(`${path}/report`);}}
-      />
-      <Container>
-        {questionLoading ? (
-          <LoadingSection>로딩 중...</LoadingSection>
-        ) : question ? (
-          <>
-            <Section>
-              <Title>{question.title}</Title>
-              <MetaInfo>
-                <MetaItem>{question.author?.name || "작성자 미상"}</MetaItem>
-                <MetaItem>
-                  {new Date(question.createdAt).toLocaleString("ko-KR")}
-                </MetaItem>
-                <BookmarkBox>
-                  <Bookmark width={20} filled={isBookmarked} />
-                  <BookmarkText>{question.bookmarkCount}</BookmarkText>
-                </BookmarkBox>
-              </MetaInfo>
-            </Section>
-
-            <Divider />
-
-            <ContentSection>
-              <Content>{question.content}</Content>
-            </ContentSection>
-          </>
-        ) : (
-          <ErrorSection>질문을 찾을 수 없습니다.</ErrorSection>
-        )}
-
-        <Divider />
-
-        <CommentsSection>
-          <CommentCount>댓글 {comments?.totalElements || 0}</CommentCount>
-
-          {commentsError ? (
-            <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
-          ) : commentsLoading ? (
-            <LoadingText>댓글 로딩 중...</LoadingText>
-          ) : comments?.content && comments.content.length > 0 ? (
-            comments.content.map((comment) => (
-              <React.Fragment key={comment.id}>
-                <CommentItemWrapper isReply={false}>
-                  <CommentBox>
-                    <CommentHeader>
-                      <AuthorName>
-                        {comment.author?.name || "작성자 미상"}
-                      </AuthorName>
-                    </CommentHeader>
-                    <CommentContent>{comment.content}</CommentContent>
-                    <CommentFooter>
-                      <FooterItem>
-                        {new Date(comment.createdAt).toLocaleString("ko-KR")}
-                      </FooterItem>
-                      <FooterReportItem
-                        onClick={() =>
-                          router.push(
-                            `/question/${boardId}/comment-report?commentId=${comment.id}`,
-                          )
-                        }
-                      >
-                        신고하기
-                      </FooterReportItem>
-                      <FooterItem onClick={() => handleReplyClick(comment.id)}>
-                        답글쓰기
-                      </FooterItem>
-                    </CommentFooter>
-                  </CommentBox>
-                </CommentItemWrapper>
-
-                {replyingTo === comment.id && (
-                  <ReplyInputWrapper>
-                    <ReplyInputBox>
-                      <ReplyInputField
-                        placeholder="답글을 입력해주세요"
-                        value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
-                      />
-                      <ReplySubmitButton
-                        onClick={(e) => handleReplySubmit(e, comment.id)}
-                        disabled={
-                          submitting || !replyContent.trim() || !boardId
-                        }
-                      >
-                        등록
-                      </ReplySubmitButton>
-                    </ReplyInputBox>
-                  </ReplyInputWrapper>
+                        <ContentSection>
+                            <Content>{question.content}</Content>
+                        </ContentSection>
+                    </>
+                ) : (
+                    <ErrorSection>질문을 찾을 수 없습니다.</ErrorSection>
                 )}
 
-                {comment.replies &&
-                  comment.replies.length > 0 &&
-                  comment.replies.map((reply) => (
-                    <CommentItemWrapper key={reply.id} isReply={true}>
-                      <CommentBox>
-                        <CommentHeader>
-                          <AuthorName>
-                            {reply.author?.name || "작성자 미상"}
-                          </AuthorName>
-                        </CommentHeader>
-                        <CommentContent>{reply.content}</CommentContent>
-                        <CommentFooter>
-                          <FooterItem>
-                            {new Date(reply.createdAt).toLocaleString("ko-KR")}
-                          </FooterItem>
-                          <FooterReportItem
-                            onClick={() =>
-                              router.push(
-                                `/question/${boardId}/comment-report?commentId=${reply.id}`,
-                              )
-                            }
-                          >
-                            신고하기
-                          </FooterReportItem>
-                        </CommentFooter>
-                      </CommentBox>
-                    </CommentItemWrapper>
-                  ))}
-              </React.Fragment>
-            ))
-          ) : (
-            <NoCommentText>댓글이 없습니다.</NoCommentText>
-          )}
+                <Divider />
 
-          <CommentInputBox>
-            <CommentInputField
-              placeholder="댓글을 입력해주세요"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <CommentSubmitButton
-              onClick={handleCommentSubmit}
-              disabled={submitting || !comment.trim() || !boardId}
-            >
-              등록
-            </CommentSubmitButton>
-          </CommentInputBox>
-        </CommentsSection>
-      </Container>
+                <CommentsSection>
+                    <CommentCount>댓글 <CommentCountNumber>{question?.commentCount || 0}</CommentCountNumber></CommentCount>
 
-      <NavigationBar />
-    </StyledPage>
-  );
+                    {commentsError ? (
+                        <ErrorText>댓글을 불러오는데 실패했습니다.</ErrorText>
+                    ) : commentsLoading ? (
+                        <LoadingText>댓글 로딩 중...</LoadingText>
+                    ) : comments?.content && comments.content.length > 0 ? (
+                        comments.content.map((commentItem) => (
+                            <React.Fragment key={commentItem.id}>
+                                <CommentItemWrapper isReply={false}>
+                                    <CommentBox>
+                                        <CommentHeader>
+                                            <AuthorName>
+                                                {commentItem.author?.name || "작성자 미상"}
+                                            </AuthorName>
+                                        </CommentHeader>
+                                        <CommentContent>{commentItem.content}</CommentContent>
+                                        <CommentFooter>
+                                            <FooterItem>
+                                                {new Date(commentItem.createdAt).toLocaleString(
+                                                    "ko-KR"
+                                                )}
+                                            </FooterItem>
+                                            <FooterReportItem
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/question/${boardId}/comment-report?commentId=${commentItem.id}`
+                                                    )
+                                                }
+                                            >
+                                                신고하기
+                                            </FooterReportItem>
+                                            <FooterItem
+                                                onClick={() =>
+                                                    handleReplyClick(
+                                                        commentItem.id,
+                                                        commentItem.author?.name || "작성자 미상"
+                                                    )
+                                                }
+                                            >
+                                                답글쓰기
+                                            </FooterItem>
+                                        </CommentFooter>
+                                    </CommentBox>
+                                </CommentItemWrapper>
+
+                                {commentItem.replies &&
+                                    commentItem.replies.length > 0 &&
+                                    commentItem.replies.map((reply) => (
+                                        <CommentItemWrapper key={reply.id} isReply={true}>
+                                            <CommentBox>
+                                                <CommentHeader>
+                                                    <AuthorName>
+                                                        {reply.author?.name || "작성자 미상"}
+                                                    </AuthorName>
+                                                </CommentHeader>
+                                                <CommentContent>{reply.content}</CommentContent>
+                                                <CommentFooter>
+                                                    <FooterItem>
+                                                        {new Date(reply.createdAt).toLocaleString("ko-KR")}
+                                                    </FooterItem>
+                                                    <FooterReportItem
+                                                        onClick={() =>
+                                                            router.push(
+                                                                `/question/${boardId}/comment-report?commentId=${reply.id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        신고하기
+                                                    </FooterReportItem>
+                                                </CommentFooter>
+                                            </CommentBox>
+                                        </CommentItemWrapper>
+                                    ))}
+                            </React.Fragment>
+                        ))
+                    ) : (
+                        <NoCommentText>댓글이 없습니다.</NoCommentText>
+                    )}
+                </CommentsSection>
+            </Container>
+            <CommentInputWrapper>
+                {replyingTo && (
+                    <ReplyingToBar>
+                        <ReplyingToText>@{replyingTo.name}에게 답글 작성 중</ReplyingToText>
+                        <CancelReplyButton onClick={handleCancelReply}>
+                            취소
+                        </CancelReplyButton>
+                    </ReplyingToBar>
+                )}
+                <CommentInputBox>
+                    <CommentInputField
+                        placeholder={
+                            replyingTo ? "답글을 입력해주세요" : "댓글을 입력해주세요"
+                        }
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                    <CommentSubmitButton
+                        onClick={handleCommentSubmit}
+                        disabled={submitting || !comment.trim() || !boardId}
+                    >
+                        등록
+                    </CommentSubmitButton>
+                </CommentInputBox>
+            </CommentInputWrapper>
+
+            <NavigationBar />
+        </StyledPage>
+    );
 };
 
 export default QuestionDetailPage;
@@ -302,7 +302,7 @@ const StyledPage = styled.div`
   background-color: ${color.white};
   min-height: 100vh;
   padding-top: 80px;
-  padding-bottom: 80px;
+  padding-bottom: 140px; /* 댓글 입력창 + 네비게이션바 높이 */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -341,14 +341,14 @@ const MetaInfo = styled.div`
 const MetaItem = styled.span`
   font-family: Pretendard, sans-serif;
   ${font.P1}
-  color: ${color.black};
+  color: ${color.gray600};
   white-space: nowrap;
 
   &:not(:last-child)::after {
     content: "";
     width: 1px;
     height: 10px;
-    color: ${color.black};
+    color: ${color.gray600};
     margin-left: 6px;
   }
 `;
@@ -363,7 +363,7 @@ const BookmarkBox = styled.div`
 const BookmarkText = styled.span`
   font-family: Pretendard, sans-serif;
   ${font.P1}
-  color: ${color.black};
+  color: ${color.gray600};
 `;
 
 const Divider = styled.div`
@@ -385,6 +385,7 @@ const Content = styled.p`
   color: ${color.black};
   line-height: 24px;
   margin: 0;
+    min-height: 150px;
   word-break: break-word;
   white-space: pre-wrap;
 `;
@@ -393,17 +394,24 @@ const CommentsSection = styled.div`
   display: flex;
   color: ${color.black};
   flex-direction: column;
+    border-radius: 4px;
   width: 100%;
 `;
 
 const CommentCount = styled.p`
-  ${font.H2}
-  font-weight: 400;
+  ${font.P1}
+  background-color: ${color.gray50};
   color: ${color.black};
   line-height: 1;
-  margin: 0;
-  padding: 20px;
-  padding-bottom: 0;
+  margin: 10px 40px;
+    border-radius: 8px;
+    width: fit-content;
+  padding: 10px 10px;
+`;
+
+const CommentCountNumber = styled.span`
+    ${font.P1}
+    color: ${color.primary};
 `;
 
 const CommentItemWrapper = styled.div<{ isReply?: boolean }>`
@@ -430,13 +438,13 @@ const CommentHeader = styled.div`
 
 const AuthorName = styled.p`
   font-family: Pretendard, sans-serif;
-  ${font.H2}
+  ${font.H1}
   color: ${color.black};
   margin: 0;
 `;
 
 const CommentContent = styled.p`
-  ${font.H2}
+  ${font.P1}
   color: ${color.black};
   line-height: 1;
   margin: 0;
@@ -452,39 +460,16 @@ const CommentFooter = styled.div`
 
 const FooterItem = styled.p`
   ${font.P2}
-  color: ${color.black};
+  color: ${color.gray300};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
-`;
-
-const CommentInputBox = styled.div`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 20px;
-  border-top: 1px solid ${color.gray100};
-`;
-
-const CommentInputField = styled.textarea`
-  flex: 1;
-  background: none;
-  border: none;
-  font-family: Pretendard, sans-serif;
-  ${font.H2}
-  color: ${color.black};
-  outline: none;
-  resize: none;
-  min-height: 40px;
-
-  &::placeholder {
-    color: ${color.gray500};
-  }
+  cursor: pointer;
 `;
 
 const FooterReportItem = styled.p`
   ${font.P2}
-  color: ${color.black};
+  color: ${color.gray300};
   line-height: 1;
   margin: 0;
   white-space: nowrap;
@@ -527,24 +512,6 @@ const NoCommentText = styled.p`
   margin: 0;
 `;
 
-const CommentSubmitButton = styled.button`
-  background-color: ${(props) =>
-    props.disabled ? color.gray200 : color.primary};
-  border: none;
-  border-radius: 6px;
-  padding: 10px 16px;
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: ${color.white};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  transition: all 0.2s ease;
-
-  &:hover {
-    opacity: 0.9;
-  }
-`;
-
 const LoadingSection = styled.div`
   display: flex;
   align-items: center;
@@ -565,52 +532,81 @@ const ErrorSection = styled.div`
   color: ${color.black};
 `;
 
-const ReplyInputWrapper = styled.div`
-  padding: 16px;
-`;
-
-const ReplyInputBox = styled.div`
-  display: flex;
-  gap: 8px;
-  width: 100%;
-`;
-
-const ReplyInputField = styled.input`
-  flex: 1;
-  border: 1px solid ${color.gray200};
-  border-radius: 6px;
-  padding: 10px 12px;
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: ${color.black};
+/* 하단 고정 댓글 입력 영역 */
+const CommentInputWrapper = styled.div`
+  position: fixed;
+  bottom: 50px; 
+  left: 0;
+  right: 0;
+  max-width: 600px;
+  margin: 0 auto;
   background-color: ${color.white};
-  outline: none;
+  border-top: 1px solid ${color.gray200};
+  z-index: 100;
+`;
 
-  &::placeholder {
-    color: ${color.gray300};
-  }
+const ReplyingToBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background-color: ${color.gray100};
+  border-bottom: 1px solid ${color.gray200};
+`;
 
-  &:focus {
+const ReplyingToText = styled.span`
+  ${font.P2}
+  color: ${color.black};
+`;
+
+const CancelReplyButton = styled.button`
+  background: none;
+  border: none;
+  ${font.P2}
+  color: ${color.gray500};
+  cursor: pointer;
+  padding: 4px 8px;
+
+  &:hover {
     color: ${color.black};
   }
 `;
 
-const ReplySubmitButton = styled.button`
+const CommentInputBox = styled.div`
+  display: flex;
+  gap: 10px;
+    background-color: ${color.white};
+  align-items: center;
+  padding: 12px 20px;
+`;
+
+const CommentInputField = styled.textarea`
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  ${font.H2}
+  line-height: 22px;
+  color: ${color.gray50};
+  outline: none;
+    background-color: ${color.white};
+  resize: none;
+    max-height: 100px;
+    
+`;
+
+const CommentSubmitButton = styled.button`
   background-color: ${(props) =>
     props.disabled ? color.gray200 : color.primary};
   border: none;
   border-radius: 6px;
   padding: 10px 16px;
-  font-family: Pretendard, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+    ${font.P1}
   color: ${color.white};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
-  white-space: nowrap;
 
-  &:hover {
+  &:hover:not(:disabled) {
     opacity: 0.9;
   }
 `;
