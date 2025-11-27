@@ -137,4 +137,7 @@ const SchoolStats = styled.div`
 const StatItem = styled.span`
   ${font.P3};
   color: ${color.gray600};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
