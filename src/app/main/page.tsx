@@ -7,8 +7,8 @@ import Header from "@/components/common/header";
 import NavigationBar from "@/components/common/navigationbar";
 import PopularGuide from "@/components/main/PopularGuide";
 import FastRoad from "@/components/main/FastRoad";
-import { Vs, Main } from "../../../public/svg";
-import { useMemo } from "react";
+import { Vs, Main, UpMark, DownMark } from "../../../public/svg";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGuides } from "@/hooks/useGuides";
 import { useVote } from "@/hooks/useVotes";
@@ -16,6 +16,7 @@ import { useVote } from "@/hooks/useVotes";
 export default function MainPage() {
   const router = useRouter();
   const { guides } = useGuides();
+  const [isSchoolInfoExpanded, setIsSchoolInfoExpanded] = useState(true);
   
   const todayVoteId = process.env.NEXT_PUBLIC_TODAY_VOTE_ID || "239840kdsjkfda";
   const { vote: todayVote } = useVote(todayVoteId);
@@ -50,6 +51,27 @@ export default function MainPage() {
       <Header types={"default and no navi"} />
 
       <MainSection>
+        <SchoolInfoSection>
+          <SchoolHeader>
+            <SchoolTitleWrapper onClick={() => setIsSchoolInfoExpanded(!isSchoolInfoExpanded)}>
+              <SchoolTitle>부산소프트웨어마이스터고</SchoolTitle>
+              <SchoolToggle>
+                {isSchoolInfoExpanded ? (
+                  <UpMark width={24} height={24} />
+                ) : (
+                  <DownMark width={24} height={24} />
+                )}
+              </SchoolToggle>
+            </SchoolTitleWrapper>
+            <SchoolChangeButton>학교 이동하기</SchoolChangeButton>
+          </SchoolHeader>
+          {isSchoolInfoExpanded && (
+            <SchoolDetails>
+              <SchoolDetailItem>개교년도 · 1970년 03월 26일</SchoolDetailItem>
+              <SchoolDetailItem>위치 · 부산광역시 강서구 가락대로 1393</SchoolDetailItem>
+            </SchoolDetails>
+          )}
+        </SchoolInfoSection>
         <HeroCard>
           <Main preserveAspectRatio="xMidYMid slice" />
           <HeroTitle>{todayVote?.title || "오늘의 투표"}</HeroTitle>
@@ -94,8 +116,61 @@ const MainSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-top: 100px;
+  padding-top: 80px;
   margin-bottom: 80px;
+`;
+
+const SchoolInfoSection = styled.div`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const SchoolHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const SchoolTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+const SchoolTitle = styled.h2`
+  ${font.H4};
+  color: ${color.black};
+  margin: 0;
+`;
+
+const SchoolToggle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SchoolDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const SchoolDetailItem = styled.p`
+  ${font.P3};
+  color: ${color.gray600};
+  margin: 0;
+`;
+
+const SchoolChangeButton = styled.button`
+  padding: 0;
+  background: none;
+  border: none;
+  color: ${color.gray300};
+  ${font.Btn3};
+  cursor: pointer;
 `;
 
 const HeroCard = styled.div`
