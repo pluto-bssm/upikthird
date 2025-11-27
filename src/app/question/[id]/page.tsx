@@ -534,15 +534,16 @@ const ErrorSection = styled.div`
 
 /* 하단 고정 댓글 입력 영역 */
 const CommentInputWrapper = styled.div`
-  position: fixed;
-  bottom: 50px; 
-  left: 0;
-  right: 0;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: ${color.white};
-  border-top: 1px solid ${color.gray200};
-  z-index: 100;
+    position: fixed;
+    bottom: 50px; /* 네비게이션 바 높이만큼 위에 */
+    left: 0;
+    right: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: ${color.white};
+    border-top: 1px solid ${color.gray200};
+    z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05); /* 선택사항: 그림자 추가 */
 `;
 
 const ReplyingToBar = styled.div`
@@ -577,6 +578,7 @@ const CommentInputBox = styled.div`
   gap: 10px;
     background-color: ${color.white};
   align-items: center;
+    color: ${color.black};
   padding: 12px 20px;
 `;
 
@@ -587,7 +589,7 @@ const CommentInputField = styled.textarea`
   padding: 10px;
   ${font.H2}
   line-height: 22px;
-  color: ${color.gray50};
+  color: ${color.black};
   outline: none;
     background-color: ${color.white};
   resize: none;

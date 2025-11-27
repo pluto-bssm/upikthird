@@ -65,6 +65,7 @@ const QuestionCreatePage = () => {
   return (
     <StyledPage>
       <Header types="close" text=" " onClose={handleClose} />
+        <StyleQue>
       <Container>
         <Section>
           <Title>질문하기</Title>
@@ -104,6 +105,8 @@ const QuestionCreatePage = () => {
         >
             {isSubmitting ? "등록 중..." : "질문 등록하기"}
         </SubmitButton>
+        </StyleQue>
+
 
       {validationError && (
         <>
@@ -159,6 +162,16 @@ const QuestionCreatePage = () => {
 
 export default QuestionCreatePage;
 
+const StyleQue =styled.div`
+    display: flex;
+    width: 100%;
+    height: 90%;
+    padding-bottom: 80px;
+    gap: 10%;
+    flex-direction: column;
+`;
+
+
 
 const StyledPage = styled.div`
   width: 100%;
@@ -166,7 +179,7 @@ const StyledPage = styled.div`
   margin: 0 auto;
   background-color: ${color.white};
   min-height: 100vh;
-  padding-bottom: 8b0px;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
 `;
@@ -182,8 +195,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1;
-    margin-top: 52px;
+    gap: 20px;
+    margin-top: 70px;
   padding-bottom: 20px;
 `;
 
@@ -291,7 +304,7 @@ const SubmitButton = styled.button`
   color: ${color.white};
   cursor: pointer;
   transition: all 0.2s ease;
-  margin: 20px;
+  margin: 0 20px;
 
   &:disabled {
     background-color: ${color.gray200};
@@ -318,7 +331,7 @@ const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000;
+  z-index: 10001;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -331,6 +344,7 @@ const ModalContent = styled.div`
   padding: 52px 32px;
   max-width: 320px;
   width: 90vw;
+    z-index: 100001;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -343,6 +357,7 @@ const ModalIconContainer = styled.div`
   justify-content: center;
   width: 83px;
   height: 83px;
+    z-index: 10001;
   color: ${color.primary};
 `;
 
@@ -350,6 +365,7 @@ const ModalTitle = styled.p`
   ${font.D3}
   color: ${color.black};
   line-height: 1;
+    z-index: 10001;
   margin: 0;
   text-align: center;
 `;
