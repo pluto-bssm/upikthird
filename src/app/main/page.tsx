@@ -7,13 +7,11 @@ import Header from "@/components/common/header";
 import NavigationBar from "@/components/common/navigationbar";
 import PopularGuide from "@/components/main/PopularGuide";
 import FastRoad from "@/components/main/FastRoad";
-import { Vs, Main } from "../../../public/svg";
+import { Vs, Main, UpMark, DownMark } from "../../../public/svg";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGuides } from "@/hooks/useGuides";
 import { useVote } from "@/hooks/useVotes";
-import UpMark from "../../../public/svg/UpMark";
-import DownMark from "../../../public/svg/DownMark";
 
 export default function MainPage() {
   const router = useRouter();
