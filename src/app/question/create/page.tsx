@@ -89,7 +89,7 @@ const QuestionCreatePage = () => {
             <Required>*</Required>
           </LabelWithRequired>
           <DetailTextarea
-            placeholder="자세한 내용을 적어주세요(10자 이상)"
+            placeholder="자세한 내용을 적어주세요(20자 이상)"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />

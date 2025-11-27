@@ -11,7 +11,7 @@ import font from "@/packages/design-system/src/font";
 const inquirySchema = z
   .object({
     type: z.enum(["오류", "건의사항", "신고", "기타"]).optional(),
-    content: z.string().min(20, "20자 이상 입력해주세요"),
+    content: z.string().min(10, "10자 이상 입력해주세요"),
     email: z.string().email("올바른 이메일 주소를 입력해주세요"),
     agreePrivacy: z.boolean().refine((val) => val === true, {
       message: "개인정보 수집 및 이용에 동의해주세요",
