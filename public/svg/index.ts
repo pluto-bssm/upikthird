@@ -47,6 +47,9 @@ import LogoBox from "./LogoBox";
 import SmileBox from "./SmileBox";
 import Main from "./Main";
 import Vs from "./Vs";
+import UpMark from "./UpMark";
+import DownMark from "./DownMark";
+import Chat from "./Chat";
 
 export {
   Back,
@@ -98,4 +101,7 @@ export {
   SmileBox,
   Main,
   Vs,
+  UpMark,
+  DownMark,
+  Chat,
 };
