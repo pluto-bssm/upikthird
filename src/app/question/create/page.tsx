@@ -166,15 +166,15 @@ const StyleQue =styled.div`
     display: flex;
     width: 100%;
     height: 90%;
-    padding-bottom: 60px;
-    gap: 20%;
+    padding-bottom: 80px;
+    gap: 10%;
     flex-direction: column;
 `;
 
 
 
 const StyledPage = styled.div`
-  width: 110%;
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   background-color: ${color.white};
