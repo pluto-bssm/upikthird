@@ -577,6 +577,7 @@ const CommentInputBox = styled.div`
   gap: 10px;
     background-color: ${color.white};
   align-items: center;
+    color: ${color.black};
   padding: 12px 20px;
 `;
 
@@ -587,7 +588,7 @@ const CommentInputField = styled.textarea`
   padding: 10px;
   ${font.H2}
   line-height: 22px;
-  color: ${color.gray50};
+  color: ${color.black};
   outline: none;
     background-color: ${color.white};
   resize: none;
