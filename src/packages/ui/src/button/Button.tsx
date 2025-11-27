@@ -39,6 +39,7 @@ const ButtonText = styled.p`
 const ButtonIcon = styled.div`
   object-fit: fill;
   height: 40%;
+  width: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
