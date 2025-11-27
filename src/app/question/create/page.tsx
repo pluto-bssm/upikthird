@@ -330,7 +330,7 @@ const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000;
+  z-index: 10001;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,6 +343,7 @@ const ModalContent = styled.div`
   padding: 52px 32px;
   max-width: 320px;
   width: 90vw;
+    z-index: 100001;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -355,6 +356,7 @@ const ModalIconContainer = styled.div`
   justify-content: center;
   width: 83px;
   height: 83px;
+    z-index: 10001;
   color: ${color.primary};
 `;
 
@@ -362,6 +364,7 @@ const ModalTitle = styled.p`
   ${font.D3}
   color: ${color.black};
   line-height: 1;
+    z-index: 10001;
   margin: 0;
   text-align: center;
 `;
