@@ -253,32 +253,34 @@ const QuestionDetailPage = () => {
                         <NoCommentText>댓글이 없습니다.</NoCommentText>
                     )}
                 </CommentsSection>
+
+                {/* 댓글 입력창을 Container 안으로 이동 */}
+                <CommentInputWrapper>
+                    {replyingTo && (
+                        <ReplyingToBar>
+                            <ReplyingToText>@{replyingTo.name}에게 답글 작성 중</ReplyingToText>
+                            <CancelReplyButton onClick={handleCancelReply}>
+                                취소
+                            </CancelReplyButton>
+                        </ReplyingToBar>
+                    )}
+                    <CommentInputBox>
+                        <CommentInputField
+                            placeholder={
+                                replyingTo ? "답글을 입력해주세요" : "댓글을 입력해주세요"
+                            }
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                        <CommentSubmitButton
+                            onClick={handleCommentSubmit}
+                            disabled={submitting || !comment.trim() || !boardId}
+                        >
+                            등록
+                        </CommentSubmitButton>
+                    </CommentInputBox>
+                </CommentInputWrapper>
             </Container>
-            <CommentInputWrapper>
-                {replyingTo && (
-                    <ReplyingToBar>
-                        <ReplyingToText>@{replyingTo.name}에게 답글 작성 중</ReplyingToText>
-                        <CancelReplyButton onClick={handleCancelReply}>
-                            취소
-                        </CancelReplyButton>
-                    </ReplyingToBar>
-                )}
-                <CommentInputBox>
-                    <CommentInputField
-                        placeholder={
-                            replyingTo ? "답글을 입력해주세요" : "댓글을 입력해주세요"
-                        }
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                    />
-                    <CommentSubmitButton
-                        onClick={handleCommentSubmit}
-                        disabled={submitting || !comment.trim() || !boardId}
-                    >
-                        등록
-                    </CommentSubmitButton>
-                </CommentInputBox>
-            </CommentInputWrapper>
 
             <NavigationBar />
         </StyledPage>
@@ -302,7 +304,7 @@ const StyledPage = styled.div`
   background-color: ${color.white};
   min-height: 100vh;
   padding-top: 80px;
-  padding-bottom: 140px; /* 댓글 입력창 + 네비게이션바 높이 */
+  padding-bottom: 60px; /* 네비게이션바 높이만큼만 */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -385,7 +387,7 @@ const Content = styled.p`
   color: ${color.black};
   line-height: 24px;
   margin: 0;
-    min-height: 150px;
+  min-height: 150px;
   word-break: break-word;
   white-space: pre-wrap;
 `;
@@ -394,7 +396,7 @@ const CommentsSection = styled.div`
   display: flex;
   color: ${color.black};
   flex-direction: column;
-    border-radius: 4px;
+  border-radius: 4px;
   width: 100%;
 `;
 
@@ -404,14 +406,14 @@ const CommentCount = styled.p`
   color: ${color.black};
   line-height: 1;
   margin: 10px 40px;
-    border-radius: 8px;
-    width: fit-content;
+  border-radius: 8px;
+  width: fit-content;
   padding: 10px 10px;
 `;
 
 const CommentCountNumber = styled.span`
-    ${font.P1}
-    color: ${color.primary};
+  ${font.P1}
+  color: ${color.primary};
 `;
 
 const CommentItemWrapper = styled.div<{ isReply?: boolean }>`
@@ -532,18 +534,12 @@ const ErrorSection = styled.div`
   color: ${color.black};
 `;
 
-/* 하단 고정 댓글 입력 영역 */
+/* 댓글 입력 영역 - position fixed 제거하고 일반 플로우로 */
 const CommentInputWrapper = styled.div`
-    position: fixed;
-    bottom: 50px; /* 네비게이션 바 높이만큼 위에 */
-    left: 0;
-    right: 0;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: ${color.white};
-    border-top: 1px solid ${color.gray200};
-    z-index: 100;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05); /* 선택사항: 그림자 추가 */
+  width: 100%;
+  background-color: ${color.white};
+  border-top: 1px solid ${color.gray200};
+  margin-top: 20px;
 `;
 
 const ReplyingToBar = styled.div`
@@ -576,25 +572,25 @@ const CancelReplyButton = styled.button`
 const CommentInputBox = styled.div`
   display: flex;
   gap: 10px;
-    background-color: ${color.white};
+  background-color: ${color.white};
   align-items: center;
-    color: ${color.black};
+  color: ${color.black};
   padding: 12px 20px;
 `;
 
 const CommentInputField = styled.textarea`
   flex: 1;
-  border: none;
+  border: 1px solid ${color.gray200};
   border-radius: 8px;
   padding: 10px;
   ${font.H2}
   line-height: 22px;
   color: ${color.black};
   outline: none;
-    background-color: ${color.white};
+  background-color: ${color.white};
   resize: none;
-    max-height: 100px;
-    
+  max-height: 100px;
+  min-height: 40px;
 `;
 
 const CommentSubmitButton = styled.button`
@@ -603,7 +599,7 @@ const CommentSubmitButton = styled.button`
   border: none;
   border-radius: 6px;
   padding: 10px 16px;
-    ${font.P1}
+  ${font.P1}
   color: ${color.white};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
