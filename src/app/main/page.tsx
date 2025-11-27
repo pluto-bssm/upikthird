@@ -63,7 +63,7 @@ export default function MainPage() {
                 )}
               </SchoolToggle>
             </SchoolTitleWrapper>
-            <SchoolChangeButton>학교 이동하기</SchoolChangeButton>
+            <SchoolChangeButton onClick={() => router.push('/schoolSelect')}>학교 이동하기</SchoolChangeButton>
           </SchoolHeader>
           {isSchoolInfoExpanded && (
             <SchoolDetails>
