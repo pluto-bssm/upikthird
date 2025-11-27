@@ -166,6 +166,7 @@ const StyleQue =styled.div`
     display: flex;
     width: 100%;
     height: 90%;
+    padding-bottom: 60px;
     gap: 20%;
     flex-direction: column;
 `;
@@ -173,7 +174,7 @@ const StyleQue =styled.div`
 
 
 const StyledPage = styled.div`
-  width: 100%;
+  width: 110%;
   max-width: 600px;
   margin: 0 auto;
   background-color: ${color.white};
