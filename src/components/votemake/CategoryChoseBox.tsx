@@ -38,7 +38,7 @@ export default function CategoryChoseBox({
           )}
           {category === "유머" && (
             <CategoryDescription>
-              유머유머유머유머유머유머유머유머유머유머유머유머유머유머유머
+              진지하지않은 재밌는 내용이 궁금할 때 이 카테고리를 선택해주세요
             </CategoryDescription>
           )}
         </CategoryDescriptionArea>
